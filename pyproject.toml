@@ -10,6 +10,7 @@ name = "plantcv-geospatial"
 dynamic = ["version"]
 dependencies = [
     "plantcv",
+    "matplotlib",
 ]
 requires-python = ">=3.6"
 authors = [
