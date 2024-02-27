@@ -7,6 +7,8 @@ Geospatial add-on package to PlantCV
 
 ## Installation
 
+Developers should set up a PlantCV conda environment from source code as normal, then:
+
 ```bash
 cd plantcv-geospatial
 pip install -e .
