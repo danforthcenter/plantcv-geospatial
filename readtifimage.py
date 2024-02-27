@@ -1,37 +1,26 @@
-#Read TIF image
-
 import rasterio
 
-
 def readimage(filepath):
-   """Read TIF image from file.
+    """Read TIF image from file.
 
     Inputs:
-    filepath = path of TIF image file
+    filepath: Path of the TIF image file.
 
     Returns:
-    imagearray = image object as numpy array
-    crs = coordinate reference system
-    width = width of digital number array values
-    height = height of digital number array values
-    bands = total number of bands in image
-    bounds = spatial extent of the image mapped on the earth's surface
+    imagearray: Image object as numpy array.
+    height: Height of digital number array values.
+    width: Width of digital number array values.
+    bands: Total number of bands in the image.
 
-    :param filename: str
-    :return imagearray: numpy.ndarray
-    :return crs: rasterio.crs.CRS
-    :return width: int
-    :return height: int
-    :return bands: int
-    :return bounds: rasterio.coords.BoundingBox
+    :param filepath: str
+    :return imagearray: numpy.ndarray, height: int, width: int, bands: int
     """
-   img = rasterio.open(filepath)
-   inputarray = img.read()
-   crs = img.crs
-   width = img.width
-   height = img.height
-   bands = img.count
-   bounds = img.bounds
+    img = rasterio.open(filepath)
+    inputarray = img.read()
+    height = img.height
+    width = img.width
+    bands = img.count
    
-   return inputarray, crs, width, height, bands, bounds
+    return inputarray, height, width, bands
+
     
