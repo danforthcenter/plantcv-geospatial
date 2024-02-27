@@ -1,4 +1,6 @@
+#Read TIF File
 import rasterio
+
 
 def readimage(filepath):
     """Read TIF image from file.
@@ -20,7 +22,4 @@ def readimage(filepath):
     height = img.height
     width = img.width
     bands = img.count
-   
     return inputarray, height, width, bands
-
-    
