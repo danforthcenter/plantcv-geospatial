@@ -20,12 +20,12 @@ def readimage(filepath):
     width = img.width
     bands = img.count
     spectral_array = Spectral_data(array_data=inputarray,
-                                   max_wavelength=float(str(header_dict["wavelength"][-1]).rstrip()),
-                                   min_wavelength=float(str(header_dict["wavelength"][0]).rstrip()),
+                                   max_wavelength=None,
+                                   min_wavelength=None,
                                    max_value=max(inputarray), min_value=min(inputarray),
-                                   d_type=header_dict["datatype"],
-                                   wavelength_dict=wavelength_dict, samples=int(width),
-                                   lines=int(height), interleave=header_dict["interleave"],
+                                   d_type=img.dtypes[0],
+                                   wavelength_dict={}, samples=int(width),
+                                   lines=int(height), interleave=None,
                                    wavelength_units="unknown", array_type="datacube",
                                    pseudo_rgb=None, filename=filepath, default_bands=None)
 
