@@ -1,0 +1,24 @@
+site_name: PlantCV-Geopspatial
+site_url: https://plantcv-geospatial.readthedocs.io/
+site_description: Plant phenotyping for geospatial images using computer vision
+site_author: PlantCV Development Team
+repo_url: https://github.com/danforthcenter/plantcv-geospatial
+copyright: Copyright 2024, Donald Danforth Plant Science Center
+theme: readthedocs
+
+nav:
+- Home: index.md
+- Documentation:
+  - 'Installation': installation.md
+  - 'Analysis Approaches': analysis_approach.md
+  - 'Using Jupyter Notebooks': jupyter.md
+  - 'Contributing':
+    - 'Code of Conduct': CODE_OF_CONDUCT.md
+    - 'Adding/Editing Documentation': documentation.md
+  - 'PlantCV Namespace':
+    - 'Geopspatial Tools':
+        - 
+markdown_extensions:
+  - toc:
+      permalink: True
+  - admonition
