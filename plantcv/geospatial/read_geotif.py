@@ -19,6 +19,10 @@ def read_geotif(filepath, mode="RGB"):
     inputarray = img.read()
     height = img.height
     width = img.width
+    mode_dict = {"RGB": {"red": 650, "green": 560, "blue": 480}, 
+                 "BGR": {"blue": 480, "green": 560, "red": 650}, 
+                 "ALTUM": {}, "PLANETLAB": {}}
+
     bands = img.count
     spectral_array = Spectral_data(array_data=inputarray,
                                    max_wavelength=None,
