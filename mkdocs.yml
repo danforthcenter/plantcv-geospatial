@@ -10,8 +10,6 @@ nav:
 - Home: index.md
 - Documentation:
   - 'Installation': installation.md
-  - 'Analysis Approaches': analysis_approach.md
-  - 'Using Jupyter Notebooks': jupyter.md
   - 'Contributing':
     - 'Code of Conduct': CODE_OF_CONDUCT.md
     - 'Adding/Editing Documentation': documentation.md
