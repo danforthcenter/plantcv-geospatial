@@ -11,6 +11,7 @@ nav:
 - Documentation:
   - 'Installation': installation.md
   - 'Contributing':
+    - 'Contributing Guide': CONTRIBUTING.md
     - 'Code of Conduct': CODE_OF_CONDUCT.md
     - 'Adding/Editing Documentation': documentation.md
   - 'PlantCV Namespace':
