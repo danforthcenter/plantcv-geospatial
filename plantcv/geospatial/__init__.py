@@ -1,5 +1,5 @@
-from plantcv.geospatial.readtifimage import readimage
+from plantcv.geospatial.read_geotif import read_geotif
 
 __all__ = [
-    "readimage"
+    "read_geotif"
     ]

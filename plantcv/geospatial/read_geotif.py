@@ -2,14 +2,15 @@
 import rasterio
 from plantcv.plantcv.classes import Spectral_data 
 
-def readimage(filepath):
-    """Read TIF image from file.
+def read_geotif(filepath, mode="RGB"):
+    """Read Georeferenced TIF image from file.
 
     Inputs:
     filepath: Path of the TIF image file.
+    mode: Type of georeferenced image data 
 
     Returns:
-    spectral_array: PlantCV format Hyperspectral data instance
+    spectral_array: PlantCV format Spectral data object instance
 
     :param filepath: str
     :return spectral_array: __main__.Spectral_data
