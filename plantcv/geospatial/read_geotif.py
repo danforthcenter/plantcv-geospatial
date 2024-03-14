@@ -2,9 +2,10 @@
 
 import os 
 import rasterio
+import numpy as np
 #from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.plot_image import plot_image
-from plantcv.plantcv.classes import Spectral_data, Params  
+from plantcv.plantcv.classes import Spectral_data  
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
 
 def read_geotif(filepath, mode="RGB"):
