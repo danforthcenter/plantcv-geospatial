@@ -34,7 +34,6 @@ def read_geotif(filepath, bands="R,G,B"):
     default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE":717, "N": 842, "NIR": 842}
     for i, band in enumerate(list_bands):
         wavelength = default_wavelengths[band.upper()]
-        print(wavelength) 
         wavelengths[wavelength] = i
     bands = img.count
 
