@@ -24,7 +24,7 @@ def read_geotif(filepath, bands="R,G,B"):
     :return spectral_array: __main__.Spectral_data
     """
     img = rasterio.open(filepath)
-    img_data = rasterio.read()
+    img_data = img.read()
     height = img.height
     width = img.width
     wavelengths = [] 
