@@ -1,19 +1,21 @@
 # Read TIF File
 
 import os 
+import cv2
 import rasterio
-import numpy as np
+import numpy as np 
 #from plantcv.plantcv._debug import _debug
+from plantcv.plantcv.transform import rescale
 from plantcv.plantcv.plot_image import plot_image
 from plantcv.plantcv.classes import Spectral_data  
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
 
-def read_geotif(filepath, mode="RGB"):
+def read_geotif(filepath, bands="R,G,B"):
     """Read Georeferenced TIF image from file.
 
     Inputs:
     filepath: Path of the TIF image file.
-    mode: Type of georeferenced image data 
+    bands: Comma separated string representing the order of image bands (default bands="R,G,B")
 
     Returns:
     spectral_array: PlantCV format Spectral data object instance
@@ -22,29 +24,27 @@ def read_geotif(filepath, mode="RGB"):
     :return spectral_array: __main__.Spectral_data
     """
     img = rasterio.open(filepath)
+    img_data = rasterio.read()
     height = img.height
     width = img.width
-    mode_dict = {"RGB": {650: 0.0, 560: 1.0, 480: 2.0}, 
-                 "BGR": {480: 0.0, 560: 1.0, 650: 2.0},
-                 "RAW": {},  #BGR, Redgedge, NIR
-                 "ALTUM": {650: 0.0, 560: 1.0, 480: 2.0, 717: 3.0, 842: 4.0},  #RGB, Redgedge, NIR
-                 "PLANETLAB": {480: 0.0, 560: 1.0, 650: 2.0, 820: 4.0}}  #BGR, NIR
-    wavelength_dict = mode_dict[mode.upper()]
+    wavelengths = [] 
+
+    # Parse bands
+    list_bands = bands.split(",") 
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE":717, "N": 842, "NIR": 842}
+    for i, band in enumerate(list_bands):
+        wavelength = default_wavelengths[band.upper()]
+        print(wavelength) 
+        wavelengths[wavelength] = i
     bands = img.count
 
-    for i in (range(bands)):
-        if i+1 == 1:
-            stacked = img.read(i+1)
-        else:
-            band = img.read(i+1)
-            stacked = np.dstack((stacked, band))
-            
-    spectral_array = Spectral_data(array_data=stacked,
+    # Make a Spectral_data instance before calculating a pseudo-rgb 
+    spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=None,
                                    min_wavelength=None,
-                                   max_value=np.max(stacked), min_value=np.min(stacked),
+                                   max_value=np.max(img_data), min_value=np.min(img_data),
                                    d_type=img.dtypes[0],
-                                   wavelength_dict=wavelength_dict, samples=int(width),
+                                   wavelength_dict=wavelengths, samples=int(width),
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=None, filename=filepath, default_bands=None)
@@ -52,7 +52,6 @@ def read_geotif(filepath, mode="RGB"):
     pseudo_rgb = _make_pseudo_rgb(spectral_array)
     spectral_array.pseudo_rgb = pseudo_rgb
 
-    plot_image(img=pseudo_rgb)
     #_debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, str(params.device) + "_pseudo_rgb.png"))
 
     return spectral_array
