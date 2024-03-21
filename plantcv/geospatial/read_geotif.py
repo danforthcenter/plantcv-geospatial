@@ -9,21 +9,21 @@ from plantcv.plantcv.plot_image import plot_image
 from plantcv.plantcv.classes import Spectral_data  
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
 
-def read_geotif(filepath, bands="R,G,B"):
+def read_geotif(filename, bands="R,G,B"):
     """Read Georeferenced TIF image from file.
 
     Inputs:
-    filepath: Path of the TIF image file.
+    filename: Path of the TIF image file.
     bands: Comma separated string representing the order of image bands (default bands="R,G,B")
 
     Returns:
     spectral_array: PlantCV format Spectral data object instance
 
-    :param filepath: str
+    :param filename: str
     :param bands: str
     :return spectral_array: __main__.Spectral_data
     """
-    img = rasterio.open(filepath)
+    img = rasterio.open(filename)
     img_data = img.read()
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last 
     height = img.height
@@ -47,7 +47,7 @@ def read_geotif(filepath, bands="R,G,B"):
                                    wavelength_dict=wavelengths, samples=int(width),
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=None, filename=filepath, default_bands=None)
+                                   pseudo_rgb=None, filename=filename, default_bands=None)
 
     pseudo_rgb = _make_pseudo_rgb(spectral_array)
     spectral_array.pseudo_rgb = pseudo_rgb
