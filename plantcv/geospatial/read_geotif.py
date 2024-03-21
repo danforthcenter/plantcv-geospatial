@@ -5,7 +5,6 @@ import cv2
 import rasterio
 import numpy as np 
 #from plantcv.plantcv._debug import _debug
-from plantcv.plantcv.transform import rescale
 from plantcv.plantcv.plot_image import plot_image
 from plantcv.plantcv.classes import Spectral_data  
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
@@ -21,10 +20,12 @@ def read_geotif(filepath, bands="R,G,B"):
     spectral_array: PlantCV format Spectral data object instance
 
     :param filepath: str
+    :param bands: str
     :return spectral_array: __main__.Spectral_data
     """
     img = rasterio.open(filepath)
     img_data = img.read()
+    img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last 
     height = img.height
     width = img.width
     wavelengths = [] 
@@ -51,6 +52,7 @@ def read_geotif(filepath, bands="R,G,B"):
     pseudo_rgb = _make_pseudo_rgb(spectral_array)
     spectral_array.pseudo_rgb = pseudo_rgb
 
+    plot_image(img=pseudo_rgb)
     #_debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, str(params.device) + "_pseudo_rgb.png"))
 
     return spectral_array
