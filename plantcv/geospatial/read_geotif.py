@@ -5,6 +5,7 @@ import cv2
 import rasterio
 import numpy as np 
 #from plantcv.plantcv._debug import _debug
+from plantcv.plantcv import fatal_error
 from plantcv.plantcv.plot_image import plot_image
 from plantcv.plantcv.classes import Spectral_data  
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
@@ -33,9 +34,13 @@ def read_geotif(filename, bands="R,G,B"):
     # Parse bands
     list_bands = bands.split(",") 
     default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE":717, "N": 842, "NIR": 842}
+
     for i, band in enumerate(list_bands):
-        wavelength = default_wavelengths[band.upper()]
-        wavelengths[wavelength] = i
+        if band.upper() not in default_wavelengths.keys:
+            fatal_error(f"Currently {band} is not supported, instead provide wavelengths in order.")
+        else: 
+            wavelength = default_wavelengths[band.upper()]
+            wavelengths[wavelength] = i
     bands = img.count
 
     # Make a Spectral_data instance before calculating a pseudo-rgb 
