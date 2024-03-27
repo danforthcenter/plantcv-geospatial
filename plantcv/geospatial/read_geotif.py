@@ -29,14 +29,15 @@ def read_geotif(filename, bands="R,G,B"):
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last 
     height = img.height
     width = img.width
-    wavelengths = [] 
+    wavelengths = {}
 
     # Parse bands
     list_bands = bands.split(",") 
     default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE":717, "N": 842, "NIR": 842}
 
     for i, band in enumerate(list_bands):
-        if band.upper() not in default_wavelengths.keys:
+        
+        if band.upper() not in default_wavelengths.keys():
             fatal_error(f"Currently {band} is not supported, instead provide wavelengths in order.")
         else: 
             wavelength = default_wavelengths[band.upper()]
