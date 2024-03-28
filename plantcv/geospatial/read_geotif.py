@@ -32,17 +32,18 @@ def read_geotif(filename, bands="R,G,B"):
     # Parse bands
     list_bands = bands.split(",")
     default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
+    wavelength_keys = default_wavelengths.keys() 
 
     for i, band in enumerate(list_bands):
 
-        if band.upper() not in default_wavelengths.keys():
+        if band.upper() not in wavelength_keys:
             fatal_error(f"Currently {band} is not supported, instead provide wavelengths in order.")
         else:
             wavelength = default_wavelengths[band.upper()]
             wavelengths[wavelength] = i
     bands = img.count
 
-    # Make a Spectral_data instance before calculating a pseudo-rgb 
+    # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=None,
                                    min_wavelength=None,
@@ -56,6 +57,6 @@ def read_geotif(filename, bands="R,G,B"):
     pseudo_rgb = _make_pseudo_rgb(spectral_array)
     spectral_array.pseudo_rgb = pseudo_rgb
 
-    plot_image(img=pseudo_rgb)  #  Replace with _debug once repo restructure complete
+    plot_image(img=pseudo_rgb)  # Replace with _debug once repo restructure complete
 
     return spectral_array
