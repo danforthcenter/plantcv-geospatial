@@ -1,14 +1,12 @@
 # Read TIF File
 
-import os 
-import cv2
 import rasterio
-import numpy as np 
-#from plantcv.plantcv._debug import _debug
+import numpy as np
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv.plot_image import plot_image
-from plantcv.plantcv.classes import Spectral_data  
+from plantcv.plantcv.classes import Spectral_data
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
+
 
 def read_geotif(filename, bands="R,G,B"):
     """Read Georeferenced TIF image from file.
@@ -26,20 +24,20 @@ def read_geotif(filename, bands="R,G,B"):
     """
     img = rasterio.open(filename)
     img_data = img.read()
-    img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last 
+    img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
     height = img.height
     width = img.width
     wavelengths = {}
 
     # Parse bands
-    list_bands = bands.split(",") 
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE":717, "N": 842, "NIR": 842}
+    list_bands = bands.split(",")
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
 
     for i, band in enumerate(list_bands):
-        
+
         if band.upper() not in default_wavelengths.keys():
             fatal_error(f"Currently {band} is not supported, instead provide wavelengths in order.")
-        else: 
+        else:
             wavelength = default_wavelengths[band.upper()]
             wavelengths[wavelength] = i
     bands = img.count
@@ -58,7 +56,6 @@ def read_geotif(filename, bands="R,G,B"):
     pseudo_rgb = _make_pseudo_rgb(spectral_array)
     spectral_array.pseudo_rgb = pseudo_rgb
 
-    plot_image(img=pseudo_rgb)
-    #_debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, str(params.device) + "_pseudo_rgb.png"))
+    plot_image(img=pseudo_rgb)  #  Replace with _debug once repo restructure complete
 
     return spectral_array

@@ -2,7 +2,7 @@
 
 import cv2
 import pytest
-import plantcv.geospatial.read_geotif as read_geotif
+from plantcv.geospatial import read_geotif
 
 
 def test_geospatial_read_geotif(test_data):
