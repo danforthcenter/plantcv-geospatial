@@ -3,7 +3,7 @@
 ### Table of contents
 1. [Supported platforms and dependencies](#dependencies)
 2. [Install via a package manager](#install)
-3. [Installing PlantCV for contributors](#contributors)
+3. [Installing PlantCV-Geospatial for contributors](#contributors)
 
 ### Supported platforms and dependencies <a name="dependencies"></a>
 - Linux 64-bit, x86 processors
@@ -20,11 +20,12 @@ Additionally, we recommend installing [JupyterLab](https://jupyter.org/).
 # Activate the plantcv environment (you will have to do this each time you start a new session)
 conda activate plantcv
 # Install plantcv-geospatial in editable mode so that it updates as you work on new features/updates
-pip install plantcv-geospatial
+git clone https://github.com/danforthcenter/plantcv-geospatial.git 
+cd plantcv-geospatial 
 pip install -e .
 ```
 
-### Installing PlantCV for contributors <a name="contributors"></a>
+### Installing PlantCV-Geospatial for contributors <a name="contributors"></a>
 Before getting started, please read our [contributor guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
 
 You can follow the [PlantCV Installation for Contributor Guide](https://plantcv.readthedocs.io/en/latest/installation/#contributors) and then continue with the instructions above to add PlantCV-Geospatial to 

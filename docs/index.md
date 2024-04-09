@@ -21,6 +21,6 @@ updating, and other questions, see:
 If you are interested in contributing to PlantCV-Geospatial, please see:
 
 * [Code of Conduct](CODE_OF_CONDUCT.md)
-* [PlantCV Contributing Guide](https://plantcv.readthedocs.io/en/latest/CONTRIBUTING/)
+* [PlantCV-Geospatial Contributing Guide](CONTRIBUTING.md)
 
 [Return to the PlantCV homepage](https://plantcv.org)
