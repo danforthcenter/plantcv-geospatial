@@ -10,9 +10,6 @@ Read in data (from tif format, most likely georeferenced image data).
     - filename - Filepath to .tif data 
     - mode - Mode for geotif reading  
 
-- **Context:**
-    - Used to define a list of coordinates of interest.
-
 - **Example use:**
     - below
 
