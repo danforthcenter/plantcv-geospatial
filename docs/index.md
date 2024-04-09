@@ -11,7 +11,7 @@ on the [GitHub issues page](https://github.com/danforthcenter/plantcv-geospatial
 ## Getting started
 
 The documentation can be navigated using the sidebar table of contents. Documentation for individual PlantCV-Geospatial functions
-are listed under the headings "PlantCV Namespace". For general information on installation,
+are listed under the headings "PlantCV-Geospatial Namespace". For general information on installation,
 updating, and other questions, see:
 
 * [Installing PlantCV-Geospatial](installation.md)
