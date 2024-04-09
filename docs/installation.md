@@ -27,5 +27,5 @@ pip install -e .
 ### Installing PlantCV for contributors <a name="contributors"></a>
 Before getting started, please read our [contributor guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
 
-You can follow the [PlantCV Installation for Contributor Guide](https://plantcv.readthedocs.io/en/latest/installation/#contributors) and then continue with the instructions above to add PlantCV-Annotate to 
+You can follow the [PlantCV Installation for Contributor Guide](https://plantcv.readthedocs.io/en/latest/installation/#contributors) and then continue with the instructions above to add PlantCV-Geospatial to 
 your development environment.
