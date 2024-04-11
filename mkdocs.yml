@@ -10,6 +10,7 @@ nav:
 - Home: index.md
 - Documentation:
   - 'Installation': installation.md
+  - 'Change Log': changelog.md
   - 'Contributing':
     - 'Contributing Guide': CONTRIBUTING.md
     - 'Code of Conduct': CODE_OF_CONDUCT.md
