@@ -29,21 +29,26 @@ def read_geotif(filename, bands="R,G,B"):
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
     height = img.height
     width = img.width
+    bands = img.count
     wavelengths = {}
 
-    # Parse bands
-    list_bands = bands.split(",")
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
-    wavelength_keys = default_wavelengths.keys() 
+    if type(bands) is str:
+        # Parse bands
+        list_bands = bands.split(",")
+        default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
+        wavelength_keys = default_wavelengths.keys()
 
-    for i, band in enumerate(list_bands):
+        for i, band in enumerate(list_bands):
 
-        if band.upper() not in wavelength_keys:
-            fatal_error(f"Currently {band} is not supported, instead provide wavelengths in order.")
-        else:
-            wavelength = default_wavelengths[band.upper()]
-            wavelengths[wavelength] = i
-    bands = img.count
+            if band.upper() not in wavelength_keys:
+                fatal_error(f"Currently {band} is not supported, instead provide list of wavelengths in order.")
+            else:
+                wavelength = default_wavelengths[band.upper()]
+                wavelengths[wavelength] = i
+
+    elif type(bands) is list:
+        for i, wl in enumerate(bands):
+            wavelengths[wl] = i
 
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
@@ -56,6 +61,7 @@ def read_geotif(filename, bands="R,G,B"):
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=None, filename=filename, default_bands=None)
 
+    # Make 
     pseudo_rgb = spectral_array.array_data[:, :, :3]
     pseudo_rgb = pseudo_rgb ** (1 / 2.2)
     spectral_array.pseudo_rgb = pseudo_rgb
