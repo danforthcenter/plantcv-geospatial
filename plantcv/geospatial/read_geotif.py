@@ -12,14 +12,15 @@ def read_geotif(filename, bands="R,G,B"):
     """Read Georeferenced TIF image from file.
 
     Inputs:
-    filename: Path of the TIF image file.
-    bands: Comma separated string representing the order of image bands (default bands="R,G,B")
+    filename:   Path of the TIF image file.
+    bands:      Comma separated string representing the order of image bands (default bands="R,G,B"),
+                or a list of wavelengths (e.g. bands=[650,560,480])
 
     Returns:
     spectral_array: PlantCV format Spectral data object instance
 
     :param filename: str
-    :param bands: str
+    :param bands: str, list
     :return spectral_array: __main__.Spectral_data
     """
     img = rasterio.open(filename)
@@ -54,7 +55,8 @@ def read_geotif(filename, bands="R,G,B"):
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=None, filename=filename, default_bands=None)
 
-    pseudo_rgb = _make_pseudo_rgb(spectral_array)
+    pseudo_rgb = spectral_array.array_data[: , : , :3]
+    pseudo_rgb = pseudo_rgb ** (1 / 2.2)
     spectral_array.pseudo_rgb = pseudo_rgb
 
     plot_image(img=pseudo_rgb)  # Replace with _debug once repo restructure complete
