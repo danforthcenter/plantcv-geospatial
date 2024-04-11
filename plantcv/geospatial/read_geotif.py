@@ -1,5 +1,6 @@
 # Read TIF File
 
+from matplotlib import pyplot as plt
 import rasterio
 import numpy as np
 from plantcv.plantcv import fatal_error
@@ -55,10 +56,10 @@ def read_geotif(filename, bands="R,G,B"):
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=None, filename=filename, default_bands=None)
 
-    pseudo_rgb = spectral_array.array_data[: , : , :3]
+    pseudo_rgb = spectral_array.array_data[:, :, :3]
     pseudo_rgb = pseudo_rgb ** (1 / 2.2)
     spectral_array.pseudo_rgb = pseudo_rgb
-
-    plot_image(img=pseudo_rgb)  # Replace with _debug once repo restructure complete
+    pseudo_rgb = pseudo_rgb.astype('float32')
+    plot_image(img=pseudo_rgb)  # Replace with _debug
 
     return spectral_array
