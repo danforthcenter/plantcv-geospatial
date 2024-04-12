@@ -1,12 +1,105 @@
 # Read TIF File
+import os
+import re
+import cv2
+import numpy as np
+from plantcv.plantcv import params
+from plantcv.plantcv._debug import _debug
+from plantcv.plantcv import Spectral_data
+from plantcv.plantcv import fatal_error
 
-from matplotlib import pyplot as plt
+
+def _find_closest(spectral_array, target):
+    """Find index of a target wavelength band in a hyperspectral data instance.
+
+    Inputs:
+        spectral_array = Hyperspectral data instance
+        target         = Target wavelength value
+
+    Returns:
+        idx            = Index
+
+    :param spectral_array: __main__.Spectral_data
+    :param target: float
+    :return spectral_array: __main__.Spectral_data
+    """
+    # Array must be sorted
+    idx = spectral_array.searchsorted(target)
+    idx = np.clip(idx, 1, len(spectral_array) - 1)
+    left = spectral_array[idx - 1]
+    right = spectral_array[idx]
+    idx -= target - left < right - target
+    return idx
+
+
+def _make_pseudo_rgb(spectral_array):
+    """Create the best pseudo-rgb image possible from a hyperspectral datacube
+
+    Inputs:
+        spectral_array = Hyperspectral data instance
+
+    Returns:
+        pseudo_rgb     = Pseudo-rgb image
+
+    :param spectral_array: __main__.Spectral_data
+    :return pseudo_rgb: numpy.ndarray
+    """
+    # Make shorter variable names for data from the spectral class instance object
+    array_data = spectral_array.array_data
+    default_bands = spectral_array.default_bands
+    wl_keys = spectral_array.wavelength_dict.keys()
+
+    if default_bands is not None:
+        pseudo_rgb = cv2.merge((array_data[:, :, int(default_bands[0])],
+                                array_data[:, :, int(default_bands[1])],
+                                array_data[:, :, int(default_bands[2])]))
+
+    else:
+        max_wavelength = max(float(i) for i in wl_keys)
+        min_wavelength = min(float(i) for i in wl_keys)
+        # Check range of available wavelength
+        if max_wavelength >= 635 and min_wavelength <= 490:
+            print("combining bands to make false color image")
+            id_red = _find_closest(spectral_array=np.array([float(i) for i in wl_keys]), target=710)
+            id_green = _find_closest(spectral_array=np.array([float(i) for i in wl_keys]), target=540)
+            id_blue = _find_closest(spectral_array=np.array([float(i) for i in wl_keys]), target=480)
+
+            pseudo_rgb = cv2.merge((array_data[:, :, [id_blue]],
+                                    array_data[:, :, [id_green]],
+                                    array_data[:, :, [id_red]]))
+            print("Red ID: " + str(id_red))
+            print("Green ID: " + str(id_green))
+            print("Blue ID: " + str(id_blue))
+
+        else:
+            # Otherwise take 3 wavelengths, first, middle and last available wavelength
+            id_red = int(len(spectral_array.wavelength_dict)) - 1
+            id_green = int(id_red / 2)
+            pseudo_rgb = cv2.merge((array_data[:, :, [0]],
+                                    array_data[:, :, [id_green]],
+                                    array_data[:, :, [id_red]]))
+
+    # Gamma correct pseudo_rgb image
+    pseudo_rgb = pseudo_rgb ** (1 / 2.2)
+    print("gamma correction complete")
+    # Scale each of the channels up to 255
+    debug = params.debug
+    params.debug = None
+    # pseudo_rgb = cv2.merge((rescale(pseudo_rgb[:, :, 0]),
+    #                         rescale(pseudo_rgb[:, :, 1]),
+    #                         rescale(pseudo_rgb[:, :, 2])))
+
+    # Reset debugging mode
+    params.debug = debug
+
+    return pseudo_rgb
+
+
 import rasterio
 import numpy as np
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv.plot_image import plot_image
 from plantcv.plantcv.classes import Spectral_data
-from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
 
 
 def read_geotif(filename, bands="R,G,B"):
@@ -29,10 +122,10 @@ def read_geotif(filename, bands="R,G,B"):
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
     height = img.height
     width = img.width
-    bands = img.count
     wavelengths = {}
 
-    if type(bands) is str:
+    if isinstance(bands, str):
+        print("string of bands processing...")
         # Parse bands
         list_bands = bands.split(",")
         default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
@@ -46,7 +139,8 @@ def read_geotif(filename, bands="R,G,B"):
                 wavelength = default_wavelengths[band.upper()]
                 wavelengths[wavelength] = i
 
-    elif type(bands) is list:
+    elif isinstance(bands, list):
+        print("List of bands processing...")
         for i, wl in enumerate(bands):
             wavelengths[wl] = i
 
@@ -65,6 +159,9 @@ def read_geotif(filename, bands="R,G,B"):
     pseudo_rgb = spectral_array.array_data[:, :, :3]
     pseudo_rgb = pseudo_rgb ** (1 / 2.2)
     spectral_array.pseudo_rgb = pseudo_rgb
+
+
+    pseudo_rgb = _make_pseudo_rgb(spectral_array)
     pseudo_rgb = pseudo_rgb.astype('float32')
     plot_image(img=pseudo_rgb)  # Replace with _debug
 
