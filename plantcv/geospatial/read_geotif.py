@@ -1,6 +1,7 @@
 import rasterio
 import numpy as np
 from plantcv.plantcv import fatal_error
+from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
 from plantcv.plantcv.plot_image import plot_image
 from plantcv.plantcv.classes import Spectral_data
 
@@ -57,11 +58,6 @@ def read_geotif(filename, bands="R,G,B"):
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=None, filename=filename, default_bands=None)
-
-    # Make pseudo RGB image for visualization 
-    pseudo_rgb = spectral_array.array_data[:, :, :3]
-    pseudo_rgb = pseudo_rgb ** (1 / 2.2)
-    spectral_array.pseudo_rgb = pseudo_rgb
 
     pseudo_rgb = _make_pseudo_rgb(spectral_array)
     pseudo_rgb = pseudo_rgb.astype('float32')
