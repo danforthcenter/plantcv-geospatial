@@ -1,8 +1,12 @@
+# Read georeferenced TIF files to Spectral Image data 
+
 import rasterio
+import os 
 import numpy as np
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
-from plantcv.plantcv.plot_image import plot_image
+from plantcv.plantcv._debug import _debug
+from plantcv.plantcv import params
 from plantcv.plantcv.classes import Spectral_data
 
 
@@ -27,6 +31,10 @@ def read_geotif(filename, bands="R,G,B"):
     height = img.height
     width = img.width
     wavelengths = {}
+
+    # Mask negative background values
+    img_data = np.ma.masked_where(img_data == -10000., img_data)
+    print("Background was masked")
 
     if isinstance(bands, str):
         print("string of bands processing...")
@@ -61,6 +69,6 @@ def read_geotif(filename, bands="R,G,B"):
 
     pseudo_rgb = _make_pseudo_rgb(spectral_array)
     pseudo_rgb = pseudo_rgb.astype('float32')
-    plot_image(img=pseudo_rgb)  # Replace with _debug
 
+    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, "pseudo_rgb.png"))
     return spectral_array
