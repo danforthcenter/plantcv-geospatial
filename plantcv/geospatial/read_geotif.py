@@ -1,7 +1,7 @@
 # Read georeferenced TIF files to Spectral Image data 
 
 import rasterio
-import os 
+import os
 import numpy as np
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
