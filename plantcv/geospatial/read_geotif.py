@@ -33,7 +33,7 @@ def read_geotif(filename, bands="R,G,B"):
     wavelengths = {}
 
     # Mask negative background values
-    img_data = np.ma.masked_where(img_data == -10000., img_data)
+    img_data[img_data < 0] = np.nan
     print("Background was masked")
 
     if isinstance(bands, str):
