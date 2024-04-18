@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 61.0"]
+requires = ["setuptools >= 64.0", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
@@ -28,7 +28,15 @@ classifiers = [
     "Intended Audience :: Science/Research",
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+
 [project.urls]
 Homepage = "https://plantcv.org"
 Documentation = "https://plantcv.readthedocs.io"
 Repository = "https://github.com/danforthcenter/plantcv-geospatial"
+
+[tool.setuptools_scm]
