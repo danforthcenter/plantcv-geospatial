@@ -2,13 +2,30 @@
 
 import rasterio
 import os
+import cv2
 import numpy as np
 from plantcv.plantcv import fatal_error
-from plantcv.plantcv.hyperspectral.read_data import _make_pseudo_rgb
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv import params
 from plantcv.plantcv.classes import Spectral_data
 
+
+def _find_closest_unsorted(array, target):
+    """Find closest index of array item with smallest distance from
+    the target
+    
+    Inputs:
+    array:  list or array of wavelength labels
+    target: target value
+
+    Returns:
+    idx:    index of closest value to the target 
+
+    :param array: numpy.ndarray
+    :param target: int, float
+    :return idx: int
+    """
+    return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
 def read_geotif(filename, bands="R,G,B"):
     """Read Georeferenced TIF image from file.
@@ -34,10 +51,8 @@ def read_geotif(filename, bands="R,G,B"):
 
     # Mask negative background values
     img_data[img_data < 0] = np.nan
-    print("Background was masked")
 
     if isinstance(bands, str):
-        print("string of bands processing...")
         # Parse bands
         list_bands = bands.split(",")
         default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
@@ -52,10 +67,21 @@ def read_geotif(filename, bands="R,G,B"):
                 wavelengths[wavelength] = i
 
     elif isinstance(bands, list):
-        print("List of bands processing...")
         for i, wl in enumerate(bands):
             wavelengths[wl] = i
 
+    wl_keys = wavelengths.keys()
+    # Find which bands to use for red, green, and blue bands of the pseudo_rgb image     
+    id_red = _find_closest_unsorted(spectral_array=np.array([float(i) for i in wl_keys]), target=630)
+    id_green = _find_closest_unsorted(spectral_array=np.array([float(i) for i in wl_keys]), target=540)
+    id_blue = _find_closest_unsorted(spectral_array=np.array([float(i) for i in wl_keys]), target=480)
+    # Stack bands together
+    pseudo_rgb = cv2.merge((img_data[:, :, [id_red]],
+                            img_data[:, :, [id_green]],
+                            img_data[:, :, [id_blue]]))
+    # Gamma correct pseudo_rgb image
+    pseudo_rgb = pseudo_rgb ** (1 / 2.2)
+    pseudo_rgb = pseudo_rgb.astype('float32')
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=None,
@@ -65,10 +91,8 @@ def read_geotif(filename, bands="R,G,B"):
                                    wavelength_dict=wavelengths, samples=int(width),
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=None, filename=filename, default_bands=None)
+                                   pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None)
 
-    pseudo_rgb = _make_pseudo_rgb(spectral_array)
-    pseudo_rgb = pseudo_rgb.astype('float32')
 
     _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, "pseudo_rgb.png"))
     return spectral_array
