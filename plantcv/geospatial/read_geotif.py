@@ -3,6 +3,7 @@
 import rasterio
 import os
 import cv2
+from plantcv.plantcv.transform import rescale
 import numpy as np
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv._debug import _debug
@@ -49,9 +50,6 @@ def read_geotif(filename, bands="R,G,B"):
     width = img.width
     wavelengths = {}
 
-    # Mask negative background values
-    img_data[img_data < 0] = np.nan
-
     if isinstance(bands, str):
         # Parse bands
         list_bands = bands.split(",")
@@ -78,10 +76,19 @@ def read_geotif(filename, bands="R,G,B"):
     # Stack bands together
     pseudo_rgb = cv2.merge((img_data[:, :, [id_red]],
                             img_data[:, :, [id_green]],
-                            img_data[:, :, [id_blue]]))
-    # Gamma correct pseudo_rgb image
-    pseudo_rgb = pseudo_rgb ** (1 / 2.2)
-    pseudo_rgb = pseudo_rgb.astype('float32')
+                            img_data[:, :, [id_blue]]))    
+    # If RGB image then should be uint8, otherwise multispec float32
+    if len(list_bands) == 3:
+        pseudo_rgb = pseudo_rgb.astype('uint8')
+        pseudo_rgb = cv2.merge((rescale(pseudo_rgb[:, :, 0]),
+                                rescale(pseudo_rgb[:, :, 1]),
+                                rescale(pseudo_rgb[:, :, 2])))
+    else:
+        # Mask negative background values
+        img_data[img_data < 0.] = np.nan
+        # Gamma correction
+        pseudo_rgb = pseudo_rgb ** (1 / 2.2)
+        pseudo_rgb = pseudo_rgb.astype('float32')
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=None,
