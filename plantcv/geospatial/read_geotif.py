@@ -72,9 +72,9 @@ def read_geotif(filename, bands="R,G,B"):
 
     wl_keys = wavelengths.keys()
     # Find which bands to use for red, green, and blue bands of the pseudo_rgb image     
-    id_red = _find_closest_unsorted(spectral_array=np.array([float(i) for i in wl_keys]), target=630)
-    id_green = _find_closest_unsorted(spectral_array=np.array([float(i) for i in wl_keys]), target=540)
-    id_blue = _find_closest_unsorted(spectral_array=np.array([float(i) for i in wl_keys]), target=480)
+    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
+    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
+    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=480)
     # Stack bands together
     pseudo_rgb = cv2.merge((img_data[:, :, [id_red]],
                             img_data[:, :, [id_green]],
