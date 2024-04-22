@@ -73,16 +73,14 @@ def read_geotif(filename, bands="R,G,B"):
     id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
     id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
     id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=480)
-    # Stack bands together
-    pseudo_rgb = cv2.merge((img_data[:, :, [id_red]],
+    # Stack bands together, BGR since plot_image will convert BGR2RGB automatically  
+    pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
                             img_data[:, :, [id_green]],
-                            img_data[:, :, [id_blue]]))    
+                            img_data[:, :, [id_red]]))
     # If RGB image then should be uint8, otherwise multispec float32
     if len(list_bands) == 3:
         pseudo_rgb = pseudo_rgb.astype('uint8')
-        pseudo_rgb = cv2.merge((rescale(pseudo_rgb[:, :, 0]),
-                                rescale(pseudo_rgb[:, :, 1]),
-                                rescale(pseudo_rgb[:, :, 2])))
+        # Drop 4th band if there is one and then retun that straight up
     else:
         # Mask negative background values
         img_data[img_data < 0.] = np.nan
@@ -99,7 +97,6 @@ def read_geotif(filename, bands="R,G,B"):
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None)
-
 
     _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, "pseudo_rgb.png"))
     return spectral_array
