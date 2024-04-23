@@ -20,10 +20,13 @@ import plantcv.plantcv as pcv
 import plantcv.geospatial as geo
 
 # Read geotif in
-marker = geo.read_geotif(filename="./data/example_img.tif", bands="r,g,b,NIR,RE")
+spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,NIR,RE")
+rgb_img = geo.read_geotif(filename="./data/example_img.tif", bands="R,G,B")
 
 ```
 
 ![Screenshot](documentation_images/multispec_pseudo_rgb.png)
+
+![Screenshot](documentation_images/rgb.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read_geotif.py)
