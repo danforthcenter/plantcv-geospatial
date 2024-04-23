@@ -1,4 +1,4 @@
-# Read georeferenced TIF files to Spectral Image data 
+# Read georeferenced TIF files to Spectral Image data
 
 import os
 import cv2
@@ -7,26 +7,26 @@ import numpy as np
 from plantcv.plantcv import params
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv._debug import _debug
-from plantcv.plantcv.transform import rescale
 from plantcv.plantcv.classes import Spectral_data
 
 
 def _find_closest_unsorted(array, target):
     """Find closest index of array item with smallest distance from
     the target
-    
+
     Inputs:
     array:  list or array of wavelength labels
     target: target value
 
     Returns:
-    idx:    index of closest value to the target 
+    idx:    index of closest value to the target
 
     :param array: numpy.ndarray
     :param target: int, float
     :return idx: int
     """
     return min(range(len(array)), key=lambda i: abs(array[i]-target))
+
 
 def read_geotif(filename, bands="R,G,B"):
     """Read Georeferenced TIF image from file.
@@ -74,7 +74,7 @@ def read_geotif(filename, bands="R,G,B"):
         rgb_img = img_data[:, :, :3]
         spectral_array = rgb_img.astype('uint8')
         # Drop 4th band if there is one and then retun that as numpy array
-        _debug(visual=cv2.cvtColor(spectral_array, cv2.COLOR_BGR2RGB), 
+        _debug(visual=cv2.cvtColor(spectral_array, cv2.COLOR_BGR2RGB),
                filename=os.path.join(params.debug_outdir, str(params.device) + "pseudo_rgb.png"))
 
     else:
@@ -95,14 +95,14 @@ def read_geotif(filename, bands="R,G,B"):
         pseudo_rgb = pseudo_rgb.astype('float32')
         # Make a Spectral_data instance before calculating a pseudo-rgb
         spectral_array = Spectral_data(array_data=img_data,
-                                    max_wavelength=None,
-                                    min_wavelength=None,
-                                    max_value=np.max(img_data), min_value=np.min(img_data),
-                                    d_type=img.dtypes[0],
-                                    wavelength_dict=wavelengths, samples=int(width),
-                                    lines=int(height), interleave=None,
-                                    wavelength_units="nm", array_type="datacube",
-                                    pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None)
+                                       max_wavelength=None,
+                                       min_wavelength=None,
+                                       max_value=np.max(img_data), min_value=np.min(img_data),
+                                       d_type=img.dtypes[0],
+                                       wavelength_dict=wavelengths, samples=int(width),
+                                       lines=int(height), interleave=None,
+                                       wavelength_units="nm", array_type="datacube",
+                                       pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None)
 
         _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
                                                         str(params.device) + "pseudo_rgb.png"))
