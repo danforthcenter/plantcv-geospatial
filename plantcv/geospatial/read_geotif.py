@@ -91,8 +91,9 @@ def read_geotif(filename, bands="R,G,B"):
                                 img_data[:, :, [id_green]],
                                 img_data[:, :, [id_red]]))
         # Gamma correction
-        pseudo_rgb = pseudo_rgb ** (1 / 2.2)
-        pseudo_rgb = pseudo_rgb.astype('float32')
+        pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
+        pseudo_rgb = pseudo_rgb * 255
+        pseudo_rgb = pseudo_rgb.astype('uint8')
         # Make a Spectral_data instance before calculating a pseudo-rgb
         spectral_array = Spectral_data(array_data=img_data,
                                        max_wavelength=None,
