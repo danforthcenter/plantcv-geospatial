@@ -1,13 +1,13 @@
 # Read georeferenced TIF files to Spectral Image data 
 
-import rasterio
 import os
 import cv2
-from plantcv.plantcv.transform import rescale
+import rasterio
 import numpy as np
+from plantcv.plantcv import params
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv._debug import _debug
-from plantcv.plantcv import params
+from plantcv.plantcv.transform import rescale
 from plantcv.plantcv.classes import Spectral_data
 
 
@@ -93,6 +93,9 @@ def read_geotif(filename, bands="R,G,B"):
         # Gamma correction
         pseudo_rgb = pseudo_rgb ** (1 / 2.2)
         pseudo_rgb = pseudo_rgb.astype('float32')
+        pseudo_rgb = cv2.merge((rescale(pseudo_rgb[:, :, 0]),
+                            rescale(pseudo_rgb[:, :, 1]),
+                            rescale(pseudo_rgb[:, :, 2])))
         # Make a Spectral_data instance before calculating a pseudo-rgb
         spectral_array = Spectral_data(array_data=img_data,
                                     max_wavelength=None,
@@ -104,5 +107,5 @@ def read_geotif(filename, bands="R,G,B"):
                                     wavelength_units="nm", array_type="datacube",
                                     pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None)
 
-        _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, "pseudo_rgb.png"))
+        _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, str(params.device) + "pseudo_rgb.png"))
     return spectral_array
