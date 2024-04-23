@@ -24,4 +24,6 @@ marker = geo.read_geotif(filename="./data/example_img.tif", bands="r,g,b,NIR,RE"
 
 ```
 
+![Screenshot](documentation_images/multispec_pseudo_rgb.png)
+
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read_geotif.py)
