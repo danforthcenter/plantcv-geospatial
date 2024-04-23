@@ -68,35 +68,41 @@ def read_geotif(filename, bands="R,G,B"):
         for i, wl in enumerate(bands):
             wavelengths[wl] = i
 
-    wl_keys = wavelengths.keys()
-    # Find which bands to use for red, green, and blue bands of the pseudo_rgb image     
-    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
-    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
-    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=480)
-    # Stack bands together, BGR since plot_image will convert BGR2RGB automatically  
-    pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
-                            img_data[:, :, [id_green]],
-                            img_data[:, :, [id_red]]))
-    # If RGB image then should be uint8, otherwise multispec float32
+    # If RGB image then should be uint8, skip
     if len(list_bands) == 3:
-        pseudo_rgb = pseudo_rgb.astype('uint8')
-        # Drop 4th band if there is one and then retun that straight up
+        # Create with first three bands 
+        rgb_img = img_data[:, :, :3]
+        spectral_array = rgb_img.astype('uint8')
+        # Drop 4th band if there is one and then retun that as numpy array
+        _debug(visual=cv2.cvtColor(spectral_array, cv2.COLOR_BGR2RGB), 
+               filename=os.path.join(params.debug_outdir, "pseudo_rgb.png"))
+
     else:
         # Mask negative background values
         img_data[img_data < 0.] = np.nan
+        # Make a list of wavelength keys
+        wl_keys = wavelengths.keys()
+        # Find which bands to use for red, green, and blue bands of the pseudo_rgb image     
+        id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
+        id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
+        id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=480)
+        # Stack bands together, BGR since plot_image will convert BGR2RGB automatically  
+        pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
+                                img_data[:, :, [id_green]],
+                                img_data[:, :, [id_red]]))
         # Gamma correction
         pseudo_rgb = pseudo_rgb ** (1 / 2.2)
         pseudo_rgb = pseudo_rgb.astype('float32')
-    # Make a Spectral_data instance before calculating a pseudo-rgb
-    spectral_array = Spectral_data(array_data=img_data,
-                                   max_wavelength=None,
-                                   min_wavelength=None,
-                                   max_value=np.max(img_data), min_value=np.min(img_data),
-                                   d_type=img.dtypes[0],
-                                   wavelength_dict=wavelengths, samples=int(width),
-                                   lines=int(height), interleave=None,
-                                   wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None)
+        # Make a Spectral_data instance before calculating a pseudo-rgb
+        spectral_array = Spectral_data(array_data=img_data,
+                                    max_wavelength=None,
+                                    min_wavelength=None,
+                                    max_value=np.max(img_data), min_value=np.min(img_data),
+                                    d_type=img.dtypes[0],
+                                    wavelength_dict=wavelengths, samples=int(width),
+                                    lines=int(height), interleave=None,
+                                    wavelength_units="nm", array_type="datacube",
+                                    pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None)
 
-    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, "pseudo_rgb.png"))
+        _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, "pseudo_rgb.png"))
     return spectral_array
