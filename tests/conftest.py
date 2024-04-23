@@ -12,8 +12,10 @@ class TestData:
         self.datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdata")
         # Flat image directory
         self.snapshot_dir = os.path.join(self.datadir, "snapshot_dir")
-        # RGB image
+        # multispectral image
         self.cropped_tif = os.path.join(self.datadir, "615.tif")
+        # rgb image
+        self.rgb_tif = os.path.join(self.datadir, "rgb.tif")
 
 @pytest.fixture(scope="session")
 def test_data():
