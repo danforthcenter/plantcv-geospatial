@@ -4,6 +4,7 @@ import os
 import cv2
 import rasterio
 import numpy as np
+from skimage.util import img_as_uint
 from plantcv.plantcv import params
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv._debug import _debug
@@ -79,7 +80,7 @@ def read_geotif(filename, bands="R,G,B"):
 
     else:
         # Mask negative background values
-        img_data[img_data < 0.] = np.nan
+        img_data[img_data < 0.] = 0
         # Make a list of wavelength keys
         wl_keys = wavelengths.keys()
         # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
