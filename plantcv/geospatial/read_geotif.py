@@ -4,7 +4,6 @@ import os
 import cv2
 import rasterio
 import numpy as np
-from skimage.util import img_as_uint
 from plantcv.plantcv import params
 from plantcv.plantcv import fatal_error
 from plantcv.plantcv._debug import _debug
