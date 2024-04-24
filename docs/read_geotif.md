@@ -2,13 +2,13 @@
 
 Read in data (from tif format, most likely georeferenced image data). 
 
-**plantcv.geospatial.read_geotif**(*filename, bands="rgb"*)
+**plantcv.geospatial.read_geotif**(*filename, bands="r,g,b"*)
 
 **returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance 
 
 - **Parameters:**
     - filename - Filepath to .tif data 
-    - bands - Comma separated string representing the order of image bands (default bands="R,G,B"), or a list of wavelengths (e.g. bands=[650,560,480])
+    - bands - Comma separated string (text surrounded by quotation marks) representing the order of image bands (default bands="R,G,B"), or optionally for more  flexibility a list of wavelengths (e.g. bands=[650,560,480])
         - Supported keys for bands and their default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
 
 - **Example use:**
@@ -21,7 +21,7 @@ import plantcv.geospatial as geo
 
 # Read geotif in
 spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,NIR,RE")
-rgb_img = geo.read_geotif(filename="./data/example_img.tif", bands="R,G,B")
+rgb_img = geo.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B")
 
 ```
 
