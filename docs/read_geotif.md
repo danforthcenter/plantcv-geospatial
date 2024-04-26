@@ -20,7 +20,7 @@ import plantcv.plantcv as pcv
 import plantcv.geospatial as geo
 
 # Read geotif in
-spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,NIR,RE")
+spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 rgb_img = geo.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B")
 
 ```
