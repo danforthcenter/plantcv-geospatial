@@ -73,8 +73,9 @@ def read_geotif(filename, bands="R,G,B"):
         # Create with first three bands
         rgb_img = img_data[:, :, :3]
         spectral_array = rgb_img.astype('uint8')
+        spectral_array = cv2.cvtColor(spectral_array, cv2.COLOR_BGR2RGB)
         # Drop 4th band if there is one and then retun that as numpy array
-        _debug(visual=cv2.cvtColor(spectral_array, cv2.COLOR_BGR2RGB),
+        _debug(visual=spectral_array,
                filename=os.path.join(params.debug_outdir, str(params.device) + "pseudo_rgb.png"))
 
     else:
