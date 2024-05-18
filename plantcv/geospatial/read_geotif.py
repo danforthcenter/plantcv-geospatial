@@ -60,7 +60,7 @@ def _parse_bands(bands):
     return band_list
 
 
-def read_geotif(filename, bands="R,G,B"):
+def read_geotif(filename, bands="B,G,R"):
     """Read Georeferenced TIF image from file.
 
     Parameters
@@ -68,7 +68,7 @@ def read_geotif(filename, bands="R,G,B"):
     filename : str
         Path of the TIF image file.
     bands : str, list, optional
-        Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
+        Comma separated string listing the order of bands or a list of wavelengths, by default "B,G,R"
 
     Returns
     -------

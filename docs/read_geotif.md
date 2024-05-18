@@ -2,7 +2,7 @@
 
 Read in data (from tif format, most likely georeferenced image data). 
 
-**plantcv.geospatial.read_geotif**(*filename, bands="r,g,b"*)
+**plantcv.geospatial.read_geotif**(*filename, bands="B,G,R"*)
 
 **returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance for multispectral images, and RGB input will return a Numpy array.
 
