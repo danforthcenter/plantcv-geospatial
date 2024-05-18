@@ -28,6 +28,38 @@ def _find_closest_unsorted(array, target):
     return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
 
+def _parse_bands(bands):
+    """Parse bands.
+
+    Parameters
+    ----------
+    bands : str
+        Comma separated string listing the order of bands
+
+    Returns
+    -------
+    list
+        List of bands
+    """
+    # Numeric list of bands
+    band_list = []
+
+    # Parse bands
+    band_strs = bands.split(",")
+
+    # Default values for symbolic bands
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
+
+    for i, band in enumerate(band_strs):
+        # Check if the band symbols are supported
+        if band.upper() not in default_wavelengths:
+            fatal_error(f"Currently {band} is not supported, instead provide list of wavelengths in order.")
+        # Append the default wavelength for each band
+        band_list.append(default_wavelengths[band.upper()])
+
+    return band_list
+
+
 def read_geotif(filename, bands="R,G,B"):
     """Read Georeferenced TIF image from file.
 
@@ -50,24 +82,16 @@ def read_geotif(filename, bands="R,G,B"):
     width = img.width
     wavelengths = {}
 
+    # Parse bands if input is a string
     if isinstance(bands, str):
-        # Parse bands
-        list_bands = bands.split(",")
-        default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
+        bands = _parse_bands(bands)
 
-        for i, band in enumerate(list_bands):
-            # Check if the band symbols are supported
-            if band.upper() not in default_wavelengths:
-                fatal_error(f"Currently {band} is not supported, instead provide list of wavelengths in order.")
-            wavelength = default_wavelengths[band.upper()]
-            wavelengths[wavelength] = i
-
-    elif isinstance(bands, list):
-        for i, wl in enumerate(bands):
-            wavelengths[wl] = i
+    # Create a dictionary of wavelengths and their indices
+    for i, wl in enumerate(bands):
+        wavelengths[wl] = i
 
     # If RGB image then should be uint8, skip
-    if len(list_bands) == 3:
+    if len(bands) == 3:
         # Create with first three bands
         rgb_img = img_data[:, :, :3]
         spectral_array = rgb_img.astype('uint8')
