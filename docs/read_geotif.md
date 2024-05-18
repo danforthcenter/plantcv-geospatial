@@ -4,24 +4,28 @@ Read in data (from tif format, most likely georeferenced image data).
 
 **plantcv.geospatial.read_geotif**(*filename, bands="B,G,R"*)
 
-**returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance for multispectral images, and RGB input will return a Numpy array.
+**returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance.
 
 - **Parameters:**
-    - filename - Filepath to .tif data 
-    - bands - Comma separated string (text surrounded by quotation marks) representing the order of image bands (default bands="R,G,B"), or optionally for more  flexibility a list of wavelengths (e.g. bands=[650,560,480])
-        - Supported keys for bands and their default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
+    - filename - Path of the TIF image file.
+    - bands - Comma separated string representing the order of image bands (e.g., `bands="B,G,R"`), or a list of wavelengths (e.g., `bands=[650, 560, 480]`)
+        - Supported symbols and their default wavelengths: 
+            - R (red) = 650nm
+            - G (green) = 560nm
+            - B (blue) = 480nm
+            - RE (rededge) = 717nm
+            - N or NIR (near infrared) = 842nm
 
 - **Example use:**
     - below
 
 
 ```python
-import plantcv.plantcv as pcv 
 import plantcv.geospatial as geo
 
 # Read geotif in
-spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-rgb_img = geo.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B")
+ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+ortho2 = geo.read_geotif(filename="./data/example_rgb_img.tif", bands="B,G,R")
 
 ```
 
