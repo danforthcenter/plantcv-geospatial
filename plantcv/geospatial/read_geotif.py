@@ -50,7 +50,7 @@ def _parse_bands(bands):
     # Default values for symbolic bands
     default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
 
-    for i, band in enumerate(band_strs):
+    for band in band_strs:
         # Check if the band symbols are supported
         if band.upper() not in default_wavelengths:
             fatal_error(f"Currently {band} is not supported, instead provide list of wavelengths in order.")
