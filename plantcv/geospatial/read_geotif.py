@@ -57,12 +57,11 @@ def read_geotif(filename, bands="R,G,B"):
         wavelength_keys = default_wavelengths.keys()
 
         for i, band in enumerate(list_bands):
-
+            # Check if the band symbols are supported
             if band.upper() not in wavelength_keys:
                 fatal_error(f"Currently {band} is not supported, instead provide list of wavelengths in order.")
-            else:
-                wavelength = default_wavelengths[band.upper()]
-                wavelengths[wavelength] = i
+            wavelength = default_wavelengths[band.upper()]
+            wavelengths[wavelength] = i
 
     elif isinstance(bands, list):
         for i, wl in enumerate(bands):
