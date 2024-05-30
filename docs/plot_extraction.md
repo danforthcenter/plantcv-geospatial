@@ -1,7 +1,7 @@
 ## Create a rectangular shapefile to extract area of interest from agricultural research plots
 
 
-**plantcv.geospatial.extract_plot**(*input_filename, output_filename, ranges, columns, length of row, vertical alley, horizontal alley)
+**plantcv.geospatial.extract_plot**(*input_filename, output_filename, ranges, columns, row_length, vertical_alley, horizontal_alley)
 
 **returns** [Multi-Polygon Shapefile]
 
@@ -27,7 +27,7 @@ input_shapefile_path = '712_corner_points.shp'
 output_shapefile_path = '712_polygon.shp'  
 output_shapefile = gridcell.write_shapefile(input_shapefile_path, output_shapefile_path, number_of_ranges=45, number_of_columns=12, 
 row_length_along_column=2.4384, vertical_alley=0.9144, 
-horizontal_alley=0.03048)
+horizontal_alley=0.0)
 
 ```
 
