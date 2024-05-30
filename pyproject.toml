@@ -11,6 +11,8 @@ dynamic = ["version"]
 dependencies = [
     "plantcv",
     "matplotlib",
+    "rasterio",
+
 ]
 requires-python = ">=3.6"
 authors = [
