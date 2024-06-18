@@ -6,14 +6,12 @@ from shapely.geometry import mapping, Polygon, LineString
 def create_rectangle_from_points(shapefile_path):
     with fiona.open(shapefile_path, 'r') as shapefile:
         points = [shape['geometry']['coordinates'] for shape in shapefile]
-    
     rectangle = Polygon(points)
     return rectangle
 
 
 def calculate_line_length_in_meters(line):
     total_length = 0
-    
     for i in range(len(line.coords)-1):
         x1, y1 = line.coords[i]
         x2, y2 = line.coords[i+1]
