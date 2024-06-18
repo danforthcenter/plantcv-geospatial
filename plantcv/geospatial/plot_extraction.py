@@ -63,10 +63,10 @@ def create_grid(rectangle, edge1, edge2, columns, row_length_along_column, verti
     return grid_cells
 
 
-def write_shapefile(number_of_ranges, number_of_columns, row_length_along_column, output_shapefile_path, input_shapefile_path, vertical_gap):
+def write_shapefile(number_of_columns, row_length_along_column, output_shapefile_path, input_shapefile_path, vertical_gap):
     rectangle = create_rectangle_from_points(input_shapefile_path)
     edge1, edge2 = get_field_edges(rectangle)
-    grid_cells = create_grid(rectangle, edge1, edge2, number_of_ranges, number_of_columns, row_length_along_column, vertical_gap)
+    grid_cells = create_grid(rectangle, edge1, edge2, number_of_columns, row_length_along_column, vertical_gap)
 
     with fiona.open(input_shapefile_path, 'r') as input_shapefile:
         driver = input_shapefile.driver
