@@ -29,7 +29,7 @@ def get_field_edges(rectangle):
     return edge1, edge2
 
 
-def create_grid(rectangle, edge1, edge2, ranges, columns, row_length_along_column, vertical_gap):
+def create_grid(rectangle, edge1, edge2, columns, row_length_along_column, vertical_gap):
     edge1_length = calculate_line_length_in_meters(edge1)
     edge2_length = calculate_line_length_in_meters(edge2)
     horizontal_threshold = edge1_length/columns
