@@ -1,16 +1,6 @@
-import rasterio
-import numpy as np
-from affine import Affine
-import shapefile
-from rasterio.crs import CRS
 import math
-import rasterio
 import fiona
-from shapely.affinity import rotate
-from shapely.ops import unary_union, polygonize
-from shapely.geometry import shape, mapping, Polygon, LineString, Point
-
-
+from shapely.geometry import mapping, Polygon, LineString
 
 
 def create_rectangle_from_points(shapefile_path):
@@ -19,6 +9,7 @@ def create_rectangle_from_points(shapefile_path):
     
     rectangle = Polygon(points)
     return rectangle
+
 
 def calculate_line_length_in_meters(line):
     total_length = 0
@@ -30,19 +21,19 @@ def calculate_line_length_in_meters(line):
         total_length += segment_length
     return total_length
 
+
 def get_field_edges(rectangle):
     coords = list(rectangle.exterior.coords)
     edge1 = LineString([coords[0], coords[1]])
     edge2 = LineString([coords[0], coords[3]])
     return edge1, edge2
 
-def create_grid(rectangle, edge1, edge2, ranges, columns, row_length_along_column,vertical_gap):
+
+def create_grid(rectangle, edge1, edge2, ranges, columns, row_length_along_column, vertical_gap):
     edge1_length = calculate_line_length_in_meters(edge1)
     edge2_length = calculate_line_length_in_meters(edge2)
     horizontal_threshold = edge1_length/columns
     vertical_threshold = row_length_along_column
-    #vertical_gap = (edge2_length / ranges) - vertical_threshold 
-    #print(vertical_gap)
     divisions_along_edge1 = round(edge1_length / horizontal_threshold)
     divisions_along_edge2 = round((edge2_length - vertical_gap) / (vertical_threshold + vertical_gap)) + 1
     edge1_start = edge1.coords[0]
@@ -73,6 +64,7 @@ def create_grid(rectangle, edge1, edge2, ranges, columns, row_length_along_colum
 
     return grid_cells
 
+
 def write_shapefile(number_of_ranges, number_of_columns, row_length_along_column, output_shapefile_path, input_shapefile_path, vertical_gap):
     rectangle = create_rectangle_from_points(input_shapefile_path)
     edge1, edge2 = get_field_edges(rectangle)
@@ -83,10 +75,10 @@ def write_shapefile(number_of_ranges, number_of_columns, row_length_along_column
         crs = input_shapefile.crs
         schema = {'geometry': 'Polygon', 'properties': {'id': 'int', 'row': 'int', 'column': 'int', 'label': 'str'}}
 
-    with fiona.open(output_shapefile_path, 'w', driver=driver, crs=crs, schema=schema) as shapefile:
+    with fiona.open(output_shapefile_path, 'w', driver=driver, crs=crs, schema=schema) as output_shapefile:
         for idx, cell in enumerate(grid_cells):
             label = f"({cell['row']},{cell['column']})"
-            shapefile.write({
+            output_shapefile.write({
                 'geometry': mapping(cell["polygon"]),
                 'properties': {'id': idx, 'row': cell["row"], 'column': cell["column"], 'label': label},
             })
