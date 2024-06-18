@@ -6,4 +6,5 @@ __version__ = version("plantcv-geospatial")
 
 __all__ = [
     "read_geotif"
+    "plot_extraction"
     ]
