@@ -5,6 +5,5 @@ from plantcv.geospatial.read_geotif import read_geotif
 __version__ = version("plantcv-geospatial")
 
 __all__ = [
-    "read_geotif",
-    "write_shapefile"
+    "read_geotif"
     ]
