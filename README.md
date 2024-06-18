@@ -11,5 +11,6 @@ Developers should set up a PlantCV conda environment from source code as normal,
 
 ```bash
 cd plantcv-geospatial
-pip install -e .
+pip install -e . --config-settings editable_mode=strict
+
 ```
