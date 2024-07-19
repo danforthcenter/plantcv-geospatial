@@ -69,20 +69,7 @@ def read_geotif(filename, bands="R,G,B"):
         rgb_img = img_data[:, :, :3]
         temp_img = rgb_img.astype('uint8')
         pseudo_rgb = cv2.cvtColor(temp_img, cv2.COLOR_BGR2RGB)
-        # Drop 4th band if there is one and then retun that as numpy array
-        spectral_array = Spectral_data(array_data=pseudo_rgb,
-                                       max_wavelength=None,
-                                       min_wavelength=None,
-                                       max_value=np.max(pseudo_rgb), min_value=np.min(pseudo_rgb),
-                                       d_type=img.dtypes[0],
-                                       wavelength_dict=wavelengths, samples=int(width),
-                                       lines=int(height), interleave=None,
-                                       wavelength_units="nm", array_type="datacube",
-                                       pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None,
-                                       geo_transform=geo_transform)
-        _debug(visual=pseudo_rgb,
-               filename=os.path.join(params.debug_outdir, str(params.device) + "pseudo_rgb.png"))
-
+        img_data = np.copy(pseudo_rgb)
 
     else:
         # Mask negative background values
@@ -101,18 +88,18 @@ def read_geotif(filename, bands="R,G,B"):
         pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
         pseudo_rgb = pseudo_rgb * 255
         pseudo_rgb = pseudo_rgb.astype('uint8')
-        # Make a Spectral_data instance before calculating a pseudo-rgb
-        spectral_array = Spectral_data(array_data=img_data,
-                                       max_wavelength=None,
-                                       min_wavelength=None,
-                                       max_value=np.max(img_data), min_value=np.min(img_data),
-                                       d_type=img.dtypes[0],
-                                       wavelength_dict=wavelengths, samples=int(width),
-                                       lines=int(height), interleave=None,
-                                       wavelength_units="nm", array_type="datacube",
-                                       pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None,
-                                       geo_transform=geo_transform)
+    # Make a Spectral_data instance before calculating a pseudo-rgb
+    spectral_array = Spectral_data(array_data=img_data,
+                                    max_wavelength=None,
+                                    min_wavelength=None,
+                                    max_value=np.max(img_data), min_value=np.min(img_data),
+                                    d_type=img.dtypes[0],
+                                    wavelength_dict=wavelengths, samples=int(width),
+                                    lines=int(height), interleave=None,
+                                    wavelength_units="nm", array_type="datacube",
+                                    pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None,
+                                    geo_transform=geo_transform)
 
-        _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
-                                                        str(params.device) + "pseudo_rgb.png"))
+    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
+                                                    str(params.device) + "pseudo_rgb.png"))
     return spectral_array
