@@ -1,6 +1,5 @@
 """Tests for geospatial.readd_geotif."""
 
-import pytest
 from plantcv.geospatial import read_geotif, transform_points
 
 
