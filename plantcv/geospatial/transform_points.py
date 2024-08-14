@@ -1,6 +1,5 @@
-import rasterio
+# Transform georeferenced GeoJSON/shapefile points into python coordinates
 import fiona
-from rasterio.mask import mask
 
 
 def transform_points(img, geojson):
