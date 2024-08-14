@@ -12,6 +12,7 @@ dependencies = [
     "plantcv",
     "matplotlib",
     "rasterio",
+    "fiona",
 
 ]
 requires-python = ">=3.6"
