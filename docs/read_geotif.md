@@ -2,7 +2,7 @@
 
 Read in data (from tif format, most likely georeferenced image data). 
 
-**plantcv.geospatial.read_geotif**(*filename, bands="B,G,R"*)
+**plantcv.geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None*)
 
 **returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance.
 
@@ -15,6 +15,7 @@ Read in data (from tif format, most likely georeferenced image data).
             - B (blue) = 480nm
             - RE (rededge) = 717nm
             - N or NIR (near infrared) = 842nm
+    - cropto - A geoJSON-type shapefile to crop the input image as it is read in. Default is None. 
 
 - **Example use:**
     - below
