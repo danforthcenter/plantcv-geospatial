@@ -16,6 +16,10 @@ class TestData:
         self.cropped_tif = os.path.join(self.datadir, "615.tif")
         # rgb image
         self.rgb_tif = os.path.join(self.datadir, "rgb.tif")
+        # polygon shapefile
+        self.square_crop = os.path.join(self.datadir, "square_crop.geojson")
+        # points shapefile
+        self.point_crop = os.path.join(self.datadir, "point_crop.geojson")
 
 @pytest.fixture(scope="session")
 def test_data():
