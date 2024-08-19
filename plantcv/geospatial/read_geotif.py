@@ -84,6 +84,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
                 wavelengths[wavelength] = i
 
     elif isinstance(bands, list):
+        # Keep list_bands to check length in next section
+        list_bands = bands
         for i, wl in enumerate(bands):
             wavelengths[wl] = i
 
