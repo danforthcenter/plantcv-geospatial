@@ -32,7 +32,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     """Read Georeferenced TIF image from file.
     Inputs:
     filename:   Path of the TIF image file.
-    bands:      Comma separated string representing the order of image bands 
+    bands:      Comma separated string representing the order of image bands
                 (default bands="R,G,B"), or a list of wavelengths (e.g. bands=[650,560,480])
     cropto:     Path to a geoJSON-type shape file for cropping input image.
     Returns:
@@ -41,8 +41,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     :param bands: str, list
     :return spectral_array: __main__.Spectral_data
     """
-    
-    if cropto: 
+    if cropto:
         with fiona.open(cropto, 'r') as shapefile:
             # polygon-type shapefile
             if len(shapefile) == 1:
@@ -58,14 +57,14 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
             img_data, geo_transform = mask(src, shapes, crop=True)
             d_type = src.dtypes[0]
             geo_crs = src.crs.wkt
-    
-    else:        
+
+    else:
         img = rasterio.open(filename)
         img_data = img.read()
         d_type = img.dtypes[0]
         geo_transform = img.transform
         geo_crs = img.crs.wkt
-        
+
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
     height, width, _ = img_data.shape
     wavelengths = {}
@@ -108,7 +107,6 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
                                        geo_crs=geo_crs)
         _debug(visual=pseudo_rgb,
                filename=os.path.join(params.debug_outdir, str(params.device) + "pseudo_rgb.png"))
-        
 
     else:
         # Mask negative background values
