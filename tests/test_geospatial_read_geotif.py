@@ -27,7 +27,7 @@ def test_geospatial_read_geotif_bad_input(test_data):
 def test_geospatial_read_geotif_polygon_crop(test_data):
     """Test for plantcv-geospatial."""
     # read in rgb image with a polygon-type shapefile
-    img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B", cropto=test_data.square_crop)
+    img = read_geotif(filename=test_data.rgb_tif, bands=[650,560,480], cropto=test_data.square_crop)
     assert img.pseudo_rgb.shape == (80, 83, 3)
 
 def test_geospatial_read_geotif_point_crop(test_data):
