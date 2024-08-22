@@ -66,7 +66,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         geo_crs = img.crs.wkt
 
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
-    height, width, _ = img_data.shape
+    height, width, depth = img_data.shape
+    print(depth)
     wavelengths = {}
 
     if isinstance(bands, str):
@@ -78,7 +79,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         for i, band in enumerate(list_bands):
 
             if band.upper() not in wavelength_keys:
-                fatal_error(f"Currently {band} is not supported, instead provide list of wavelengths in order.")
+                fatal_error(f"Currently {band} is not supported")
             else:
                 wavelength = default_wavelengths[band.upper()]
                 wavelengths[wavelength] = i
@@ -113,6 +114,9 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     else:
         # Mask negative background values
         img_data[img_data < 0.] = 0
+        if np.sum(img_data) == 0:
+            fatal_error(f"your image is empty, are the crop-to bounds outside of your image area?")
+
         # Make a list of wavelength keys
         wl_keys = wavelengths.keys()
         # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
@@ -123,10 +127,10 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
                                 img_data[:, :, [id_green]],
                                 img_data[:, :, [id_red]]))
-        # Gamma correction
-        pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
-        pseudo_rgb = pseudo_rgb * 255
-        pseudo_rgb = pseudo_rgb.astype('uint8')
+        # # Gamma correction
+        # pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
+        # pseudo_rgb = pseudo_rgb * 255
+        # pseudo_rgb = pseudo_rgb.astype('uint8')
         # Make a Spectral_data instance before calculating a pseudo-rgb
         spectral_array = Spectral_data(array_data=img_data,
                                        max_wavelength=None,
