@@ -14,6 +14,8 @@ class TestData:
         self.snapshot_dir = os.path.join(self.datadir, "snapshot_dir")
         # multispectral image
         self.cropped_tif = os.path.join(self.datadir, "615.tif")
+        # empty image
+        self.empty_tif = os.path.join(self.datadir, "cropped_empty.tif")
         # rgb image
         self.rgb_tif = os.path.join(self.datadir, "rgb.tif")
         # polygon shapefile
