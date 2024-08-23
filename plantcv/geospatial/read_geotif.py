@@ -96,26 +96,12 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         rgb_img = img_data[:, :, :3]
         temp_img = rgb_img.astype('uint8')
         pseudo_rgb = cv2.cvtColor(temp_img, cv2.COLOR_BGR2RGB)
-        # Drop 4th band if there is one and then retun that as numpy array
-        spectral_array = Spectral_data(array_data=pseudo_rgb,
-                                       max_wavelength=None,
-                                       min_wavelength=None,
-                                       max_value=np.max(pseudo_rgb), min_value=np.min(pseudo_rgb),
-                                       d_type=d_type,
-                                       wavelength_dict=wavelengths, samples=int(width),
-                                       lines=int(height), interleave=None,
-                                       wavelength_units="nm", array_type="datacube",
-                                       pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None,
-                                       geo_transform=geo_transform,
-                                       geo_crs=geo_crs)
-        _debug(visual=pseudo_rgb,
-               filename=os.path.join(params.debug_outdir, str(params.device) + "pseudo_rgb.png"))
 
     else:
         # Mask negative background values
         img_data[img_data < 0.] = 0
         if np.sum(img_data) == 0:
-            fatal_error(f"your image is empty, are the crop-to bounds outside of your image area?")
+            fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
 
         # Make a list of wavelength keys
         wl_keys = wavelengths.keys()
@@ -127,23 +113,24 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
                                 img_data[:, :, [id_green]],
                                 img_data[:, :, [id_red]]))
-        # # Gamma correction
-        # pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
-        # pseudo_rgb = pseudo_rgb * 255
-        # pseudo_rgb = pseudo_rgb.astype('uint8')
-        # Make a Spectral_data instance before calculating a pseudo-rgb
-        spectral_array = Spectral_data(array_data=img_data,
-                                       max_wavelength=None,
-                                       min_wavelength=None,
-                                       max_value=np.max(img_data), min_value=np.min(img_data),
-                                       d_type=d_type,
-                                       wavelength_dict=wavelengths, samples=int(width),
-                                       lines=int(height), interleave=None,
-                                       wavelength_units="nm", array_type="datacube",
-                                       pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None,
-                                       geo_transform=geo_transform,
-                                       geo_crs=geo_crs)
+    if pseudo_rgb.dtype != 'uint8':
+        # Gamma correction
+        pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
+        pseudo_rgb = pseudo_rgb * 255
+        pseudo_rgb = pseudo_rgb.astype('uint8')
+    # Make a Spectral_data instance before calculating a pseudo-rgb
+    spectral_array = Spectral_data(array_data=img_data,
+                                   max_wavelength=None,
+                                   min_wavelength=None,
+                                   max_value=np.max(img_data), min_value=np.min(img_data),
+                                   d_type=d_type,
+                                   wavelength_dict=wavelengths, samples=int(width),
+                                   lines=int(height), interleave=None,
+                                   wavelength_units="nm", array_type="datacube",
+                                   pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None,
+                                   geo_transform=geo_transform,
+                                   geo_crs=geo_crs)
 
-        _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
-                                                        str(params.device) + "pseudo_rgb.png"))
+    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
+                                                    str(params.device) + "pseudo_rgb.png"))
     return spectral_array
