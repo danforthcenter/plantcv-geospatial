@@ -6,8 +6,7 @@ import rasterio
 import numpy as np
 import fiona
 from rasterio.mask import mask
-from plantcv.plantcv import params
-from plantcv.plantcv import fatal_error
+from plantcv.plantcv import warn, params, fatal_error
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.classes import Spectral_data
 from shapely.geometry import shape, MultiPoint, mapping
@@ -66,8 +65,10 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         geo_crs = img.crs.wkt
 
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
+    dims_found = len(bands.split(","))
     height, width, depth = img_data.shape
-    print(depth)
+    if depth != dims_found:
+        warn(f"{depth} bands found in the image data but the function was provided with {dims_found}")
     wavelengths = {}
 
     if isinstance(bands, str):
@@ -96,6 +97,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         rgb_img = img_data[:, :, :3]
         temp_img = rgb_img.astype('uint8')
         pseudo_rgb = cv2.cvtColor(temp_img, cv2.COLOR_BGR2RGB)
+        img_data = pseudo_rgb
 
     else:
         # Mask negative background values
