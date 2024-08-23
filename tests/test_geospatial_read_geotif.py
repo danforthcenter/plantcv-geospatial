@@ -24,6 +24,14 @@ def test_geospatial_read_geotif_bad_input(test_data):
     with pytest.raises(RuntimeError):
         _ = read_geotif(filename=test_data.cropped_tif, bands="p")
 
+
+def test_geospatial_read_geotif_bad_crop(test_data):
+    """Test for plantcv-geospatial."""
+    # read in small 5-band tif image
+    with pytest.raises(RuntimeError):
+        _ = read_geotif(filename=test_data.empty_tif, bands="B,G,R,RE,N")
+
+
 def test_geospatial_read_geotif_polygon_crop(test_data):
     """Test for plantcv-geospatial."""
     # read in rgb image with a polygon-type shapefile
