@@ -26,7 +26,8 @@ import plantcv.geospatial as geo
 
 # Read geotif in
 ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-ortho2 = geo.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B")
+ortho2 = geo.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B",
+                         cropto="./shapefiles/experimental_bounds.geojson)
 
 ```
 
