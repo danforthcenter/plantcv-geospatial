@@ -14,10 +14,17 @@ class TestData:
         self.snapshot_dir = os.path.join(self.datadir, "snapshot_dir")
         # multispectral image
         self.cropped_tif = os.path.join(self.datadir, "615.tif")
+        # empty image
+        self.empty_tif = os.path.join(self.datadir, "cropped_empty.tif")
         # rgb image
         self.rgb_tif = os.path.join(self.datadir, "rgb.tif")
         # points shapefilex
         self.pts_geojson = os.path.join(self.datadir, "monday_test_points.shp")
+        self.pts_geojson = os.path.join(self.datadir, "kura_whole_field.shp")
+        # polygon shapefile
+        self.square_crop = os.path.join(self.datadir, "square_crop.geojson")
+        # points shapefile
+        self.point_crop = os.path.join(self.datadir, "point_crop.geojson")
 
 @pytest.fixture(scope="session")
 def test_data():
