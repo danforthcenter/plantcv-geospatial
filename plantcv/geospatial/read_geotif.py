@@ -71,7 +71,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         Path of the TIF image file.
     bands : str, list, optional
         Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
-    
+
     Returns
     -------
     plantcv.plantcv.classes.Spectral_data
