@@ -27,6 +27,38 @@ def _find_closest_unsorted(array, target):
     return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
 
+def _parse_bands(bands):
+    """Parse bands.
+
+    Parameters
+    ----------
+    bands : str
+        Comma separated string listing the order of bands
+
+    Returns
+    -------
+    list
+        List of bands
+    """
+    # Numeric list of bands
+    band_list = []
+
+    # Parse bands
+    band_strs = bands.split(",")
+
+    # Default values for symbolic bands
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
+
+    for band in band_strs:
+        # Check if the band symbols are supported
+        if band.upper() not in default_wavelengths:
+            fatal_error(f"Currently {band} is not supported, instead provide list of wavelengths in order.")
+        # Append the default wavelength for each band
+        band_list.append(default_wavelengths[band.upper()])
+
+    return band_list
+
+
 def read_geotif(filename, bands="R,G,B", cropto=None):
     """Read Georeferenced TIF image from file.
     Inputs:
@@ -65,61 +97,39 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         geo_crs = img.crs.wkt
 
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
-    dims_found = len(bands.split(","))
     height, width, depth = img_data.shape
-    if depth != dims_found:
-        warn(f"{depth} bands found in the image data but the function was provided with {dims_found}")
     wavelengths = {}
 
     if isinstance(bands, str):
         # Parse bands
-        list_bands = bands.split(",")
-        default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
-        wavelength_keys = default_wavelengths.keys()
+        bands = _parse_bands(bands)
 
-        for i, band in enumerate(list_bands):
+    for i, wl in enumerate(bands):
+        wavelengths[wl] = i
+    # Check if user input matches image dimension in z direction
+    if depth != len(bands):
+        warn(f"{depth} bands found in the image data but {filename} was provided with {bands}")
+    # Mask negative background values
+    img_data[img_data < 0.] = 0
+    if np.sum(img_data) == 0:
+        fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
 
-            if band.upper() not in wavelength_keys:
-                fatal_error(f"Currently {band} is not supported")
-            else:
-                wavelength = default_wavelengths[band.upper()]
-                wavelengths[wavelength] = i
-
-    elif isinstance(bands, list):
-        # Keep list_bands to check length in next section
-        list_bands = bands
-        for i, wl in enumerate(bands):
-            wavelengths[wl] = i
-
-    # If RGB image then should be uint8, skip
-    if len(list_bands) == 3:
-        # Create with first three bands
-        rgb_img = img_data[:, :, :3]
-        temp_img = rgb_img.astype('uint8')
-        pseudo_rgb = cv2.cvtColor(temp_img, cv2.COLOR_BGR2RGB)
-        img_data = pseudo_rgb
-
-    else:
-        # Mask negative background values
-        img_data[img_data < 0.] = 0
-        if np.sum(img_data) == 0:
-            fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
-
-        # Make a list of wavelength keys
-        wl_keys = wavelengths.keys()
-        # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
-        id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
-        id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
-        id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=480)
-        # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
-        pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
-                                img_data[:, :, [id_green]],
-                                img_data[:, :, [id_red]]))
+    # Make a list of wavelength keys
+    wl_keys = wavelengths.keys()
+    # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
+    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
+    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
+    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=480)
+    # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
+    pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
+                            img_data[:, :, [id_green]],
+                            img_data[:, :, [id_red]]))
+    # Gamma correction
     if pseudo_rgb.dtype != 'uint8':
-        # Gamma correction
         pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
         pseudo_rgb = pseudo_rgb * 255
         pseudo_rgb = pseudo_rgb.astype('uint8')
+
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=None,
@@ -129,7 +139,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
                                    wavelength_dict=wavelengths, samples=int(width),
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=pseudo_rgb, filename=filename, default_bands=None,
+                                   pseudo_rgb=pseudo_rgb, filename=filename,
+                                   default_bands=[480, 540, 630],
                                    geo_transform=geo_transform,
                                    geo_crs=geo_crs)
 
