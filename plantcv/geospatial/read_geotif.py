@@ -100,10 +100,10 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     height, width, depth = img_data.shape
     wavelengths = {}
 
+    # Parse bands if input is a string
     if isinstance(bands, str):
-        # Parse bands
         bands = _parse_bands(bands)
-
+    # Create a dictionary of wavelengths and their indices
     for i, wl in enumerate(bands):
         wavelengths[wl] = i
     # Check if user input matches image dimension in z direction
@@ -145,5 +145,5 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
                                    geo_crs=geo_crs)
 
     _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
-                                                    str(params.device) + "pseudo_rgb.png"))
+                                                    f"{params.device}_pseudo_rgb.png"))
     return spectral_array
