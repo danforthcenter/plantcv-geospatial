@@ -16,6 +16,7 @@ def transform_points(img, geojson):
     :return coord: list
     """
     geo_transform = img.geo_transform
+    print(geo_transform)
     coord = []
     with fiona.open(geojson, 'r') as shapefile:
         for i, _ in enumerate(shapefile):

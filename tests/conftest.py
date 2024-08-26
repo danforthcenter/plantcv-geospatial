@@ -17,7 +17,7 @@ class TestData:
         # rgb image
         self.rgb_tif = os.path.join(self.datadir, "rgb.tif")
         # points shapefilex
-        self.pts_geojson = os.path.join(self.datadir, "kura_whole_field.shp")
+        self.pts_geojson = os.path.join(self.datadir, "monday_test_points.shp")
 
 @pytest.fixture(scope="session")
 def test_data():
