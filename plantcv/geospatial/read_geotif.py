@@ -14,15 +14,18 @@ from shapely.geometry import shape, MultiPoint, mapping
 
 def _find_closest_unsorted(array, target):
     """Find closest index of array item with smallest distance from
-    the target
-    Inputs:
-    array:  list or array of wavelength labels
-    target: target value
-    Returns:
-    idx:    index of closest value to the target
-    :param array: numpy.ndarray
-    :param target: int, float
-    :return idx: int
+
+    Parameters
+    ----------
+    array : numpy.ndarray
+        Array of wavelength labels
+    target : int, float
+        Target value
+
+    Returns
+    -------
+    int
+        Index of closest value to the target
     """
     return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
@@ -61,16 +64,18 @@ def _parse_bands(bands):
 
 def read_geotif(filename, bands="R,G,B", cropto=None):
     """Read Georeferenced TIF image from file.
-    Inputs:
-    filename:   Path of the TIF image file.
-    bands:      Comma separated string representing the order of image bands
-                (default bands="R,G,B"), or a list of wavelengths (e.g. bands=[650,560,480])
-    cropto:     Path to a geoJSON-type shape file for cropping input image.
-    Returns:
-    spectral_array: PlantCV format Spectral data object instance
-    :param filename: str
-    :param bands: str, list
-    :return spectral_array: __main__.Spectral_data
+
+    Parameters
+    ----------
+    filename : str
+        Path of the TIF image file.
+    bands : str, list, optional
+        Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
+    
+    Returns
+    -------
+    plantcv.plantcv.classes.Spectral_data
+        Orthomosaic image data in a Spectral_data class instance
     """
     if cropto:
         with fiona.open(cropto, 'r') as shapefile:
