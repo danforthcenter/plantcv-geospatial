@@ -1,6 +1,6 @@
 ## Transform Points
 
-Transform the points from a georeferences shapefile/GeoJSON based on an image size. 
+Transform the points from a georeferenced shapefile/GeoJSON based on an image size. 
 
 **plantcv.geospatial.trasnsform_points**(*img, geojson*)
 
