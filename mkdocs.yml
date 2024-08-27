@@ -18,6 +18,7 @@ nav:
   - 'PlantCV Namespace':
     - 'Geopspatial Tools':
         - Read Geo-tif Data: read_geotif.md
+        - Transform coordinate points: transform_points.md
 markdown_extensions:
   - toc:
       permalink: True
