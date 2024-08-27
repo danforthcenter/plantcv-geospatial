@@ -2,13 +2,13 @@
 
 Transform the points from a georeferenced shapefile/GeoJSON based on an image size. 
 
-**plantcv.geospatial.trasnsform_points**(*img, geojson*)
+**plantcv.geospatial.transform_points**(*img, geojson*)
 
 **returns** list of transformed coordinates
 
 - **Parameters:**
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
-    - geojson - Path to the shapefile/GeoJSON containing the points
+    - geojson - Path to the shapefile/GeoJSON containing the points. Can be Point or MultiPoint geometry.
 
 - **Context:**
     - Transformed points can be used downstream for Python analysis, such as defining ROIs. 
