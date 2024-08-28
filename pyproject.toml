@@ -12,7 +12,8 @@ dependencies = [
     "plantcv",
     "matplotlib",
     "rasterio",
-
+    "fiona",
+    "shapely",
 ]
 requires-python = ">=3.6"
 authors = [

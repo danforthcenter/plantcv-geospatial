@@ -4,14 +4,16 @@ import os
 import cv2
 import rasterio
 import numpy as np
-from plantcv.plantcv import params
-from plantcv.plantcv import fatal_error
+import fiona
+from rasterio.mask import mask
+from plantcv.plantcv import warn, params, fatal_error
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.classes import Spectral_data
+from shapely.geometry import shape, MultiPoint, mapping
 
 
 def _find_closest_unsorted(array, target):
-    """Find closest index of array item with smallest distance from the target.
+    """Find closest index of array item with smallest distance from
 
     Parameters
     ----------
@@ -60,7 +62,7 @@ def _parse_bands(bands):
     return band_list
 
 
-def read_geotif(filename, bands="B,G,R"):
+def read_geotif(filename, bands="R,G,B", cropto=None):
     """Read Georeferenced TIF image from file.
 
     Parameters
@@ -68,30 +70,55 @@ def read_geotif(filename, bands="B,G,R"):
     filename : str
         Path of the TIF image file.
     bands : str, list, optional
-        Comma separated string listing the order of bands or a list of wavelengths, by default "B,G,R"
+        Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
 
     Returns
     -------
     plantcv.plantcv.classes.Spectral_data
-        Orthomosaic image data
+        Orthomosaic image data in a Spectral_data class instance
     """
-    img = rasterio.open(filename)
-    img_data = img.read()
+    if cropto:
+        with fiona.open(cropto, 'r') as shapefile:
+            # polygon-type shapefile
+            if len(shapefile) == 1:
+                shapes = [feature['geometry'] for feature in shapefile]
+            # points-type shapefile
+            else:
+                points = [shape(feature["geometry"]) for feature in shapefile]
+                multi_point = MultiPoint(points)
+                convex_hull = multi_point.convex_hull
+                shapes = [mapping(convex_hull)]
+        # rasterio does the cropping within open
+        with rasterio.open(filename, 'r') as src:
+            img_data, geo_transform = mask(src, shapes, crop=True)
+            d_type = src.dtypes[0]
+            geo_crs = src.crs.wkt
+
+    else:
+        img = rasterio.open(filename)
+        img_data = img.read()
+        d_type = img.dtypes[0]
+        geo_transform = img.transform
+        geo_crs = img.crs.wkt
+
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
-    height = img.height
-    width = img.width
+    height, width, depth = img_data.shape
     wavelengths = {}
 
     # Parse bands if input is a string
     if isinstance(bands, str):
         bands = _parse_bands(bands)
-
     # Create a dictionary of wavelengths and their indices
     for i, wl in enumerate(bands):
         wavelengths[wl] = i
-
+    # Check if user input matches image dimension in z direction
+    if depth != len(bands):
+        warn(f"{depth} bands found in the image data but {filename} was provided with {bands}")
     # Mask negative background values
     img_data[img_data < 0.] = 0
+    if np.sum(img_data) == 0:
+        fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
+
     # Make a list of wavelength keys
     wl_keys = wavelengths.keys()
     # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
@@ -113,12 +140,15 @@ def read_geotif(filename, bands="B,G,R"):
                                    max_wavelength=max(wavelengths, key=wavelengths.get),
                                    min_wavelength=min(wavelengths, key=wavelengths.get),
                                    max_value=np.max(img_data), min_value=np.min(img_data),
-                                   d_type=img.dtypes[0],
+                                   d_type=d_type,
                                    wavelength_dict=wavelengths, samples=int(width),
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=pseudo_rgb, filename=filename, default_bands=[480, 540, 630])
+                                   pseudo_rgb=pseudo_rgb, filename=filename,
+                                   default_bands=[480, 540, 630],
+                                   geo_transform=geo_transform,
+                                   geo_crs=geo_crs)
 
-    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
-
+    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
+                                                    f"{params.device}_pseudo_rgb.png"))
     return spectral_array
