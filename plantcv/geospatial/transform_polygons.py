@@ -18,7 +18,7 @@ def transform_polygons(img, geojson):
     geo_transform = img.geo_transform
     coord = []
     with fiona.open(geojson, 'r') as shapefile:
-        for i in range(len(shapefile)):
+        for i, _ in enumerate(shapefile):
             temp_list = []
             # Polygon
             if len(shapefile[i].geometry["coordinates"][0]) > 1:
