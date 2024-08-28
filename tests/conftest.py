@@ -26,6 +26,8 @@ class TestData:
         self.square_crop = os.path.join(self.datadir, "square_crop.geojson")
         # points shapefile
         self.point_crop = os.path.join(self.datadir, "point_crop.geojson")
+        # multi polygon shapefile
+        self.multipolygon = os.path.join(self.datadir, "multipolygon_fortests.geojson")
 
 @pytest.fixture(scope="session")
 def test_data():
