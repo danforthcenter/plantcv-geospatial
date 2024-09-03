@@ -137,8 +137,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
 
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
-                                   max_wavelength=None,
-                                   min_wavelength=None,
+                                   max_wavelength=max(wavelengths, key=wavelengths.get),
+                                   min_wavelength=min(wavelengths, key=wavelengths.get),
                                    max_value=np.max(img_data), min_value=np.min(img_data),
                                    d_type=d_type,
                                    wavelength_dict=wavelengths, samples=int(width),
