@@ -116,8 +116,6 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         warn(f"{depth} bands found in the image data but {filename} was provided with {bands}")
         if depth < len(bands):
             fatal_error(f"your image depth is less than the specified number of bands")
-    print("maximum pixel value: " + str(np.max(img_data)))
-    print("minimum pixel value: " + str(np.min(img_data)))
     # Mask negative background values
     img_data[img_data < 0.] = 0
     if np.sum(img_data) == 0:
@@ -133,9 +131,6 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         else:
             # apply mask
             img_data = np.where(mask_layer == 0, 0, img_data)
-    print("Post masking")
-    print("maximum pixel value: " + str(np.max(img_data)))
-    print("minimum pixel value: " + str(np.min(img_data)))
     # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
     id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
     id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
