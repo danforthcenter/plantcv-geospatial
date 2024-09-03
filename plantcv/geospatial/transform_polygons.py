@@ -18,18 +18,18 @@ def transform_polygons(img, geojson):
     geo_transform = img.geo_transform
     coord = []
     with fiona.open(geojson, 'r') as shapefile:
-        for i, _ in enumerate(shapefile):
+        for row in shapefile:
             temp_list = []
             # Polygon
-            if len(shapefile[i].geometry["coordinates"][0]) > 1:
-                square = shapefile[i].geometry["coordinates"][0][:-1]
+            if len(row.geometry["coordinates"][0]) > 1:
+                square = row.geometry["coordinates"][0][:-1]
                 for j in square:
                     vertex = ~(geo_transform) * j
                     temp_list.append([int(vertex[0]), int(vertex[1])])
                 coord.append(temp_list)
             # Multi Polygon
             else:
-                square = shapefile[i].geometry["coordinates"][0][0][:-1]
+                square = row.geometry["coordinates"][0][0][:-1]
                 for j in square:
                     vertex = ~(geo_transform) * j
                     temp_list.append([int(vertex[0]), int(vertex[1])])
