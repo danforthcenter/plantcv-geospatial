@@ -147,9 +147,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         mask_layer = img_data[:, :, [id_mask]]
         if len(np.unique(mask_layer)) > 2:
             fatal_error("your specified mask is not binary")
-        if len(np.unique(mask_layer)) <= 2:
-            # Apply mask
-            img_data = np.where(mask_layer == 0, 0, img_data)
+        # Apply mask
+        img_data = np.where(mask_layer == 0, 0, img_data)
     # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
     id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
     id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
