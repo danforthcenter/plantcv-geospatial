@@ -179,6 +179,5 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
                                    geo_transform=geo_transform,
                                    geo_crs=geo_crs)
 
-    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir,
-                                                    f"{params.device}_pseudo_rgb.png"))
+    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
     return spectral_array
