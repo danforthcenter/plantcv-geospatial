@@ -144,7 +144,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     # Make a list of wavelength keys
     wl_keys = wavelengths.keys()
     if 0 in wl_keys:
-        id_mask = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=0)
+        id_mask = wavelengths[0]
         mask_layer = img_data[:, :, [id_mask]]
         if len(np.unique(mask_layer)) > 2:
             fatal_error("your specified mask is not binary")
