@@ -62,20 +62,20 @@ def _parse_bands(bands):
     return band_list
 
 
-def read_geotif(filename, bands="R,G,B", cropto=None):
-    """Read Georeferenced TIF image from file.
+def _read_geotif_and_shapefile(filename, cropto):
+    """Read Georeferenced TIF image from file and shapefile for cropping.
 
     Parameters
     ----------
     filename : str
         Path of the TIF image file.
-    bands : str, list, optional
-        Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
+    cropto : str
+        Path of the shapefile to crop the image
 
     Returns
     -------
-    plantcv.plantcv.classes.Spectral_data
-        Orthomosaic image data in a Spectral_data class instance
+    tuple
+        Tuple of image data, geotransform, data type, and crs
     """
     if cropto:
         with fiona.open(cropto, 'r') as shapefile:
@@ -100,6 +100,27 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         d_type = img.dtypes[0]
         geo_transform = img.transform
         geo_crs = img.crs.wkt
+
+    return img_data, geo_transform, d_type, geo_crs
+
+
+def read_geotif(filename, bands="R,G,B", cropto=None):
+    """Read Georeferenced TIF image from file.
+
+    Parameters
+    ----------
+    filename : str
+        Path of the TIF image file.
+    bands : str, list, optional
+        Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
+
+    Returns
+    -------
+    plantcv.plantcv.classes.Spectral_data
+        Orthomosaic image data in a Spectral_data class instance
+    """
+    # Read the geotif image and shapefile for cropping
+    img_data, geo_transform, d_type, geo_crs = _read_geotif_and_shapefile(filename, cropto)
 
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
     height, width, depth = img_data.shape
