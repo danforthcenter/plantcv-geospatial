@@ -142,8 +142,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     if np.sum(img_data) == 0:
         fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
     # Make a list of wavelength keys
-    wl_keys = wavelengths.keys()
-    if 0 in wl_keys:
+    if 0 in wavelengths:
         id_mask = wavelengths[0]
         mask_layer = img_data[:, :, [id_mask]]
         if len(np.unique(mask_layer)) > 2:
@@ -152,9 +151,9 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
             # Apply mask
             img_data = np.where(mask_layer == 0, 0, img_data)
     # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
-    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=630)
-    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=540)
-    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wl_keys]), target=480)
+    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
+    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
+    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
     # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
     pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
                             img_data[:, :, [id_green]],
