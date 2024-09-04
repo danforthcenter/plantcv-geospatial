@@ -50,7 +50,7 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842, "MASK":0}
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842, "MASK": 0}
 
     for band in band_strs:
         # Check if the band symbols are supported
@@ -83,7 +83,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
             if len(shapefile) == 1:
                 shapes = [feature['geometry'] for feature in shapefile]
             # points-type shapefile
-            else:
+            if len(shapefile) != 1:
                 points = [shape(feature["geometry"]) for feature in shapefile]
                 multi_point = MultiPoint(points)
                 convex_hull = multi_point.convex_hull
