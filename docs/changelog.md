@@ -9,3 +9,7 @@ All notable changes to this project will be documented below.
 #### geospatial.transform_points
 
 * v0.1dev: coord = **geospatial.transform_points**(*img, geojson*)
+
+#### geospatial.transform_polygons
+
+* v0.1dev: coord = **geospatial.transform_polygons**(*img, geojson*)

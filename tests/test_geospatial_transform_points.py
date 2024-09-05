@@ -1,4 +1,4 @@
-"""Tests for geospatial.readd_geotif."""
+"""Tests for geospatial.transform_points"""
 
 from plantcv.geospatial import read_geotif, transform_points
 
