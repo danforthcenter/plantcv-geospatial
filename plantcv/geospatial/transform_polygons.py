@@ -23,15 +23,11 @@ def transform_polygons(img, geojson):
             # Polygon
             if len(row.geometry["coordinates"][0]) > 1:
                 square = row.geometry["coordinates"][0][:-1]
-                for j in square:
-                    vertex = ~(geo_transform) * j
-                    temp_list.append([int(vertex[0]), int(vertex[1])])
-                coord.append(temp_list)
             # Multi Polygon
             else:
                 square = row.geometry["coordinates"][0][0][:-1]
-                for j in square:
-                    vertex = ~(geo_transform) * j
-                    temp_list.append([int(vertex[0]), int(vertex[1])])
-                coord.append(temp_list)
+            for j in square:
+                vertex = ~(geo_transform) * j
+                temp_list.append([int(vertex[0]), int(vertex[1])])
+            coord.append(temp_list)
     return coord
