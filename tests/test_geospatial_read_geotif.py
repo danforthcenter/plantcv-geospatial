@@ -14,7 +14,7 @@ def test_geospatial_read_geotif(test_data):
 def test_geospatial_read_geotif_rgb(test_data):
     """Test for plantcv-geospatial."""
     # read in small tif image
-    img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B,mask")
+    img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
     assert img.pseudo_rgb.shape == (284, 261, 3)
 
 
@@ -36,14 +36,14 @@ def test_geospatial_read_geotif_bad_bands(test_data):
     """Test for plantcv-geospatial."""
     # read in small 5-band tif image
     with pytest.raises(RuntimeError):
-        _ = read_geotif(filename=test_data.cropped_tif, bands="B,G,R,RE,N,mask")
+        _ = read_geotif(filename=test_data.cropped_tif, bands="B,G,R,RE,N")
 
 
-def test_geospatial_read_geotif_mask_not_bin(test_data):
-    """Test for plantcv-geospatial."""
-    # read in small 5-band tif image
-    with pytest.raises(RuntimeError):
-        _ = read_geotif(filename=test_data.rgb_tif, bands="R,G,mask")
+#def test_geospatial_read_geotif_mask_not_bin(test_data):
+#   """Test for plantcv-geospatial."""
+#    # read in small 5-band tif image
+#    with pytest.raises(RuntimeError):
+#        _ = read_geotif(filename=test_data.rgb_tif, bands="R,G,mask")
 
 def test_geospatial_read_geotif_polygon_crop(test_data):
     """Test for plantcv-geospatial."""

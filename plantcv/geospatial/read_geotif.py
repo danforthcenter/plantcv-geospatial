@@ -50,7 +50,8 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842, "MASK": 0}
+    #default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842, "MASK": 0}
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
 
     for band in band_strs:
         # Check if the band symbols are supported
@@ -126,6 +127,14 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     height, width, depth = img_data.shape
     wavelengths = {}
 
+    # Check for mask
+    mask_layer = None
+    for i in range(img_data.shape[3]):
+        if len(np.unique(img_data[:, :, [i]])) =< 2:
+            mask_layer = img_data[:, :, [i]]
+            # Get rid of mask from image data
+            img_data = img_data[:, :, [-i]]
+
     # Parse bands if input is a string
     if isinstance(bands, str):
         bands = _parse_bands(bands)
@@ -142,12 +151,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     if np.sum(img_data) == 0:
         fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
     # Make a list of wavelength keys
-    if 0 in wavelengths:
-        id_mask = wavelengths[0]
-        mask_layer = img_data[:, :, [id_mask]]
-        if len(np.unique(mask_layer)) > 2:
-            fatal_error("your specified mask is not binary")
-        # Apply mask
+    if mask_layer:
         img_data = np.where(mask_layer == 0, 0, img_data)
     # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
     id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
