@@ -130,7 +130,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     # Check for mask
     mask_layer = None
     for i in range(depth):
-        if len(np.unique(img_data[:, :, [i]])) <= 2:
+        if len(np.unique(img_data[:, :, [i]])) == 2:
             mask_layer = img_data[:, :, [i]]
             if i == depth-1:
             # Get rid of mask from image data
