@@ -129,11 +129,14 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
 
     # Check for mask
     mask_layer = None
-    for i in range(img_data.shape[2]):
+    for i in range(depth):
         if len(np.unique(img_data[:, :, [i]])) <= 2:
             mask_layer = img_data[:, :, [i]]
+            if i == depth-1:
             # Get rid of mask from image data
-            img_data = img_data[:, :, [-i]]
+                img_data = img_data[:, :, :-1]
+            else:
+                img_data = img_data[:, :, :i] + img_data[:, :, i+1:]
 
     # Parse bands if input is a string
     if isinstance(bands, str):
@@ -151,7 +154,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     if np.sum(img_data) == 0:
         fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
     # Make a list of wavelength keys
-    if mask_layer:
+    if mask_layer.all():
         img_data = np.where(mask_layer == 0, 0, img_data)
     # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
     id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
