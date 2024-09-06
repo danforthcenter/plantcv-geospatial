@@ -50,7 +50,6 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    #default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842, "MASK": 0}
     default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
 
     for band in band_strs:
@@ -132,11 +131,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     for i in range(depth):
         if len(np.unique(img_data[:, :, [i]])) == 2:
             mask_layer = img_data[:, :, [i]]
-            if i == depth-1:
-            # Get rid of mask from image data
-                img_data = img_data[:, :, :-1]
-            else:
-                img_data = img_data[:, :, :i] + img_data[:, :, i+1:]
+            img_data = np.delete(img_data, i, 2)
 
     # Parse bands if input is a string
     if isinstance(bands, str):

@@ -39,12 +39,6 @@ def test_geospatial_read_geotif_bad_bands(test_data):
         _ = read_geotif(filename=test_data.rgb_tif, bands="B,G,R,RE,N")
 
 
-#def test_geospatial_read_geotif_mask_not_bin(test_data):
-#   """Test for plantcv-geospatial."""
-#    # read in small 5-band tif image
-#    with pytest.raises(RuntimeError):
-#        _ = read_geotif(filename=test_data.rgb_tif, bands="R,G,mask")
-
 def test_geospatial_read_geotif_polygon_crop(test_data):
     """Test for plantcv-geospatial."""
     # read in rgb image with a polygon-type shapefile
