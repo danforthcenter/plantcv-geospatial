@@ -19,11 +19,11 @@ def transform_points(img, geojson):
 
     coord = []
     with fiona.open(geojson, 'r') as shapefile:
-        for i, _ in enumerate(shapefile):
-            if type((shapefile[i].geometry["coordinates"])) is list:
-                pixel_point = ~(geo_transform) * (shapefile[i].geometry["coordinates"][0])
-            if type((shapefile[i].geometry["coordinates"])) is tuple:
-                pixel_point = ~(geo_transform) * (shapefile[i].geometry["coordinates"])
+        for row in shapefile:
+            if type((row.geometry["coordinates"])) is list:
+                pixel_point = ~(geo_transform) * (row.geometry["coordinates"][0])
+            if type((row.geometry["coordinates"])) is tuple:
+                pixel_point = ~(geo_transform) * (row.geometry["coordinates"])
             rounded = (int(pixel_point[0]), int(pixel_point[1]))
             coord.append(rounded)
 
