@@ -90,18 +90,17 @@ def _read_geotif_and_shapefile(filename, cropto):
                 shapes = [mapping(convex_hull)]
         # rasterio does the cropping within open
         with rasterio.open(filename, 'r') as src:
-            img_data, geo_transform = mask(src, shapes, crop=True)
+            img_data, _ = mask(src, shapes, crop=True)
+            metadata = src.meta.copy()
             d_type = src.dtypes[0]
-            geo_crs = src.crs.wkt
 
     else:
         img = rasterio.open(filename)
         img_data = img.read()
         d_type = img.dtypes[0]
-        geo_transform = img.transform
-        geo_crs = img.crs.wkt
+        metadata = img.meta.copy()
 
-    return img_data, geo_transform, d_type, geo_crs
+    return img_data, d_type, metadata
 
 
 def read_geotif(filename, bands="R,G,B", cropto=None):
@@ -120,7 +119,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         Orthomosaic image data in a Spectral_data class instance
     """
     # Read the geotif image and shapefile for cropping
-    img_data, geo_transform, d_type, geo_crs = _read_geotif_and_shapefile(filename, cropto)
+    img_data, d_type, metadata = _read_geotif_and_shapefile(filename, cropto)
 
     img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
     height, width, depth = img_data.shape
@@ -176,8 +175,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=pseudo_rgb, filename=filename,
                                    default_bands=[480, 540, 630],
-                                   geo_transform=geo_transform,
-                                   geo_crs=geo_crs)
+                                   metadata=metadata)
 
     _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
     return spectral_array
