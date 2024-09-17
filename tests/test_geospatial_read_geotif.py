@@ -1,4 +1,4 @@
-"""Tests for geospatial.readd_geotif."""
+"""Tests for geospatial.read_geotif."""
 
 import pytest
 from plantcv.geospatial import read_geotif
