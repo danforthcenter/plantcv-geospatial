@@ -1,7 +1,6 @@
 # Save georeferenced TIF files from plantcv segmented masks
 
 import rasterio
-from rasterio.mask import mask
 
 
 def save_geotif(out_img, in_img, out_path, nodata=None):
@@ -34,7 +33,7 @@ def save_geotif(out_img, in_img, out_path, nodata=None):
     # For color outputs
     if len(out_img.shape) == 3:
         # Reorder dimensions
-        out_img = out_img.transpose(2,0,1)
+        out_img = out_img.transpose(2, 0, 1)
         # Reorder channels if needed
         chord = [waves[480], waves[560], waves[650]]
         # For multispec

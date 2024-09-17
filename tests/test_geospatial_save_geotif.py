@@ -12,7 +12,7 @@ def test_save_geotif_color(test_data, tmpdir):
     # Create test image
     img = read_geotif(filename=test_data.cropped_tif, bands="B,G,R,RE,N")
     filename = os.path.join(cache_dir, 'test.tif')
-    save_geotif(out_img=img, in_img=img, out_path=filename)
+    save_geotif(out_img=img.array_data, in_img=img, out_path=filename)
     # Assert that the file was created
     assert os.path.exists(filename)
 
