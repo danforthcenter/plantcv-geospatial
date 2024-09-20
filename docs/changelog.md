@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented below.
 
+#### geospatial.save_geotif
+
+* v0.1dev: **geospatial.save_geotif**(*out_img, in_img, out_path, nodata=None*)
+
 #### geospatial.read_geotif
 
 * v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None*)
