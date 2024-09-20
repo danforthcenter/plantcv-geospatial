@@ -90,8 +90,9 @@ def _read_geotif_and_shapefile(filename, cropto):
                 shapes = [mapping(convex_hull)]
         # rasterio does the cropping within open
         with rasterio.open(filename, 'r') as src:
-            img_data, _ = mask(src, shapes, crop=True)
+            img_data, trans_metadata = mask(src, shapes, crop=True)
             metadata = src.meta.copy()
+            metadata.update({"transform": trans_metadata})
             d_type = src.dtypes[0]
 
     else:
