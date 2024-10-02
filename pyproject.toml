@@ -14,6 +14,7 @@ dependencies = [
     "rasterio",
     "fiona",
     "shapely",
+    "geopandas",
 ]
 requires-python = ">=3.6"
 authors = [
