@@ -1,6 +1,7 @@
 """Tests for geospatial.points_to_geojson"""
 
 import pytest
+import os
 import plantcv.annotate as an
 from plantcv.geospatial import read_geotif
 from plantcv.geospatial import points_to_geojson
