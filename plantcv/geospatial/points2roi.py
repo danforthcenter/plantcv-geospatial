@@ -1,6 +1,6 @@
 # Transform georeferenced GeoJSON/shapefile points into python coordinates
 import geopandas
-from transform_polygons import transform_polygons
+from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.plantcv import Objects
 
 
