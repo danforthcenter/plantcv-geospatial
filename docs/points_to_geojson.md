@@ -31,6 +31,6 @@ viewer.add_points()
 points_to_geojson(img, viewer, output="./points_example.geojson")
 ```
 
-![Screenshot](documentation_images/multispec_pseudo_rgb.png)
+![Screenshot](documentation_images/napari_clicks.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/points_to_geojson.py)
