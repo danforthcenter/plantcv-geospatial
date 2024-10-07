@@ -162,7 +162,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     # Gamma correction
     if pseudo_rgb.dtype != 'uint8':
         pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
-        pseudo_rgb = pseudo_rgb * 255
+        if pseudo_rgb.dtype != 'uint16':
+            pseudo_rgb = pseudo_rgb * 255
         pseudo_rgb = pseudo_rgb.astype('uint8')
 
     # Make a Spectral_data instance before calculating a pseudo-rgb
