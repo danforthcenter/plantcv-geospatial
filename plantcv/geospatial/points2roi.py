@@ -33,8 +33,25 @@ def points2roi_circle(img, geojson, radius):
     gdf.to_file(geojson + '_circles.geojson', driver='GeoJSON')
 
     geo_rois = transform_polygons(img=img, geojson=geojson + '_circles.geojson')
-    rois = Objects()
-    for roi in geo_rois:
-        rois.append(contour=roi, h=[])
 
+    return _points2roi(geo_rois)
+
+
+def _points2roi(roi_list):
+    """
+    Helper that takes ROI contour coordinates and populates a plantcv Objects class instance 
+
+    Inputs:
+    roi_list  = List of ROI contours from georeferenced origin
+
+    Returns:
+    group    = grouped contours list
+
+    :param roi_list: list
+    :return rois: plantcv.plantcv.classes.Objects
+    """
+    rois = Objects()
+    for roi in roi_list:
+        rois.append(contour=roi, h=[])
+        
     return rois
