@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented below.
 
+#### geospatial.points2roi_circle
+
+* v0.1dev: rois = **geospatial.points2roi_circle**(*img, geojson, radius*)
+
 #### geospatial.read_geotif
 
 * v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None*)
