@@ -11,7 +11,8 @@ def points2roi_circle(img, geojson, radius):
     img:        A spectral object from read_geotif.
     geojson:    Path to the shape file containing the points.
     radius:     Radius of circular ROIs to get created,
-                in units matching the coordinate system of the image
+                in units matching the coordinate system (CRS) of the image
+                e.g. meters
 
     Returns:
     rois:       List of circular ROIs (plantcv Objects class instances)
@@ -22,9 +23,6 @@ def points2roi_circle(img, geojson, radius):
     :return rois: list
     """
     gdf = geopandas.read_file(geojson)
-
-    # Specify the desired diameter (in the same units as the CRS, e.g., meters)
-    radius = radius  # Half the diameter to use as buffer radius
 
     # Generate a circle (buffer) around each point
     gdf['geometry'] = gdf.geometry.buffer(radius)
@@ -39,7 +37,7 @@ def points2roi_circle(img, geojson, radius):
 
 def _points2roi(roi_list):
     """
-    Helper that takes ROI contour coordinates and populates a plantcv Objects class instance 
+    Helper that takes ROI contour coordinates and populates a plantcv Objects class instance
 
     Inputs:
     roi_list  = List of ROI contours from georeferenced origin
@@ -53,5 +51,5 @@ def _points2roi(roi_list):
     rois = Objects()
     for roi in roi_list:
         rois.append(contour=roi, h=[])
-        
+
     return rois
