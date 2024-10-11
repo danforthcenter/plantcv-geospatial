@@ -2,6 +2,7 @@
 
 import geojson
 import rasterio
+import os
 from plantcv.plantcv import fatal_error
 
 
@@ -34,5 +35,5 @@ def points_to_geojson(img, viewer, out_path):
             "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
         }
     }
-    with open(out_path, 'w') as f:
+    with open(os.path.join(out_path, '.geojson'), 'w') as f:
         geojson.dump(feature_collection, f)
