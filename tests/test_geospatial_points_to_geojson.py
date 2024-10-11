@@ -21,7 +21,7 @@ def test_geospatial_points_to_geojson_napari(test_data, tmpdir):
     viewer.add_image(img.pseudo_rgb)
     viewer.add_points()
     filename = os.path.join(cache_dir, 'test_out.geojson')
-    points_to_geojson(img, viewer, output=filename)
+    points_to_geojson(img, viewer, out_path=filename)
     assert os.path.exists(filename)
 
 def test_geospatial_points_to_geojson_an(test_data, tmpdir):
@@ -31,7 +31,7 @@ def test_geospatial_points_to_geojson_an(test_data, tmpdir):
     viewer = FakePoints()
     viewer.coords["default"] = []
     filename = os.path.join(cache_dir, 'test_out.geojson')
-    points_to_geojson(img, viewer, output=filename)
+    points_to_geojson(img, viewer, out_path=filename)
     assert os.path.exists(filename)
 
 def test_geospatial_points_to_geojson_badviewer(test_data, tmpdir):
@@ -41,4 +41,4 @@ def test_geospatial_points_to_geojson_badviewer(test_data, tmpdir):
     viewer = []
     filename = os.path.join(cache_dir, 'test_out.geojson')
     with pytest.raises(RuntimeError):
-        points_to_geojson(img, viewer, output=filename)
+        points_to_geojson(img, viewer, out_path=filename)

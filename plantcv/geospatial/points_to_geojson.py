@@ -1,11 +1,11 @@
-# Save clicked points from Napari or PlantCV-annotate as a geojson points file. 
+# Save clicked points from Napari or PlantCV-annotate as a geojson points file.
 
 import geojson
 import rasterio
 from plantcv.plantcv import fatal_error
 
 
-def points_to_geojson(img, viewer, output):
+def points_to_geojson(img, viewer, out_path):
     """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
     Parameters
@@ -13,9 +13,9 @@ def points_to_geojson(img, viewer, output):
     img : PlantCV spectral_data class object
         The image used for clicking on points, should be from read_geotif.
     viewer: Napari viewer class object or plantcv-annotate Points class object.
-        The viewer used to make the clicks. 
-    output : str
-        Path to save to shapefile. 
+        The viewer used to make the clicks.
+    out_path : str
+        Path to save to shapefile.
     """
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):
@@ -34,5 +34,5 @@ def points_to_geojson(img, viewer, output):
             "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
         }
     }
-    with open(output, 'w') as f:
+    with open(out_path, 'w') as f:
         geojson.dump(feature_collection, f)
