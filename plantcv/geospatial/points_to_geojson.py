@@ -6,7 +6,7 @@ import os
 from plantcv.plantcv import fatal_error
 
 
-def points_to_geojson(img, viewer, out_path):
+def points_to_geojson(img, viewer, out_path="./points.geojson"):
     """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
     Parameters
@@ -35,5 +35,5 @@ def points_to_geojson(img, viewer, out_path):
             "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
         }
     }
-    #with open(out_path, 'w') as f:
-    geojson.dump(feature_collection, out_path)
+    with open(out_path, 'w') as writefile:
+        geojson.dump(feature_collection, writefile)
