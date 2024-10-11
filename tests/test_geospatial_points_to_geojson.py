@@ -18,7 +18,7 @@ def test_geospatial_points_to_geojson_napari(test_data, tmpdir):
     cache_dir = tmpdir.mkdir("cache")
     img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
     viewer = napari.Viewer(show=False)
-    viewer.add_image(img)
+    viewer.add_image(img.pseudo_rgb)
     viewer.add_points()
     filename = os.path.join(cache_dir, 'test_out.geojson')
     points_to_geojson(img, viewer, output=filename)
