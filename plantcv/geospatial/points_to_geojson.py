@@ -15,7 +15,7 @@ def points_to_geojson(img, viewer, out_path):
     viewer: Napari viewer class object or plantcv-annotate Points class object.
         The viewer used to make the clicks.
     out_path : str
-        Path to save to shapefile.
+        Path to save to shapefile. Must have "geojson" file extension
     """
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):

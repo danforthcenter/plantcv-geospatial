@@ -42,3 +42,13 @@ def test_geospatial_points_to_geojson_badviewer(test_data, tmpdir):
     filename = os.path.join(cache_dir, 'test_out.geojson')
     with pytest.raises(RuntimeError):
         points_to_geojson(img, viewer, out_path=filename)
+    
+def test_geospatial_points_to_geojson_badfilename(test_data, tmpdir):
+    """Test for plantcv-geospatial."""
+    cache_dir = tmpdir.mkdir("cache")
+    img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
+    viewer = FakePoints()
+    viewer.coords["default"] = []
+    filename = os.path.join(cache_dir, 'test_out.txt')
+    with pytest.raises(RuntimeError):
+        points_to_geojson(img, viewer, out_path=filename)

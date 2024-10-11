@@ -7,7 +7,7 @@ Using a Napari or PlantCV-annotate viewer object with clicked points, output a s
 - **Parameters:**
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
     - viewer - Napari viewer class object or plantcv-annotate Points class object.
-    - out_path - Path to save the geojson shapefile.
+    - out_path - Path to save the geojson shapefile. Must be ".geojson" file type. 
 
 - **Context:**
     - Saved points can be used downstream for generating circular ROIs or circles for use with rasterstats. 
