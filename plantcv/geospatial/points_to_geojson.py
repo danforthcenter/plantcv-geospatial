@@ -2,7 +2,6 @@
 
 import geojson
 import rasterio
-import plantcv.annotate as an
 from plantcv.plantcv import fatal_error
 
 

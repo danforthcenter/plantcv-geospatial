@@ -2,15 +2,23 @@
 
 import pytest
 import os
-import plantcv.annotate as an
+import napari
 from plantcv.geospatial import read_geotif
 from plantcv.geospatial import points_to_geojson
+
+# Set up fake class just for testing the annotate output
+# Don't want to have to have annotate as a dependency
+
+class FakePoints:
+    def __init__(self):
+        self.coords = {}
 
 def test_geospatial_points_to_geojson_napari(test_data, tmpdir):
     """Test for plantcv-geospatial."""
     cache_dir = tmpdir.mkdir("cache")
     img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
-    viewer = an.napari_open(img=img.pseudo_rgb, show=False)
+    viewer = napari.Viewer(show=False)
+    viewer.add_image(img)
     viewer.add_points()
     filename = os.path.join(cache_dir, 'test_out.geojson')
     points_to_geojson(img, viewer, output=filename)
@@ -20,7 +28,7 @@ def test_geospatial_points_to_geojson_an(test_data, tmpdir):
     """Test for plantcv-geospatial."""
     cache_dir = tmpdir.mkdir("cache")
     img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
-    viewer = an.Points(img=img.pseudo_rgb)
+    viewer = FakePoints()
     filename = os.path.join(cache_dir, 'test_out.geojson')
     points_to_geojson(img, viewer, output=filename)
     assert os.path.exists(filename)
