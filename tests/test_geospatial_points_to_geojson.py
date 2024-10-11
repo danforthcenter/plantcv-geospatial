@@ -29,6 +29,7 @@ def test_geospatial_points_to_geojson_an(test_data, tmpdir):
     cache_dir = tmpdir.mkdir("cache")
     img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
     viewer = FakePoints()
+    viewer.coords["default"] = []
     filename = os.path.join(cache_dir, 'test_out.geojson')
     points_to_geojson(img, viewer, output=filename)
     assert os.path.exists(filename)
