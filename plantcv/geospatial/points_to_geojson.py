@@ -35,5 +35,5 @@ def points_to_geojson(img, viewer, out_path):
             "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
         }
     }
-    with open(os.path.join(out_path, '.geojson'), 'w') as f:
-        geojson.dump(feature_collection, f)
+    #with open(out_path, 'w') as f:
+    geojson.dump(feature_collection, out_path)
