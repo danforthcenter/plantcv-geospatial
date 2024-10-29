@@ -28,9 +28,9 @@ import plantcv.plantcv as pcv
 
 # Read geotif in
 spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-rois = geo.points2roi_circle(img=spectral, geojson="./points_example.geojson")
-
-labeled_mask = pcv.roi.filter(mask=mask, roi=rois, roi_type="partial")
+rois = geo.points2roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
+# Segmentation steps here
+labeled_mask = pcv.roi.filter(mask=vegetation_mask, roi=rois, roi_type="partial")
 
 ```
 
