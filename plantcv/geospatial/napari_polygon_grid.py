@@ -1,9 +1,24 @@
 # Takes a viewer object with lines from napari_grid and turns those intersections into polygons
 
 import numpy as np
+from plantcv.plantcv import fatal_error
 
 
-def _lineintersect(array1, array2):   #Arrays are two points - This will be private function
+def _lineintersect(array1, array2):
+    """Takes in two lines in the form of end point lists and finds the intersection.
+
+    Parameters
+    ----------
+    array1 : list
+        Endpoints of first line 
+    array2 : list
+        Endpoints of second line
+
+    Returns
+    -------
+    [x,y] : list
+        X and Y coordinate of the intersection point
+    """
     a1 = array1[1][1] - array1[0][1]
     b1 = array1[0][0] - array1[1][0]
     c1 = (a1*array1[0][0]) + (b1*array1[0][1])
@@ -15,14 +30,27 @@ def _lineintersect(array1, array2):   #Arrays are two points - This will be priv
     determinant = (a1*b2) - (a2*b1)
 
     if determinant == 0:
-        print("lines are parallel")   # Have to turn this into an error using plantcv's error messages
+        fatal_error("Lines are parallel, no intersection exists.")
     else:
         x = (b2*c1 - b1*c2)/determinant
         y = (a1*c2 - a2*c1)/determinant
-        return [x,y]
+        return [x, y]
+
 
 def napari_polygon_grid(viewer, numdivs):
-    # MAKE THE LINELISTS FROM NAPARI IN CASE YOU CHANGE THEM
+    """Creates a grid of polygons in a Napari viewer.
+
+    Parameters
+    ----------
+    viewer : Napari viewer object
+        Viewer with a Shapes layer called "grid_lines" with lines in a grid 
+    numdivs : list of length 2
+        Number of divisions along the first and second axis of the field polygon.
+
+    Returns
+    -------
+    None
+    """
     linelist1 = viewer.layers["grid_lines"].data[:numdivs[0]+1]
     linelist2 = viewer.layers["grid_lines"].data[numdivs[0]+1:]
 

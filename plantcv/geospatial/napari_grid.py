@@ -4,6 +4,21 @@ import numpy as np
 
 
 def napari_grid(viewer, numdivs, layername="Shapes"):
+    """Creates a grid of lines in a Napari viewer.
+
+    Parameters
+    ----------
+    viewer : Napari viewer object
+        Viewer with a Shapes layer containing a single polygon around the focal field. 
+    numdivs : list of length 2
+        Number of divisions along the first and second axis of the field polygon.
+    layername : string
+        Name of the Shapes layer in the viewer containing the whole field polygon.
+
+    Returns
+    -------
+    None
+    """
     # Field polygon
     field_poly = []
     for i in viewer.layers[layername].data[0]:
@@ -18,8 +33,8 @@ def napari_grid(viewer, numdivs, layername="Shapes"):
 
     linelist = []
     for i in range(len(divs1[0])):
-        point1 = [divs1[0][i][0],divs1[0][i][1]]
-        point2 = [divs1[1][i][0],divs1[1][i][1]]
+        point1 = [divs1[0][i][0], divs1[0][i][1]]
+        point2 = [divs1[1][i][0], divs1[1][i][1]]
         linelist.append(np.array([point1, point2]))
 
     # Along the second side
