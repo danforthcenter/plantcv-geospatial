@@ -15,7 +15,7 @@ def test_geospatial_center_rois_one(test_data):
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes(field, name="grid_shapes")
-    rois = geo.center_grid_rois(img, viewer, radius=10)
+    rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 1
 
 
@@ -33,5 +33,5 @@ def test_geospatial_center_rois_multi(test_data):
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes(field, name="grid_shapes")
-    rois = geo.center_grid_rois(img, viewer, radius=10)
+    rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 2
