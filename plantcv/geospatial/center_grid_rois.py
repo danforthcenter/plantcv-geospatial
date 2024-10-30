@@ -29,4 +29,5 @@ def center_grid_rois(img, viewer, radius=10):
         points_list.append((point.coords[0][1], point.coords[0][0]))
     if len(points_list) > 1:
         return pcv.roi.multi(img=img, coord=points_list, radius=radius)
-    return pcv.roi.circle(img=img, x=points_list[0][0], y=points_list[0][1], r=radius)
+    return pcv.roi.circle(img=img, x=int(points_list[0][0]),
+                          y=int(points_list[0][1]), r=radius)
