@@ -10,7 +10,7 @@ def _lineintersect(array1, array2):
     Parameters
     ----------
     array1 : list
-        Endpoints of first line 
+        Endpoints of first line
     array2 : list
         Endpoints of second line
 
@@ -31,6 +31,7 @@ def _lineintersect(array1, array2):
 
     if determinant == 0:
         fatal_error("Lines are parallel, no intersection exists.")
+        return None
     else:
         x = (b2*c1 - b1*c2)/determinant
         y = (a1*c2 - a2*c1)/determinant
@@ -43,7 +44,7 @@ def napari_polygon_grid(viewer, numdivs):
     Parameters
     ----------
     viewer : Napari viewer object
-        Viewer with a Shapes layer called "grid_lines" with lines in a grid 
+        Viewer with a Shapes layer called "grid_lines" with lines in a grid
     numdivs : list of length 2
         Number of divisions along the first and second axis of the field polygon.
 

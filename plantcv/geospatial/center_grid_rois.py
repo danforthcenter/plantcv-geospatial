@@ -13,7 +13,7 @@ def center_grid_rois(img, viewer, radius=10):
     img : numpy.ndarray
         Image on which to draw the ROIs.
     viewer : Napari viewer object
-        Viewer containing a shapes layer called "grid_shapes". 
+        Viewer containing a shapes layer called "grid_shapes".
         Probably the output from napari_polygon_grid.
     radius : integer
         Width of the circular ROI in number of pixels

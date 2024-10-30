@@ -9,7 +9,7 @@ def napari_grid(viewer, numdivs, layername="Shapes"):
     Parameters
     ----------
     viewer : Napari viewer object
-        Viewer with a Shapes layer containing a single polygon around the focal field. 
+        Viewer with a Shapes layer containing a single polygon around the focal field.
     numdivs : list of length 2
         Number of divisions along the first and second axis of the field polygon.
     layername : string
@@ -32,7 +32,7 @@ def napari_grid(viewer, numdivs, layername="Shapes"):
                           np.linspace(field_poly[3][1], field_poly[2][1], numdivs[0]+1))))
 
     linelist = []
-    for i in range(len(divs1[0])):
+    for i, _ in enumerate(divs1[0]):
         point1 = [divs1[0][i][0], divs1[0][i][1]]
         point2 = [divs1[1][i][0], divs1[1][i][1]]
         linelist.append(np.array([point1, point2]))
@@ -44,9 +44,9 @@ def napari_grid(viewer, numdivs, layername="Shapes"):
     divs2.append(list(zip(np.linspace(field_poly[0][0], field_poly[3][0], numdivs[1]+1),
                           np.linspace(field_poly[0][1], field_poly[3][1], numdivs[1]+1))))
 
-    for i in range(len(divs2[0])):
-        point1 = [divs2[0][i][0],divs2[0][i][1]]
-        point2 = [divs2[1][i][0],divs2[1][i][1]]
+    for i, _ in enumerate(divs2[0]):
+        point1 = [divs2[0][i][0], divs2[0][i][1]]
+        point2 = [divs2[1][i][0], divs2[1][i][1]]
 
         linelist.append(np.array([point1, point2]))
 
