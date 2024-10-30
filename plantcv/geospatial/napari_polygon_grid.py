@@ -32,10 +32,10 @@ def _lineintersect(array1, array2):
     if determinant == 0:
         fatal_error("Lines are parallel, no intersection exists.")
         return None
-    else:
-        x = (b2*c1 - b1*c2)/determinant
-        y = (a1*c2 - a2*c1)/determinant
-        return [x, y]
+
+    x = (b2*c1 - b1*c2)/determinant
+    y = (a1*c2 - a2*c1)/determinant
+    return [x, y]
 
 
 def napari_polygon_grid(viewer, numdivs):
