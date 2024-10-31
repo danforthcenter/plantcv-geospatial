@@ -30,7 +30,7 @@ def _lineintersect(array1, array2):
     determinant = (a1*b2) - (a2*b1)
 
     if determinant == 0:
-        return None
+        fatal_error("Lines are parallel, no intersection exists.")
 
     x = (b2*c1 - b1*c2)/determinant
     y = (a1*c2 - a2*c1)/determinant
@@ -63,8 +63,6 @@ def napari_polygon_grid(viewer, numdivs):
             point4 = _lineintersect(linelist1[i], linelist2[j+1])
             points = [point1, point2, point3, point4, point1]
             polygonlist.append(np.array(points))
-            if None in points:
-                fatal_error("Lines are parallel, no intersection exists.")
 
     shapes_layer = viewer.add_shapes(name='grid_shapes')
     # add mixed shapes using the `add` method
