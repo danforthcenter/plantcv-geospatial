@@ -13,9 +13,8 @@ dependencies = [
     "matplotlib",
     "rasterio",
     "pyshp",
-    "shapely",
     "fiona",
-
+    "shapely",
 ]
 requires-python = ">=3.6"
 authors = [

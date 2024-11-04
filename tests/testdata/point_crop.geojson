@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "point_crop",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32615" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 720198.797875224030577, 4302928.175875684246421 ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 720199.770441700122319, 4302928.186563228257 ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 720199.781129243900068, 4302927.310184645466506 ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 720198.851312942570075, 4302927.352934820577502 ] } }
+]
+}

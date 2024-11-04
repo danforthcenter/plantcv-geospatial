@@ -19,6 +19,8 @@ nav:
     - 'Geopspatial Tools':
         - Read Geo-tif Data: read_geotif.md
         - Extract Plot : plot_extraction.md
+        - Transform coordinate points: transform_points.md
+        - Transform coordinate polygons: transform_polygons.md
 markdown_extensions:
   - toc:
       permalink: True
