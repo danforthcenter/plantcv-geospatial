@@ -12,6 +12,7 @@ dependencies = [
     "plantcv",
     "matplotlib",
     "rasterio",
+    "pyshp",
     "fiona",
     "shapely",
 ]
