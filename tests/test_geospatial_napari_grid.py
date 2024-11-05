@@ -23,6 +23,7 @@ def test_geospatial_napari_grid(test_data):
     assert len(viewer.layers["grid_shapes"].data) == 2
     assert viewer.layers["grid_lines"].data[0][1][0] == 140.45137989
     assert viewer.layers["grid_shapes"].data[0][1][0] == 136.25692447
+    viewer.close()
 
 
 def test_geospatial_lineintersect():

@@ -17,6 +17,7 @@ def test_geospatial_center_rois_one(test_data):
     viewer.add_shapes(field, name="grid_shapes")
     rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 1
+    viewer.close()
 
 
 def test_geospatial_center_rois_multi(test_data):
@@ -35,3 +36,4 @@ def test_geospatial_center_rois_multi(test_data):
     viewer.add_shapes(field, name="grid_shapes")
     rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 2
+    viewer.close()
