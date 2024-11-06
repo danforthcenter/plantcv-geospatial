@@ -4,7 +4,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.points_to_geojson
 
-* v0.1dev: **geosptial.points_to_geojson**(*img, viewer, output*)
+* v0.1dev: **geosptial.points_to_geojson**(*img, viewer, out_path*)
 
 #### geospatial.read_geotif
 
