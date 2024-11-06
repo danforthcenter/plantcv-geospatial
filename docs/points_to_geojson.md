@@ -2,11 +2,11 @@
 
 Using a Napari or PlantCV-annotate viewer object with clicked points, output a shapefile.  
 
-**geosptial.points_to_geojson**(*img, viewer, out_path*)
+**geospatial.points_to_geojson**(*img, viewer, out_path*)
 
 - **Parameters:**
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
-    - viewer - Napari viewer class object or plantcv-annotate Points class object.
+    - viewer - Napari viewer class object, possible created with PlantCV-Annotate.
     - out_path - Path to save the geojson shapefile. Must be ".geojson" file type. 
 
 - **Context:**
