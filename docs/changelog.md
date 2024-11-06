@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented below.
 
+#### geospatial.points_to_geojson
+
+* v0.1dev: **geosptial.points_to_geojson**(*img, viewer, out_path*)
+
 #### geospatial.read_geotif
 
 * v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None*)
