@@ -15,6 +15,8 @@ dependencies = [
     "fiona",
     "shapely",
     "geopandas",
+    "geojson",
+    "napari",
 ]
 requires-python = ">=3.6"
 authors = [

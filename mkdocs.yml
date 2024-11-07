@@ -21,6 +21,7 @@ nav:
         - Read Geo-tif Data: read_geotif.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
+        - Save clicked points as geojson: points_to_geojson.md
 markdown_extensions:
   - toc:
       permalink: True
