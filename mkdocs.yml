@@ -22,6 +22,7 @@ nav:
         - ROIs from polygon centers: center_grid_rois.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
+        - Save clicked points as geojson: points_to_geojson.md
 markdown_extensions:
   - toc:
       permalink: True
