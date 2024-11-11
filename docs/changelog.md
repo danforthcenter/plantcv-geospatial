@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented below.
 
+#### geospatial.center_grid_rois
+
+* v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10*)
+
+#### geospatial.napari_grid
+
+* v0.1dev: **geospatial.napari_grid**(*viewer, numdivs, layername="Shapes"*)
+
+#### geospatial.napari_polygon_grid
+
+* v0.1dev: **geospatial.napari_polygon_grid**(*viewer, numdivs*)
+
 #### geospatial.points_to_geojson
 
 * v0.1dev: **geosptial.points_to_geojson**(*img, viewer, out_path*)
