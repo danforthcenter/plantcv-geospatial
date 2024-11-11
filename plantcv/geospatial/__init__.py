@@ -7,7 +7,6 @@ from plantcv.geospatial.napari_grid import napari_grid
 from plantcv.geospatial.napari_polygon_grid import _lineintersect, napari_polygon_grid
 from plantcv.geospatial.center_grid_rois import center_grid_rois
 
-
 # Auto versioning
 __version__ = version("plantcv-geospatial")
 
@@ -15,9 +14,9 @@ __all__ = [
     "read_geotif",
     "transform_points",
     "transform_polygons",
+    "points_to_geojson",
     "napari_grid",
     "_lineintersect",
-    "points_to_geojson",
     "napari_polygon_grid",
     "center_grid_rois"
     ]
