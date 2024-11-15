@@ -14,5 +14,4 @@ __all__ = [
     "transform_polygons",
     "points_to_geojson",
     "points2roi_circle"
-    
 ]
