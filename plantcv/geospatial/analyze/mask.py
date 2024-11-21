@@ -1,10 +1,11 @@
 # Analyze pixel count over many regions
 from rasterstats import zonal_stats
 from plantcv.plantcv import outputs
-import fiona 
+import numpy as np
+import fiona
 
 
-def pixel_count(img, bin_mask, geojson):
+def mask(img, bin_mask, geojson):
     """A function that analyzes the shape and size of objects and outputs data.
 
     Inputs:
@@ -20,18 +21,18 @@ def pixel_count(img, bin_mask, geojson):
     :param geojson: str
     :return analysis_image: numpy.ndarray
     """
-    
+
 # sum gives the sum of pixel values, so change from [0,255] to [0,1] 
-mask = bin_mask.astype(float) / 255
+bin_mask = bin_mask.astype(float) / 255
+all_ones = np.ones(bin_mask.shape)
 affine = img.metadata["transform"]
-# Vecctorized (efficient) data extraction of pixel count per sub-region
-stats = zonal_stats(geojson,
-                    mask,
-                    affine=affine,
-                    stats="sum")
+# Vectorized (efficient) data extraction of pixel count per sub-region
+region_counts = zonal_stats(geojson, bin_mask, affine=affine, stats="sum")
+
+total_region = zonal_stats(geojson, all_ones, affine=affine, stats="sum")
 
 # If IDs within the geojson
-ids = [] 
+ids = []
 # Gather list of IDs
 with fiona.open(geojson, 'r') as shapefile:
     for row in shapefile:
@@ -45,4 +46,7 @@ with fiona.open(geojson, 'r') as shapefile:
 for i, id_lbl in enumerate(ids):
     outputs.add_observation(sample=id_lbl, variable="pixel_count", trait="count",
                             method="rasterstats.zonal_stats", scale="pixels", datatype=int,
-                            value=stats[i]["sum"], label="pixels")
+                            value=region_counts[i]["sum"], label="pixels")
+    outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
+                            method="rasterstats.zonal_stats", scale="none", datatype=float,
+                            value=total_region[i]["sum"], label="none")

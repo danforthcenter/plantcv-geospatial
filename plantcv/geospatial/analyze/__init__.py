@@ -1,4 +1,4 @@
-from plantcv.geospatial.analyze.size import size
+from plantcv.geospatial.analyze.mask import mask
 
 
-__all__ = ["size"]
+__all__ = ["mask"]
