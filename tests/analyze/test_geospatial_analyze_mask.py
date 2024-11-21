@@ -12,5 +12,4 @@ def test_mask(test_data):
     img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
     bin_mask = img.array_data[:, :, 2]  # Make a grayscale img to use as the mask
     _ = analyze_mask(img=img, bin_mask=bin_mask, geojson=test_data.square_crop)
-    print(outputs.observations)
     assert outputs.observations["default_0"]["percent_coverage"]["value"] <= 1
