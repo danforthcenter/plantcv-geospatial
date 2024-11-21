@@ -36,15 +36,11 @@ def mask(img, bin_mask, geojson):
     # Gather list of IDs
     with fiona.open(geojson, 'r') as shapefile:
         for i, row in enumerate(shapefile):
-            temp_list = []
-            # Polygon
-            if len(row.geometry["coordinates"][0]) > 1:
-                square = row.geometry["coordinates"][0][:-1]
-                if "ID" in row['properties']:
-                    ids.append((row['properties']["ID"]))
-                else:
-                    # If there are no IDs in the geojson then use default labels
-                    ids.append("default_" + str(i))
+            if 'ID' in row['properties']:
+                ids.append((row['properties']["ID"]))
+            else:
+                # If there are no IDs in the geojson then use default labels
+                ids.append("default_" + str(i))
 
     # Save data to outputs as custom observation (since using data extraction method not yet integrated into the repo) 
     for i, id_lbl in enumerate(ids):
