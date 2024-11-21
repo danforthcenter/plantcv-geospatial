@@ -13,7 +13,8 @@ def test_mask(test_data):
     bin_mask = img.array_data[:, :, 2]  # Make a grayscale img to use as the mask
     _ = analyze_mask(img=img, bin_mask=bin_mask, geojson=test_data.square_crop)
     assert outputs.observations["default_0"]["percent_coverage"]["value"] <= 1
-    
+
+
 def test_mask_with_geo_ids(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
