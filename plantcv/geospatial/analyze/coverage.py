@@ -5,7 +5,7 @@ import numpy as np
 import fiona
 
 
-def mask(img, bin_mask, geojson):
+def coverage(img, bin_mask, geojson):
     """A function that analyzes the shape and size of objects and outputs data.
 
     Inputs:
@@ -22,10 +22,14 @@ def mask(img, bin_mask, geojson):
     :return analysis_image: numpy.ndarray
     """
 
-    # sum gives the sum of pixel values, so change from [0,255] to [0,1] 
-    bin_mask = bin_mask.astype(float) / 255
+    # sum gives the sum of pixel values, so change from [0,255] to [0,1]
+    bin_mask = bin_mask.astype(float) / 255  # set values to one a safer way like np.where
     all_ones = np.ones(bin_mask.shape[:2])
     affine = img.metadata["transform"]
+
+    # Calculate GSD in the x and y directions
+    gsd_x = abs(affine[0])
+    gsd_y = abs(affine[4])
     # Vectorized (efficient) data extraction of pixel count per sub-region
     region_counts = zonal_stats(geojson, bin_mask, affine=affine, stats="sum")
 
@@ -42,11 +46,22 @@ def mask(img, bin_mask, geojson):
                 # If there are no IDs in the geojson then use default labels
                 ids.append("default_" + str(i))
 
-    # Save data to outputs as custom observation (since using data extraction method not yet integrated into the repo) 
+    # Save data to outputs
     for i, id_lbl in enumerate(ids):
+        # Save out pixel_count
         outputs.add_observation(sample=id_lbl, variable="pixel_count", trait="count",
                                 method="rasterstats.zonal_stats", scale="pixels", datatype=int,
                                 value=region_counts[i]["sum"], label="pixels")
+        # Scale and save out coverage in CRS units
+        outputs.add_observation(sample=id_lbl, variable="coverage", trait="coverage",
+                                method="plantcv-geospatial.analyze.coverage",
+                                scale=img.metadata["crs"].linear_units, datatype=float,
+                                value=region_counts[i]["sum"]/gsd_x, label=img.metadata["crs"].linear_units)
+        # Save out Ground Sampling Distance(s)
+        outputs.add_observation(sample=id_lbl, variable="ground_sampling_distance", trait="gsd",
+                                method="rasterio", scale=img.metadata["crs"].linear_units, datatype=tuple,
+                                value=(gsd_x, gsd_y), label=["gsd_x", "gsd_y"])
+        # Save out percent coverage 
         outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
                                 value=region_counts[i]["sum"]/total_region[i]["sum"], label="none")
