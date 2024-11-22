@@ -1,4 +1,4 @@
-from plantcv.geospatial.analyze.mask import mask
+from plantcv.geospatial.analyze.coverage import coverage
 
 
-__all__ = ["mask"]
+__all__ = ["coverage"]
