@@ -24,13 +24,21 @@ def points2roi_circle(img, geojson, radius):
     """
     gdf = geopandas.read_file(geojson)
 
-    # Generate a circle (buffer) around each point
+    img_crs = img.metadata['crs']
+
+    #check if CRS of spectral objecte and geojson are meter-based, if not then convert into metere-based coordinate
+    if not gdf.crs.is_projected:
+       gdf = gdf.to_crs(epsg=32615)
+        
+    if not img_crs.is_projected:
+       img.metadata['crs'] = "EPSG:32615" 
+         
     gdf['geometry'] = gdf.geometry.buffer(radius)
 
-    # Save the resulting circles as a GeoJSON file
-    gdf.to_file(geojson + '_circles.geojson', driver='GeoJSON')
+    buffered_geojson = geojson + '_circles.geojson'
+    gdf.to_file(buffered_geojson, driver='GeoJSON')
 
-    geo_rois = transform_polygons(img=img, geojson=geojson + '_circles.geojson')
+    geo_rois = transform_polygons(img=img, geojson=buffered_geojson)
 
     return _points2roi(geo_rois)
 
