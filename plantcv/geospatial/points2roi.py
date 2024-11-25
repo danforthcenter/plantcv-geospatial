@@ -26,13 +26,13 @@ def points2roi_circle(img, geojson, radius):
 
     img_crs = img.metadata['crs']
 
-    #check if CRS of spectral objecte and geojson are meter-based, if not then convert into metere-based coordinate
+    # Check CRS of spectral objecte and geojson are meter-based, if not then convert
     if not gdf.crs.is_projected:
-       gdf = gdf.to_crs(epsg=32615)
-        
+        gdf = gdf.to_crs(epsg=32615)
+
     if not img_crs.is_projected:
-       img.metadata['crs'] = "EPSG:32615" 
-         
+        img.metadata['crs'] = "EPSG:32615"
+
     gdf['geometry'] = gdf.geometry.buffer(radius)
 
     buffered_geojson = geojson + '_circles.geojson'
