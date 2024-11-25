@@ -17,6 +17,7 @@ nav:
     - 'Adding/Editing Documentation': documentation.md
   - 'PlantCV Namespace':
     - 'Geopspatial Tools':
+        - Points to ROI (circular): points2roi_circle.md
         - Read Geo-tif Data: read_geotif.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
