@@ -17,7 +17,9 @@ nav:
     - 'Adding/Editing Documentation': documentation.md
   - 'PlantCV Namespace':
     - 'Geopspatial Tools':
+        - Grid cells with Napari: napari_field_grid.md
         - Read Geo-tif Data: read_geotif.md
+        - ROIs from polygon centers: center_grid_rois.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
         - Save clicked points as geojson: points_to_geojson.md
