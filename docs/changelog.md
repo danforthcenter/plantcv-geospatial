@@ -2,9 +2,13 @@
 
 All notable changes to this project will be documented below.
 
+#### geospatial.napari_save_points
+
+* v0.1dev: **geospatial.napari_save_points**(*images, num_points, outdir="./", bands="R,G,B"*)
+
 #### geospatial.points_to_geojson
 
-* v0.1dev: **geosptial.points_to_geojson**(*img, viewer, out_path*)
+* v0.1dev: **geospatial.points_to_geojson**(*img, viewer, out_path*)
 
 #### geospatial.read_geotif
 

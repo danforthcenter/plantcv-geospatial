@@ -21,6 +21,7 @@ nav:
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
         - Save clicked points as geojson: points_to_geojson.md
+        - Save Napari points to text file: napari_save_points.md
 markdown_extensions:
   - toc:
       permalink: True
