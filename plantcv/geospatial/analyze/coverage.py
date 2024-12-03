@@ -1,8 +1,10 @@
 # Analyze pixel count over many regions
 from rasterstats import zonal_stats
-from plantcv.plantcv import warn, outputs
+from plantcv.plantcv import warn, outputs, _debug, params
+import geopandas
 import numpy as np
 import fiona
+import os
 
 
 def coverage(img, bin_mask, geojson):
@@ -68,3 +70,9 @@ def coverage(img, bin_mask, geojson):
         outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
                                 value=region_counts[i]["sum"]/total_region[i]["sum"], label="none")
+
+    bounds = geopandas.read_file(geojson)
+
+    _debug(visual=bounds.boundary.plot(),
+           filename=os.path.join(params.debug_outdir, f"{params.device}_analyze_coverage.png"))
+    return bounds.boundary.plot()
