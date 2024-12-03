@@ -1,6 +1,6 @@
 # Analyze pixel count over many regions
 from rasterstats import zonal_stats
-from plantcv.plantcv import outputs
+from plantcv.plantcv import warn, outputs
 import numpy as np
 import fiona
 
@@ -30,6 +30,9 @@ def coverage(img, bin_mask, geojson):
     # Calculate GSD in the x and y directions
     gsd_x = abs(affine[0])
     gsd_y = abs(affine[4])
+    if not gsd_x == gsd_y:
+        warn(f"Ground sampling distance in x({gsd_x}) and y({gsd_y}) direction are unequal")
+
     # Vectorized (efficient) data extraction of pixel count per sub-region
     region_counts = zonal_stats(geojson, bin_mask, affine=affine, stats="sum")
 
@@ -59,9 +62,9 @@ def coverage(img, bin_mask, geojson):
                                 value=region_counts[i]["sum"]/gsd_x, label=img.metadata["crs"].linear_units)
         # Save out Ground Sampling Distance(s)
         outputs.add_observation(sample=id_lbl, variable="ground_sampling_distance", trait="gsd",
-                                method="rasterio", scale=img.metadata["crs"].linear_units, datatype=tuple,
-                                value=(gsd_x, gsd_y), label=["gsd_x", "gsd_y"])
-        # Save out percent coverage 
+                                method="rasterio", scale=img.metadata["crs"].linear_units, datatype=float,
+                                value=gsd_x, label="meters")
+        # Save out percent coverage
         outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
                                 value=region_counts[i]["sum"]/total_region[i]["sum"], label="none")
