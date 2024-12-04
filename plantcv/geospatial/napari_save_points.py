@@ -12,13 +12,13 @@ def napari_save_points(images, num_points, outdir="./", bands="R,G,B", block=Tru
     to click points and then saves those points to a file with the same name as the image.
 
     Args:
-        images (list or str): Either a list of image paths or a directory name. 
+        images (list or str): Either a list of image paths or a directory name.
         num_points (int): Number of points expected. If number of clicks received is different,
                         the image path is added to redo_list and returned.
         outdir (str, optional): Directory to save text files with points. Defaults to "./".
         bands (str, optional): Band list if input images are geotifs. Defaults to "R,G,B".
-        block (boolean): Whether to stop the function from advancing before user closes the viewer window. 
-        show (boolean): Whether to show the Napari viewer. Necessary for tests. 
+        block (boolean): Whether to stop the function from advancing before user closes the viewer window.
+        show (boolean): Whether to show the Napari viewer. Necessary for tests.
 
     Returns:
         list: List of images to be redone due to a different number of clicked points than expected.
