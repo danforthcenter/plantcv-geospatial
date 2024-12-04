@@ -2,13 +2,15 @@
 
 Uses Napari to open a list of images one at a time. The user then clicks a defined number of points on each image, which are then saved to a text file with the same name as the image. To be used upstream of warp for geospatial images that are not georeferenced. 
 
-**geospatial.napari_save_points**(*images, num_points, outdir="./", bands="R,G,B"*)
+**geospatial.napari_save_points**(*images, num_points, outdir="./", bands="R,G,B", block=True, show=True*)
 
 - **Parameters:**
     - images - Either a list of image paths or a directory where images are stored. Each image will be opened in sequence.
     - num_points - Integer of expected number of clicked points. For warping downstream, this should be minimally 4.
     - outdir - Directory to save output text files with saved points for each image. Defaults to "./".
     - bands - If input images are geotifs, this is the required band order for `plantcv.geospatial.read_geotif`. Not required if image type is not geotif. 
+    - block - True/False whether to stop function from advancing before user closes the viewer window.
+    - show - True/False whether to show the Napari viewer. Necessary for tests.
 
 - **Outputs:**
     - redo_list - list of images to redo because the number of clicks did not match num_points. Useful if the user makes a mistake and would like to retry for a subset of images.

@@ -7,7 +7,7 @@ import napari
 import os
 
 
-def napari_save_points(images, num_points, outdir="./", bands="R,G,B"):
+def napari_save_points(images, num_points, outdir="./", bands="R,G,B", block=True, show=True):
     """Opens a set of images one at a time in a Napari window, waits for users
     to click points and then saves those points to a file with the same name as the image.
 
@@ -17,6 +17,8 @@ def napari_save_points(images, num_points, outdir="./", bands="R,G,B"):
                         the image path is added to redo_list and returned.
         outdir (str, optional): Directory to save text files with points. Defaults to "./".
         bands (str, optional): Band list if input images are geotifs. Defaults to "R,G,B".
+        block (boolean): Whether to stop the function from advancing before user closes the viewer window. 
+        show (boolean): Whether to show the Napari viewer. Necessary for tests. 
 
     Returns:
         list: List of images to be redone due to a different number of clicked points than expected.
@@ -43,12 +45,12 @@ def napari_save_points(images, num_points, outdir="./", bands="R,G,B"):
         # Save image name for output file
         img_name = (image_path.split("/")[-1]).split(".")[:-1]
 
-        viewer = napari.Viewer()
+        viewer = napari.Viewer(show=show)
 
         # Add the image and points layer
         viewer.add_image(image)
         viewer.add_points(name="points")
-        viewer.show(block=True)
+        viewer.show(block=block)
 
         # Save file if correct number of points
         if len(viewer.layers["points"].data) == num_points:
