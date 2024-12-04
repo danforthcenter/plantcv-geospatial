@@ -85,8 +85,9 @@ def coverage(img, bin_mask, geojson):
     plt.title("Shapefile on GeoTIFF")
     plt.xlabel("Longitude")
     plt.ylabel("Latitude")
-    # Show the plot
-    plt.show()
-    _debug(visual=bounds.boundary.plot(),
+    # Store the plot
+    plotting_img = plt.gcf()
+
+    _debug(visual=plotting_img,
            filename=os.path.join(params.debug_outdir, f"{params.device}_analyze_coverage.png"))
-    return plt.
+    return plotting_img
