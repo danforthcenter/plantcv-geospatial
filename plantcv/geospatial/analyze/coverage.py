@@ -1,6 +1,8 @@
 # Analyze pixel count over many regions
 from rasterstats import zonal_stats
 from plantcv.plantcv import warn, outputs, _debug, params
+from matplotlib import pyplot as plt
+from rasterio.plot import plotting_extent
 import geopandas
 import numpy as np
 import fiona
@@ -72,7 +74,19 @@ def coverage(img, bin_mask, geojson):
                                 value=region_counts[i]["sum"]/total_region[i]["sum"], label="none")
 
     bounds = geopandas.read_file(geojson)
-
+    
+    # Plot the GeoTIFF
+    _, ax = plt.subplots(figsize=(10, 10))
+    fig_extent = plotting_extent(img.array_data[:, :, :3], img.metadata['transform'])
+    ax.imshow(img.pseudo_rgb, extent=fig_extent)
+    # Plot the shapefile
+    shapefile.boundary.plot(ax=ax, color="red")
+    # Set plot title and labels
+    plt.title("Shapefile on GeoTIFF")
+    plt.xlabel("Longitude")
+    plt.ylabel("Latitude")
+    # Show the plot
+    plt.show()
     _debug(visual=bounds.boundary.plot(),
            filename=os.path.join(params.debug_outdir, f"{params.device}_analyze_coverage.png"))
-    return bounds.boundary.plot()
+    return plt.
