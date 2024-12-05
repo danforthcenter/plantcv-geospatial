@@ -11,7 +11,6 @@ import os
 
 def coverage(img, bin_mask, geojson):
     """A function that analyzes the shape and size of objects and outputs data.
-
     Inputs:
     img          = Spectral_Data object of geotif data, used for affine metadata
     bin_mask     = Binary mask of objects (32-bit).
@@ -35,7 +34,7 @@ def coverage(img, bin_mask, geojson):
     gsd_x = abs(affine[0])
     gsd_y = abs(affine[4])
     if not gsd_x == gsd_y:
-        warn(f"Ground sampling distance in x({gsd_x}) and y({gsd_y}) direction are unequal")
+        warn(f"Ground sampling distance in the x({gsd_x}) and y({gsd_y}) direction are unequal")
 
     # Vectorized (efficient) data extraction of pixel count per sub-region
     region_counts = zonal_stats(geojson, bin_mask, affine=affine, stats="sum")
@@ -74,7 +73,7 @@ def coverage(img, bin_mask, geojson):
                                 value=region_counts[i]["sum"]/total_region[i]["sum"], label="none")
 
     bounds = geopandas.read_file(geojson)
-    
+
     # Plot the GeoTIFF
     _, ax = plt.subplots(figsize=(10, 10))
     fig_extent = plotting_extent(img.array_data[:, :, :3],
@@ -89,7 +88,7 @@ def coverage(img, bin_mask, geojson):
     # Store the plot
     plotting_img = plt.gcf()
 
-     # Print or plot if debug is turned on
+    # Print or plot if debug is turned on
     if params.debug is not None:
         if params.debug == 'print':
             plt.savefig(os.path.join(params.debug_outdir, str(
