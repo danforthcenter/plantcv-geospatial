@@ -1,6 +1,6 @@
 # Analyze pixel count over many regions
 from rasterstats import zonal_stats
-from plantcv.plantcv import warn, outputs, _debug, params
+from plantcv.plantcv import warn, outputs, params
 from matplotlib import pyplot as plt
 from rasterio.plot import plotting_extent
 import geopandas

@@ -1,4 +1,3 @@
-import numpy as np
 from plantcv.plantcv import outputs
 from plantcv.geospatial.analyze import coverage as analyze_coverage
 from plantcv.geospatial import read_geotif
