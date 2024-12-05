@@ -77,10 +77,11 @@ def coverage(img, bin_mask, geojson):
     
     # Plot the GeoTIFF
     _, ax = plt.subplots(figsize=(10, 10))
-    fig_extent = plotting_extent(img.array_data[:, :, :3], img.metadata['transform'])
+    fig_extent = plotting_extent(img.array_data[:, :, :3],
+                                 img.metadata['transform'])
     ax.imshow(img.pseudo_rgb, extent=fig_extent)
     # Plot the shapefile
-    shapefile.boundary.plot(ax=ax, color="red")
+    bounds.boundary.plot(ax=ax, color="red")
     # Set plot title and labels
     plt.title("Shapefile on GeoTIFF")
     plt.xlabel("Longitude")
@@ -88,6 +89,16 @@ def coverage(img, bin_mask, geojson):
     # Store the plot
     plotting_img = plt.gcf()
 
-    _debug(visual=plotting_img,
-           filename=os.path.join(params.debug_outdir, f"{params.device}_analyze_coverage.png"))
+     # Print or plot if debug is turned on
+    if params.debug is not None:
+        if params.debug == 'print':
+            plt.savefig(os.path.join(params.debug_outdir, str(
+                params.device) + '_analyze_coverage.png'), dpi=params.dpi)
+            plt.close()
+        elif params.debug == 'plot':
+            # Use non-blocking mode in case the function is run more than once
+            plt.show(block=False)
+    else:
+        plt.close()
+
     return plotting_img
