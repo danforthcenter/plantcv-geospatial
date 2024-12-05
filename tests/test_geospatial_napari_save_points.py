@@ -9,7 +9,7 @@ def test_geospatial_napari_save_points(test_data, tmpdir):
     """Test for plantcv-geospatial."""
     cache_dir = tmpdir.mkdir("cache")
     images = [test_data.rgb_tif]
-    redo_list = napari_save_points(images, num_points=4, outdir=cache_dir, show=False) 
+    redo_list = napari_save_points(images, num_points=4, outdir=cache_dir, show_viewer=False) 
     assert len(redo_list) == 1
 
 
@@ -20,5 +20,5 @@ def test_geospatial_napari_save_points_output(test_data, tmpdir):
     img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
     print_image(img.pseudo_rgb, os.path.join(cache_dir, "rgb.png"))
     images = [os.path.join(cache_dir, "rgb.png")]
-    _ = napari_save_points(images, num_points=0, outdir=cache_dir, show=False) 
+    _ = napari_save_points(images, num_points=0, outdir=cache_dir, show_viewer=False) 
     assert os.path.exists(os.path.join(cache_dir, "rgb_warp.txt"))
