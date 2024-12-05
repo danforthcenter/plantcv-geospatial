@@ -7,7 +7,7 @@ import napari
 import os
 
 
-def napari_save_points(images, num_points, outdir="./", bands="R,G,B", block=True, show=True):
+def napari_save_points(images, num_points, outdir="./", bands="R,G,B", show_window=True):
     """Opens a set of images one at a time in a Napari window, waits for users
     to click points and then saves those points to a file with the same name as the image.
 
@@ -45,12 +45,13 @@ def napari_save_points(images, num_points, outdir="./", bands="R,G,B", block=Tru
         # Save image name for output file
         img_name = (image_path.split("/")[-1]).split(".")[:-1]
 
-        viewer = napari.Viewer(show=show)
+        viewer = napari.Viewer(show=show_window)
 
         # Add the image and points layer
         viewer.add_image(image)
         viewer.add_points(name="points")
-        viewer.show(block=block)
+        if show_window:
+            viewer.show(block=True)
 
         # Save file if correct number of points
         if len(viewer.layers["points"].data) == num_points:
@@ -63,7 +64,7 @@ def napari_save_points(images, num_points, outdir="./", bands="R,G,B", block=Tru
             warn('Image ' + str(image_path) + ' collected incorrect number of points. ' +
                  'Added to redo list.')
         # Close the viewer in case it wasn't shown
-        if not show:
+        if not show_window:
             viewer.close()
     # Reset debug
     pcv.params.debug = debug
