@@ -11,7 +11,6 @@ def test_geospatial_napari_save_points(test_data, tmpdir):
     images = [test_data.rgb_tif]
     redo_list = napari_save_points(images, num_points=4, outdir=cache_dir, block=False, show=False) 
     assert len(redo_list) == 1
-    viewer.close()
 
 
 def test_geospatial_napari_save_points_output(test_data, tmpdir):
@@ -23,4 +22,3 @@ def test_geospatial_napari_save_points_output(test_data, tmpdir):
     images = [os.path.join(cache_dir, "rgb.png")]
     _ = napari_save_points(images, num_points=0, outdir=cache_dir, block=False, show=False) 
     assert os.path.exists(os.path.join(cache_dir, "rgb_warp.txt"))
-    viewer.close()

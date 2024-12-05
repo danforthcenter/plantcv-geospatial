@@ -62,6 +62,9 @@ def napari_save_points(images, num_points, outdir="./", bands="R,G,B", block=Tru
             redo_list.append(image_path)
             warn('Image ' + str(image_path) + ' collected incorrect number of points. ' +
                  'Added to redo list.')
+        # Close the viewer in case it wasn't shown
+        if not show:
+            viewer.close()
     # Reset debug
     pcv.params.debug = debug
     return redo_list
