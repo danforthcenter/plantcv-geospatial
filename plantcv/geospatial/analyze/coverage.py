@@ -24,9 +24,8 @@ def coverage(img, bin_mask, geojson):
     :param geojson: str
     :return analysis_image: numpy.ndarray
     """
-
-    # sum gives the sum of pixel values, so change from [0,255] to [0,1]
-    bin_mask = bin_mask.astype(float) / 255  # set values to one a safer way like np.where
+    # zonal_stats "sum" gives the sum of pixel values, so change from [0,255] to [0,1]
+    bin_mask = np.where(bin_mask > 0, 1, 0)
     all_ones = np.ones(bin_mask.shape[:2])
     affine = img.metadata["transform"]
 
