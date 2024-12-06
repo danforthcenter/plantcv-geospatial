@@ -17,6 +17,8 @@ nav:
     - 'Adding/Editing Documentation': documentation.md
   - 'PlantCV Namespace':
     - 'Geopspatial Tools':
+        - Analysis tools: 
+            - Analyze coverage: analyze_coverage.md 
         - Read Geo-tif Data: read_geotif.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md

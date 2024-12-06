@@ -16,6 +16,8 @@ dependencies = [
     "shapely",
     "geojson",
     "napari",
+    "rasterstats",
+    "geopandas",
 ]
 requires-python = ">=3.6"
 authors = [
