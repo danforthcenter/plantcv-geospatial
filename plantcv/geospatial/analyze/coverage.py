@@ -32,8 +32,6 @@ def coverage(img, bin_mask, geojson):
     # Calculate GSD in the x and y directions
     gsd_x = abs(affine[0])
     gsd_y = abs(affine[4])
-    if not gsd_x == gsd_y:
-        warn(f"Ground sampling distance in the x({gsd_x}) and y({gsd_y}) direction are unequal")
 
     # Vectorized (efficient) data extraction of pixel count per sub-region
     region_counts = zonal_stats(geojson, bin_mask, affine=affine, stats="sum")
@@ -61,15 +59,15 @@ def coverage(img, bin_mask, geojson):
         outputs.add_observation(sample=id_lbl, variable="coverage", trait="coverage",
                                 method="plantcv-geospatial.analyze.coverage",
                                 scale=img.metadata["crs"].linear_units, datatype=float,
-                                value=region_counts[i]["sum"]/gsd_x, label=img.metadata["crs"].linear_units)
-        # Save out Ground Sampling Distance(s)
-        outputs.add_observation(sample=id_lbl, variable="ground_sampling_distance", trait="gsd",
-                                method="rasterio", scale=img.metadata["crs"].linear_units, datatype=float,
-                                value=gsd_x, label="meters")
+                                value=region_counts[i]["sum"]/(gsd_x * gsd_y), label=img.metadata["crs"].linear_units)
         # Save out percent coverage
         outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
                                 value=region_counts[i]["sum"]/total_region[i]["sum"], label="none")
+
+    # Save out Ground Sampling Distance
+    outputs.add_metadata(term="ground_sampling_distance_x", datatype=float, value=gsd_x)
+    outputs.add_metadata(term="ground_sampling_distance_y", datatype=float, value=gsd_y)
 
     bounds = geopandas.read_file(geojson)
 
