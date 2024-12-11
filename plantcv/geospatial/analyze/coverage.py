@@ -52,18 +52,24 @@ def coverage(img, bin_mask, geojson):
     # Save data to outputs
     for i, id_lbl in enumerate(ids):
         # Save out pixel_count
+        pixel_count = 0
+        total = 1
+        if region_counts[i]["sum"] is not None:
+            pixel_count = region_counts[i]["sum"]
+        if total_region[i]["sum"] is not None:
+            total = total_region[i]["sum"]
         outputs.add_observation(sample=id_lbl, variable="pixel_count", trait="count",
                                 method="rasterstats.zonal_stats", scale="pixels", datatype=int,
-                                value=region_counts[i]["sum"], label="pixels")
+                                value=pixel_count, label="pixels")
         # Scale and save out coverage in CRS units
         outputs.add_observation(sample=id_lbl, variable="coverage", trait="coverage",
                                 method="plantcv-geospatial.analyze.coverage",
                                 scale=img.metadata["crs"].linear_units, datatype=float,
-                                value=region_counts[i]["sum"]/(gsd_x * gsd_y), label=img.metadata["crs"].linear_units)
+                                value=pixel_count/(gsd_x * gsd_y), label=img.metadata["crs"].linear_units)
         # Save out percent coverage
         outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
-                                value=region_counts[i]["sum"]/total_region[i]["sum"], label="none")
+                                value=pixel_count/total, label="none")
 
     # Save out Ground Sampling Distance
     outputs.add_metadata(term="ground_sampling_distance_x", datatype=float, value=gsd_x)
