@@ -28,5 +28,6 @@ vis = geo.analyze.coverage(img=ortho1, bin_mask=plant_mask,
                            geojson="./shapefiles/experimental_plots.geojson)
 
 ```
+![Screenshot](documentation_images/analyze_coverage.png)
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze.coverage.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/coverage.py)
