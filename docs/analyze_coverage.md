@@ -15,7 +15,7 @@ Vectorize approach to pixel count and percent coverage per region in a shapefile
     - This function will utilize the geojson's `ID` attribute for `Outputs` labels if available. 
 
 - **Example use:**
-    - below
+    - Example images and geojson from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
 
 ```python
 import plantcv.geospatial as geo
