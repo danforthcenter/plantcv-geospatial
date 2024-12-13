@@ -1,6 +1,7 @@
 # Transform georeferenced GeoJSON/shapefile points into python coordinates
 import geopandas
 from plantcv.geospatial.transform_polygons import transform_polygons
+from plantcv.geospatial._helpers import _transform_geojson_crs
 from plantcv.plantcv import Objects
 
 
@@ -22,16 +23,7 @@ def points2roi_circle(img, geojson, radius):
     :param radius: float
     :return rois: list
     """
-    gdf = geopandas.read_file(geojson)
-
-    img_crs = img.metadata['crs']
-
-    # Check CRS of spectral objecte and geojson are meter-based, if not then convert
-    if not gdf.crs.is_projected:
-        gdf = gdf.to_crs(epsg=32615)
-
-    if not img_crs.is_projected:
-        img.metadata['crs'] = "EPSG:32615"
+    gdf = _transform_geojson_crs(img=img, geojson=geojson)
 
     gdf['geometry'] = gdf.geometry.buffer(radius)
 
