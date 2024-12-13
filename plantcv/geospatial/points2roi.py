@@ -1,5 +1,4 @@
 # Transform georeferenced GeoJSON/shapefile points into python coordinates
-import geopandas
 from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial._helpers import _transform_geojson_crs
 from plantcv.plantcv import Objects
@@ -37,7 +36,8 @@ def points2roi_circle(img, geojson, radius):
 
 def _points2roi(roi_list):
     """
-    Helper that takes ROI contour coordinates and populates a plantcv Objects class instance
+    Helper that takes ROI contour coordinates and populates
+    a plantcv Objects class instance
 
     Inputs:
     roi_list  = List of ROI contours from georeferenced origin
