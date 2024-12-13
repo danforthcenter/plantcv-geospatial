@@ -22,6 +22,6 @@ def _transform_geojson_crs(img, geojson):
 
     # Check spectral object and geojson have the same CRS, if not then convert
     if not gdf.crs == img_crs:
-        gdf = gdf.to_crs(epsg=img_crs)
+        gdf = gdf.to_crs(crs=img_crs)
 
     return gdf
