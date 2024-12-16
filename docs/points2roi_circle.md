@@ -7,10 +7,6 @@ Transform the points from a Points-type georeferenced shapefile/GeoJSON into cir
 **returns** list of ROIs (`plantcv.Objects` instance)
 
 - **Parameters:**
-img:        A spectral object from read_geotif.
-    geojson:    Path to the shape file containing the points.
-    radius:     Radius of circular ROIs to get created,
-                in units matching the coordinate system of the image
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
     - geojson - Path to the shapefile/GeoJSON containing the points.
     - radius - Radius of circular ROIs to get created,
