@@ -1,4 +1,4 @@
-# Read and transform georeferenced GeoJSON/shapefile points into image CRS
+# PlantCV-geospatial helper functions
 import geopandas
 
 
@@ -12,7 +12,7 @@ def _transform_geojson_crs(img, geojson):
     img:        A spectral object from read_geotif.
     geojson:    Path to the shapefile.
 
-    :param img: [spectral object]]
+    :param img: [spectral object]
     :return geojson: str
     :return gdf: geopandas
     """
