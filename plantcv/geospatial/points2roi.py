@@ -1,4 +1,5 @@
 # Transform georeferenced GeoJSON/shapefile points into python coordinates
+import numpy as np
 from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial._helpers import _transform_geojson_crs
 from plantcv.plantcv import Objects
@@ -43,13 +44,13 @@ def _points2roi(roi_list):
     roi_list  = List of ROI contours from georeferenced origin
 
     Returns:
-    group    = grouped contours list
+    rois    = grouped contours list
 
     :param roi_list: list
     :return rois: plantcv.plantcv.classes.Objects
     """
     rois = Objects()
     for roi in roi_list:
-        rois.append(contour=roi, h=[])
+        rois.append(contour=[np.array(roi)], h=[])
 
     return rois
