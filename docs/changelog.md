@@ -2,13 +2,18 @@
 
 All notable changes to this project will be documented below.
 
+
+#### geospatial.analyze.coverage
+
+* v0.1dev: **geospatial.analyze.coverage**(*img, bin_mask, geojson*)
+
 #### geospatial.points2roi_circle
 
 * v0.1dev: rois = **geospatial.points2roi_circle**(*img, geojson, radius*)
 
 #### geospatial.points_to_geojson
 
-* v0.1dev: **geosptial.points_to_geojson**(*img, viewer, out_path*)
+* v0.1dev: **geospatial.points_to_geojson**(*img, viewer, out_path*)
 
 #### geospatial.read_geotif
 
