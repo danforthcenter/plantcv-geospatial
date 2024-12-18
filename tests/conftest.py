@@ -28,6 +28,8 @@ class TestData:
         self.point_crop = os.path.join(self.datadir, "point_crop.geojson")
         # multi polygon shapefile
         self.multipolygon = os.path.join(self.datadir, "multipolygon_fortests.geojson")
+        # epsg4326 points shapefile
+        self.epsg4326_geojson = os.path.join(self.datadir, "epsg4326points.geojson")
 
 @pytest.fixture(scope="session")
 def test_data():
