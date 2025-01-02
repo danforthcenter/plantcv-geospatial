@@ -7,6 +7,7 @@ import geopandas
 import numpy as np
 import fiona
 import os
+import cv2
 
 
 def coverage(img, bin_mask, geojson):
@@ -78,10 +79,15 @@ def coverage(img, bin_mask, geojson):
     bounds = geopandas.read_file(geojson)
 
     # Plot the GeoTIFF
+    # Make a flipped image for graphing
+    flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
+                         img.pseudo_rgb[:, :, [1]],
+                         img.pseudo_rgb[:, :, [0]]))
+    
     _, ax = plt.subplots(figsize=(10, 10))
     fig_extent = plotting_extent(img.array_data[:, :, :3],
                                  img.metadata['transform'])
-    ax.imshow(img.pseudo_rgb, extent=fig_extent)
+    ax.imshow(flipped, extent=fig_extent)
     # Plot the shapefile
     bounds.boundary.plot(ax=ax, color="red")
     # Set plot title and labels
