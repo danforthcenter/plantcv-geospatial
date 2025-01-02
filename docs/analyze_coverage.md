@@ -1,6 +1,6 @@
 ## Analyze coverage for regions in a geojson shapefile
 
-Vectorize approach to pixel count and percent coverage per region in a shapefile. 
+Vectorize approach to pixel count and percent coverage per region in a shapefile using a binary mask. 
 
 **plantcv.geospatial.analyze.coverage**(*img, bin_mask, geojson*)
 
@@ -13,12 +13,14 @@ Vectorize approach to pixel count and percent coverage per region in a shapefile
 
 - **Context:**
     - This function will utilize the geojson's `ID` attribute for `Outputs` labels if available. 
+    - **Output data stored:** Data ('pixel_count', 'coverage', 'percent_coverage') automatically gets stored to the [`Outputs` class](https://plantcv.readthedocs.io/en/stable/outputs/#class-outputs) when this function is run. These data can be accessed during a workflow (example below). For more detail about data output see [Summary of Output Observations](https://plantcv.readthedocs.io/en/stable/output_measurements/).
 
 - **Example use:**
     - Example images and geojson from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
 
 ```python
 import plantcv.geospatial as geo
+import plantcv.plantcv as pcv
 
 # Read geotif in
 ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
@@ -26,6 +28,9 @@ ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR"
 # Analyze coverage for each region in the geojson
 vis = geo.analyze.coverage(img=ortho1, bin_mask=plant_mask,
                            geojson="./shapefiles/experimental_plots.geojson")
+
+# To access individual observation values:
+print(pcv.outputs.observations["default_0"]["percent_coverage"]["value"])
 
 ```
 ![Screenshot](documentation_images/analyze_coverage.png)
