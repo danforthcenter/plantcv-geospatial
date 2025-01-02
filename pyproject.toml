@@ -17,6 +17,7 @@ dependencies = [
     "geopandas",
     "geojson",
     "napari",
+    "rasterstats",
 ]
 requires-python = ">=3.6"
 authors = [
