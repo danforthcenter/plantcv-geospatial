@@ -11,14 +11,14 @@ import cv2
 
 
 def coverage(img, bin_mask, geojson):
-    """A function that analyzes the shape and size of objects and outputs data.
+    """A function that analyzes pixel coverage in a binary mask and outputs data.
     Inputs:
     img          = Spectral_Data object of geotif data, used for affine metadata
     bin_mask     = Binary mask of objects (32-bit).
     geojson      = Path to the shape file containing the regions for analysis
 
     Returns:
-    analysis_image = Diagnostic image showing measurements.
+    analysis_image = Debug image showing shapes from geojson on input image.
 
     :param img: [spectral object]
     :param bin_mask: numpy.ndarray
@@ -53,8 +53,8 @@ def coverage(img, bin_mask, geojson):
     # Save data to outputs
     for i, id_lbl in enumerate(ids):
         # Save out pixel_count
-        pixel_count = 0
-        total = 1
+        pixel_count = 0.0
+        total = 1.0
         if region_counts[i]["sum"] is not None:
             pixel_count = region_counts[i]["sum"]
         if total_region[i]["sum"] is not None:
@@ -66,7 +66,7 @@ def coverage(img, bin_mask, geojson):
         outputs.add_observation(sample=id_lbl, variable="coverage", trait="coverage",
                                 method="plantcv-geospatial.analyze.coverage",
                                 scale=img.metadata["crs"].linear_units, datatype=float,
-                                value=pixel_count/(gsd_x * gsd_y), label=img.metadata["crs"].linear_units)
+                                value=pixel_count * (gsd_x * gsd_y), label="square " + img.metadata["crs"].linear_units)
         # Save out percent coverage
         outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
