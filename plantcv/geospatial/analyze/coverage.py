@@ -83,7 +83,7 @@ def coverage(img, bin_mask, geojson):
     flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
                          img.pseudo_rgb[:, :, [1]],
                          img.pseudo_rgb[:, :, [0]]))
-    
+
     _, ax = plt.subplots(figsize=(10, 10))
     fig_extent = plotting_extent(img.array_data[:, :, :3],
                                  img.metadata['transform'])
