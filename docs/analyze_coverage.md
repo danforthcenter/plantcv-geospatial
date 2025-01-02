@@ -25,7 +25,7 @@ ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR"
 # Create or read in a binary mask 
 # Analyze coverage for each region in the geojson
 vis = geo.analyze.coverage(img=ortho1, bin_mask=plant_mask,
-                           geojson="./shapefiles/experimental_plots.geojson)
+                           geojson="./shapefiles/experimental_plots.geojson")
 
 ```
 ![Screenshot](documentation_images/analyze_coverage.png)
