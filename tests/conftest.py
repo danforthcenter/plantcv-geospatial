@@ -14,10 +14,14 @@ class TestData:
         self.snapshot_dir = os.path.join(self.datadir, "snapshot_dir")
         # multispectral image
         self.cropped_tif = os.path.join(self.datadir, "615.tif")
+        # multispectral pickled
+        self.multi_pickled = os.path.join(self.datadir, "multi_img.spectral")
         # empty image
         self.empty_tif = os.path.join(self.datadir, "cropped_empty.tif")
         # rgb image
         self.rgb_tif = os.path.join(self.datadir, "rgb.tif")
+        # rgb pickled
+        self.rgb_pickled = os.path.join(self.datadir, "rgb_img.spectral")
         # multiPoints shapefilex
         self.pts_geojson = os.path.join(self.datadir, "test_pts.geojson")
         # points shapefilex
