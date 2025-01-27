@@ -5,9 +5,8 @@ import fiona
 
 
 def create_grid_cells(four_points_path, plot_shapefile_path, output_path, horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144):
-    """
-    Create a grid of cells from input shapefiles and save them to a new shapefile.
-    
+    """Create a grid of cells from input shapefiles and save them to a new shapefile.
+
     Parameters:
     -----------
     four_points_path : str
