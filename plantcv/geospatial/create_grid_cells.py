@@ -4,17 +4,18 @@ import fiona
 
 
 
-def create_grid_cells(four_points_path, plot_shapefile_path, output_path, horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144):
+def create_grid_cells(four_points_path, plot_geojson_path, out_path,
+                      horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
     -----------
     four_points_path : str
-        Path to shapefile containing four corner points
-    plot_shapefile_path : str
-        Path to shapefile containing plot boundaries
-    output_path : str
-        Path where the output grid cells shapefile will be saved
+        Path to geojson containing four corner points
+    plot_geojson_path : str
+        Path to geojson containing plot corner points
+    out_path : str
+        Path where the output grid cells geojson will be saved
     horizontal_cells : int, optional
         Number of cells to divide the horizontal edge into (default: 8)
     vertical_length : float, optional
@@ -39,7 +40,7 @@ def create_grid_cells(four_points_path, plot_shapefile_path, output_path, horizo
         }
 
     # Read the plot boundaries shapefile
-    with fiona.open(plot_shapefile_path, 'r') as shapefile:
+    with fiona.open(plot_geojson_path, 'r') as shapefile:
         plot_corner_points = [shape['geometry']['coordinates'] for shape in shapefile]
 
     # Create LineString objects for edges
@@ -80,7 +81,7 @@ def create_grid_cells(four_points_path, plot_shapefile_path, output_path, horizo
             grid_cells.append({"polygon": cell})
 
     # Save grid cells to output shapefile
-    with fiona.open(output_path, 'w', driver=driver, crs=crs, schema=schema) as shapefile:
+    with fiona.open(out_path, 'w', driver=driver, crs=crs, schema=schema) as shapefile:
         for cell in grid_cells:
             shapefile.write({
                 'geometry': mapping(cell["polygon"])
