@@ -32,6 +32,10 @@ class TestData:
         self.multipolygon = os.path.join(self.datadir, "multipolygon_fortests.geojson")
         # epsg4326 points shapefile
         self.epsg4326_geojson = os.path.join(self.datadir, "epsg4326points.geojson")
+        # plot bounds shapefile
+        self.plot_bounds = os.path.join(self.datadir, "docs_four_points.geojson")
+        # plot points shapefile
+        self.plot_points = os.path.join(self.datadir, "plot_points.geojson")
 
 @pytest.fixture(scope="session")
 def test_data():
