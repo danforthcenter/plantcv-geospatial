@@ -12,7 +12,8 @@ horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
     - horizontal_length - Width of each grid cell, default: 0.9144m (30 inches)
 
 - **Context:**
-    - 
+    - Helpful for precision planters without GPS
+
 - **Example use:**
     - below
 
@@ -20,13 +21,16 @@ horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
 ```python
 import plantcv.geospatial as geo
 
-gridcells = geo.create_grid_cells**(four_points_path="plot_bounds.geojson", 
-                    plot_shapefile_path="grid_corners.geojson", 
+gridcells = geo.create_grid_cells**(four_points_path="bounds.geojson", 
+                    plot_shapefile_path="plot_points.geojson", 
                     out_path="gridcells.geojson", horizontal_cells=8, 
                     vertical_length=3.6576, horizontal_length=0.9144)
 
 ```
+**Example GeoJSON inputs and output**
 
-![Screenshot](documentation_images/
+`four_points_path` here is represented with yellow points, `plot_shapefile_path` with white points, and the resulting `plot_shapefile_path="gridcells.geojson"` is shown in red. Note that the `plot_shapefile_path` points are in the bottom right corner of each grid cell, so the `four_points_path` points are collected starting in the bottom right corner and moving clockwise. 
+
+![Screenshot](documentation_images/irregular_grid_cells.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/create_grid_cells.py)
