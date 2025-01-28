@@ -1,7 +1,7 @@
 """Tests for geospatial.transform_points"""
 
 from plantcv.geospatial import create_grid_cells
-import pytest, os
+import os
 
 
 def test_geospatial_transform_points(test_data, tmpdir):

@@ -14,6 +14,6 @@ __all__ = [
     "transform_points",
     "transform_polygons",
     "points_to_geojson",
-    "points2roi_circle", 
+    "points2roi_circle",
     "create_grid_cells"
 ]

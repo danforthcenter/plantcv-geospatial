@@ -2,8 +2,6 @@
 from shapely.geometry import LineString, Polygon, mapping
 import fiona
 
-
-
 def create_grid_cells(four_points_path, plot_geojson_path, out_path,
                       horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
@@ -28,7 +26,6 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
     list
         List of dictionaries containing the created grid cell polygons
     """
-
     # Read the four corner points shapefile
     with fiona.open(four_points_path, 'r') as shapefile:
         coordinates = [shape['geometry']['coordinates'] for shape in shapefile]
@@ -36,7 +33,7 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
         driver = shapefile.driver
         schema = {
             'geometry': 'Polygon',
-            'properties': {} 
+            'properties': {}
         }
 
     # Read the plot boundaries shapefile
