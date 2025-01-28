@@ -33,7 +33,7 @@ def _unpack_point_shapefiles(shapefile):
 
     Keyword inputs:
     Inputs:
-    shapefile: Fiona formatted shapefile data 
+    shapefile: Fiona formatted shapefile data
 
     :param shapefile: class 'fiona.collection.Collection'
     :return coordinates: list
