@@ -1,6 +1,8 @@
 #
 from shapely.geometry import LineString, Polygon, mapping
+from plantcv.geospatial._helpers import _unpack_point_shapefiles
 import fiona
+
 
 def create_grid_cells(four_points_path, plot_geojson_path, out_path,
                       horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144):
@@ -28,7 +30,8 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
     """
     # Read the four corner points shapefile
     with fiona.open(four_points_path, 'r') as shapefile:
-        coordinates = [shape['geometry']['coordinates'] for shape in shapefile]
+        # Unpack coordinates regardless of Multi-Point or Point geometry type
+        coordinates = _unpack_point_shapefiles(shapefile)
         crs = shapefile.crs
         driver = shapefile.driver
         schema = {
@@ -42,6 +45,8 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
 
     # Create LineString objects for edges
     # NOTE: order will depend on order that 4 corners are clicked in
+    print(coordinates[0])
+    print(coordinates[0][0])
     edge_1 = LineString([coordinates[1][0], coordinates[2][0]])  # vertical edge
     edge_2 = LineString([coordinates[0][0], coordinates[1][0]])  # horizontal edge
 
