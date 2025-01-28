@@ -45,7 +45,7 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
 
     # Create LineString objects for edges
     # NOTE: order will depend on order that 4 corners are clicked in
-    edge_1 = LineString([coordinates[3][0], coordinates[0][0]])  # vertical edge
+    edge_1 = LineString([coordinates[1][0], coordinates[2][0]])  # vertical edge
     edge_2 = LineString([coordinates[0][0], coordinates[1][0]])  # horizontal edge
 
     # Calculate direction vectors
