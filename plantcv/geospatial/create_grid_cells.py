@@ -41,12 +41,10 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
 
     # Read the plot boundaries shapefile
     with fiona.open(plot_geojson_path, 'r') as shapefile:
-        plot_corner_points = [shape['geometry']['coordinates'] for shape in shapefile]
+        plot_corner_points = _unpack_point_shapefiles(shapefile)
 
     # Create LineString objects for edges
     # NOTE: order will depend on order that 4 corners are clicked in
-    print(coordinates[0])
-    print(coordinates[0][0])
     edge_1 = LineString([coordinates[1][0], coordinates[2][0]])  # vertical edge
     edge_2 = LineString([coordinates[0][0], coordinates[1][0]])  # horizontal edge
 
@@ -66,8 +64,8 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
     for points in plot_corner_points:
         for column_number in range(horizontal_cells):
             # Calculate corners of each grid cell
-            bottom_left = (points[0] + column_number * horizontal_threshold * edge_2_dir[0],
-                           points[1] + column_number * horizontal_threshold * edge_2_dir[1])
+            bottom_left = (points[0][0] + column_number * horizontal_threshold * edge_2_dir[0],
+                           points[0][1] + column_number * horizontal_threshold * edge_2_dir[1])
 
             bottom_right = (bottom_left[0] + horizontal_threshold * edge_2_dir[0],
                             bottom_left[1] + horizontal_threshold * edge_2_dir[1])
