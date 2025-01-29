@@ -5,7 +5,7 @@ import rasterio
 from shapely.geometry import Polygon, mapping
 
 
-def shapes_to_geojson(img, viewer, output, shapetype="polygon"):
+def shapes_to_geojson(img, viewer, out_path, shapetype="polygon"):
     """Use shapes from a Napari to output a geojson shapefile.
 
     Parameters
@@ -27,7 +27,7 @@ def shapes_to_geojson(img, viewer, output, shapetype="polygon"):
         features.append(shape)
 
     polygon_list = []
-    for i in range(len(features)):
+    for i, _ in enumerate(features):
         shape_type = viewer.layers["Shapes"].shape_type[i]
         if shape_type == shapetype:
             polygon = Polygon(features[i])
@@ -45,5 +45,5 @@ def shapes_to_geojson(img, viewer, output, shapetype="polygon"):
             "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
         }
     }
-    with open(output, 'w') as f:
+    with open(out_path, 'w') as f:
         geojson.dump(feature_collection, f)
