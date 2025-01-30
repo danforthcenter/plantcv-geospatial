@@ -7,6 +7,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.coverage**(*img, bin_mask, geojson*)
 
+#### geospatial.create_grid_cells
+
+* v0.1dev: cells = **geospatial.create_grid_cells**(*four_points_path, plot_geojson_path, out_path, horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
+
 #### geospatial.points2roi_circle
 
 * v0.1dev: rois = **geospatial.points2roi_circle**(*img, geojson, radius*)
