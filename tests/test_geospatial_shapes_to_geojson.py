@@ -12,7 +12,7 @@ def test_geospatial_points_to_geojson_napari(test_data, tmpdir):
     img = joblib.load(test_data.rgb_pickled)
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
-    viewer.add_shapes()
+    viewer.add_shapes([[2, 3], [3, 3], [3, 4], [2, 4]], shape_type="polygon")
     filename = os.path.join(cache_dir, 'test_out.geojson')
     shapes_to_geojson(img, viewer, out_path=filename)
     assert os.path.exists(filename)
