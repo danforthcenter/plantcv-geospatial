@@ -21,7 +21,7 @@ horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
 ```python
 import plantcv.geospatial as geo
 
-gridcells = geo.create_grid_cells**(four_points_path="bounds.geojson", 
+gridcells = geo.create_grid_cells(four_points_path="bounds.geojson", 
                     plot_shapefile_path="plot_points.geojson", 
                     out_path="gridcells.geojson", horizontal_cells=8, 
                     vertical_length=3.6576, horizontal_length=0.9144)
