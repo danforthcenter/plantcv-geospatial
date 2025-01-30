@@ -15,7 +15,7 @@ def shapes_to_geojson(img, viewer, out_path, shapetype="polygon"):
     viewer: Napari viewer class object.
         The viewer used to draw the shapes.
     out_path : str
-        Path to save to shapefile. Must have "geojson" file extension.
+        Path to save to shapefile. Geojson file extension will be added.
     shapetype: str
         Geometry type from Napari viewer shape layer desired for geojson output.
     """
@@ -45,5 +45,5 @@ def shapes_to_geojson(img, viewer, out_path, shapetype="polygon"):
             "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
         }
     }
-    with open(out_path, 'w') as f:
+    with open(out_path + ".geojson", 'w') as f:
         geojson.dump(feature_collection, f)
