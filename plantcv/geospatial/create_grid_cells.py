@@ -1,7 +1,7 @@
 # Create rectangular geojsons
 
 from shapely.geometry import LineString, Polygon, mapping
-from plantcv.geospatial._helpers import _unpack_point_shapefiles, _calc_direction_vectors
+from plantcv.geospatial._helpers import _calc_plot_corners, _unpack_point_shapefiles, _calc_direction_vectors
 import fiona
 
 
@@ -36,30 +36,19 @@ def create_polygons(four_points_path, plot_geojson_path, out_path,
     with fiona.open(plot_geojson_path, 'r') as shapefile:
         plot_corner_points = _unpack_point_shapefiles(shapefile)
 
-    # Cell width
-    horizontal_threshold = horizontal_length
-
     # Initialize list for storing grid cells
     grid_cells = []
 
     # Create grid cells for each plot
     for points in plot_corner_points:
         for column_number in range(horizontal_cells):
-            # Calculate corners of each grid cell
-            bottom_left = (points[0][0] + column_number * horizontal_threshold * horizontal_dir[0],
-                           points[0][1] + column_number * horizontal_threshold * horizontal_dir[1])
-
-            bottom_right = (bottom_left[0] + horizontal_threshold * horizontal_dir[0],
-                            bottom_left[1] + horizontal_threshold * horizontal_dir[1])
-
-            top_left = (bottom_left[0] + vertical_length * vertical_dir[0],
-                        bottom_left[1] + vertical_length * vertical_dir[1])
-
-            top_right = (bottom_right[0] + vertical_length * vertical_dir[0],
-                         bottom_right[1] + vertical_length * vertical_dir[1])
+            anchor_point = points
+            p1, p2, p3, p4 =_calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
+                                               horizontal_length, vertical_length, alley_size=0,
+                                               col_num=column_number)
 
             # Create polygon from corners
-            cell = Polygon([bottom_left, bottom_right, top_right, top_left, bottom_left])
+            cell = Polygon([p1, p2, p4, p3, p1])
             grid_cells.append({"polygon": cell})
 
     # Save grid cells to output shapefile
@@ -110,23 +99,12 @@ def create_grid_cells(four_points_path, out_path, alley_size, num_ranges, num_pl
     # Create grid cells for each plot
     for range_number in range(num_ranges):
         for column_number in range(num_plots):
-            # Calculate corners of each grid cell
-            bottom_left = (anchor_point[0][0] + column_number * horizontal_length * horizontal_dir[0],
-                           anchor_point[0][1] + column_number * horizontal_length * horizontal_dir[1] +
-                           # Include alley spacing in range location 
-                           range_number * (vertical_length + alley_size) * vertical_dir[1])
-
-            bottom_right = (bottom_left[0] + horizontal_length * horizontal_dir[0],
-                            bottom_left[1] + horizontal_length * horizontal_dir[1])
-
-            top_left = (bottom_left[0] + vertical_length * vertical_dir[0],
-                        bottom_left[1] + vertical_length * vertical_dir[1])
-
-            top_right = (bottom_right[0] + vertical_length * vertical_dir[0],
-                         bottom_right[1] + vertical_length * vertical_dir[1])
+            p1, p2, p3, p4 =_calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
+                                               horizontal_length, vertical_length, alley_size=0,
+                                               col_num=column_number, range_num=range_number)
 
             # Create polygon from corners
-            cell = Polygon([bottom_left, bottom_right, top_right, top_left, bottom_left])
+            cell = Polygon([p1, p2, p4, p3, p1])
             grid_cells.append({"polygon": cell})
 
     # Save grid cells to output shapefile
