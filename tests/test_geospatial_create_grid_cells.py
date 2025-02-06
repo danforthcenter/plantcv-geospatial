@@ -31,5 +31,5 @@ def test_geospatial_create_grid_cells(test_data, tmpdir):
     cells = create_grid_cells(four_points_path=test_data.point_crop, out_path=filename, alley_size=0,
                               num_ranges=2, num_plots=16,
                               row_per_plot=4, vertical_length=3.6576, horizontal_length=0.9144)
-    assert len(cells) == 32  # 4 points in plot_geojson_path * 8 cells per point
+    assert len(cells) == 128  # 4 points in plot_geojson_path * 8 cells per point * 4 subcells per cell
 
