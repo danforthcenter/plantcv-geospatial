@@ -99,9 +99,9 @@ def create_grid_cells(four_points_path, out_path, alley_size, num_ranges, num_pl
     # Create grid cells for each plot
     for range_number in range(num_ranges):
         for column_number in range(num_plots):
-            p1, p2, p3, p4 =_calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
-                                               horizontal_length, vertical_length, alley_size=0,
-                                               col_num=column_number, range_num=range_number)
+            p1, p2, p3, p4 = _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
+                                                horizontal_length, vertical_length, alley_size=0,
+                                                col_num=column_number, range_num=range_number)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
