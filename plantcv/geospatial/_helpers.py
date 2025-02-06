@@ -1,6 +1,6 @@
 # PlantCV-geospatial helper functions
 import geopandas
-from shapely.geometry import LineString
+from shapely.geometry import LineString, Polygon
 import fiona
 
 
@@ -137,3 +137,41 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, horizontal_le
           p2[1] + vertical_length * vertical_dir[1])
 
     return p1, p2, p3, p4
+
+
+def _split_subplots(polygon, num_divisions):
+    """Split a polygon into equidistant subplots
+
+    Parameters:
+    -----------
+    polygon : list
+        Fiona formatted shapefile data
+    row_per_plot : int
+        Number of subplots to get divided
+
+    Returns:
+    --------
+    list
+        List of polygon points
+    """
+    minx, miny, maxx, maxy = polygon.bounds
+    division_width = (maxx - minx) / num_divisions
+    division_lines = [LineString([(minx + i * division_width, miny), (minx + i * division_width, maxy)]) for i in range(1, num_divisions)]
+
+    divided_plots = []
+    for i in range(num_divisions):
+        if i == 0:
+            left_boundary = polygon.bounds[0]
+        else:
+            left_boundary = division_lines[i - 1].coords[0][0]
+
+        if i == num_divisions - 1:
+            right_boundary = polygon.bounds[2]
+        else:
+            right_boundary = division_lines[i].coords[0][0]
+
+        dividing_polygon = Polygon([(left_boundary, miny), (left_boundary, maxy), (right_boundary, maxy), (right_boundary, miny)])
+
+        divided_plots.append(polygon.intersection(dividing_polygon))
+
+    return divided_plots
