@@ -1,7 +1,7 @@
 # Create rectangular geojsons
 
 from shapely.geometry import LineString, Polygon, mapping
-from plantcv.geospatial._helpers import _calc_plot_corners, _unpack_point_shapefiles, _calc_direction_vectors
+from plantcv.geospatial._helpers import _calc_plot_corners, _unpack_point_shapefiles, _calc_direction_vectors, _split_subplots
 import fiona
 
 
@@ -105,7 +105,9 @@ def create_grid_cells(four_points_path, out_path, alley_size, num_ranges, num_pl
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
-            grid_cells.append({"polygon": cell})
+            subcells = _split_subplots(polygon=cell, num_divisions=row_per_plot)
+            for cell in subcells:
+                grid_cells.append({"polygon": cell})
 
     # Save grid cells to output shapefile
     with fiona.open(out_path, 'w', driver=driver, crs=crs, schema=schema) as shapefile:
