@@ -92,4 +92,4 @@ def _calc_direction_vectors(plot_bounds):
                       (edge_2.coords[1][1] - edge_2.coords[0][1]) / edge_2.length)
     anchor_point = coordinates[0]
 
-    return horizontal_dir, vertical_dir, anchor_point
+    return horizontal_dir, vertical_dir, anchor_point, crs, driver, schema
