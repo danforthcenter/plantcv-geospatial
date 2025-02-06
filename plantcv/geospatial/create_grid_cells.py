@@ -4,7 +4,7 @@ from plantcv.geospatial._helpers import _unpack_point_shapefiles
 import fiona
 
 
-def create_grid_cells(four_points_path, plot_geojson_path, out_path,
+def create_polygons(four_points_path, plot_geojson_path, out_path,
                       horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
@@ -90,13 +90,7 @@ def create_grid_cells(four_points_path, plot_geojson_path, out_path,
     return grid_cells
 
 
-#
-from shapely.geometry import LineString, Polygon, mapping
-from plantcv.geospatial._helpers import _unpack_point_shapefiles
-import fiona
-
-
-def auto_create_grid_cells(four_points_path, out_path, alley_size, num_ranges, num_plots,
+def create_grid_cells(four_points_path, out_path, alley_size, num_ranges, num_plots,
                       row_per_plot=4, vertical_length=3.6576, horizontal_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
