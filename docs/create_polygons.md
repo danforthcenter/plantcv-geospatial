@@ -1,7 +1,9 @@
-## Create a grid of cells from input points GeoJSON and save them to a new GeoJSON
+## Create cells from input points GeoJSON and save them to a new GeoJSON
 
 **geospatial.create_polygons**(*four_points_path, plot_geojson_path, out_path,
 horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
+
+**returns** list of cells
 
 - **Parameters:**
     - four_points_path - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions)
