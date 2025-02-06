@@ -21,6 +21,7 @@ nav:
             - Analyze coverage: analyze_coverage.md 
         - Points to ROI (circular): points2roi_circle.md
         - Create Grid Cells (grid of polygons): create_grid_cells.md
+        - Create Polygons: create_polygons.md
         - Read Geo-tif Data: read_geotif.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
