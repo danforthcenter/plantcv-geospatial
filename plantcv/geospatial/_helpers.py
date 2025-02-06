@@ -93,3 +93,47 @@ def _calc_direction_vectors(plot_bounds):
     anchor_point = coordinates[0]
 
     return horizontal_dir, vertical_dir, anchor_point, crs, driver, schema
+
+
+def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, horizontal_length, vertical_length, alley_size, col_num, range_num=0):
+    """Create a rectangular/parallelogram polygon
+
+    Parameters:
+    -----------
+    anchor_point : list
+        Path to geojson containing four corner points
+    horizontal_dir : tuple
+        Horizontal direction vector
+    vertical_dir: tuple
+        Vertical direction vector
+    horizontal_length : float
+        Length of the plot in the horizontal dimension
+    vertical_length : float
+        Length of the plot in the vertical dimension
+    alley_size : float
+        Length of the alley between plots (vertical dimension)
+    col_num : int
+        Current column number
+    range_num : int
+        Current range number
+
+    Returns:
+    --------
+    list
+        List of polygon points
+    """
+    # Calculate corners of each grid cell
+    p1 = (anchor_point[0][0] + col_num * horizontal_length * horizontal_dir[0],  # bottom_left
+          anchor_point[0][1] + col_num * horizontal_length * horizontal_dir[1] +
+          range_num * (vertical_length + alley_size) * vertical_dir[1])
+
+    p2 = (p1[0] + horizontal_length * horizontal_dir[0],  # bottom_right
+          p1[1] + horizontal_length * horizontal_dir[1])
+
+    p3 = (p1[0] + vertical_length * vertical_dir[0],  # top_left
+          p1[1] + vertical_length * vertical_dir[1])
+
+    p4 = (p2[0] + vertical_length * vertical_dir[0],  # top_right
+          p2[1] + vertical_length * vertical_dir[1])
+
+    return p1, p2, p3, p4
