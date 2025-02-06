@@ -30,7 +30,11 @@ def create_polygons(four_points_path, plot_geojson_path, out_path,
         List of dictionaries containing the created grid cell polygons
     """
     # Calculate direction vectors based on plot boundaries
-    horizontal_dir, vertical_dir, _ = _calc_direction_vectors(plot_bounds=four_points_path)
+    horizontal_dir, vertical_dir, _, crs, driver, schema = _calc_direction_vectors(
+        plot_bounds=four_points_path)
+    # Read the plot boundaries shapefile
+    with fiona.open(plot_geojson_path, 'r') as shapefile:
+        plot_corner_points = _unpack_point_shapefiles(shapefile)
 
     # Cell width
     horizontal_threshold = horizontal_length
@@ -39,7 +43,7 @@ def create_polygons(four_points_path, plot_geojson_path, out_path,
     grid_cells = []
 
     # Create grid cells for each plot
-    for points in plot_geojson_path:
+    for points in plot_corner_points:
         for column_number in range(horizontal_cells):
             # Calculate corners of each grid cell
             bottom_left = (points[0][0] + column_number * horizontal_threshold * horizontal_dir[0],
@@ -97,7 +101,8 @@ def create_grid_cells(four_points_path, out_path, alley_size, num_ranges, num_pl
         List of dictionaries containing the created grid cell polygons
     """
     # Calculate direction vectors based on plot boundaries
-    horizontal_dir, vertical_dir, anchor_point = _calc_direction_vectors(plot_bounds=four_points_path)
+    horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _calc_direction_vectors(
+        plot_bounds=four_points_path)
 
     # Initialize list for storing grid cells
     grid_cells = []
