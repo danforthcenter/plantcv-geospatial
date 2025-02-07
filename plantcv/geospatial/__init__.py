@@ -5,7 +5,7 @@ from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial.points_to_geojson import points_to_geojson
 from plantcv.geospatial.points2roi import points2roi_circle
 from plantcv.geospatial import analyze
-from plantcv.geospatial.create_grid_cells import create_polygons, create_grid_cells
+from plantcv.geospatial import shapes
 
 # Auto versioning
 __version__ = version("plantcv-geospatial")
@@ -17,6 +17,5 @@ __all__ = [
     "points_to_geojson",
     "points2roi_circle",
     "analyze",
-    "create_polygons",
-    "create_grid_cells"
+    "shapes"
 ]
