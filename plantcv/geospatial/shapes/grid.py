@@ -5,7 +5,7 @@ from plantcv.geospatial._helpers import _calc_plot_corners, _calc_direction_vect
 import fiona
 
 
-def grid(field_corners, out_path, alley_size, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144):
+def grid(field_corners, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -14,8 +14,10 @@ def grid(field_corners, out_path, alley_size, num_ranges, num_columns, num_rows=
         Path to geojson containing four corner points
     out_path : str
         Path where the output grid cells geojson will be saved
-    alley_size : float
-        Size of alley spaces beteen ranges
+    range_spacing : float
+        Size of alley spaces beteen ranges (default: 0)
+    column_spacing : float
+        Size of alley spaces beteen columns (default: 0)
     num_ranges : int
         Number of ranges (vertical cell rows)
     num_columns : int
@@ -23,9 +25,9 @@ def grid(field_corners, out_path, alley_size, num_ranges, num_columns, num_rows=
     num_rows : int, optional
         Number of cells to divide the horizontal edge into (default: 4)
     range_length : float, optional
-        Height of each grid cell (default: 3.6576m )
+        Height of each grid cell (default: 3.6576)
     column_length : float, optional
-        Width of each grid cell (default: 0.9144m )
+        Width of each grid cell (default: 0.9144)
 
     Returns:
     --------
@@ -43,8 +45,9 @@ def grid(field_corners, out_path, alley_size, num_ranges, num_columns, num_rows=
     for range_number in range(num_ranges):
         for column_number in range(num_columns):
             p1, p2, p3, p4 = _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
-                                                column_length, range_length, alley_size=alley_size,
-                                                col_num=column_number, range_num=range_number)
+                                                col_num=column_number, range_num=range_number,
+                                                range_length=range_length, column_length=column_length,
+                                                range_spacing=range_spacing, column_spacing=column_spacing)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
