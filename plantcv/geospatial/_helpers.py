@@ -95,7 +95,7 @@ def _calc_direction_vectors(plot_bounds):
     return horizontal_dir, vertical_dir, anchor_point, crs, driver, schema
 
 
-def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, horizontal_length, vertical_length, alley_size, col_num, range_num=0):
+def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num, range_num=0, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
     """Create a rectangular/parallelogram polygon
 
     Parameters:
@@ -123,18 +123,19 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, horizontal_le
         List of polygon points
     """
     # Calculate corners of each grid cell
-    p1 = (anchor_point[0][0] + col_num * horizontal_length * horizontal_dir[0],  # bottom_left
-          anchor_point[0][1] + col_num * horizontal_length * horizontal_dir[1] +
-          range_num * (vertical_length + alley_size) * vertical_dir[1])
+    p1 = (anchor_point[0][0] + col_num * column_length * horizontal_dir[0],
+          # + col_num * (column_length + column_spacing) * horizontal_dir[0],  # bottom_left
+          anchor_point[0][1] + col_num * column_length * horizontal_dir[1] +
+          range_num * (range_length + range_spacing) * vertical_dir[1])
 
-    p2 = (p1[0] + horizontal_length * horizontal_dir[0],  # bottom_right
-          p1[1] + horizontal_length * horizontal_dir[1])
+    p2 = (p1[0] + column_length * horizontal_dir[0],  # bottom_right
+          p1[1] + column_length * horizontal_dir[1])
 
-    p3 = (p1[0] + vertical_length * vertical_dir[0],  # top_left
-          p1[1] + vertical_length * vertical_dir[1])
+    p3 = (p1[0] + range_length * vertical_dir[0],  # top_left
+          p1[1] + range_length * vertical_dir[1])
 
-    p4 = (p2[0] + vertical_length * vertical_dir[0],  # top_right
-          p2[1] + vertical_length * vertical_dir[1])
+    p4 = (p2[0] + range_length * vertical_dir[0],  # top_right
+          p2[1] + range_length * vertical_dir[1])
 
     return p1, p2, p3, p4
 
