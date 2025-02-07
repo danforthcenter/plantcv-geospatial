@@ -1,7 +1,7 @@
 # Create rectangular geojsons
 
 from shapely.geometry import Polygon, mapping
-from plantcv.geospatial._helpers import _calc_plot_corners, _unpack_point_shapefiles, _calc_direction_vectors, _split_subplots
+from plantcv.geospatial._helpers import _calc_plot_corners, _unpack_point_shapefiles, _calc_direction_vectors
 import fiona
 
 
@@ -40,11 +40,12 @@ def flexible(field_corners, plot_geojson_path, out_path, num_rows=8, range_lengt
 
     # Create grid cells for each plot
     for points in plot_corner_points:
-        for column_number in range(num_rows):
+        for col_num in range(num_rows):
             anchor_point = points
             p1, p2, p3, p4 =_calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
-                                               column_length, range_length, alley_size=0,
-                                               col_num=column_number)
+                                               col_num, range_num=0,
+                                               range_length=range_length,
+                                               column_length=column_length)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
