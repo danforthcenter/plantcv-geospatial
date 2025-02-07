@@ -7,15 +7,6 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.coverage**(*img, bin_mask, geojson*)
 
-#### geospatial.create_grid_cells
-
-* v0.1dev: cells = **geospatial.create_grid_cells**(*four_points_path, out_path, alley_size, num_ranges, num_plots,
-                      row_per_plot=4, vertical_length=3.6576, horizontal_length=0.9144*)
-
-#### geospatial.shape.flexible
-
-* v0.1dev: cells = **geospatial.shape.flexible**(*four_points_path, plot_geojson_path, out_path, horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
-
 #### geospatial.points2roi_circle
 
 * v0.1dev: rois = **geospatial.points2roi_circle**(*img, geojson, radius*)
@@ -27,6 +18,15 @@ All notable changes to this project will be documented below.
 #### geospatial.read_geotif
 
 * v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None*)
+
+#### geospatial.shapes.grid
+
+* v0.1dev: cells = **geospatial.shapes.grid**(*field_corners, out_path, alley_size, num_ranges, num_plots,
+                      num_rows=4, range_length=3.6576, column_length=0.9144*)
+
+#### geospatial.shapes.flexible
+
+* v0.1dev: cells = **geospatial.shapes.flexible**(*field_corners, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144*)
 
 #### geospatial.transform_points
 
