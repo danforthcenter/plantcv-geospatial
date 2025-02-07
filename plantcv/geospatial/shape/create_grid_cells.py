@@ -18,7 +18,7 @@ def create_polygons(field_corners, plot_geojson_path, out_path,
     out_path : str
         Path where the output grid cells geojson will be saved
     num_rows : int, optional
-        Number of cells to divide the horizontal edge into (default: 8)
+        Number of rows per plot, default: 8
     range_length : float, optional
         Height of each grid cell (default: 3.6576m )
     column_length : float, optional
@@ -61,8 +61,8 @@ def create_polygons(field_corners, plot_geojson_path, out_path,
     return grid_cells
 
 
-def create_grid_cells(field_corners, out_path, alley_size, num_ranges, num_plots,
-                      row_per_plot=4, range_length=3.6576, column_length=0.9144):
+def grid(field_corners, out_path, alley_size, num_ranges, num_columns,
+                      num_rows=4, range_length=3.6576, column_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -75,9 +75,9 @@ def create_grid_cells(field_corners, out_path, alley_size, num_ranges, num_plots
         Size of alley spaces beteen ranges
     num_ranges : int
         Number of ranges (vertical cell rows)
-    num_plots : int
-        Number of plots (horizontal cell columns) 
-    row_per_plot : int, optional
+    num_columns : int
+        Number of columns (horizontal cell columns)
+    num_rows : int, optional
         Number of cells to divide the horizontal edge into (default: 4)
     range_length : float, optional
         Height of each grid cell (default: 3.6576m )
@@ -98,14 +98,14 @@ def create_grid_cells(field_corners, out_path, alley_size, num_ranges, num_plots
 
     # Create grid cells for each plot
     for range_number in range(num_ranges):
-        for column_number in range(num_plots):
+        for column_number in range(num_columns):
             p1, p2, p3, p4 = _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
                                                 column_length, range_length, alley_size=alley_size,
                                                 col_num=column_number, range_num=range_number)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
-            subcells = _split_subplots(polygon=cell, num_divisions=row_per_plot)
+            subcells = _split_subplots(polygon=cell, num_divisions=num_rows)
             for cell in subcells:
                 grid_cells.append({"polygon": cell})
 
