@@ -8,7 +8,7 @@
 - **Parameters:**
     - four_points_path - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
-    - alley_size - Size of alley spaces beteen ranges
+    - range_spacing - Size of "alley" spaces between ranges
     - num_ranges - Number of ranges
     - num_plots - Number of plots
     - row_per_plot - Number of equidistant rows within a single plot, default: 4
