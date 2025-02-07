@@ -1,6 +1,6 @@
 ## Create cells from input points GeoJSON and save them to a new GeoJSON
 
-**geospatial.shape.flexible**(*field_corners, plot_geojson_path, out_path,
+**geospatial.shapes.flexible**(*field_corners, plot_geojson_path, out_path,
                     num_rows=8, range_length=3.6576, column_length=0.9144*)
 
 **returns** list of cells
@@ -23,7 +23,7 @@
 ```python
 import plantcv.geospatial as geo
 
-gridcells = geo.shape.flexible(field_corners="bounds.geojson",
+gridcells = geo.shapes.flexible(field_corners="bounds.geojson",
                 plot_geojson_path="plot_points.geojson",
                 out_path="gridcells.geojson", num_rows=8, 
                 range_length=3.6576, column_length=0.9144)
