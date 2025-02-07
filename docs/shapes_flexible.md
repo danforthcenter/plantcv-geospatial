@@ -1,17 +1,16 @@
 ## Create cells from input points GeoJSON and save them to a new GeoJSON
 
-**geospatial.shapes.flexible**(*field_corners, plot_geojson_path, out_path,
-                    num_rows=8, range_length=3.6576, column_length=0.9144*)
+**geospatial.shapes.flexible**(*field_corners, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144*)
 
 **returns** list of cells
 
 - **Parameters:**
-    - field_corners - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions)
+    - field_corners - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - plot_geojson_path - Path to geojson containing plot corner points
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
     - num_rows - Number of rows per plot, default: 8
-    - range_length - Vertical dimension of each plot, default: 3.6576m (7 feet)
-    - column_length - Horizontal dimension of each plot, default: 0.9144m (30 inches)
+    - range_length - Vertical dimension of each plot, default: 3.6576 (7 feet in meters)
+    - column_length - Horizontal dimension of each plot, default: 0.9144 (30 inches in meters)
 
 - **Context:**
     - Helpful for precision planters without GPS
