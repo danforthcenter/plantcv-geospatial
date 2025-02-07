@@ -12,9 +12,9 @@ All notable changes to this project will be documented below.
 * v0.1dev: cells = **geospatial.create_grid_cells**(*four_points_path, out_path, alley_size, num_ranges, num_plots,
                       row_per_plot=4, vertical_length=3.6576, horizontal_length=0.9144*)
 
-#### geospatial.create_polygons
+#### geospatial.shape.flexible
 
-* v0.1dev: cells = **geospatial.create_polygons**(*four_points_path, plot_geojson_path, out_path, horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
+* v0.1dev: cells = **geospatial.shape.flexible**(*four_points_path, plot_geojson_path, out_path, horizontal_cells=8, vertical_length=3.6576, horizontal_length=0.9144*)
 
 #### geospatial.points2roi_circle
 
