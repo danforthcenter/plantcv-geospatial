@@ -1,7 +1,9 @@
 # Create rectangular geojsons
 
 from shapely.geometry import Polygon, mapping
-from plantcv.geospatial import _helpers
+from plantcv.geospatial._helpers import (_calc_direction_vectors,
+                                         _calc_plot_corners, _split_subplots,
+                                         _show_geojson)
 import fiona
 
 
@@ -38,7 +40,7 @@ def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4,
         matplotlib figure displaying the created grid cell polygons
     """
     # Calculate direction vectors based on plot boundaries
-    horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _helpers._calc_direction_vectors(
+    horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _calc_direction_vectors(
         plot_bounds=field_corners)
 
     # Initialize list for storing grid cells
@@ -47,14 +49,14 @@ def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4,
     # Create grid cells for each plot
     for range_number in range(num_ranges):
         for column_number in range(num_columns):
-            p1, p2, p3, p4 = _helpers._calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
-                                                         col_num=column_number, range_num=range_number,
-                                                         range_length=range_length, column_length=column_length,
-                                                         range_spacing=range_spacing, column_spacing=column_spacing)
+            p1, p2, p3, p4 = _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
+                                                col_num=column_number, range_num=range_number,
+                                                range_length=range_length, column_length=column_length,
+                                                range_spacing=range_spacing, column_spacing=column_spacing)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
-            subcells = _helpers._split_subplots(polygon=cell, num_divisions=num_rows)
+            subcells = _split_subplots(polygon=cell, num_divisions=num_rows)
             for cell in subcells:
                 grid_cells.append({"polygon": cell})
 
@@ -64,5 +66,5 @@ def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4,
             shapefile.write({
                 'geometry': mapping(cell["polygon"])
             })
-    fig = _helpers._show_geojson(img, out_path)
+    fig = _show_geojson(img, out_path)
     return fig

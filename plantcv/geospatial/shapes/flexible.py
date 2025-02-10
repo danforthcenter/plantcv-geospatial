@@ -1,7 +1,8 @@
 # Create rectangular geojsons
 
 from shapely.geometry import Polygon, mapping
-from plantcv.geospatial import _helpers
+from plantcv.geospatial._helpers import (_calc_direction_vectors, _unpack_point_shapefiles,
+                                         _calc_plot_corners, _show_geojson)
 import fiona
 
 
@@ -31,11 +32,11 @@ def flexible(img, field_corners, plot_geojson_path, out_path, num_rows=8, range_
         matplotlib figure displaying the created grid cell polygons
     """
     # Calculate direction vectors based on plot boundaries
-    horizontal_dir, vertical_dir, _, crs, driver, schema = _helpers._calc_direction_vectors(
+    horizontal_dir, vertical_dir, _, crs, driver, schema = _calc_direction_vectors(
         plot_bounds=field_corners)
     # Read the plot boundaries shapefile
     with fiona.open(plot_geojson_path, 'r') as shapefile:
-        plot_corner_points = _helpers._unpack_point_shapefiles(shapefile)
+        plot_corner_points = _unpack_point_shapefiles(shapefile)
 
     # Initialize list for storing grid cells
     grid_cells = []
@@ -44,7 +45,7 @@ def flexible(img, field_corners, plot_geojson_path, out_path, num_rows=8, range_
     for points in plot_corner_points:
         for col_num in range(num_rows):
             anchor_point = points
-            p1, p2, p3, p4 = _helpers._calc_plot_corners(
+            p1, p2, p3, p4 = _calc_plot_corners(
                 anchor_point, horizontal_dir, vertical_dir,
                 col_num, range_num=0, range_length=range_length,
                 column_length=column_length)
@@ -60,5 +61,5 @@ def flexible(img, field_corners, plot_geojson_path, out_path, num_rows=8, range_
                 'geometry': mapping(cell["polygon"])
             })
     # Debug image of the output shapefile
-    fig = _helpers._show_geojson(img, out_path)
+    fig = _show_geojson(img, out_path)
     return fig
