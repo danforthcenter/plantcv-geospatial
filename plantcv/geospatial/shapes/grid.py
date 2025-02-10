@@ -1,15 +1,17 @@
 # Create rectangular geojsons
 
 from shapely.geometry import Polygon, mapping
-from plantcv.geospatial._helpers import _calc_plot_corners, _calc_direction_vectors, _split_subplots
+from plantcv.geospatial import _helpers
 import fiona
 
 
-def grid(field_corners, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
+def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
     -----------
+    img : [spectral_object]
+        Spectral_Data object of geotif data, used for plotting
     field_corners : str
         Path to geojson containing four corner points
     out_path : str
@@ -31,11 +33,11 @@ def grid(field_corners, out_path, num_ranges, num_columns, num_rows=4, range_len
 
     Returns:
     --------
-    list
-        List of dictionaries containing the created grid cell polygons
+    fig
+        matplotlib figure displaying the created grid cell polygons
     """
     # Calculate direction vectors based on plot boundaries
-    horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _calc_direction_vectors(
+    horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _helpers._calc_direction_vectors(
         plot_bounds=field_corners)
 
     # Initialize list for storing grid cells
@@ -44,14 +46,14 @@ def grid(field_corners, out_path, num_ranges, num_columns, num_rows=4, range_len
     # Create grid cells for each plot
     for range_number in range(num_ranges):
         for column_number in range(num_columns):
-            p1, p2, p3, p4 = _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
-                                                col_num=column_number, range_num=range_number,
-                                                range_length=range_length, column_length=column_length,
-                                                range_spacing=range_spacing, column_spacing=column_spacing)
+            p1, p2, p3, p4 = _helpers._calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
+                                                         col_num=column_number, range_num=range_number,
+                                                         range_length=range_length, column_length=column_length,
+                                                         range_spacing=range_spacing, column_spacing=column_spacing)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
-            subcells = _split_subplots(polygon=cell, num_divisions=num_rows)
+            subcells = _helpers._split_subplots(polygon=cell, num_divisions=num_rows)
             for cell in subcells:
                 grid_cells.append({"polygon": cell})
 
@@ -61,5 +63,5 @@ def grid(field_corners, out_path, num_ranges, num_columns, num_rows=4, range_len
             shapefile.write({
                 'geometry': mapping(cell["polygon"])
             })
-
-    return grid_cells
+    fig = _helpers._show_geojson(img, out_path)
+    return fig
