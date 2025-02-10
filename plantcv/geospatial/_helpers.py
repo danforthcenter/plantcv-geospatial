@@ -1,7 +1,12 @@
 # PlantCV-geospatial helper functions
-import geopandas
 from shapely.geometry import LineString, Polygon
+from rasterio.plot import plotting_extent
+from matplotlib import pyplot as plt
+from plantcv.plantcv import params
+import geopandas
 import fiona
+import cv2
+import os
 
 
 def _transform_geojson_crs(img, geojson):
@@ -174,3 +179,52 @@ def _split_subplots(polygon, num_divisions):
         divided_plots.append(polygon.intersection(dividing_polygon))
 
     return divided_plots
+
+
+def _show_geojson(img, geojson):
+    """Split a polygon into equidistant subplots
+
+    Parameters:
+    -----------
+    img : [spectral_object]
+        Spectral_Data object of geotif data, used for affine metadata
+    geojson : str
+        Path to the shape file containing the regions
+
+    Returns:
+    --------
+    list
+        List of polygon points
+    """
+    bounds = geopandas.read_file(geojson)
+
+    # Plot the GeoTIFF
+    # Make a flipped image for graphing
+    flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
+                         img.pseudo_rgb[:, :, [1]],
+                         img.pseudo_rgb[:, :, [0]]))
+
+    _, ax = plt.subplots(figsize=(10, 10))
+    fig_extent = plotting_extent(img.array_data[:, :, :3],
+                                 img.metadata['transform'])
+    ax.imshow(flipped, extent=fig_extent)
+    # Plot the shapefile
+    bounds.boundary.plot(ax=ax, color="red")
+    # Set plot title and labels
+    plt.title("GeoJSON shapes on GeoTIFF")
+    # Store the plot
+    plotting_img = plt.gcf()
+
+    # Print or plot if debug is turned on
+    if params.debug is not None:
+        if params.debug == 'print':
+            plt.savefig(os.path.join(params.debug_outdir, str(
+                params.device) + '_shapes_plot.png'), dpi=params.dpi)
+            plt.close()
+        elif params.debug == 'plot':
+            # Use non-blocking mode in case the function is run more than once
+            plt.show(block=False)
+    else:
+        plt.close()
+
+    return plotting_img
