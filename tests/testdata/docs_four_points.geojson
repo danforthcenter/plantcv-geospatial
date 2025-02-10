@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "docs_four_points",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32615" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 720252.038816049462184, 4303358.941058748401701 ] ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 720238.157144909724593, 4303371.163099493831396 ] ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 720244.190844655036926, 4303377.897789623588324 ] ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 720258.133601704612374, 4303366.166542014107108 ] ] } }
+]
+}
