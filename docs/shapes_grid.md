@@ -1,10 +1,11 @@
 ## Create a grid of cells and save them to a new GeoJSON/Shapefile
 
-**geospatial.shapes.grid**(*field_corners, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0*)
+**geospatial.shapes.grid**(*img, field_corners, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0*)
 
-**returns** list of cells
+**returns** figure
 
 - **Parameters:**
+    - img - Spectral_Data object of geotif data, used for plotting a debug image
     - field_corners - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
     - num_ranges - Number of ranges to get created
@@ -25,9 +26,9 @@
 ```python
 import plantcv.geospatial as geo
 
-gridcells = geo.shapes.grid(four_points_path="bounds.geojson", 
-                out_path="gridcells.geojson", alley_size=1.5, num_ranges=22, num_plots=13,
-                row_per_plot=4, vertical_length=2.5, horizontal_length=1.6)
+figure = geo.shapes.grid(four_points_path="bounds.geojson", 
+            out_path="gridcells.geojson", alley_size=1.5, num_ranges=22, num_plots=13,
+            row_per_plot=4, vertical_length=2.5, horizontal_length=1.6)
 
 ```
 **Example GeoJSON inputs and output**
