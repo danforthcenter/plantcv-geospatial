@@ -5,7 +5,8 @@ from plantcv.geospatial import _helpers
 import fiona
 
 
-def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
+def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4,
+         range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:

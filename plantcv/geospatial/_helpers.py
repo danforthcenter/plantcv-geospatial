@@ -100,7 +100,9 @@ def _calc_direction_vectors(plot_bounds):
     return horizontal_dir, vertical_dir, anchor_point, crs, driver, schema
 
 
-def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num, range_num=0, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
+def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
+                       range_num=0, range_length=3.6576, column_length=0.9144,
+                       range_spacing=0, column_spacing=0):
     """Create a rectangular/parallelogram polygon
 
     Parameters:
@@ -160,7 +162,8 @@ def _split_subplots(polygon, num_divisions):
     """
     minx, miny, maxx, maxy = polygon.bounds
     division_width = (maxx - minx) / num_divisions
-    division_lines = [LineString([(minx + i * division_width, miny), (minx + i * division_width, maxy)]) for i in range(1, num_divisions)]
+    division_lines = [LineString([(minx + i * division_width, miny),
+                                  (minx + i * division_width, maxy)]) for i in range(1, num_divisions)]
 
     divided_plots = []
     for i in range(num_divisions):
@@ -174,7 +177,8 @@ def _split_subplots(polygon, num_divisions):
         else:
             right_boundary = division_lines[i].coords[0][0]
 
-        dividing_polygon = Polygon([(left_boundary, miny), (left_boundary, maxy), (right_boundary, maxy), (right_boundary, miny)])
+        dividing_polygon = Polygon([(left_boundary, miny), (left_boundary, maxy),
+                                    (right_boundary, maxy), (right_boundary, miny)])
 
         divided_plots.append(polygon.intersection(dividing_polygon))
 
@@ -187,7 +191,7 @@ def _show_geojson(img, geojson):
     Parameters:
     -----------
     img : [spectral_object]
-        Spectral_Data object of geotif data, used for affine metadata
+        Spectral_Data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
 
