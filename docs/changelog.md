@@ -26,3 +26,7 @@ All notable changes to this project will be documented below.
 #### geospatial.transform_polygons
 
 * v0.1dev: coord = **geospatial.transform_polygons**(*img, geojson*)
+
+#### geospatial.visualize.napari_screenshot
+
+* v0.1dev: cropped = **geospatial.visualize.napari_screenshot**(*img, geojson, shape_type="polygon"*)
