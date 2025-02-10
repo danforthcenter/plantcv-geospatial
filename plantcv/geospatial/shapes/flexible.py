@@ -1,15 +1,17 @@
 # Create rectangular geojsons
 
 from shapely.geometry import Polygon, mapping
-from plantcv.geospatial._helpers import _calc_plot_corners, _unpack_point_shapefiles, _calc_direction_vectors
+from plantcv.geospatial import _helpers
 import fiona
 
 
-def flexible(field_corners, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144):
+def flexible(img, field_corners, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
     -----------
+    img : [spectral_object]
+        Spectral_Data object of geotif data, used for plotting
     field_corners : str
         Path to geojson containing four corner points
     plot_geojson_path : str
@@ -25,15 +27,15 @@ def flexible(field_corners, plot_geojson_path, out_path, num_rows=8, range_lengt
 
     Returns:
     --------
-    list
-        List of dictionaries containing the created grid cell polygons
+    fig
+        matplotlib figure displaying the created grid cell polygons
     """
     # Calculate direction vectors based on plot boundaries
-    horizontal_dir, vertical_dir, _, crs, driver, schema = _calc_direction_vectors(
+    horizontal_dir, vertical_dir, _, crs, driver, schema = _helpers._calc_direction_vectors(
         plot_bounds=field_corners)
     # Read the plot boundaries shapefile
     with fiona.open(plot_geojson_path, 'r') as shapefile:
-        plot_corner_points = _unpack_point_shapefiles(shapefile)
+        plot_corner_points = _helpers._unpack_point_shapefiles(shapefile)
 
     # Initialize list for storing grid cells
     grid_cells = []
@@ -42,10 +44,10 @@ def flexible(field_corners, plot_geojson_path, out_path, num_rows=8, range_lengt
     for points in plot_corner_points:
         for col_num in range(num_rows):
             anchor_point = points
-            p1, p2, p3, p4 =_calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
-                                               col_num, range_num=0,
-                                               range_length=range_length,
-                                               column_length=column_length)
+            p1, p2, p3, p4 = _helpers._calc_plot_corners(
+                anchor_point, horizontal_dir, vertical_dir,
+                col_num, range_num=0, range_length=range_length,
+                column_length=column_length)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
@@ -57,5 +59,6 @@ def flexible(field_corners, plot_geojson_path, out_path, num_rows=8, range_lengt
             shapefile.write({
                 'geometry': mapping(cell["polygon"])
             })
-
-    return grid_cells
+    # Debug image of the output shapefile
+    fig = _helpers._show_geojson(img, out_path)
+    return fig
