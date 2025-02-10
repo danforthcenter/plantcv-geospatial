@@ -5,7 +5,7 @@
 **returns** figure
 
 - **Parameters:**
-    - img - Spectral_Data object of geotif data, used for plotting a debug image
+    - img - Spectral_Data object of geotif data, used for plotting a debug image, likely read in with [`geo.read_geotif`](read_geotif.md)
     - field_corners - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
     - num_ranges - Number of ranges to get created
@@ -17,22 +17,25 @@
     - column_spacing - Length of "alley" spaces between columns, default: 0
 
 - **Context:**
-    - Helpful for precision planters without GPS
+    - Helpful for precision planted experiments
 
 - **Example use:**
-    - below
+    - Example image from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
 
 
 ```python
 import plantcv.geospatial as geo
 
-figure = geo.shapes.grid(four_points_path="bounds.geojson", 
-            out_path="gridcells.geojson", alley_size=1.5, num_ranges=22, num_plots=13,
-            row_per_plot=4, vertical_length=2.5, horizontal_length=1.6)
+# Read geotif in
+ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+# Create and visualize GeoJSON of plots
+figure = geo.shapes.grid(img=img, four_points_path="bounds.geojson", 
+            out_path="gridcells.geojson", num_ranges=22, num_columns=13,
+            num_rows=1, range_spacing=1.5,  range_length=2.5, column_length=1.6)
 
 ```
-**Example GeoJSON inputs and output**
+**Example GeoJSON output figure**
 
-![Screenshot](documentation_images/)
+![Screenshot](documentation_images/grid_cells.png)
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/shapes.grid.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/shapes/grid.py)
