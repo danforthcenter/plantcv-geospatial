@@ -24,6 +24,8 @@ nav:
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
         - Save clicked points as geojson: points_to_geojson.md
+        - Visualization tools:
+          - View shapefile contents: napari_screenshot.md 
 markdown_extensions:
   - toc:
       permalink: True
