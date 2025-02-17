@@ -22,6 +22,7 @@ def spectral(img, geojson):
     :param geojson: str
     :return analysis_image: numpy.ndarray
     """
+    bin_label = []
     affine = img.metadata["transform"]
 
     # Vectorized (efficient) data extraction of spectral signature per sub-region
@@ -34,27 +35,28 @@ def spectral(img, geojson):
     with fiona.open(geojson, 'r') as shapefile:
         for i, row in enumerate(shapefile):
             if 'ID' in row['properties']:
-                ids.append((row['properties']["ID"]))
+                label = ((row['properties']["ID"]))
             else:
                 # If there are no IDs in the geojson then use default labels
-                ids.append("default_" + str(i))
+                label = ("default_" + str(i))
+            ids.append(label)
             # Save data to outputs
             outputs.add_observation(sample=label, variable=f"mean_{img.array_type}", trait=f"Average {img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral", scale="reflectance", datatype=float,
-                                    value=float(stats[i]['mean']), label=ids[-1])
+                                    value=float(stats[i]['mean']), label="none")
 
             outputs.add_observation(sample=label, variable=f"med_{img.array_type}", trait=f"Median {img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral", scale="reflectance", datatype=float,
-                                    value=float(stats[i]['median']), label=ids[-1])
+                                    value=float(stats[i]['median']), label="none")
 
             outputs.add_observation(sample=label, variable=f"std_{img.array_type}",
                                     trait=f"Standard deviation {img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral", scale="reflectance", datatype=float,
-                                    value=stats[i]['std'], label=ids[-1])
+                                    value=stats[i]['std'], label="none")
 
             outputs.add_observation(sample=label, variable=f"index_frequencies_{img.array_type}",
                                     trait="index frequencies", method="plantcv.geospatial.analyze.spectral", scale="frequency",
-                                    datatype=list, value=stats[i]['count'], label=ids[-1])
+                                    datatype=list, value=stats[i]['count'], label=bin_label)
 
     bounds = geopandas.read_file(geojson)
 
