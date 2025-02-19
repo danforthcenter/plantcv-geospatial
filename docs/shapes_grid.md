@@ -19,6 +19,9 @@
 - **Context:**
     - Helpful for precision planted experiments
 
+![Screenshot](documentation_images/row_plot_vocab.png)
+
+
 - **Example use:**
     - Example image from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
 
