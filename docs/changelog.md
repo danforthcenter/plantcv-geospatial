@@ -21,11 +21,11 @@ All notable changes to this project will be documented below.
 
 #### geospatial.shapes.grid
 
-* v0.1dev: cells = **geospatial.shapes.grid**(*img, field_corners, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0*)
+* v0.1dev: cells = **geospatial.shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0*)
 
 #### geospatial.shapes.flexible
 
-* v0.1dev: cells = **geospatial.shapes.flexible**(*img, field_corners, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144*)
+* v0.1dev: cells = **geospatial.shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144*)
 
 #### geospatial.transform_points
 
