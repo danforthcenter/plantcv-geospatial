@@ -7,7 +7,7 @@ from plantcv.geospatial._helpers import (_calc_direction_vectors,
 import fiona
 
 
-def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4,
+def grid(img, field_corners_path, out_path, num_ranges, num_columns, num_rows=4,
          range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
@@ -15,7 +15,7 @@ def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4,
     -----------
     img : [spectral_object]
         Spectral_Data object of geotif data, used for plotting
-    field_corners : str
+    field_corners_path : str
         Path to geojson containing four corner points
     out_path : str
         Path where the output grid cells geojson will be saved
@@ -41,7 +41,7 @@ def grid(img, field_corners, out_path, num_ranges, num_columns, num_rows=4,
     """
     # Calculate direction vectors based on plot boundaries
     horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _calc_direction_vectors(
-        plot_bounds=field_corners)
+        plot_bounds=field_corners_path)
 
     # Initialize list for storing grid cells
     grid_cells = []

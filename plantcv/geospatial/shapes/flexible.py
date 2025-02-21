@@ -6,14 +6,14 @@ from plantcv.geospatial._helpers import (_calc_direction_vectors, _unpack_point_
 import fiona
 
 
-def flexible(img, field_corners, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144):
+def flexible(img, field_corners_path, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
     -----------
     img : [spectral_object]
         Spectral_Data object of geotif data, used for plotting
-    field_corners : str
+    field_corners_path : str
         Path to geojson containing four corner points
     plot_geojson_path : str
         Path to geojson containing plot corner points
@@ -33,7 +33,7 @@ def flexible(img, field_corners, plot_geojson_path, out_path, num_rows=8, range_
     """
     # Calculate direction vectors based on plot boundaries
     horizontal_dir, vertical_dir, _, crs, driver, schema = _calc_direction_vectors(
-        plot_bounds=field_corners)
+        plot_bounds=field_corners_path)
     # Read the plot boundaries shapefile
     with fiona.open(plot_geojson_path, 'r') as shapefile:
         plot_corner_points = _unpack_point_shapefiles(shapefile)
