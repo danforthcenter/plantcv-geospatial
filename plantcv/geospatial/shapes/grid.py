@@ -8,7 +8,7 @@ import fiona
 
 
 def grid(img, field_corners_path, out_path, num_ranges, num_columns, num_rows=4,
-         range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0):
+         range_length=3.6576, row_length=0.9144, range_spacing=0, column_spacing=0):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -45,19 +45,20 @@ def grid(img, field_corners_path, out_path, num_ranges, num_columns, num_rows=4,
 
     # Initialize list for storing grid cells
     grid_cells = []
+    col_length = row_length * num_rows
 
     # Create grid cells for each plot
     for range_number in range(num_ranges):
         for column_number in range(num_columns):
-            p1, p2, p3, p4 = _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
-                                                col_num=column_number, range_num=range_number,
-                                                range_length=range_length, column_length=column_length,
-                                                range_spacing=range_spacing, column_spacing=column_spacing)
+            for row in range(num_rows):
+                p1, p2, p3, p4 = _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir,
+                                                    col_num=column_number, range_num=range_number,
+                                                    range_length=range_length, row_length=row_length,
+                                                    range_spacing=range_spacing, column_spacing=column_spacing,
+                                                    row_num=row, col_length=col_length)
 
-            # Create polygon from corners
-            cell = Polygon([p1, p2, p4, p3, p1])
-            subcells = _split_subplots(polygon=cell, num_divisions=num_rows)
-            for cell in subcells:
+                # Create polygon from corners
+                cell = Polygon([p1, p2, p4, p3, p1])
                 grid_cells.append({"polygon": cell})
 
     # Save grid cells to output shapefile

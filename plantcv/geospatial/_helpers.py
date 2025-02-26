@@ -101,8 +101,8 @@ def _calc_direction_vectors(plot_bounds):
 
 
 def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
-                       range_num=0, range_length=3.6576, column_length=0.9144,
-                       range_spacing=0, column_spacing=0):
+                       range_num=0, range_length=3.6576, row_length=0.9144,
+                       range_spacing=0, column_spacing=0, row_num=0, col_length=0):
     """Create a rectangular/parallelogram polygon
 
     Parameters:
@@ -130,14 +130,12 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
         List of polygon points
     """
     # Calculate corners of each grid cell, starting with bottom_left
-    # p1 = (anchor_point[0][0] + col_num * (column_length + column_spacing) * horizontal_dir[0],
-    #       anchor_point[0][1] + range_num * (range_length + range_spacing) * horizontal_dir[1])
-    p1 = (anchor_point[0][0] + col_num * (column_length + column_spacing) * horizontal_dir[0] +
-          range_num * (range_length + range_spacing) * vertical_dir[1],  # bottom_left
-          anchor_point[0][1] + col_num * (column_length + column_spacing) * horizontal_dir[1] +
-          range_num * (range_length + range_spacing) * vertical_dir[1])
-    p2 = (p1[0] + column_length * horizontal_dir[0],  # bottom_right
-          p1[1] + column_length * horizontal_dir[1])
+    p1 = (anchor_point[0][0] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[0] +
+          (range_num * (range_length + range_spacing)) * vertical_dir[1],  # bottom_left
+          anchor_point[0][1] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[1] +
+          (range_num * (range_length + range_spacing)) * vertical_dir[1])
+    p2 = (p1[0] + row_length * horizontal_dir[0],  # bottom_right
+          p1[1] + row_length * horizontal_dir[1])
 
     p3 = (p1[0] + range_length * vertical_dir[0],  # top_left
           p1[1] + range_length * vertical_dir[1])
@@ -163,8 +161,14 @@ def _split_subplots(polygon, num_divisions):
     list
         List of polygon points
     """
-    minx, miny, maxx, maxy = polygon.bounds
+    #print(polygon.minimum_rotated_rectangle.bounds)
+    #print(polygon.bounds)
+    minx, miny, maxx, maxy = polygon.oriented_envelope.bounds
     division_width = (maxx - minx) / num_divisions
+    print(division_width)
+    first_edge = Polygon(polygon.coords[0][0], polygon.coords[1][0])
+    division_width = first_edge.length / num_divisions
+    print(division_width)
     division_lines = [LineString([(minx + i * division_width, miny),
                                   (minx + i * division_width, maxy)]) for i in range(1, num_divisions)]
 
