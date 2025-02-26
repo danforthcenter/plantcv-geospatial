@@ -6,7 +6,7 @@ from plantcv.geospatial._helpers import (_calc_direction_vectors, _unpack_point_
 import fiona
 
 
-def flexible(img, field_corners_path, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144):
+def flexible(img, field_corners_path, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, row_length=0.9144):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -47,8 +47,8 @@ def flexible(img, field_corners_path, plot_geojson_path, out_path, num_rows=8, r
             anchor_point = points
             p1, p2, p3, p4 = _calc_plot_corners(
                 anchor_point, horizontal_dir, vertical_dir,
-                col_num, range_num=0, range_length=range_length,
-                column_length=column_length)
+                col_num=1, range_num=0, range_length=range_length,
+                row_length=row_length, row_num=col_num)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
