@@ -1,6 +1,6 @@
 ## Create a grid of cells and save them to a new GeoJSON/Shapefile
 
-**geospatial.shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns, num_rows=4, range_length=3.6576, column_length=0.9144, range_spacing=0, column_spacing=0*)
+**geospatial.shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns, range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0*)
 
 **returns** figure
 
@@ -10,9 +10,9 @@
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
     - num_ranges - Number of ranges to get created
     - num_columns - Number of columns to get created
-    - num_rows - Number of rows within a single plot, default: 4
-    - range_length - Length of each grid cell in the horizontal direction, default: 3.6576 (7 feet in meters), in units matching the coordinate system of the `field_corners_path`
-    - column_length - Length of each grid cell in the vertical direction, default: 0.9144 (30 inches in meters), in units matching the coordinate system of the `field_corners_path`
+    - range_length - Length of each grid cell in the horizontal direction, in units matching the coordinate system of the `field_corners_path`
+    - row_length - Length of each grid cell in the vertical direction, in units matching the coordinate system of the `field_corners_path`
+    - num_rows - Number of rows within a single plot, default: 1
     - range_spacing - Length of "alley" spaces between ranges, default: 0
     - column_spacing - Length of "alley" spaces between columns, default: 0
 
@@ -34,7 +34,7 @@ ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR"
 # Create and visualize GeoJSON of plots
 figure = geo.shapes.grid(img=img, field_corners_path="bounds.geojson", 
             out_path="gridcells.geojson", num_ranges=22, num_columns=13,
-            num_rows=1, range_spacing=1.5,  range_length=2.5, column_length=1.6)
+            num_rows=1, range_spacing=1.5,  range_length=2.5, row_length=1.6)
 
 ```
 **Example GeoJSON output figure**

@@ -1,6 +1,6 @@
 ## Create cells from input points GeoJSON and save them to a new GeoJSON
 
-**geospatial.shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, num_rows=8, range_length=3.6576, column_length=0.9144*)
+**geospatial.shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, range_length, column_length, num_rows=1*)
 
 **returns** figure
 
@@ -9,9 +9,9 @@
     - field_corners_path - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - plot_geojson_path - Path to geojson containing plot corner points
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
-    - num_rows - Number of rows per plot, default: 8
-    - range_length - Vertical dimension of each plot, default: 3.6576 (7 feet in meters)
-    - column_length - Horizontal dimension of each plot, default: 0.9144 (30 inches in meters)
+    - range_length - Vertical dimension of each plot, in units matching the coordinate system of the `field_corners_path`
+    - column_length - Horizontal dimension of each plot, in units matching the coordinate system of the `field_corners_path`
+    - num_rows - Number of rows per plot, default: 1
 
 - **Context:**
     - Helpful for precision planters without GPS
@@ -31,8 +31,9 @@ ortho1 = geo.read_geotif(filename="./data/example_maize_img.tif", bands="b,g,r,R
 # Create and visualize GeoJSON of plots
 figure = geo.shapes.flexible(img=ortho1, field_corners_path="bounds.geojson",
             plot_geojson_path="plot_points.geojson",
-            out_path="gridcells.geojson", num_rows=8, 
-            range_length=3.6576, column_length=0.9144)
+            out_path="gridcells.geojson", 
+            range_length=3.6576, row_length=0.9144,
+            num_rows=8)
 
 ```
 **Example GeoJSON inputs & outputs explained**
@@ -49,8 +50,9 @@ ortho2 = geo.read_geotif(filename="./data/example_wheat_img.tif", bands="R,G,B")
 # Create and visualize GeoJSON of plots
 figure2 = geo.shapes.flexible(img=ortho2, field_corners_path="wheat_bounds.geojson",
             plot_geojson_path="wheat_plots.geojson",
-            out_path="wheat_cells.geojson", num_rows=1, 
-            range_length=2.5, column_length=1.6)
+            out_path="wheat_cells.geojson", 
+            range_length=2.5, row_length=1.6,
+            num_rows=1)
 
 ```
 **Example GeoJSON debug image**
