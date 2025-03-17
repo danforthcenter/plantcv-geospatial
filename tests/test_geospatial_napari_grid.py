@@ -1,6 +1,7 @@
 """Tests for geospatial.napari_grid and geospatial.napari_polygon_grid"""
 
 import pytest
+import joblib
 import napari
 import plantcv.geospatial as geo
 import numpy as np
@@ -13,7 +14,7 @@ def test_geospatial_napari_grid(test_data):
                       [136.25692447, 203.82241079],
                       [213.85434974, 139.64724287],
                       [140.45137989,  59.95258989]])
-    img = geo.read_geotif(filename=test_data.rgb_tif, bands="R,G,B")
+    img = joblib.load(test_data.rgb_pickled)
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes(field, name="field_polygon")
