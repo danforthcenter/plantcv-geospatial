@@ -21,6 +21,9 @@ nav:
             - Analyze coverage: analyze_coverage.md 
         - Points to ROI (circular): points2roi_circle.md
         - Read Geo-tif Data: read_geotif.md
+        - Shapefile tools:
+            - Shapes Flexible : shapes_flexible.md
+            - Shapes Grid : shapes_grid.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
         - Save clicked points as geojson: points_to_geojson.md
