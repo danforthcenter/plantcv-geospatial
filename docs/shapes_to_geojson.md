@@ -18,6 +18,7 @@ Using a Napari viewer object with a shapes layer, output a shapefile.
 
 ```python
 import plantcv.geospatial as geo
+import napari
 
 # Read geotif in
 img = geo.read_geotif("./rgb.tif", bands="R,G,B")
