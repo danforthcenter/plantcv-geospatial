@@ -14,8 +14,11 @@ dependencies = [
     "rasterio",
     "fiona",
     "shapely",
+    "geopandas",
     "geojson",
     "napari",
+    "rasterstats",
+    "joblib",
 ]
 requires-python = ">=3.6"
 authors = [
