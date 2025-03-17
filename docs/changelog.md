@@ -25,7 +25,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.napari_polygon_grid
 
-* v0.1dev: **geospatial.napari_polygon_grid**(*viewer, numdivs*)
+* v0.1dev: **geospatial.napari_polygon_grid**(*viewer*)
 
 #### geospatial.read_geotif
 

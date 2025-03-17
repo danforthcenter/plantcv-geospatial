@@ -37,7 +37,7 @@ def _lineintersect(array1, array2):
     return [x, y]
 
 
-def napari_polygon_grid(viewer, numdivs):
+def napari_polygon_grid(viewer):
     """Creates a grid of polygons in a Napari viewer.
 
     Parameters
@@ -51,8 +51,8 @@ def napari_polygon_grid(viewer, numdivs):
     -------
     None
     """
-    linelist1 = viewer.layers["grid_lines"].data[:numdivs[0]+1]
-    linelist2 = viewer.layers["grid_lines"].data[numdivs[0]+1:]
+    linelist1 = viewer.layers["grid_lines1"].data
+    linelist2 = viewer.layers["grid_lines2"].data
 
     polygonlist = []
     for i in range(len(linelist1)-1):

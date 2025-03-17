@@ -3,7 +3,7 @@
 Using a Napari viewer with a shapes layer polygon outlining the whole field, functions `napari_grid` and `napari_polygon_grid` create grid cells around individual units for measurement. Can be followed by either saving out the grid cells in a shapefile (coming soon!) or using the center points to make ROIs using `center_grid_rois`. 
 
 **plantcv.geospatial.napari_grid**(*viewer, numdivs, layername="Shapes"*)
-**plantcv.geospatial.napari_polygon_grid**(*viewer, numdivs*)
+**plantcv.geospatial.napari_polygon_grid**(*viewer*)
 
 Does not return anything, but adds shapes layers to the Napari viewer object that contain first the grid lines and then the polygons created by the line intersections.
 
@@ -38,11 +38,11 @@ viewer.add_shapes(name="field_polygon")
 # Clicking the field corners in a different order will change the axis direction.
 
 # Make grid lines
-geo.napari_grid(viewer, numdivs=[10,76], layername="field_polygon")
+geo.napari_grid(viewer, numdivs=[7,6], layername="field_polygon")
 
 # User can at this point adjust the position of the lines to better match any planting irregularities.
 # Make grid polygons
-geo.napari_polygon_grid(viewer, numdivs=[10,76])
+geo.napari_polygon_grid(viewer)
 
 # At this point, polygons can be adjusted individually for even finer adjustment
 

@@ -1,7 +1,7 @@
 # Takes a napari viewer object with polygons and turns the points into rois
 
-import plantcv.plantcv as pcv
 import shapely
+from plantcv.plantcv.roi import multi, circle
 from shapely.geometry import Polygon
 
 
@@ -28,6 +28,6 @@ def center_grid_rois(img, viewer, radius=10):
         point = shapely.centroid(Polygon(i))
         points_list.append((point.coords[0][1], point.coords[0][0]))
     if len(points_list) > 1:
-        return pcv.roi.multi(img=img, coord=points_list, radius=radius)
-    return pcv.roi.circle(img=img, x=int(points_list[0][0]),
+        return multi(img=img, coord=points_list, radius=radius)
+    return circle(img=img, x=int(points_list[0][0]),
                           y=int(points_list[0][1]), r=radius)
