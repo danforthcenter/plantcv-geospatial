@@ -1,5 +1,5 @@
 # PlantCV-geospatial helper functions
-from shapely.geometry import LineString, Polygon
+from shapely.geometry import LineString
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from plantcv.plantcv import params

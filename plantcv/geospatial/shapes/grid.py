@@ -2,13 +2,13 @@
 
 from shapely.geometry import Polygon, mapping
 from plantcv.geospatial._helpers import (_calc_direction_vectors,
-                                         _calc_plot_corners, _split_subplots,
+                                         _calc_plot_corners,
                                          _show_geojson)
 import fiona
 
 
-def grid(img, field_corners_path, out_path, num_ranges, num_columns, num_rows=4,
-         range_length=3.6576, row_length=0.9144, range_spacing=0, column_spacing=0):
+def grid(img, field_corners_path, out_path, num_ranges, num_columns,
+         range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -19,20 +19,20 @@ def grid(img, field_corners_path, out_path, num_ranges, num_columns, num_rows=4,
         Path to geojson containing four corner points
     out_path : str
         Path where the output grid cells geojson will be saved
-    range_spacing : float
-        Size of alley spaces beteen ranges (default: 0)
-    column_spacing : float
-        Size of alley spaces beteen columns (default: 0)
     num_ranges : int
         Number of ranges (vertical cell rows)
     num_columns : int
         Number of columns (horizontal cell columns)
-    num_rows : int, optional
-        Number of cells to divide the horizontal edge into (default: 4)
     range_length : float, optional
-        Height of each grid cell (default: 3.6576)
-    column_length : float, optional
-        Width of each grid cell (default: 0.9144)
+        Height of each grid cell, units the same as the field_corners_path shapefile CRS
+    row_length : float, optional
+        Width of each grid cell, units the same as the field_corners_path shapefile CRS
+    num_rows : int, optional
+        Number of cells to divide the horizontal edge into (default: 1)
+    range_spacing : float
+        Size of alley spaces beteen ranges, units match shapefile CRS (default: 0)
+    column_spacing : float
+        Size of alley spaces beteen columns, units match shapefile CRS (default: 0)
 
     Returns:
     --------
