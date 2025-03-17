@@ -26,3 +26,7 @@ All notable changes to this project will be documented below.
 #### geospatial.transform_polygons
 
 * v0.1dev: coord = **geospatial.transform_polygons**(*img, geojson*)
+
+#### geospatial.shapes_to_geojson
+
+* v0.1dev: coord = **geospatial.shapes_to_geojson**(*img, viewer, out_path*)
