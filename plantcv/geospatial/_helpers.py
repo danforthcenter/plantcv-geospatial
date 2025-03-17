@@ -146,52 +146,6 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
     return p1, p2, p3, p4
 
 
-def _split_subplots(polygon, num_divisions):
-    """Split a polygon into equidistant subplots
-
-    Parameters:
-    -----------
-    polygon : list
-        Fiona formatted shapefile data
-    row_per_plot : int
-        Number of subplots to get divided
-
-    Returns:
-    --------
-    list
-        List of polygon points
-    """
-    #print(polygon.minimum_rotated_rectangle.bounds)
-    #print(polygon.bounds)
-    minx, miny, maxx, maxy = polygon.oriented_envelope.bounds
-    division_width = (maxx - minx) / num_divisions
-    print(division_width)
-    first_edge = Polygon(polygon.coords[0][0], polygon.coords[1][0])
-    division_width = first_edge.length / num_divisions
-    print(division_width)
-    division_lines = [LineString([(minx + i * division_width, miny),
-                                  (minx + i * division_width, maxy)]) for i in range(1, num_divisions)]
-
-    divided_plots = []
-    for i in range(num_divisions):
-        if i == 0:
-            left_boundary = polygon.bounds[0]
-        else:
-            left_boundary = division_lines[i - 1].coords[0][0]
-
-        if i == num_divisions - 1:
-            right_boundary = polygon.bounds[2]
-        else:
-            right_boundary = division_lines[i].coords[0][0]
-
-        dividing_polygon = Polygon([(left_boundary, miny), (left_boundary, maxy),
-                                    (right_boundary, maxy), (right_boundary, miny)])
-
-        divided_plots.append(polygon.intersection(dividing_polygon))
-
-    return divided_plots
-
-
 def _show_geojson(img, geojson):
     """Split a polygon into equidistant subplots
 
