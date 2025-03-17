@@ -56,7 +56,7 @@ def napari_grid(viewer, numdivs, layername="Shapes"):
     shapes_layer1.add(
         linelist1,
         shape_type='line')
-    
+
     shapes_layer2 = viewer.add_shapes(name='grid_lines2')
     # add mixed shapes using the `add` method
     shapes_layer2.add(
