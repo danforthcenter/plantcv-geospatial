@@ -130,8 +130,8 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
         List of polygon points
     """
     # Calculate corners of each grid cell, starting with bottom_left
-    p1 = (anchor_point[0][0] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[0] + 
-          (range_num * (range_spacing + range_length)) * vertical_dir[0],  # bottom_left 
+    p1 = (anchor_point[0][0] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[0] +
+          (range_num * (range_spacing + range_length)) * vertical_dir[0],  # bottom_left
           anchor_point[0][1] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[1] +
           ((range_num * (range_spacing + range_length)) * vertical_dir[1]))
     p2 = (p1[0] + row_length * horizontal_dir[0],  # bottom_right
