@@ -1,6 +1,6 @@
 ## Create cells from input points GeoJSON and save them to a new GeoJSON
 
-**geospatial.shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, range_length, column_length, num_rows=1*)
+**geospatial.shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
 
 **returns** figure
 
@@ -10,7 +10,7 @@
     - plot_geojson_path - Path to geojson containing plot corner points
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
     - range_length - Vertical dimension of each plot, in units matching the coordinate system of the `field_corners_path`
-    - column_length - Horizontal dimension of each plot, in units matching the coordinate system of the `field_corners_path`
+    - row_length - Horizontal dimension of each plot, in units matching the coordinate system of the `field_corners_path`
     - num_rows - Number of rows per plot, default: 1
 
 - **Context:**

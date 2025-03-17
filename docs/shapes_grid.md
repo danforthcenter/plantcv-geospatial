@@ -1,6 +1,7 @@
 ## Create a grid of cells and save them to a new GeoJSON/Shapefile
 
-**geospatial.shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns, range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0*)
+**geospatial.shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
+         range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0)
 
 **returns** figure
 
