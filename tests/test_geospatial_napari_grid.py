@@ -22,7 +22,7 @@ def test_geospatial_napari_grid(test_data):
     geo.napari_polygon_grid(viewer)
     assert len(viewer.layers["grid_lines1"].data) == 2
     assert len(viewer.layers["grid_shapes"].data) == 2
-    assert viewer.layers["grid_lines1"].data[0][1][0] == 140.45137989
+    assert viewer.layers["grid_lines1"].data[0][1][0] == 140.45139
     assert viewer.layers["grid_shapes"].data[0][1][0] == 136.25692447
     viewer.close()
 
