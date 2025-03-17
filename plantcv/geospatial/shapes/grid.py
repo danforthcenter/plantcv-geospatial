@@ -2,7 +2,7 @@
 
 from shapely.geometry import Polygon, mapping
 from plantcv.geospatial._helpers import (_calc_direction_vectors,
-                                         _calc_plot_corners, _split_subplots,
+                                         _calc_plot_corners,
                                          _show_geojson)
 import fiona
 
