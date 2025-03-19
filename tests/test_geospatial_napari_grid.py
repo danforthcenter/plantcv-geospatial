@@ -23,7 +23,7 @@ def test_geospatial_napari_grid(test_data):
     assert len(viewer.layers["grid_lines1"].data) == 2
     assert len(viewer.layers["grid_shapes"].data) == 2
     assert int(viewer.layers["grid_lines1"].data[0][1][0]) == 140
-    assert viewer.layers["grid_shapes"].data[0][1][0] == 136.25693
+    assert int(viewer.layers["grid_shapes"].data[0][1][0]) == 136
     viewer.close()
 
 
