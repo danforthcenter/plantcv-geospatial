@@ -19,8 +19,10 @@ nav:
     - 'Geopspatial Tools':
         - Analysis tools: 
             - Analyze coverage: analyze_coverage.md 
+        - Grid cells with Napari: napari_field_grid.md
         - Points to ROI (circular): points2roi_circle.md
         - Read Geo-tif Data: read_geotif.md
+        - ROIs from polygon centers: center_grid_rois.md
         - Shapefile tools:
             - Shapes Flexible : shapes_flexible.md
             - Shapes Grid : shapes_grid.md
