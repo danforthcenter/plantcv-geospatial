@@ -145,7 +145,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     if depth < len(bands):
         fatal_error("your image depth is less than the specified number of bands")
     # Mask negative background values
-    img_data[img_data < 0.] = 0
+    #img_data[img_data < 0.] = 0
     if np.sum(img_data) == 0:
         fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
     # Make a list of wavelength keys
