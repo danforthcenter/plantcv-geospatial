@@ -3,9 +3,9 @@ from rasterstats import zonal_stats
 from plantcv.plantcv import outputs, params
 from matplotlib import pyplot as plt
 from rasterio.plot import plotting_extent
+from plantcv.geospatial._helpers import _gather_ids
 import geopandas
 import numpy as np
-import fiona
 import os
 import cv2
 
@@ -39,16 +39,8 @@ def coverage(img, bin_mask, geojson):
 
     total_region = zonal_stats(geojson, all_ones, affine=affine, stats="sum")
 
-    # If IDs within the geojson
-    ids = []
     # Gather list of IDs
-    with fiona.open(geojson, 'r') as shapefile:
-        for i, row in enumerate(shapefile):
-            if 'ID' in row['properties']:
-                ids.append((row['properties']["ID"]))
-            else:
-                # If there are no IDs in the geojson then use default labels
-                ids.append("default_" + str(i))
+    ids = _gather_ids(geojson=geojson)
 
     # Save data to outputs
     for i, id_lbl in enumerate(ids):
