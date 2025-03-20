@@ -193,3 +193,30 @@ def _show_geojson(img, geojson):
         plt.close()
 
     return plotting_img
+
+
+def _gather_ids(geojson):
+    """Split a polygon into equidistant subplots
+
+    Parameters:
+    -----------
+    img : [spectral_object]
+        Spectral_Data object of geotif data, used for plotting
+    geojson : str
+        Path to the shape file containing the regions
+
+    Returns:
+    --------
+    list
+        List of polygon points
+    """
+    with fiona.open(geojson, 'r') as shapefile:
+        # If IDs within the geojson
+        ids = []
+        for i, row in enumerate(shapefile):
+            if 'ID' in row['properties']:
+                ids.append((row['properties']["ID"]))
+            else:
+                # If there are no IDs in the geojson then use default labels
+                ids.append("default_" + str(i))
+    return ids
