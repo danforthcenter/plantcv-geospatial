@@ -56,7 +56,7 @@ def dsm(img, geojson, percentile=[25, 90], label=None):
         if region_lower_avgs[i][lower] is not None:
             avg1 = region_lower_avgs[i][lower]
         outputs.add_observation(sample=id_lbl, variable="soil_elevation",
-                                trait="dsm_mean_below_" + str(percentile[0]),
+                                trait="dsm_percentile_" + str(percentile[0]),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg1, label=label)
@@ -64,7 +64,7 @@ def dsm(img, geojson, percentile=[25, 90], label=None):
         if region_upper_avgs[i][upper] is not None:
             avg2 = region_upper_avgs[i][upper]
         outputs.add_observation(sample=id_lbl, variable="plant_elevation",
-                                trait="dsm_mean_above_" + str(percentile[1]),
+                                trait="dsm_percentile_" + str(percentile[1]),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg2, label=label)
