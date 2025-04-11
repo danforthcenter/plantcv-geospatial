@@ -84,8 +84,6 @@ def coverage(img, bin_mask, geojson):
     bounds.boundary.plot(ax=ax, color="red")
     # Set plot title and labels
     plt.title("Shapefile on GeoTIFF")
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
     # Store the plot
     plotting_img = plt.gcf()
 
