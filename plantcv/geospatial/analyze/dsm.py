@@ -1,8 +1,12 @@
 # Analyze Digital Surface Model (DSM) over many regions
-from rasterstats import zonal_stats
 from plantcv.geospatial._helpers import _gather_ids
 from plantcv.plantcv import outputs, params
+from rasterio.plot import plotting_extent
+from matplotlib import pyplot as plt
+from rasterstats import zonal_stats
 import numpy as np
+import geopandas
+import cv2
 
 
 def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
@@ -75,3 +79,21 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg, label=label)
+        
+    # Plot the GeoTIFF
+    bounds = geopandas.read_file(geojson)
+    # Make a flipped image for graphing
+    flipped = cv2.merge((dsm.pseudo_rgb[:, :, [2]],
+                         dsm.pseudo_rgb[:, :, [1]],
+                         dsm.pseudo_rgb[:, :, [0]]))
+
+    _, ax = plt.subplots(figsize=(10, 10))
+    fig_extent = plotting_extent(dsm.array_data[:, :, :3],
+                                 dsm.metadata['transform'])
+    ax.imshow(flipped, extent=fig_extent)
+    # Plot the shapefile
+    bounds.boundary.plot(ax=ax, color="red")
+    # Set plot title and labels
+    plt.title("Shapefile on GeoTIFF")
+    # Store the plot
+    plotting_img = plt.gcf()
