@@ -53,7 +53,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
         label = params.sample_label
 
     soil_vals = []
-    plant_vals = [] 
+    plant_vals = []
     # Save data to outputs
     for i, id_lbl in enumerate(ids):
         # Initialize no data cases
@@ -95,20 +95,14 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
     bounds['coords'] = bounds['geometry'].apply(lambda x: x.representative_point().coords[:])
     bounds['coords'] = [coords[0] for coords in bounds['coords']]
 
+    # Pseudocolor the DSM for plotting
     _, ax = plt.subplots(figsize=(10, 10))
     fig_extent = plotting_extent(dsm_data,
                                  dsm.metadata['transform'])
     ax.imshow(dsm_data, extent=fig_extent, cmap='viridis', vmin=min_elevation, vmax=max_elevation)
-    ## Add scale bar
-    #plt.colorbar(fraction=0.033, pad=0.04) 
 
     # Plot the shapefile bounds
     bounds.boundary.plot(ax=ax, color="red")
-
-    # # Plot the names of each region in the shapefile
-    # for idx, row in bounds.iterrows():
-    #     plt.annotate(s=row['NAME'], xy=row['coords'],
-    #              horizontalalignment='center')
 
     # Set plot title and labels
     plt.title("Shapefile on DSM")
