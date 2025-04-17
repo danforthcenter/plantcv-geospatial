@@ -1,7 +1,7 @@
 import pytest
 import joblib
 from plantcv.plantcv import outputs, params
-from plantcv.geospatial.analyze import height_percentile as height_percentile
+from plantcv.geospatial.analyze import height_percentile
 
 
 @pytest.mark.parametrize("debug", ["print", "plot", None])
