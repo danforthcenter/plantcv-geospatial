@@ -16,7 +16,7 @@ lower percentile and uses the upper percentile as plot elevation.
 
 - **Context:**
     - This function will utilize the geojson's `ID` attribute for `Outputs` labels if available. 
-    - **Output data stored:** Data ('soil_elevation', 'plot_elevation', 'plot_height') automatically gets stored to the [`Outputs` class](https://plantcv.readthedocs.io/en/stable/outputs/#class-outputs) when this function is run. These data can be accessed during a workflow (example below). For more detail about data output see [Summary of Output Observations](https://plantcv.readthedocs.io/en/stable/output_measurements/).
+    - **Output data stored:** Data ('soil_elevation', 'plant_elevation', 'plant_height') automatically gets stored to the [`Outputs` class](https://plantcv.readthedocs.io/en/stable/outputs/#class-outputs) when this function is run. These data can be accessed during a workflow (example below). For more detail about data output see [Summary of Output Observations](https://plantcv.readthedocs.io/en/stable/output_measurements/).
 
 - **Example use:**
     - Example images and geojson from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
