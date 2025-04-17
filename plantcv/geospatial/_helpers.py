@@ -196,7 +196,7 @@ def _show_geojson(img, geojson):
 
 
 def _gather_ids(geojson):
-    """Split a polygon into equidistant subplots
+    """Gather plot IDs from a geojson if available, or auto-populate with default labels
 
     Parameters:
     -----------
@@ -216,6 +216,8 @@ def _gather_ids(geojson):
         for i, row in enumerate(shapefile):
             if 'ID' in row['properties']:
                 ids.append((row['properties']["ID"]))
+            elif 'FID' in row['properties']:
+                ids.append((row['properties']["FID"]))
             else:
                 # If there are no IDs in the geojson then use default labels
                 ids.append("default_" + str(i))
