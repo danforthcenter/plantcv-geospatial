@@ -7,6 +7,9 @@ from plantcv.geospatial.points2roi import points2roi_circle
 from plantcv.geospatial.shapes_to_geojson import shapes_to_geojson
 from plantcv.geospatial import analyze
 from plantcv.geospatial import shapes
+from plantcv.geospatial.napari_grid import napari_grid
+from plantcv.geospatial.napari_polygon_grid import napari_polygon_grid
+from plantcv.geospatial.center_grid_rois import center_grid_rois
 
 # Auto versioning
 __version__ = version("plantcv-geospatial")
@@ -20,5 +23,8 @@ __all__ = [
     "analyze",
     "points2roi_circle",
     "shapes_to_geojson",
-    "shapes"
+    "shapes",
+    "napari_grid",
+    "napari_polygon_grid",
+    "center_grid_rois"
 ]
