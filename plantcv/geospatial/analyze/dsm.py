@@ -30,7 +30,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
     if dsm.metadata['nodata']:
         nodata_value = dsm.metadata['nodata']
     else:
-        nodata_value = -9999
+        nodata_value = -999
     # Scale of the data
     scale = dsm.metadata["crs"].linear_units
     # Filter out no data values, but keep shape by replacing with no-data value
