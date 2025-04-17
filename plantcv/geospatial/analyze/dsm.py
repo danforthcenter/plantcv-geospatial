@@ -33,16 +33,15 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
         nodata_value = -999
     # Scale of the data
     scale = dsm.metadata["crs"].linear_units
-    # Filter out no data values, but keep shape by replacing with no-data value
-    actual_values = np.where(dsm_data != nodata_value, dsm_data, nodata_value)
+
     # Vectorize the calculation of mean elevation per region
     lower = "percentile_" + str(percentile[0])
-    region_lower_avgs = zonal_stats(geojson, actual_values,
+    region_lower_avgs = zonal_stats(geojson, dsm_data,
                                     affine=dsm.metadata["transform"],
                                     nodata=nodata_value, stats=lower)
     # Vectorize the calculation of mean elevation per region
     upper = "percentile_" + str(percentile[1])
-    region_upper_avgs = zonal_stats(geojson, actual_values,
+    region_upper_avgs = zonal_stats(geojson, dsm_data,
                                     affine=dsm.metadata["transform"],
                                     nodata=nodata_value, stats=upper)
     # Gather plot IDs from the geojson
