@@ -26,10 +26,10 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read geotif in
-ortho1 = gcv.read_geotif(filename="./data/example_dsm.tif", bands="0")
+dsm = gcv.read_geotif(filename="./data/example_dsm.tif", bands="0")
 # Create or read in a binary mask 
 # Analyze coverage for each region in the geojson
-vis = gcv.analyze.height_percentile(img=ortho1,
+bounds = gcv.analyze.height_percentile(img=dsm,
                            geojson="./shapefiles/experimental_plots.geojson",
                            percentile = [25,90],
                            label="default")
@@ -38,6 +38,6 @@ vis = gcv.analyze.height_percentile(img=ortho1,
 print(pcv.outputs.observations["default_0"]["plot_height"]["value"])
 
 ```
-![Screenshot](documentation_images/analyze_dsm.png)
+![Screenshot](documentation_images/analyze_height_percentile.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/dsm.py)
