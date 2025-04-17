@@ -117,7 +117,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
     if params.debug is not None:
         if params.debug == 'print':
             plt.savefig(os.path.join(params.debug_outdir, str(
-                params.device) + '_analyze_coverage.png'), dpi=params.dpi)
+                params.device) + '_analyze_height_percentile.png'), dpi=params.dpi)
             plt.close()
         elif params.debug == 'plot':
             # Use non-blocking mode in case the function is run more than once
