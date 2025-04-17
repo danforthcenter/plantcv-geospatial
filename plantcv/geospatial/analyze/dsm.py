@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
 import numpy as np
 import geopandas
-import cv2
+import os
 
 
 def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
@@ -52,6 +52,8 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
     if label is None:
         label = params.sample_label
 
+    soil_vals = []
+    plant_vals = [] 
     # Save data to outputs
     for i, id_lbl in enumerate(ids):
         # Initialize no data cases
@@ -60,40 +62,67 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
         if region_lower_avgs[i][lower] is not None:
             avg1 = region_lower_avgs[i][lower]
         outputs.add_observation(sample=id_lbl, variable="soil_elevation",
-                                trait="dsm_percentile_" + str(percentile[0]),
+                                trait="dsm_mean_below_" + str(percentile[0]),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg1, label=label)
+        soil_vals.append(avg1)
         # Save plant heights
         if region_upper_avgs[i][upper] is not None:
             avg2 = region_upper_avgs[i][upper]
-        outputs.add_observation(sample=id_lbl, variable="plot_elevation",
-                                trait="dsm_percentile_" + str(percentile[1]),
+        outputs.add_observation(sample=id_lbl, variable="plant_elevation",
+                                trait="dsm_mean_above_" + str(percentile[1]),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg2, label=label)
+        plant_vals.append(avg2)
         if avg1 != 0 and avg2 != 0:
             avg = avg2 - avg1
-        outputs.add_observation(sample=id_lbl, variable="plot_height",
+        outputs.add_observation(sample=id_lbl, variable="plant_height",
                                 trait="height",
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg, label=label)
-        
+
+    # Min and max height of plots
+    min_elevation = min(soil_vals)
+    max_elevation = max(plant_vals)
+
     # Plot the GeoTIFF
     bounds = geopandas.read_file(geojson)
-    # Make a flipped image for graphing
-    flipped = cv2.merge((dsm.pseudo_rgb[:, :, [2]],
-                         dsm.pseudo_rgb[:, :, [1]],
-                         dsm.pseudo_rgb[:, :, [0]]))
+
+    # Gather representative coordinates for each polygone in the shapefile
+    bounds['coords'] = bounds['geometry'].apply(lambda x: x.representative_point().coords[:])
+    bounds['coords'] = [coords[0] for coords in bounds['coords']]
 
     _, ax = plt.subplots(figsize=(10, 10))
-    fig_extent = plotting_extent(dsm.array_data[:, :, :3],
+    fig_extent = plotting_extent(dsm_data,
                                  dsm.metadata['transform'])
-    ax.imshow(flipped, extent=fig_extent)
-    # Plot the shapefile
+    ax.imshow(dsm_data, extent=fig_extent, cmap='viridis', vmin=min_elevation, vmax=max_elevation)
+    ## Add scale bar
+    #plt.colorbar(fraction=0.033, pad=0.04) 
+
+    # Plot the shapefile bounds
     bounds.boundary.plot(ax=ax, color="red")
+
+    # # Plot the names of each region in the shapefile
+    # for idx, row in bounds.iterrows():
+    #     plt.annotate(s=row['NAME'], xy=row['coords'],
+    #              horizontalalignment='center')
+
     # Set plot title and labels
-    plt.title("Shapefile on GeoTIFF")
-    # Store the plot
-    plotting_img = plt.gcf()
+    plt.title("Shapefile on DSM")
+    
+    # Print or plot if debug is turned on
+    if params.debug is not None:
+        if params.debug == 'print':
+            plt.savefig(os.path.join(params.debug_outdir, str(
+                params.device) + '_analyze_coverage.png'), dpi=params.dpi)
+            plt.close()
+        elif params.debug == 'plot':
+            # Use non-blocking mode in case the function is run more than once
+            plt.show(block=False)
+    else:
+        plt.close()
+
+    return bounds
