@@ -3,14 +3,14 @@
 Vectorize approach to height estimation per region in a shapefile using a binary mask. Calculates the soil elevation as the
 lower percentile and uses the upper percentile as plot elevation. 
 
-**plantcv.geospatial.analyze.height_percentile**(*dsm, geojson, percentile=[25, 90], label=None)*)
+**plantcv.geospatial.analyze.height_percentile**(*dsm, geojson, lower=25, upper=90, label=None*)
 
 **returns** Debug image with regions drawn on the input DSM (digital surface model).
 
 - **Parameters:**
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
-    - percentile - Percetile cut off, input as a list formatted `[lower_percentile, upper_percentile]`,
-                   default `percentile=[25, 90]`
+    - lower - Lower percetile cut off, default `lower=25`
+    - upper - Upper percetile cut off, default `upper=90`
     - geojson - Path to the shapefile/GeoJSON containing the points. Can be Polygon or MultiPolygon geometry.
     - label - Optional label parameter, modifies the variable name of observations recorded. Can be a prefix, or list (default = `pcv.params.sample_label`)
 
@@ -31,7 +31,8 @@ dsm = gcv.read_geotif(filename="./data/example_dsm.tif", bands="0")
 # Analyze coverage for each region in the geojson
 bounds = gcv.analyze.height_percentile(dsm=dsm,
                            geojson="./shapefiles/experimental_plots.geojson",
-                           percentile = [25,90],
+                           lower=25,
+                           upper=90,
                            label="default")
 
 # To access individual observation values:

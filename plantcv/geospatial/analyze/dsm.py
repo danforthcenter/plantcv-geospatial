@@ -9,13 +9,13 @@ import geopandas
 import os
 
 
-def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
+def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     """A function that analyzes elevation averages over regions and outputs data.
     Inputs:
     dsm          = Spectral_Data object of geotif data, used for affine metadata
     geojson      = Path to the shape file containing the regions for analysis
-    percentile   = Percetile cut off, input as a list formatted [lower_percentile, upper_percentile],
-                   default percentile=[25, 90]
+    lower        = Lower percetile cut off, input as a list formatted  default lower=25
+    upper        = Upper percetile cut off, input as a list formatted  default upper=90
     label        = Optional label parameter, modifies the variable name of
                    observations recorded (default = pcv.params.sample_label).
 
@@ -36,12 +36,12 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
     scale = dsm.metadata["crs"].linear_units
 
     # Vectorize the calculation of mean elevation per region
-    lower = "percentile_" + str(percentile[0])
+    lower = "percentile_" + str(lower)
     region_lower_avgs = zonal_stats(geojson, dsm_data,
                                     affine=dsm.metadata["transform"],
                                     nodata=nodata_value, stats=lower)
     # Vectorize the calculation of mean elevation per region
-    upper = "percentile_" + str(percentile[1])
+    upper = "percentile_" + str(upper)
     region_upper_avgs = zonal_stats(geojson, dsm_data,
                                     affine=dsm.metadata["transform"],
                                     nodata=nodata_value, stats=upper)
@@ -62,7 +62,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
         if region_lower_avgs[i][lower] is not None:
             avg1 = region_lower_avgs[i][lower]
         outputs.add_observation(sample=id_lbl, variable="soil_elevation",
-                                trait="dsm_mean_below_" + str(percentile[0]),
+                                trait="dsm_mean_below_" + str(lower),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg1, label=label)
@@ -71,7 +71,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
         if region_upper_avgs[i][upper] is not None:
             avg2 = region_upper_avgs[i][upper]
         outputs.add_observation(sample=id_lbl, variable="plant_elevation",
-                                trait="dsm_mean_above_" + str(percentile[1]),
+                                trait="dsm_mean_above_" + str(upper),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
                                 value=avg2, label=label)

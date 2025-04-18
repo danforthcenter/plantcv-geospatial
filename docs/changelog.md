@@ -9,7 +9,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.analyze.height_percentile
 
-* v0.1dev: **geospatial.analyze.height_percentile**(*dsm, geojson, percentile=[25,90], label=None*)
+* v0.1dev: **geospatial.analyze.height_percentile**(*dsm, geojson, lower=25, upper=90, label=None*)
 
 #### geospatial.points2roi_circle
 
