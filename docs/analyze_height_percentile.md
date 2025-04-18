@@ -29,13 +29,13 @@ import plantcv.plantcv as pcv
 dsm = gcv.read_geotif(filename="./data/example_dsm.tif", bands="0")
 # Create or read in a binary mask 
 # Analyze coverage for each region in the geojson
-bounds = gcv.analyze.height_percentile(img=dsm,
+bounds = gcv.analyze.height_percentile(dsm=dsm,
                            geojson="./shapefiles/experimental_plots.geojson",
                            percentile = [25,90],
                            label="default")
 
 # To access individual observation values:
-print(pcv.outputs.observations["default_0"]["plot_height"]["value"])
+print(pcv.outputs.observations["default_0"]["plant_height"]["value"])
 
 ```
 ![Screenshot](documentation_images/analyze_height_percentile.png)
