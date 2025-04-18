@@ -106,7 +106,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
 
     # Set plot title and labels
     plt.title("Shapefile on DSM")
-    
+
     # Print or plot if debug is turned on
     if params.debug is not None:
         if params.debug == 'print':
