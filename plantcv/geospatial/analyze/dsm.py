@@ -28,7 +28,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
     dsm_data = dsm.array_data[:, :, 0]
     dsm_data.astype(np.float32)
 
-    if dsm.metadata['nodata']:
+    if dsm.metadata['nodata'] is not None:
         nodata_value = dsm.metadata['nodata']
     else:
         nodata_value = -999
