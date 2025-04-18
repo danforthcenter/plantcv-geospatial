@@ -26,6 +26,7 @@ def height_percentile(dsm, geojson, percentile=[25, 90], label=None):
     """
     # DSM tifs contain just one band of data, so make the array 2D
     dsm_data = dsm.array_data[:, :, 0]
+    dsm_data.astype(np.float32)
 
     if dsm.metadata['nodata']:
         nodata_value = dsm.metadata['nodata']
