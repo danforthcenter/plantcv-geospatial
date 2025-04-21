@@ -27,5 +27,6 @@ def test_height_percentile_with_geo_ids(test_data):
     outputs.clear()
     # Read in test data
     img = joblib.load(test_data.rgb_pickled)
+    img.metadata['nodata'] = 0
     _ = height_percentile(dsm=img, geojson=test_data.geojson_with_id)
     assert outputs.observations["888"]["plant_height"]["value"] > 0
