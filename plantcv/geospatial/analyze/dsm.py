@@ -27,7 +27,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     # DSM tifs contain just one band of data, so make the array 2D
     dsm_data = dsm.array_data[:, :, 0]
     # Cast to float since zonal_stats gives overflow error on uint8 data
-    dsm_data = dsm_data.astype(np.float32)  
+    dsm_data = dsm_data.astype(np.float32)
 
     if dsm.metadata['nodata'] is not None:
         nodata_value = dsm.metadata['nodata']

@@ -1,4 +1,5 @@
-import pytest
+"""Tests for geospatial.analyze.height_percentile"""
+
 import joblib
 from plantcv.plantcv import outputs, params
 from plantcv.geospatial.analyze import height_percentile
