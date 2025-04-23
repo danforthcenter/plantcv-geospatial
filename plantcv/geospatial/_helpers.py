@@ -208,7 +208,7 @@ def _gather_ids(geojson):
     Returns:
     --------
     list
-        List of polygon points
+        List of polygon IDs
     """
     with fiona.open(geojson, 'r') as shapefile:
         # If IDs within the geojson
