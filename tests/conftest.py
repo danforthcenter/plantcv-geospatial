@@ -28,8 +28,10 @@ class TestData:
         self.single_pts_geojson = os.path.join(self.datadir, "single_test_pts.geojson")
         # polygon shapefile
         self.square_crop = os.path.join(self.datadir, "square_crop.geojson")
-         # polygon shapefile with "ID" in properties
+        # polygon shapefile with "ID" in properties
         self.geojson_with_id = os.path.join(self.datadir, "square_crop_with_id.geojson")
+        # polygon shapefile with "ID" in properties
+        self.geojson_with_fid = os.path.join(self.datadir, "square_crop_with_fid.geojson")
         # points shapefile
         self.point_crop = os.path.join(self.datadir, "point_crop.geojson")
         # multi polygon shapefile
