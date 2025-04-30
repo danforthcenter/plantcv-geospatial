@@ -14,8 +14,8 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     Inputs:
     dsm          = Spectral_Data object of geotif data, used for affine metadata
     geojson      = Path to the shape file containing the regions for analysis
-    lower        = Lower percetile cut off, input as a list formatted  default lower=25
-    upper        = Upper percetile cut off, input as a list formatted  default upper=90
+    lower        = Lower percentile cut off, input as a list formatted  default lower=25
+    upper        = Upper percentile cut off, input as a list formatted  default upper=90
     label        = Optional label parameter, modifies the variable name of
                    observations recorded (default = pcv.params.sample_label).
 
