@@ -1,4 +1,4 @@
-# Welcome to the documentation for PlantCV-Geopspatial
+# Welcome to the documentation for PlantCV-Geospatial
 
 ## Overview
 
