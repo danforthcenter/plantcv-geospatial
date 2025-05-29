@@ -2,10 +2,10 @@
 
 Using a Napari viewer object with a shapes layer, output a shapefile.  
 
-**geospatial.shapes_to_geojson**(*img, viewer, out_path, shapetype="polygon"*)
+**plantcv.geospatial.shapes_to_geojson**(*img, viewer, out_path, shapetype="polygon"*)
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
+    - img - Spectral image object, likely read in with [`read_geotif`](read_geotif.md)
     - viewer - Napari viewer class object, possible created with PlantCV-Annotate.
     - out_path - Path to save the geojson shapefile. Must be ".geojson" file type. 
     - shapetype - The type of geometry contained in the shapes layer.
@@ -17,11 +17,11 @@ Using a Napari viewer object with a shapes layer, output a shapefile.
 
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 import napari
 
 # Read geotif in
-img = geo.read_geotif("./rgb.tif", bands="R,G,B")
+img = gcv.read_geotif("./rgb.tif", bands="R,G,B")
 
 viewer = napari.Viewer()
 viewer.add_image(img.pseudo_rgb)
@@ -32,7 +32,7 @@ viewer.add_shapes()
 ```
 ```python
 # In a separate cell, save the output after drawing shapes:
-geo.shapes_to_geojson(img, viewer, out_path="./plot_boundaries.geojson", shapetype="polygon")
+gcv.shapes_to_geojson(img, viewer, out_path="./plot_boundaries.geojson", shapetype="polygon")
 ```
 
 ![Screenshot](documentation_images/napari_shapes.png)

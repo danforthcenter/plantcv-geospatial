@@ -1,6 +1,6 @@
 ## Create cells from input points GeoJSON and save them to a new GeoJSON
 
-**geospatial.shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
+**plantcv.geospatial.shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
 
 **returns** figure
 
@@ -24,12 +24,12 @@
 
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho1 = geo.read_geotif(filename="./data/example_maize_img.tif", bands="b,g,r,RE,NIR")
+ortho1 = gcv.read_geotif(filename="./data/example_maize_img.tif", bands="b,g,r,RE,NIR")
 # Create and visualize GeoJSON of plots
-figure = geo.shapes.flexible(img=ortho1, field_corners_path="bounds.geojson",
+figure = gcv.shapes.flexible(img=ortho1, field_corners_path="bounds.geojson",
             plot_geojson_path="plot_points.geojson",
             out_path="gridcells.geojson", 
             range_length=3.6576, row_length=0.9144,
@@ -43,12 +43,12 @@ figure = geo.shapes.flexible(img=ortho1, field_corners_path="bounds.geojson",
 ![Screenshot](documentation_images/irregular_grid_cells.png)
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho2 = geo.read_geotif(filename="./data/example_wheat_img.tif", bands="R,G,B")
+ortho2 = gcv.read_geotif(filename="./data/example_wheat_img.tif", bands="R,G,B")
 # Create and visualize GeoJSON of plots
-figure2 = geo.shapes.flexible(img=ortho2, field_corners_path="wheat_bounds.geojson",
+figure2 = gcv.shapes.flexible(img=ortho2, field_corners_path="wheat_bounds.geojson",
             plot_geojson_path="wheat_plots.geojson",
             out_path="wheat_cells.geojson", 
             range_length=2.5, row_length=1.6,
