@@ -8,8 +8,8 @@ import rasterio
 from plantcv.plantcv import params, transform
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.classes import Spectral_data
-from geopandas import GeoDataFrame
 from plantcv.geospatial.read_geotif import _find_closest_unsorted
+from geopandas import GeoDataFrame
 
 
 def _combine_bands(ds):

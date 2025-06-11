@@ -1,6 +1,5 @@
-"""Tests for geospatial.readd_geotif."""
+"""Tests for geospatial.read_netcdf."""
 
-import pytest
 import os
 from plantcv.geospatial import read_netcdf
 
