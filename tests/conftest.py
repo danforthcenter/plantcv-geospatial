@@ -42,6 +42,9 @@ class TestData:
         self.plot_bounds = os.path.join(self.datadir, "docs_four_points.geojson")
         # plot points shapefile
         self.plot_points = os.path.join(self.datadir, "plot_points.geojson")
+        # read netcdf example file and cropping shapefile
+        self.test_netcdf = os.path.join(self.datadir, "subset_test.nc")
+        self.netcdf_testcrop = os.path.join(self.datdir, "netcdf_test.geojson")
 
 @pytest.fixture(scope="session")
 def test_data():
