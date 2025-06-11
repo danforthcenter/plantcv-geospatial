@@ -26,7 +26,7 @@ spectral_data = read_netcdf(nasafile, "./bigspiritlake.geojson")
 
 ```
 
-![Screenshot](documentation_images/multispec_pseudo_rgb.png)
+![Screenshot](documentation_images/bigspiritlake.png)
 
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read_netcdf.py)
