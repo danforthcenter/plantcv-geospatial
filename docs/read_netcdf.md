@@ -18,11 +18,11 @@ Read in data from a NetCDF file, formatted as NASA data downloads with all bands
     - below
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 
 # Read in NetCDF file
 nasafile = "./sentinel-3_example.nc"
-spectral_data = read_netcdf(nasafile, "./bigspiritlake.geojson") 
+spectral_data = gcv.read_netcdf(nasafile, "./bigspiritlake.geojson") 
 
 ```
 
