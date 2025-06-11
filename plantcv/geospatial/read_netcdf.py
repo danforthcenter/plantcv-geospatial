@@ -6,10 +6,10 @@ import cv2
 import os
 import rasterio
 from plantcv.plantcv import params, transform
-from geopandas import GeoDataFrame
-from plantcv.geospatial.read_geotif import _find_closest_unsorted
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.classes import Spectral_data
+from geopandas import GeoDataFrame
+from plantcv.geospatial.read_geotif import _find_closest_unsorted
 
 
 def _combine_bands(ds):
@@ -67,14 +67,14 @@ def _crop_allbands(fulldf, ds, bounds):
     lat_cropped : numpy ndarray
         Cropped latitude data frame
     lon_cropped : numpy ndarray
-        Cropped longitutde data frame 
+        Cropped longitutde data frame
     """
     # Read in lat/long data from dataset
-    longs = (np.array(ds.groups['navigation_data'].variables['longitude']))
-    lats = (np.array(ds.groups['navigation_data'].variables['latitude']))
+    longs = np.array(ds.groups['navigation_data'].variables['longitude'])
+    lats = np.array(ds.groups['navigation_data'].variables['latitude'])
 
     # Find rows and columns that fit within cropping bounds
-    valid_mask = ((lats >= bounds[1]) & (lats <= bounds[3]) & 
+    valid_mask = ((lats >= bounds[1]) & (lats <= bounds[3]) &
                   (longs >= bounds[0]) & (longs <= bounds[2]))
 
     valid_rows, valid_cols = np.where(valid_mask)
@@ -86,7 +86,7 @@ def _crop_allbands(fulldf, ds, bounds):
     fulldf_cropped = fulldf[row_min:row_max+1, col_min:col_max+1]
     lat_cropped = lats[row_min:row_max+1, col_min:col_max+1]
     lon_cropped = longs[row_min:row_max+1, col_min:col_max+1]
-    
+
     return fulldf_cropped, lat_cropped, lon_cropped
 
 
@@ -116,11 +116,11 @@ def read_netcdf(filename, cropto, output=False):
 
     # Crop to bounds
     cropped, lat, lon = _crop_allbands(fulldf, ds, bounds)
-    
+
     # Calculate affine (important if outputting geotif)
     aff_bounds = rasterio.transform.from_bounds(np.min(lon), np.min(lat), np.max(lon),
-                             np.max(lat), lat.shape[1], lat.shape[0])
-    
+                                                np.max(lat), lat.shape[1], lat.shape[0])
+
     # Make the pseudo_rgb
     id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
     id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
@@ -135,7 +135,7 @@ def read_netcdf(filename, cropto, output=False):
                 "dtype": cropped.dtype, "count": depth,
                 "nodata": 0, "crs": rasterio.crs.CRS.from_string("EPSG:4326"),
                 "transform": aff_bounds}
-    
+
     # Make a spectral object
     spectral_array = Spectral_data(array_data=cropped,
                                    max_wavelength=max(wavelengths, key=wavelengths.get),
