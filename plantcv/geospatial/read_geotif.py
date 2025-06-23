@@ -132,6 +132,9 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         if len(np.unique(img_data[:, :, [i]])) == 2:
             mask_layer = img_data[:, :, [i]]
             img_data = np.delete(img_data, i, 2)
+    # Check if img is uint16
+    if img_data.dtype == "uint16":
+        img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
 
     # Parse bands if input is a string
     if isinstance(bands, str):
