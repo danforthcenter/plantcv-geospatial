@@ -20,6 +20,8 @@ class TestData:
         self.empty_tif = os.path.join(self.datadir, "cropped_empty.tif")
         # rgb image
         self.rgb_tif = os.path.join(self.datadir, "rgb.tif")
+        # rgb uint16 image
+        self.rgb_uint16_tif = os.path.join(self.datadir, "rgb_uint16.tif")
         # rgb pickled
         self.rgb_pickled = os.path.join(self.datadir, "rgb_img.spectral")
         # multiPoints shapefilex
