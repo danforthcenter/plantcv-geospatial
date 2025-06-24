@@ -18,6 +18,7 @@ Transform the points from a polygon or multi polygon-type georeferenced shapefil
 
 ```python
 import plantcv.geospatial as gcv
+import plantcv.plantcv as pcv
 
 # Read geotif in
 spectral = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
