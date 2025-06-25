@@ -7,7 +7,7 @@ Transform the points from a polygon or multi polygon-type georeferenced shapefil
 **returns** list of transformed coordinates
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
+    - img - Spectral image object, likely read in with [`read_geotif`](read_geotif.md)
     - geojson - Path to the shapefile/GeoJSON containing the points. Can be Polygon or MultiPolygon geometry.
 
 - **Context:**
@@ -17,11 +17,12 @@ Transform the points from a polygon or multi polygon-type georeferenced shapefil
 
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
+import plantcv.plantcv as pcv
 
 # Read geotif in
-spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-coords = geo.transform_polygons(img=spectral, geojson="./polygons_example.geojson")
+spectral = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+coords = gcv.transform_polygons(img=spectral, geojson="./polygons_example.geojson")
 # plot ROI from first shape in list 
 roi_objects = pcv.roi.custom(img=spectral.pseudo_rgb, vertices=coords[0])
 

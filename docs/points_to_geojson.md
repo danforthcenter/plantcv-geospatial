@@ -2,7 +2,7 @@
 
 Using a Napari or PlantCV-annotate viewer object with clicked points, output a shapefile.  
 
-**geospatial.points_to_geojson**(*img, viewer, out_path*)
+**plantcv.geospatial.points_to_geojson**(*img, viewer, out_path*)
 
 - **Parameters:**
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
@@ -16,11 +16,11 @@ Using a Napari or PlantCV-annotate viewer object with clicked points, output a s
 
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 import plantcv.annotate as an
 
 # Read geotif in
-img = geo.read_geotif("../read_geotif/rgb.tif", bands="R,G,B")
+img = gcv.read_geotif("../read_geotif/rgb.tif", bands="R,G,B")
 viewer = an.napari_open(img=img.pseudo_rgb)
 viewer.add_points()
 
@@ -28,7 +28,7 @@ viewer.add_points()
 ```
 ```python
 # In a separate cell, save the output after clicking:
-geo.points_to_geojson(img, viewer, out_path="./points_example.geojson")
+gcv.points_to_geojson(img, viewer, out_path="./points_example.geojson")
 ```
 
 ![Screenshot](documentation_images/napari_clicks.png)
