@@ -10,6 +10,7 @@ from plantcv.geospatial import shapes
 from plantcv.geospatial.napari_grid import napari_grid
 from plantcv.geospatial.napari_polygon_grid import napari_polygon_grid
 from plantcv.geospatial.center_grid_rois import center_grid_rois
+from plantcv.geospatial.read_netcdf import read_netcdf
 
 # Auto versioning
 __version__ = version("plantcv-geospatial")
@@ -26,5 +27,6 @@ __all__ = [
     "shapes",
     "napari_grid",
     "napari_polygon_grid",
-    "center_grid_rois"
+    "center_grid_rois",
+    "read_netcdf"
 ]
