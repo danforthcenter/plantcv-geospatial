@@ -35,6 +35,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None*)
 
+#### geospatial.read_netcdf
+
+* v0.1dev: spectral = **geospatial.read_netcdf**(*filename, cropto, output=False*)
+
 #### geospatial.shapes.grid
 
 * v0.1dev: cells = **geospatial.shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,

@@ -23,6 +23,7 @@ nav:
         - Grid cells with Napari: napari_field_grid.md
         - Points to ROI (circular): points2roi_circle.md
         - Read Geo-tif Data: read_geotif.md
+        - Read NetCDF Data: read_netcdf.md
         - ROIs from polygon centers: center_grid_rois.md
         - Shapefile tools:
             - Shapes Flexible : shapes_flexible.md
