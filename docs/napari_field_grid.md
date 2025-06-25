@@ -22,12 +22,12 @@ Does not return anything, but adds shapes layers to the Napari viewer object tha
 ```python
 import plantcv.plantcv as pcv
 import plantcv.annotate as an
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 
 pcv.params.debug = "plot"
 
 # Read geotif in
-img = geo.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
+img = gcv.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
 # Open a napari viewer and add a shapes layer called "field_polygon"
 viewer = an.napari_open(img=img.pseudo_rgb)
 viewer.add_shapes(name="field_polygon")
@@ -38,11 +38,11 @@ viewer.add_shapes(name="field_polygon")
 # Clicking the field corners in a different order will change the axis direction.
 
 # Make grid lines
-geo.napari_grid(viewer, numdivs=[7,6], layername="field_polygon")
+gcv.napari_grid(viewer, numdivs=[7,6], layername="field_polygon")
 
 # User can at this point adjust the position of the lines to better match any planting irregularities.
 # Make grid polygons
-geo.napari_polygon_grid(viewer)
+gcv.napari_polygon_grid(viewer)
 
 # At this point, polygons can be adjusted individually for even finer adjustment
 

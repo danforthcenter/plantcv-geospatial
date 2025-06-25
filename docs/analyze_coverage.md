@@ -19,14 +19,14 @@ Vectorize approach to pixel count and percent coverage per region in a shapefile
     - Example images and geojson from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read geotif in
-ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 # Create or read in a binary mask 
 # Analyze coverage for each region in the geojson
-vis = geo.analyze.coverage(img=ortho1, bin_mask=plant_mask,
+vis = gcv.analyze.coverage(img=ortho1, bin_mask=plant_mask,
                            geojson="./shapefiles/experimental_plots.geojson")
 
 # To access individual observation values:

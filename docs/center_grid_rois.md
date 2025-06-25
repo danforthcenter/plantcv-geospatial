@@ -21,12 +21,12 @@ After using a Napari viewer, and possibly the combination of `napari_grid` and `
 ```python
 import plantcv.plantcv as pcv
 import plantcv.annotate as an
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 
 pcv.params.debug = "plot"
 
 # Read geotif in
-img = geo.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
+img = gcv.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
 # Open a napari viewer and add a shapes layer called "grid_shapes"
 viewer = an.napari_open(img=img.pseudo_rgb)
 viewer.add_shapes(name="grid_shapes")
@@ -34,7 +34,7 @@ viewer.add_shapes(name="grid_shapes")
 # Now, when the Napari viewer opens, the user can add polygons around individual plants or plots.
 
 # Draw ROIs
-rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=9)
+rois = gcv.center_grid_rois(img.pseudo_rgb, viewer, radius=9)
 
 # Resulting ROIs can be used for downstream analysis of individual objects in PlantCV
 
