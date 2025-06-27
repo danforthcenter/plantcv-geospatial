@@ -1,11 +1,11 @@
 ## Installation
 
 ### Table of contents
-1. [Supported platforms and dependencies](#dependencies)
+1. [Supported platforms and dependencies](#OS)
 2. [Install via a package manager](#install)
 3. [Installing PlantCV-Geospatial for contributors](#contributors)
 
-### Supported platforms and dependencies <a name="dependencies"></a>
+### Supported platforms <a name="OS"></a>
 - Linux 64-bit, x86 processors
 - macOS x86 (Intel) and M (ARM) processors
 - Windows 64-bit, x86 processors
@@ -22,7 +22,7 @@ conda activate plantcv
 # Install plantcv-geospatial in editable mode so that it updates as you work on new features/updates
 git clone https://github.com/danforthcenter/plantcv-geospatial.git 
 cd plantcv-geospatial 
-pip install -e .
+pip install -e . --config-settings editable_mode=strict
 ```
 
 ### Installing PlantCV-Geospatial for contributors <a name="contributors"></a>
