@@ -37,7 +37,7 @@ def spectral_grab(x, props=None):
     print(props)
 
 
-def spectral(img, geojson):
+def spectral_index(img, geojson):
     """A function that summarizes pixel intensity values per region for a spectral index
     Inputs:
     img          = Spectral_Data index object of geotif data, used for analysis
@@ -60,7 +60,7 @@ def spectral(img, geojson):
         ## Add properties to the geojson object, and then should be able to access inside the function called in add_stats
         # Vectorized (efficient) data extraction of spectral signature per sub-region
         stats = zonal_stats(shapefile, img.array_data, affine=affine,
-                        stats=['mean', 'median', 'std', 'percentile_25', 'percentile_75'], 
+                        stats=['median', 'std', 'percentile_25', 'percentile_50', 'percentile_75'], 
                         #add_stats={'hist': spectral_grab },
                         nodata=-9999)
 
@@ -73,20 +73,20 @@ def spectral(img, geojson):
             ids.append(label)
             # Save data to outputs
             outputs.add_observation(sample=label, variable=f"mean_{img.array_type}", trait=f"Average {img.array_type} reflectance",
-                                    method="plantcv.geospatial.analyze.spectral", scale="reflectance", datatype=float,
-                                    value=float(stats[i]['mean']), label="none")
+                                    method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
+                                    value=float(stats[i]['percentile_50']), label="none")
 
             outputs.add_observation(sample=label, variable=f"med_{img.array_type}", trait=f"Median {img.array_type} reflectance",
-                                    method="plantcv.geospatial.analyze.spectral", scale="reflectance", datatype=float,
+                                    method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=float(stats[i]['median']), label="none")
 
             outputs.add_observation(sample=label, variable=f"std_{img.array_type}",
                                     trait=f"Standard deviation {img.array_type} reflectance",
-                                    method="plantcv.geospatial.analyze.spectral", scale="reflectance", datatype=float,
+                                    method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=stats[i]['std'], label="none")
 
             outputs.add_observation(sample=label, variable=f"percentile_25_{img.array_type}",
-                                    trait="index frequencies", method="plantcv.geospatial.analyze.spectral", scale="frequency",
+                                    trait="index frequencies", method="plantcv.geospatial.analyze.spectral_index", scale="frequency",
                                     datatype=float, value=stats[i]['percentile_25'], label="none")
 
             outputs.add_observation(sample=label, variable=f"percentile_75_{img.array_type}",
