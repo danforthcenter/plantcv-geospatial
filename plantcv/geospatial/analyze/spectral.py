@@ -1,14 +1,9 @@
 # Analyze spectral signature over many regions
 from rasterstats import zonal_stats
-from plantcv.plantcv import outputs, params
-from plantcv.plantcv.visualize import pseudocolor
-from plantcv.plantcv.visualize.histogram import _hist_gray
-from matplotlib import pyplot as plt
-from rasterio.plot import plotting_extent
+from plantcv.plantcv import outputs
+from _helpers import _plot_bounds_pseudocolored
 import numpy as np
-import geopandas
 import fiona
-import os
 
 
 class Image(np.ndarray):
@@ -93,36 +88,5 @@ def spectral_index(img, geojson):
                                     trait="index frequencies", method="plantcv.geospatial.analyze.spectral", scale="frequency",
                                     datatype=float, value=stats[i]['percentile_75'], label="none")
 
-    bounds = geopandas.read_file(geojson)
-
-    # Plot the GeoTIFF
-    # Make a flipped image for graphing
-    #vis = pseudocolor(gray_img=img.array_data, min_value=img.array_data.min, max_value=img.array_data.max)
-
-    # _, ax = plt.subplots(figsize=(10, 10))
-    # fig_extent = plotting_extent(img.array_data[:, :, :3],
-    #                              img.metadata['transform'])
-    # ax.imshow(vis, extent=fig_extent)
-    # # Plot the shapefile
-    # bounds.boundary.plot(ax=ax, color="red")
-    # # Set plot title and labels
-    # plt.title("Shapefile on GeoTIFF")
-    # plt.xlabel("Longitude")
-    # plt.ylabel("Latitude")
-    # # Store the plot
-    # plotting_img = plt.gcf()
-
-    # # Print or plot if debug is turned on
-    # if params.debug is not None:
-    #     if params.debug == 'print':
-    #         plt.savefig(os.path.join(params.debug_outdir, str(
-    #             params.device) + '_analyze_coverage.png'), dpi=params.dpi)
-    #         plt.close()
-    #     elif params.debug == 'plot':
-    #         # Use non-blocking mode in case the function is run more than once
-    #         plt.show(block=False)
-    # else:
-    #     plt.close()
-
-    # return plotting_img
+    bounds = _plot_bounds_pseudocolored(img=img, geojson=geojson, vmin=img.min_value, vmax=img.max_value)
     return stats
