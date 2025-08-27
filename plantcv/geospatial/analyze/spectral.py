@@ -5,12 +5,10 @@ from plantcv.plantcv.visualize import pseudocolor
 from plantcv.plantcv.visualize.histogram import _hist_gray
 from matplotlib import pyplot as plt
 from rasterio.plot import plotting_extent
+import numpy as np
 import geopandas
 import fiona
 import os
-
-
-import numpy as np
 
 
 class Image(np.ndarray):
@@ -39,8 +37,8 @@ def spectral_grab(x, props=None):
     print(props)
 
 
-def spectral(img, geojson, bins=10):
-    """A function that analyzes pixel intensity values for a spectral index
+def spectral(img, geojson):
+    """A function that summarizes pixel intensity values per region for a spectral index
     Inputs:
     img          = Spectral_Data index object of geotif data, used for analysis
     geojson      = Path to the shape file containing the regions for analysis
@@ -55,8 +53,6 @@ def spectral(img, geojson, bins=10):
     bin_label = []
     affine = img.metadata["transform"]
 
-    
-
     # If IDs within the geojson
     ids = []
     # Gather list of IDs
@@ -64,9 +60,10 @@ def spectral(img, geojson, bins=10):
         ## Add properties to the geojson object, and then should be able to access inside the function called in add_stats
         # Vectorized (efficient) data extraction of spectral signature per sub-region
         stats = zonal_stats(shapefile, img.array_data, affine=affine,
-                        stats=['mean', 'median', 'std', 'percentile_50'], 
-                        add_stats={'hist': spectral_grab }, nodata=-9999)
-    
+                        stats=['mean', 'median', 'std', 'percentile_25', 'percentile_75'], 
+                        #add_stats={'hist': spectral_grab },
+                        nodata=-9999)
+
         for i, row in enumerate(shapefile):
             if 'ID' in row['properties']:
                 label = ((row['properties']["ID"]))
@@ -88,9 +85,13 @@ def spectral(img, geojson, bins=10):
                                     method="plantcv.geospatial.analyze.spectral", scale="reflectance", datatype=float,
                                     value=stats[i]['std'], label="none")
 
-            outputs.add_observation(sample=label, variable=f"index_frequencies_{img.array_type}",
+            outputs.add_observation(sample=label, variable=f"percentile_25_{img.array_type}",
                                     trait="index frequencies", method="plantcv.geospatial.analyze.spectral", scale="frequency",
-                                    datatype=list, value=stats[i]['percentile_50'], label=bin_label)
+                                    datatype=float, value=stats[i]['percentile_25'], label="none")
+
+            outputs.add_observation(sample=label, variable=f"percentile_75_{img.array_type}",
+                                    trait="index frequencies", method="plantcv.geospatial.analyze.spectral", scale="frequency",
+                                    datatype=float, value=stats[i]['percentile_75'], label="none")
 
     bounds = geopandas.read_file(geojson)
 
