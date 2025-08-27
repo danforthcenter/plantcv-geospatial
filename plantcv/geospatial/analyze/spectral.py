@@ -30,7 +30,7 @@ def spectral_index(img, geojson):
                             stats=['median', 'std', 'percentile_25', 'percentile_50', 'percentile_75'],
                             nodata=-9999)
 
-        for id in ids:
+        for i, id in enumerate(ids):
             label = id
             # Save data to outputs
             outputs.add_observation(sample=label, variable=f"mean_{img.array_type}",
