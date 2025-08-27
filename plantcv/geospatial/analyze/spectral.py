@@ -24,14 +24,14 @@ def spectral_index(img, geojson):
     ids = _gather_ids(geojson=geojson)
     # Gather list of IDs
     with fiona.open(geojson, 'r') as shapefile:
-        ## Add properties to the geojson object, and then should be able to access inside the function called in add_stats
+        # Add properties to the geojson object, and then should be able to access inside the function called in add_stats
         # Vectorized (efficient) data extraction of spectral signature per sub-region
         stats = zonal_stats(shapefile, img.array_data, affine=affine,
                             stats=['median', 'std', 'percentile_25', 'percentile_50', 'percentile_75'],
                             nodata=-9999)
 
-        for i, row in enumerate(shapefile):
-            label = ids[i]
+        for id in ids:
+            label = id
             # Save data to outputs
             outputs.add_observation(sample=label, variable=f"mean_{img.array_type}",
                                     trait=f"Average {img.array_type} reflectance",

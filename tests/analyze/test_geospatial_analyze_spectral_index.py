@@ -1,10 +1,11 @@
-import pytest
+"""Tests for geospatial.analyze.spectral"""
+
 import joblib
-from plantcv.plantcv import outputs, params
+from plantcv.plantcv import outputs
 from plantcv.geospatial.analyze import spectral_index as analyze_spectral
 
 
-def test_analyze_spectral(test_data):
+def test_analyze_spectral_index(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
