@@ -1,7 +1,7 @@
 # Analyze spectral signature over many regions
 from rasterstats import zonal_stats
 from plantcv.plantcv import outputs
-from _helpers import _plot_bounds_pseudocolored
+from plantcv.geospatial._helpers import _plot_bounds_pseudocolored
 import numpy as np
 import fiona
 
