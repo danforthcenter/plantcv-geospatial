@@ -15,4 +15,3 @@ def test_analyze_spectral(test_data):
 
     _ = analyze_spectral(img=img, geojson=test_data.multipolygon)
     assert outputs.observations["default_0"]["percentile_75_datacube"]["value"] <= 1
-
