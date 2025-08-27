@@ -27,11 +27,11 @@ Read in data (from tif format, most likely georeferenced image data).
     - below
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho1 = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-ortho2 = geo.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
+ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+ortho2 = gcv.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
                          cropto="./shapefiles/experimental_bounds.geojson)
 
 ```

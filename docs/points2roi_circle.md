@@ -19,12 +19,12 @@ Transform the points from a Points-type georeferenced shapefile/GeoJSON into cir
 
 
 ```python
-import plantcv.geospatial as geo
+import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read geotif in
-spectral = geo.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-rois = geo.points2roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
+spectral = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+rois = gcv.points2roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
 # Segmentation steps here
 labeled_mask = pcv.roi.filter(mask=vegetation_mask, roi=rois, roi_type="partial")
 

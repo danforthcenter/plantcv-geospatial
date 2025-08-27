@@ -132,6 +132,9 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         if len(np.unique(img_data[:, :, [i]])) == 2:
             mask_layer = img_data[:, :, [i]]
             img_data = np.delete(img_data, i, 2)
+    # Check if img is uint16
+    if img_data.dtype == "uint16":
+        img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
 
     # Parse bands if input is a string
     if isinstance(bands, str):
@@ -144,9 +147,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
         warn(f"{depth} bands found in the image data but {filename} was provided with {bands}")
     if depth < len(bands):
         fatal_error("your image depth is less than the specified number of bands")
-    # Mask negative background values
-    img_data[img_data < 0.] = 0
-    if np.sum(img_data) == 0:
+    if len(np.unique(img_data)) == 1:
+        # If totally uniform then indicates image only contains no-data value
         fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
     # Make a list of wavelength keys
     if mask_layer is not None:
@@ -160,11 +162,11 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
                             img_data[:, :, [id_green]],
                             img_data[:, :, [id_red]]))
     # Gamma correction
-    if pseudo_rgb.dtype != 'uint8':
-        pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
-        pseudo_rgb = pseudo_rgb * 255
-        pseudo_rgb = pseudo_rgb.astype('uint8')
-
+    # if pseudo_rgb.dtype != 'uint8':
+    #     pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
+    #     pseudo_rgb = pseudo_rgb * 255
+    #     pseudo_rgb = pseudo_rgb.astype('uint8')
+    pseudo_rgb = pseudo_rgb.astype('uint8')
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=max(wavelengths, key=wavelengths.get),
