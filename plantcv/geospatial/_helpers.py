@@ -222,3 +222,40 @@ def _gather_ids(geojson):
                 # If there are no IDs in the geojson then use default labels
                 ids.append("default_" + str(i))
     return ids
+
+def _plot_bounds_pseudocolored(img, geojson, vmin, vmax):
+    """Plot shapefile bounds on a pseudocolored data layer
+
+    Parameters:
+    -----------
+    img : [spectral_object]
+        Spectral_Data object of geotif data, used for plotting
+    geojson : str
+        Path to the shape file containing the regions
+    vmin : float
+        Minimum value to get plotted
+    vmax : float
+        Maximum value to get plotted
+
+    Returns:
+    --------
+    analysis_image = Debug image showing shapes from geojson on input image.
+    """
+    
+    # Plot the GeoTIFF
+    bounds = geopandas.read_file(geojson)
+
+    # Gather representative coordinates for each polygone in the shapefile
+    bounds['coords'] = bounds['geometry'].apply(lambda x: x.representative_point().coords[:])
+    bounds['coords'] = [coords[0] for coords in bounds['coords']]
+
+    # Pseudocolor the DSM for plotting
+    _, ax = plt.subplots(figsize=(10, 10))
+    fig_extent = plotting_extent(img.array_data,
+                                 img.metadata['transform'])
+    ax.imshow(img.array_data, extent=fig_extent, cmap='viridis', vmin=vmin, vmax=vmax)
+
+    # Plot the shapefile bounds
+    bounds.boundary.plot(ax=ax, color="red")
+    
+    return bounds
