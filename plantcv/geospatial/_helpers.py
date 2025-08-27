@@ -223,6 +223,7 @@ def _gather_ids(geojson):
                 ids.append("default_" + str(i))
     return ids
 
+
 def _plot_bounds_pseudocolored(img, geojson, vmin, vmax):
     """Plot shapefile bounds on a pseudocolored data layer
 
@@ -241,7 +242,6 @@ def _plot_bounds_pseudocolored(img, geojson, vmin, vmax):
     --------
     analysis_image = Debug image showing shapes from geojson on input image.
     """
-    
     # Plot the GeoTIFF
     bounds = geopandas.read_file(geojson)
 
@@ -257,5 +257,5 @@ def _plot_bounds_pseudocolored(img, geojson, vmin, vmax):
 
     # Plot the shapefile bounds
     bounds.boundary.plot(ax=ax, color="red")
-    
+
     return bounds
