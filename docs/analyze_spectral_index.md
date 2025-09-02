@@ -12,7 +12,7 @@ Vectorize approach to spectral index analysis per region in a shapefile.
     - label - Optional label parameter, modifies the variable name of observations recorded. Can be a prefix, or list (default = `pcv.params.sample_label`)
 
 - **Context:**
-    - This function will utilize the geojson's `ID` (or `FID`) attribute for `Outputs` labels if available. 
+    - This function will utilize the geojson's `ID` (or `FID`) attribute for `Outputs` labels if available and `label=None`. 
     - **Output data stored:** Data (index minimum, maximum, mean, median, standard deviation, percentile_25, and percentile_75) automatically gets stored to the [`Outputs` class](https://plantcv.readthedocs.io/en/stable/outputs/#class-outputs) when this function is run. These data can be accessed during a workflow (example below). For more detail about data output see [Summary of Output Observations](https://plantcv.readthedocs.io/en/stable/output_measurements/).
 
 - **Example use:**
