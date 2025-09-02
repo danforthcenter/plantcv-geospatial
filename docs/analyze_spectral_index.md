@@ -23,14 +23,14 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read in dsm as geotif
-dsm = gcv.read_geotif(filename="./data/EX_8_DAP_46_2021_Casselton_YT_06-22_5band.tif", bands=[0])
+dsm = gcv.read_geotif(filename="./data/EX_8_DAP_46_2021_Casselton_YT_06-22_5band.tif", bands="b,g,r,RE,NIR")
 # Analyze coverage for each region in the geojson
 bounds = gcv.analyze.height_percentile(img=ndvi,
                            geojson="./Shapefiles/shapefile.shx",
                            label="default")
 
 # To access individual observation values:
-print(pcv.outputs.observations['default_0']['mean_index_ndvi']['value'])
+print(pcv.outputs.observations['default_1']['mean_index_ndvi']['value'])
 
 ```
 ![Screenshot](documentation_images/analyze_spectral_index.png)
