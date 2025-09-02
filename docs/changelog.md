@@ -5,7 +5,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.analyze.coverage
 
-* v0.1dev: **geospatial.analyze.coverage**(*img, bin_mask, geojson*)
+* v0.1dev: **geospatial.analyze.coverage**(*img, bin_mask, geojson, label=None*)
 
 #### geospatial.analyze.height_percentile
 
