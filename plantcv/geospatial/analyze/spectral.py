@@ -25,13 +25,14 @@ def spectral_index(img, geojson):
     # Initialize variable for maximum and minimum index values within plots
     plot_lower = []
     plot_upper = []
-    
+
     # Gather list of IDs
     with fiona.open(geojson, 'r') as shapefile:
         # Add properties to the geojson object, and then should be able to access inside the function called in add_stats
         # Vectorized (efficient) data extraction of spectral signature per sub-region
         stats = zonal_stats(shapefile, img.array_data, affine=affine,
-                            stats=['median', 'std', 'percentile_25', 'percentile_50', 'percentile_75', 'percentile_0', 'percentile_100'],
+                            stats=['median', 'std', 'percentile_25', 'percentile_50', 'percentile_75',
+                                   'percentile_0', 'percentile_100'],
                             nodata=-9999)
 
         for i, id in enumerate(ids):
@@ -69,6 +70,6 @@ def spectral_index(img, geojson):
                                     method="plantcv.geospatial.analyze.spectral", scale="frequency",
                                     datatype=float, value=stats[i]['percentile_75'], label="none")
     ax = _plot_bounds_pseudocolored(img=img, geojson=geojson, vmin=min(plot_lower), vmax=max(plot_upper),
-                                    data_label=img.array_type)    
+                                    data_label=img.array_type)
 
     return ax
