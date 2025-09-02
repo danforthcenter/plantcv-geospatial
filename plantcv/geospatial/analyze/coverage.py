@@ -10,7 +10,7 @@ import os
 import cv2
 
 
-def coverage(img, bin_mask, geojson):
+def coverage(img, bin_mask, geojson, label=None):
     """A function that analyzes pixel coverage in a binary mask and outputs data.
     Inputs:
     img          = Spectral_Data object of geotif data, used for affine metadata
@@ -39,11 +39,13 @@ def coverage(img, bin_mask, geojson):
 
     total_region = zonal_stats(geojson, all_ones, affine=affine, stats="sum")
 
-    # Gather list of IDs
-    ids = _gather_ids(geojson=geojson)
+     # Set lable to params.sample_label if no other labels provided
+    if label is None:
+        # Gather plot IDs from the geojson
+        label = _gather_ids(geojson=geojson)
 
     # Save data to outputs
-    for i, id_lbl in enumerate(ids):
+    for i, id_lbl in enumerate(label):
         # Save out pixel_count
         pixel_count = 0.0
         total = 1.0

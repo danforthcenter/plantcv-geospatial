@@ -46,17 +46,15 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     region_upper_avgs = zonal_stats(geojson, dsm_data,
                                     affine=dsm.metadata["transform"],
                                     nodata=nodata_value, stats=upper)
-    # Gather plot IDs from the geojson
-    ids = _gather_ids(geojson=geojson)
-
-    # Set lable to params.sample_label if None
+    # Set lable to params.sample_label if no other labels provided
     if label is None:
-        label = params.sample_label
+        # Gather plot IDs from the geojson
+        label = _gather_ids(geojson=geojson)
 
     soil_vals = []
     plant_vals = []
     # Save data to outputs
-    for i, id_lbl in enumerate(ids):
+    for i, id_lbl in enumerate(label):
         # Initialize no data cases
         avg1, avg2, avg = [0.0, 0.0, nodata_value]
         # Save soil heights
@@ -66,7 +64,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
                                 trait="dsm_mean_below_" + str(lower),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
-                                value=avg1, label=label)
+                                value=avg1, label=scale)
         soil_vals.append(avg1)
         # Save plant heights
         if region_upper_avgs[i][upper] is not None:
@@ -75,7 +73,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
                                 trait="dsm_mean_above_" + str(upper),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
-                                value=avg2, label=label)
+                                value=avg2, label=scale)
         plant_vals.append(avg2)
         if avg1 != 0 and avg2 != 0:
             avg = avg2 - avg1
@@ -83,7 +81,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
                                 trait="height",
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
-                                value=avg, label=label)
+                                value=avg, label=scale)
 
     # Min and max height of plots
     min_elevation = min(soil_vals)
