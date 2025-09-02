@@ -1,15 +1,17 @@
 # Analyze spectral signature over many regions
 from rasterstats import zonal_stats
-from plantcv.plantcv import outputs
+from plantcv.plantcv import outputs, params
 from plantcv.geospatial._helpers import _plot_bounds_pseudocolored, _gather_ids
 import fiona
 
 
-def spectral_index(img, geojson):
+def spectral_index(img, geojson, label=None):
     """A function that summarizes pixel intensity values per region for a spectral index
     Inputs:
     img          = Spectral_Data index object of geotif data, used for analysis
     geojson      = Path to the shape file containing the regions for analysis
+    label        = Optional label parameter, modifies the variable name of
+                   observations recorded (default = pcv.params.sample_label).
 
     Returns:
     analysis_image = Debug image showing shapes from geojson on input image.
@@ -20,8 +22,11 @@ def spectral_index(img, geojson):
     """
     affine = img.metadata["transform"]
 
-    # Gather plot IDs from the geojson
-    ids = _gather_ids(geojson=geojson)
+    # Set lable to params.sample_label if no other labels provided
+    if label is None:
+        # Gather plot IDs from the geojson
+        label = _gather_ids(geojson=geojson)
+
     # Initialize variable for maximum and minimum index values within plots
     plot_lower = []
     plot_upper = []
@@ -35,37 +40,36 @@ def spectral_index(img, geojson):
                                    'percentile_0', 'percentile_100'],
                             nodata=-9999)
 
-        for i, id in enumerate(ids):
-            label = id
+        for i, id in enumerate(label):
             # Store upper and lower values for each plot
             plot_lower.append(stats[i]['percentile_0'])
             plot_upper.append(stats[i]['percentile_100'])
             # Save data to outputs
-            outputs.add_observation(sample=label, variable=f"min_{img.array_type}",
+            outputs.add_observation(sample=id, variable=f"min_{img.array_type}",
                                     trait=f"Minumum {img.array_type} value",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=float(stats[i]['percentile_0']), label="none")
-            outputs.add_observation(sample=label, variable=f"max_{img.array_type}",
+            outputs.add_observation(sample=id, variable=f"max_{img.array_type}",
                                     trait=f"Maxiumum {img.array_type} value",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=float(stats[i]['percentile_100']), label="none")
-            outputs.add_observation(sample=label, variable=f"mean_{img.array_type}",
+            outputs.add_observation(sample=id, variable=f"mean_{img.array_type}",
                                     trait=f"Average {img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=float(stats[i]['percentile_50']), label="none")
-            outputs.add_observation(sample=label, variable=f"med_{img.array_type}",
+            outputs.add_observation(sample=id, variable=f"med_{img.array_type}",
                                     trait=f"Median {img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=float(stats[i]['median']), label="none")
-            outputs.add_observation(sample=label, variable=f"std_{img.array_type}",
+            outputs.add_observation(sample=id, variable=f"std_{img.array_type}",
                                     trait=f"Standard deviation {img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=stats[i]['std'], label="none")
-            outputs.add_observation(sample=label, variable=f"percentile_25_{img.array_type}",
+            outputs.add_observation(sample=id, variable=f"percentile_25_{img.array_type}",
                                     trait=f"percentile_25_{img.array_type}",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="frequency",
                                     datatype=float, value=stats[i]['percentile_25'], label="none")
-            outputs.add_observation(sample=label, variable=f"percentile_75_{img.array_type}",
+            outputs.add_observation(sample=id, variable=f"percentile_75_{img.array_type}",
                                     trait=f"percentile_75_{img.array_type}",
                                     method="plantcv.geospatial.analyze.spectral", scale="frequency",
                                     datatype=float, value=stats[i]['percentile_75'], label="none")
