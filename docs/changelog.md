@@ -11,6 +11,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.height_percentile**(*dsm, geojson, lower=25, upper=90, label=None*)
 
+#### geospatial.analyze.spectral_index
+
+* v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, label=None*)
+
 #### geospatial.points2roi_circle
 
 * v0.1dev: rois = **geospatial.points2roi_circle**(*img, geojson, radius*)
