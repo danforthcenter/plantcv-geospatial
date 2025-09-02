@@ -271,3 +271,24 @@ def _plot_bounds_pseudocolored(img, geojson, vmin, vmax, data_label):
     else:
         plt.close()
     return ax
+
+
+def _set_nodata_term(img):
+    """Set no data term, from metadata if available. Otherwise set to default value.
+
+    Parameters:
+    -----------
+    img : [spectral_object]
+        Spectral_Data object of geotif data, used for plotting
+    
+    Returns:
+    --------
+    nodata_value
+        No-data value
+    """
+    if img.metadata['nodata'] is not None:
+        nodata_value = img.metadata['nodata']
+    else:
+        nodata_value = -999
+    return nodata_value
+

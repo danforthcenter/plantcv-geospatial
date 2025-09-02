@@ -1,5 +1,5 @@
 # Analyze Digital Surface Model (DSM) over many regions
-from plantcv.geospatial._helpers import _gather_ids
+from plantcv.geospatial._helpers import _gather_ids, _set_nodata_term
 from plantcv.plantcv import outputs, params
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
@@ -29,10 +29,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     # Cast to float since zonal_stats gives overflow error on uint8 data
     dsm_data = dsm_data.astype(np.float32)
 
-    if dsm.metadata['nodata'] is not None:
-        nodata_value = dsm.metadata['nodata']
-    else:
-        nodata_value = -999
+    nodata_value = _set_nodata_term(dsm)
     # Scale of the data
     scale = dsm.metadata["crs"].linear_units
 

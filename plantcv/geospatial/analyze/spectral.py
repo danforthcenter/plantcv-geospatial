@@ -1,7 +1,7 @@
 # Analyze spectral signature over many regions
 from rasterstats import zonal_stats
 from plantcv.plantcv import outputs, params
-from plantcv.geospatial._helpers import _plot_bounds_pseudocolored, _gather_ids
+from plantcv.geospatial._helpers import _plot_bounds_pseudocolored, _gather_ids, _set_nodata_term
 import fiona
 
 
@@ -20,7 +20,9 @@ def spectral_index(img, geojson, label=None):
     :param geojson: str
     :return analysis_image: numpy.ndarray
     """
+    # Initialize metadata terms
     affine = img.metadata["transform"]
+    nodata_value = _set_nodata_term(img)
 
     # Set lable to params.sample_label if no other labels provided
     if label is None:
@@ -38,7 +40,7 @@ def spectral_index(img, geojson, label=None):
         stats = zonal_stats(shapefile, img.array_data, affine=affine,
                             stats=['median', 'std', 'percentile_25', 'percentile_50', 'percentile_75',
                                    'percentile_0', 'percentile_100'],
-                            nodata=-9999)
+                            nodata=nodata_value)
 
         for i, id in enumerate(label):
             # Store upper and lower values for each plot
