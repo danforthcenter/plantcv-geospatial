@@ -220,7 +220,7 @@ def _gather_ids(geojson):
                 ids.append((row['properties']["FID"]))
             else:
                 # If there are no IDs in the geojson then use default labels
-                ids.append("default_" + str(i))
+                ids.append("default_" + str(i + 1))
     return ids
 
 
