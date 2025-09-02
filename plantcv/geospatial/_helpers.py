@@ -224,7 +224,7 @@ def _gather_ids(geojson):
     return ids
 
 
-def _plot_bounds_pseudocolored(img, geojson, vmin, vmax):
+def _plot_bounds_pseudocolored(img, geojson, vmin, vmax, data_label):
     """Plot shapefile bounds on a pseudocolored data layer
 
     Parameters:
@@ -257,5 +257,17 @@ def _plot_bounds_pseudocolored(img, geojson, vmin, vmax):
 
     # Plot the shapefile bounds
     bounds.boundary.plot(ax=ax, color="red")
+    plt.title("Shapefile on " + str(data_label))
 
-    return bounds
+    # Print or plot if debug is turned on
+    if params.debug is not None:
+        if params.debug == 'print':
+            plt.savefig(os.path.join(params.debug_outdir, str(
+                params.device) + '_analyze_' + str(data_label) + '.png'), dpi=params.dpi)
+            plt.close()
+        elif params.debug == 'plot':
+            # Use non-blocking mode in case the function is run more than once
+            plt.show(block=False)
+    else:
+        plt.close()
+    return ax
