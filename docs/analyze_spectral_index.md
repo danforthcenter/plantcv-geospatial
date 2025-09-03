@@ -24,10 +24,12 @@ import plantcv.plantcv as pcv
 
 # Read in dsm as geotif
 dsm = gcv.read_geotif(filename="./data/EX_8_DAP_46_2021_Casselton_YT_06-22_5band.tif", bands="b,g,r,RE,NIR")
+# calculate NDVI for example
+ndvi = pcv.spectral_index.ndvi(dsm)
 # Analyze coverage for each region in the geojson
-bounds = gcv.analyze.height_percentile(img=ndvi,
+bounds = gcv.analyze.spectral_index(height_percentile(img=ndvi,
                            geojson="./Shapefiles/shapefile.shx",
-                           label="default")
+                           label=None)
 
 # To access individual observation values:
 print(pcv.outputs.observations['default_1']['mean_index_ndvi']['value'])
