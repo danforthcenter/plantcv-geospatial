@@ -39,7 +39,7 @@ def coverage(img, bin_mask, geojson, label=None):
 
     total_region = zonal_stats(geojson, all_ones, affine=affine, stats="sum")
 
-     # Set lable to params.sample_label if no other labels provided
+    # Set lable to params.sample_label if no other labels provided
     if label is None:
         # Gather plot IDs from the geojson
         label = _gather_ids(geojson=geojson)

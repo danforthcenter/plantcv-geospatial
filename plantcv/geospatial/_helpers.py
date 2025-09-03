@@ -280,7 +280,7 @@ def _set_nodata_term(img):
     -----------
     img : [spectral_object]
         Spectral_Data object of geotif data, used for plotting
-    
+
     Returns:
     --------
     nodata_value
@@ -291,4 +291,3 @@ def _set_nodata_term(img):
     else:
         nodata_value = -999
     return nodata_value
-
