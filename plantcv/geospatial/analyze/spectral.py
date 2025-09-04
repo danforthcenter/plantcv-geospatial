@@ -32,7 +32,7 @@ def spectral_index(img, geojson, percentiles=None, label=None):
         percentiles = range(0, 101, 25)
     # make percentile strings for zonal_stats
     formatted_pcts = ['median', 'std']
-    for _, pct in enumerate(set(["0", "100", *percentiles])):
+    for _, pct in enumerate(set("0", "100", *percentiles)):
         formatted_pcts.append(f"percentile_{pct}")
     formatted_pcts = list(dict.fromkeys(formatted_pcts))
     # Initialize variable for maximum and minimum index values within plots
@@ -64,9 +64,9 @@ def spectral_index(img, geojson, percentiles=None, label=None):
             # store percentile results
             for pct in formatted_pcts:
                 outputs.add_observation(sample=id, variable=f"{pct}_{img.array_type}",
-                                    trait=f"{pct}_{img.array_type} value",
-                                    method="plantcv.geospatial.analyze.spectral_index", scale="frequency", datatype=float,
-                                    value=float(stats[i][pct]), label="none")
+                                        trait=f"{pct}_{img.array_type} value",
+                                        method="plantcv.geospatial.analyze.spectral_index", scale="frequency", datatype=float,
+                                        value=float(stats[i][pct]), label="none")
 
     ax = _plot_bounds_pseudocolored(img=img, geojson=geojson, vmin=min(plot_lower), vmax=max(plot_upper),
                                     data_label=img.array_type)
