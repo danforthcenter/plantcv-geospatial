@@ -50,7 +50,7 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842}
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842, "GRAY": 0}
 
     for band in band_strs:
         # Check if the band symbols are supported
@@ -104,7 +104,7 @@ def _read_geotif_and_shapefile(filename, cropto):
     return img_data, d_type, metadata
 
 
-def read_geotif(filename, bands="R,G,B", cropto=None):
+def read_geotif(filename, bands="R,G,B", cropto=None, filter=None):
     """Read Georeferenced TIF image from file.
 
     Parameters
@@ -153,20 +153,40 @@ def read_geotif(filename, bands="R,G,B", cropto=None):
     # Make a list of wavelength keys
     if mask_layer is not None:
         img_data = np.where(mask_layer == 0, 0, img_data)
-    # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
-    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
-    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
-    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
-    # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
-    pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
-                            img_data[:, :, [id_green]],
-                            img_data[:, :, [id_red]]))
-    # Gamma correction
-    # if pseudo_rgb.dtype != 'uint8':
-    #     pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
-    #     pseudo_rgb = pseudo_rgb * 255
-    #     pseudo_rgb = pseudo_rgb.astype('uint8')
-    pseudo_rgb = pseudo_rgb.astype('uint8')
+    # Check if image is grayscale
+    if bands != [0]: 
+        # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
+        id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
+        id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
+        id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
+        # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
+        pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
+                                img_data[:, :, [id_green]],
+                                img_data[:, :, [id_red]]))
+        # Gamma correction
+        # if pseudo_rgb.dtype != 'uint8':
+        #     pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
+        #     pseudo_rgb = pseudo_rgb * 255
+        #     pseudo_rgb = pseudo_rgb.astype('uint8')
+        pseudo_rgb = pseudo_rgb.astype('uint8')
+    # Construct grayscale debug
+    else:
+        img_copy = img_data
+        img_copy = np.squeeze(img_copy)
+        # Change nodata values to Nan
+        img_copy[img_copy == min(np.unique(img_data))] = np.nan
+        # If filtering high values, calculate cutoff
+        if filter:
+            quantile = np.quantile(img_copy, filter)
+            # Set everything above the cutoff to Nan, including img_data
+            img_copy[img_copy >= quantile] = np.nan
+            img_data[img_data >= quantile] = np.nan
+        # Stretch values to min/max for visualization
+        img_copy = 255*((img_copy - np.nanmin(img_copy)) / (np.nanmax(img_copy) - np.nanmin(img_copy)))
+        # Return nodata values to 0
+        img_copy = np.nan_to_num(img_copy, nan=0.0)
+        # Convert to uint8
+        pseudo_rgb = img_copy.astype(np.uint8)
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=max(wavelengths, key=wavelengths.get),
