@@ -32,7 +32,7 @@ def spectral_index(img, geojson, percentiles=None, label=None):
         percentiles = range(0, 101, 25)
     # make percentile strings for zonal_stats
     formatted_pcts = ['median', 'std']
-    for _, pct in enumerate(set("0", "100", *percentiles)):
+    for _, pct in enumerate(["0", "100", *percentiles]):
         formatted_pcts.append(f"percentile_{pct}")
     formatted_pcts = list(dict.fromkeys(formatted_pcts))
     # Initialize variable for maximum and minimum index values within plots
