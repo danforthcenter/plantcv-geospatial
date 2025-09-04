@@ -2,13 +2,14 @@
 
 Vectorize approach to spectral index analysis per region in a shapefile.
 
-**plantcv.geospatial.analyze.spectral_index**(*img, geojson, label=None*)
+**plantcv.geospatial.analyze.spectral_index**(*img, geojson, percentiles=None, label=None*)
 
 **returns** Debug image with regions drawn on the input index.
 
 - **Parameters:**
     - img - Spectral image object, likely created with one of the functions from [`pcv.spectral_index`](https://plantcv.readthedocs.io/en/latest/spectral_index/)
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.
+	- percentiles - Iterable of numeric percentiles [0-100]. 0 and 100 are automatically included (default = `None`, where `range(0, 101, 25)` is used)
     - label - Optional label parameter, modifies the variable name of observations recorded. Can be a prefix, or list (default = `pcv.params.sample_label`)
 
 - **Context:**
