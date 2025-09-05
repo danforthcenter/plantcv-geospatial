@@ -154,7 +154,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     if mask_layer is not None:
         img_data = np.where(mask_layer == 0, 0, img_data)
     # Check if image is grayscale
-    if bands != [0]: 
+    if bands != [0]:
         # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
         id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
         id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
