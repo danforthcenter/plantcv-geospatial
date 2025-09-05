@@ -104,7 +104,7 @@ def _read_geotif_and_shapefile(filename, cropto):
     return img_data, d_type, metadata
 
 
-def read_geotif(filename, bands="R,G,B", cropto=None, filter=None):
+def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     """Read Georeferenced TIF image from file.
 
     Parameters
@@ -176,8 +176,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None, filter=None):
         # Change nodata values to Nan
         img_copy[img_copy == min(np.unique(img_data))] = np.nan
         # If filtering high values, calculate cutoff
-        if filter:
-            quantile = np.quantile(img_copy, filter)
+        if cutoff:
+            quantile = np.quantile(img_copy, cutoff)
             # Set everything above the cutoff to Nan, including img_data
             img_copy[img_copy >= quantile] = np.nan
             img_data[img_data >= quantile] = np.nan
