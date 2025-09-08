@@ -176,7 +176,6 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         # If filtering high values, calculate cutoff
         if cutoff:
             quantile = np.quantile(img_copy, cutoff)
-            print("finding a cutoff of ", quantile)
             # Set everything above the cutoff to Nan, including img_data
             img_copy[img_copy >= quantile] = np.nan
             img_data[img_data >= quantile] = np.nan
