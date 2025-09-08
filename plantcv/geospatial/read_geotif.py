@@ -173,8 +173,6 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     else:
         img_copy = img_data
         img_copy = np.squeeze(img_copy)
-        # Change nodata values to Nan
-        img_copy[img_copy == min(np.unique(img_data))] = np.nan
         # If filtering high values, calculate cutoff
         if cutoff:
             quantile = np.quantile(img_copy, cutoff)
@@ -182,6 +180,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
             # Set everything above the cutoff to Nan, including img_data
             img_copy[img_copy >= quantile] = np.nan
             img_data[img_data >= quantile] = np.nan
+        # Change nodata values to Nan
+        img_copy[img_copy == min(np.unique(img_data))] = np.nan
         # Stretch values to min/max for visualization
         img_copy = 255*((img_copy - np.nanmin(img_copy)) / (np.nanmax(img_copy) - np.nanmin(img_copy)))
         # Return nodata values to 0
