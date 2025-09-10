@@ -1,6 +1,7 @@
 """Tests for geospatial.analyze.height_subtraction"""
 
 import joblib
+import pytest
 from plantcv.plantcv import outputs, params
 from plantcv.geospatial.analyze import height_subtraction
 
