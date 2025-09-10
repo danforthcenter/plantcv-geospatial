@@ -146,7 +146,7 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
     return p1, p2, p3, p4
 
 
-def _show_geojson(img, geojson):
+def _show_geojson(img, geojson, ids):
     """Split a polygon into equidistant subplots
 
     Parameters:
@@ -155,6 +155,8 @@ def _show_geojson(img, geojson):
         Spectral_Data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
+    ids : list
+        List of plot IDs from _gather_ids
 
     Returns:
     --------
@@ -173,12 +175,15 @@ def _show_geojson(img, geojson):
     fig_extent = plotting_extent(img.array_data[:, :, :3],
                                  img.metadata['transform'])
     # Add labels to vector features
-    for idx, row in geojson.iterrows():
-        plt.text(row.geometry.centroid.x, row.geometry.centroid.y, row['ID_COLUMN'], fontsize=8)
+    for idx, row in bounds.iterrows():
+        plt.text(row.geometry.centroid.x,
+                 row.geometry.centroid.y,
+                 ids[idx], fontsize=5,
+                 c="m")
 
     ax.imshow(flipped, extent=fig_extent)
     # Plot the shapefile
-    bounds.boundary.plot(ax=ax, color="red")
+    bounds.boundary.plot(ax=ax, color="blue")
     # Set plot title and labels
     plt.title("GeoJSON shapes on GeoTIFF")
     # Store the plot
