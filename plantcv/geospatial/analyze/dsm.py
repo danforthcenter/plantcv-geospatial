@@ -135,7 +135,7 @@ def height_subtraction(dsm1, dsm0):
     :param dsm0: [spectral object]
     """
     #Check the coordinate reference system (CRS) is the same for both of the DSMs
-    if dsm1.crs == dsm0.crs:
+    if dsm1.metadata["crs"] == dsm0.metadata["crs"]:
         pass
     else:
         fatal_error("The two input DSMs do not have the same coordinate reference system (CRS).")
