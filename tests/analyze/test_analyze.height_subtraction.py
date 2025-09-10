@@ -18,7 +18,6 @@ def test_height_subtraction(testdata):
 
 def test_height_subtraction(testdata):
     """Test for PlantCV."""
-    with pytest.raises(RuntimeError):
     # Clear previous outputs
     outputs.clear()
     # Debug mode
