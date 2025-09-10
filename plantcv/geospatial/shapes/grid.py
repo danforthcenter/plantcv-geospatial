@@ -8,7 +8,7 @@ import fiona
 
 
 def grid(img, field_corners_path, out_path, num_ranges, num_columns,
-         range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0):
+         range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0, ids=None):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -67,5 +67,5 @@ def grid(img, field_corners_path, out_path, num_ranges, num_columns,
             shapefile.write({
                 'geometry': mapping(cell["polygon"])
             })
-    fig = _show_geojson(img, out_path)
+    fig = _show_geojson(img=img, geojson=out_path, ids=ids)
     return fig
