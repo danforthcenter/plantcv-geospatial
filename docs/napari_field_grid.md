@@ -8,7 +8,7 @@ Using a Napari viewer with a shapes layer polygon outlining the whole field, fun
 Does not return anything, but adds shapes layers to the Napari viewer object that contain first the grid lines and then the polygons created by the line intersections.
 
 - **Parameters:**
-    - viewer - Napari viewer object. The input viewer to `napari_grid` must have a shapes layer wher the user has added a  polygon that outlines the field on which to draw the grid.
+    - viewer - Napari viewer object. The input viewer to `napari_grid` must have a shapes layer where the user has added a  polygon that outlines the field on which to draw the grid.
     - numdivs - A list of length two in the form [number of divisions across axis 1, number of divisions across axis 2]. The order of the axes is dependent on the order in which the corners are clicked during generation of the whole-field polygon. See example below for more information.
     - layername - String. Name given to the shapes layer of the Napari viewer in which the whole-field polygon is defined.
 
