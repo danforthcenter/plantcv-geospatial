@@ -1,5 +1,6 @@
 # Analyze Digital Surface Model (DSM) over many regions
 from plantcv.geospatial._helpers import _gather_ids
+from plantcv.plantcv.classes import Spectral_data
 from plantcv.plantcv import outputs, params
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
