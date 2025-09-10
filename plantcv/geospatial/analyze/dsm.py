@@ -4,7 +4,7 @@ from plantcv.plantcv import outputs, params
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
-import plantcv.plantcv import fatal_error
+from plantcv.plantcv import fatal_error
 import numpy as np
 import geopandas
 import os
