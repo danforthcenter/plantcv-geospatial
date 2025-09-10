@@ -124,13 +124,13 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     return bounds
     
 def height_subtraction(dsm1, dsm0):
-    """A function that subtracts the height of one DSM from the height of another and outputs data.
+    """A function that subtracts the height of one DSM from the height of another and outputs a spectral array.
     Inputs:
     dsm1         = Spectral_Data object of geotif data, used for affine metadata - DSM with plant height
     dsm0         = Spectral_Data object of geotif data, used for affine metadata - DSM of bare ground
 
     Returns: 
-    New Spectral_Data object which is dsm1 - dsm0.
+    New Spectral_Data array which is dsm1 - dsm0.
 
     :param dsm1: [spectral object]
     :param dsm0: [spectral object]
@@ -163,6 +163,17 @@ def height_subtraction(dsm1, dsm0):
 
     #Perform the subtraction
     final_subtraction = dsm1_data - dsm0_data
-
-    return final_subtraction
+    
+    # Make a Spectral_data instance to output
+    spectral_array = Spectral_data(array_data=final_subtraction,
+                                   max_wavelength=0,
+                                   min_wavelength=0,
+                                   max_value=np.max(final_subtraction), min_value=np.min(final_subtraction),
+                                   d_type=np.float32,
+                                   wavelength_dict=None, samples=int(np.shape(final_subtraction)[1]),
+                                   lines=int(np.shape(final_subtraction)[0]), interleave=None,
+                                   wavelength_units="nm", array_type="datacube",
+                                   pseudo_rgb=final_subtraction, filename=None,
+                                   default_bands=[480, 540, 630],
+                                   metadata=dsm0.metadata)
     
