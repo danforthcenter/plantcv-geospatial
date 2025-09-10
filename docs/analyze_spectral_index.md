@@ -23,12 +23,12 @@ Vectorize approach to spectral index analysis per region in a shapefile.
 import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
-# Read in dsm as geotif
-dsm = gcv.read_geotif(filename="./data/EX_8_DAP_46_2021_Casselton_YT_06-22_5band.tif", bands="b,g,r,RE,NIR")
+# Read in multiband image as geotif
+img = gcv.read_geotif(filename="./data/EX_8_DAP_46_2021_Casselton_YT_06-22_5band.tif", bands="b,g,r,RE,NIR")
 # calculate NDVI for example
-ndvi = pcv.spectral_index.ndvi(dsm)
+ndvi = pcv.spectral_index.ndvi(img)
 # Analyze coverage for each region in the geojson
-bounds = gcv.analyze.spectral_index(height_percentile(img=ndvi,
+bounds = gcv.analyze.spectral_index(img=ndvi,
                            geojson="./Shapefiles/shapefile.shx",
                            label=None)
 
