@@ -47,6 +47,8 @@ class TestData:
         # read netcdf example file and cropping shapefile
         self.test_netcdf = os.path.join(self.datadir, "subset_test.nc")
         self.netcdf_testcrop = os.path.join(self.datadir, "netcdf_test.geojson")
+        # DEM for grayscale tif reading
+        self.gray_tif = os.path.join(self.datadir, "gray.tif")
 
 @pytest.fixture(scope="session")
 def test_data():
