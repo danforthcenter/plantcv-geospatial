@@ -177,3 +177,5 @@ def height_subtraction(dsm1, dsm0):
                                    default_bands=[480, 540, 630],
                                    metadata=dsm0.metadata)
     
+    return spectral_array
+    
