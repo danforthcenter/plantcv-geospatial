@@ -59,3 +59,9 @@ def test_geospatial_read_geotif_point_crop(test_data):
     # read in rgb image with a polygon-type shapefile
     img = read_geotif(filename=test_data.rgb_tif, bands="R,G,B", cropto=test_data.point_crop)
     assert img.pseudo_rgb.shape == (41, 46, 3)
+
+def test_geospatial_read_geotif_gray(test_data):
+    """Test for plantcv-geospatial."""
+    # read in small gray image
+    img = read_geotif(filename=test_data.gray_tif, bands="gray", cutoff=0.99)
+    assert img.array_data.shape[0] == 411
