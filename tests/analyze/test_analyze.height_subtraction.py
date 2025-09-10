@@ -6,7 +6,7 @@ from plantcv.plantcv import outputs, params
 from plantcv.geospatial.analyze import height_subtraction
 
 
-def test_height_subtraction(testdata):
+def test_height_subtraction(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
@@ -17,7 +17,7 @@ def test_height_subtraction(testdata):
     test = height_subtraction(dsm1=dsm, dsm0=dsm)
     assert sum(test.arraydata) == 0
 
-def test_height_subtraction(testdata):
+def test_height_subtraction(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
