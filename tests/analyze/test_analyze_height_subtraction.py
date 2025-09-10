@@ -17,7 +17,7 @@ def test_height_subtraction(test_data):
     test = height_subtraction(dsm1=dsm, dsm0=dsm)
     assert sum(test.arraydata) == 0
 
-def test_height_subtraction(test_data):
+def test_height_subtraction_unequal_crs(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
