@@ -82,6 +82,12 @@ def coverage(img, bin_mask, geojson):
     ax.imshow(flipped, extent=fig_extent)
     # Plot the shapefile
     bounds.boundary.plot(ax=ax, color="red")
+    # Add labels to vector features
+    for idx, row in bounds.iterrows():
+        plt.text(row.geometry.centroid.x,
+                 row.geometry.centroid.y,
+                 ids[idx], fontsize=5,
+                 c="m")
     # Set plot title and labels
     plt.title("Shapefile on GeoTIFF")
     # Store the plot
