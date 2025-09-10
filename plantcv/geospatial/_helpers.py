@@ -172,6 +172,10 @@ def _show_geojson(img, geojson):
     _, ax = plt.subplots(figsize=(10, 10))
     fig_extent = plotting_extent(img.array_data[:, :, :3],
                                  img.metadata['transform'])
+    # Add labels to vector features
+    for idx, row in geojson.iterrows():
+        plt.text(row.geometry.centroid.x, row.geometry.centroid.y, row['ID_COLUMN'], fontsize=8)
+
     ax.imshow(flipped, extent=fig_extent)
     # Plot the shapefile
     bounds.boundary.plot(ax=ax, color="red")
@@ -214,7 +218,9 @@ def _gather_ids(geojson):
         # If IDs within the geojson
         ids = []
         for i, row in enumerate(shapefile):
-            if 'ID' in row['properties']:
+            if 'PlotName' in row['properties']:
+                ids.append((row['properties']["PlotName"]))
+            elif 'ID' in row['properties']:
                 ids.append((row['properties']["ID"]))
             elif 'FID' in row['properties']:
                 ids.append((row['properties']["FID"]))
