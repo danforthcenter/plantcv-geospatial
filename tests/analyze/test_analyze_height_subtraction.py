@@ -16,7 +16,7 @@ def test_height_subtraction(test_data):
     # Read in test data
     dsm = joblib.load(test_data.rgb_pickled)
     test = height_subtraction(dsm1=dsm, dsm0=dsm)
-    assert np.sum(test) == 0
+    assert np.sum(test.array_data) == 0
 
 def test_height_subtraction_metadata(test_data):
     """Test for PlantCV."""
@@ -29,7 +29,7 @@ def test_height_subtraction_metadata(test_data):
     # Setting metadata
     dsm.metadata['nodata'] = 1
     test = height_subtraction(dsm1=dsm, dsm0=dsm)
-    assert np.sum(test) == 0
+    assert np.sum(test.array_data) == 0
 
 def test_height_subtraction_unequal_crs(test_data):
     """Test for PlantCV."""
