@@ -6,7 +6,7 @@ from shapely.geometry import Polygon, mapping
 from plantcv.plantcv import fatal_error
 
 
-def shapes_to_geojson(img, viewer, out_path, shapetype="polygon", shapename="Shapes"):
+def shapes_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Shapes"):
     """Use shapes from a Napari to output a geojson shapefile.
 
     Parameters
@@ -23,7 +23,7 @@ def shapes_to_geojson(img, viewer, out_path, shapetype="polygon", shapename="Sha
         Name of shapes layer, defaults to "Shapes"
     """
     features = []
-    for i in viewer.layers[shapename].data:
+    for i in viewer.layers[layername].data:
         shape = []
         for j in i:
             shape.append((img.metadata["transform"]*(j[1], j[0])))
@@ -31,7 +31,7 @@ def shapes_to_geojson(img, viewer, out_path, shapetype="polygon", shapename="Sha
 
     polygon_list = []
     for i, _ in enumerate(features):
-        shape_type = viewer.layers[shapename].shape_type[i]
+        shape_type = viewer.layers[layername].shape_type[i]
         if shape_type == shapetype:
             polygon = Polygon(features[i])
             geojson_feature = {

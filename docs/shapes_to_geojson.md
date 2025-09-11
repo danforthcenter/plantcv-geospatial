@@ -2,14 +2,14 @@
 
 Using a Napari viewer object with a shapes layer, output a shapefile.  
 
-**plantcv.geospatial.shapes_to_geojson**(*img, viewer, out_path, shapetype="polygon", shapename="Shapes"*)
+**plantcv.geospatial.shapes_to_geojson**(*img, viewer, out_path, shapetype="polygon", layername="Shapes"*)
 
 - **Parameters:**
     - img - Spectral image object, likely read in with [`read_geotif`](read_geotif.md)
     - viewer - Napari viewer class object, possible created with PlantCV-Annotate.
     - out_path - Path to save the geojson shapefile. Must be ".geojson" file type. 
     - shapetype - The type of geometry contained in the shapes layer.
-	- shapename - The name of the shape layer to use, defaults to "Shapes".
+	- layername - The name of the shape layer to use, defaults to "Shapes".
 
 - **Context:**
     - Saved shapefiles can be used downstream for use with rasterstats or in parallel workflows. 

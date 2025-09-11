@@ -5,7 +5,7 @@ from plantcv.plantcv.roi import multi, circle
 from shapely.geometry import Polygon
 
 
-def center_grid_rois(img, viewer, radius=10, shapename="Shapes"):
+def center_grid_rois(img, viewer, radius=10, layername="Shapes"):
     """Creates circular ROIs from the center points of polygons.
 
     Parameters
@@ -26,7 +26,7 @@ def center_grid_rois(img, viewer, radius=10, shapename="Shapes"):
         Region of Interest object and heirarchies
     """
     points_list = []
-    for i in viewer.layers[shapename].data:
+    for i in viewer.layers[layername].data:
         point = shapely.centroid(Polygon(i))
         points_list.append((point.coords[0][1], point.coords[0][0]))
     if len(points_list) > 1:
