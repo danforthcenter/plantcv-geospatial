@@ -1,5 +1,5 @@
 # Analyze Digital Surface Model (DSM) over many regions
-from plantcv.geospatial._helpers import _gather_ids
+from plantcv.geospatial._helpers import _gather_ids, _show_geojson
 from plantcv.plantcv import outputs, params
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
@@ -96,17 +96,9 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     bounds['coords'] = bounds['geometry'].apply(lambda x: x.representative_point().coords[:])
     bounds['coords'] = [coords[0] for coords in bounds['coords']]
 
-    # Pseudocolor the DSM for plotting
-    _, ax = plt.subplots(figsize=(10, 10))
-    fig_extent = plotting_extent(dsm_data,
-                                 dsm.metadata['transform'])
-    ax.imshow(dsm_data, extent=fig_extent, cmap='viridis', vmin=min_elevation, vmax=max_elevation)
-
-    # Plot the shapefile bounds
-    bounds.boundary.plot(ax=ax, color="red")
-
-    # Set plot title and labels
-    plt.title("Shapefile on DSM")
+    # Plot the GeoTIFF
+    plotting_img = _show_geojson(img=dsm, geojson=geojson, ids=ids,
+                                 cmap='viridis', vmin=min_elevation, vmax=max_elevation)
 
     # Print or plot if debug is turned on
     if params.debug is not None:
