@@ -3,6 +3,7 @@ from shapely.geometry import LineString
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from plantcv.plantcv import params
+import numpy as np
 import geopandas
 import fiona
 import cv2
@@ -146,7 +147,7 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
     return p1, p2, p3, p4
 
 
-def _show_geojson(img, geojson, ids):
+def _show_geojson(img, geojson, ids, **kwargs):
     """Split a polygon into equidistant subplots
 
     Parameters:
@@ -167,9 +168,11 @@ def _show_geojson(img, geojson, ids):
 
     # Plot the GeoTIFF
     # Make a flipped image for graphing
-    flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
-                         img.pseudo_rgb[:, :, [1]],
-                         img.pseudo_rgb[:, :, [0]]))
+    flipped = img.array_data
+    if len(np.shape(img.pseudo_rgb)) > 2:
+        flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
+                            img.pseudo_rgb[:, :, [1]],
+                            img.pseudo_rgb[:, :, [0]]))
 
     _, ax = plt.subplots(figsize=(10, 10))
     fig_extent = plotting_extent(img.array_data[:, :, :3],
@@ -177,12 +180,14 @@ def _show_geojson(img, geojson, ids):
     # Add labels to vector features
     if ids is not None:
         for idx, row in bounds.iterrows():
-            plt.text(row.geometry.centroid.x,
-                    row.geometry.centroid.y,
-                    ids[idx], fontsize=5,
+            x_coord = (row.geometry.bounds[0] + row.geometry.centroid.x) / 2
+            y_coord = row.geometry.centroid.y
+            plt.text(x_coord,
+                    y_coord,
+                    ids[idx], fontsize=10,
                     c="m")
 
-    ax.imshow(flipped, extent=fig_extent)
+    ax.imshow(flipped, extent=fig_extent, **kwargs)
     # Plot the shapefile
     bounds.boundary.plot(ax=ax, color="blue")
     # Set plot title and labels
