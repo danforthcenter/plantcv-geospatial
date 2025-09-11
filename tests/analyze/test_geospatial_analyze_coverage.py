@@ -28,5 +28,5 @@ def test_coverage_with_geo_ids(test_data):
     # Read in test data
     img = joblib.load(test_data.rgb_pickled)
     bin_mask = img.array_data[:, :, 2]  # Make a grayscale img to use as the mask
-    _ = analyze_coverage(img=img, bin_mask=bin_mask, geojson=test_data.geojson_with_id)
+    _ = analyze_coverage(img=img, bin_mask=bin_mask, geojson=test_data.geojson_with_fid)
     assert outputs.observations["888"]["percent_coverage"]["value"] <= 1
