@@ -1,13 +1,8 @@
 # Analyze pixel count over many regions
 from plantcv.geospatial._helpers import _gather_ids, _show_geojson
-from plantcv.plantcv import outputs, params
-from rasterio.plot import plotting_extent
+from plantcv.plantcv import outputs
 from rasterstats import zonal_stats
-from matplotlib import pyplot as plt
-import geopandas
 import numpy as np
-import os
-import cv2
 
 
 def coverage(img, bin_mask, geojson):
