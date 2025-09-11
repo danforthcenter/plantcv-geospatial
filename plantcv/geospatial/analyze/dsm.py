@@ -1,7 +1,6 @@
 # Analyze Digital Surface Model (DSM) over many regions
 from plantcv.geospatial._helpers import _gather_ids, _show_geojson
 from plantcv.plantcv import outputs, params
-from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
 import numpy as np
 import geopandas
