@@ -33,6 +33,8 @@ def grid(img, field_corners_path, out_path, num_ranges, num_columns,
         Size of alley spaces beteen ranges, units match shapefile CRS (default: 0)
     column_spacing : float
         Size of alley spaces beteen columns, units match shapefile CRS (default: 0)
+    ids : list
+        List of plot IDs (optional) to label geojson plots
 
     Returns:
     --------

@@ -25,6 +25,8 @@ def flexible(img, field_corners_path, plot_geojson_path, out_path, range_length,
         Width of each grid cell, units the same as the field_corners_path shapefile CRS (default: 1 )
     num_rows : int, optional
         Number of rows per plot, default: 1
+    ids : list
+        List of plot IDs (optional) to label geojson plots
 
     Returns:
     --------
