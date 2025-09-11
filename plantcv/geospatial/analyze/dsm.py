@@ -1,12 +1,10 @@
 # Analyze Digital Surface Model (DSM) over many regions
 from plantcv.geospatial._helpers import _gather_ids, _show_geojson
 from plantcv.plantcv import outputs, params
-from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
 import numpy as np
 import geopandas
-import os
 
 
 def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
@@ -100,16 +98,4 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     plotting_img = _show_geojson(img=dsm, geojson=geojson, ids=ids,
                                  cmap='viridis', vmin=min_elevation, vmax=max_elevation)
 
-    # Print or plot if debug is turned on
-    if params.debug is not None:
-        if params.debug == 'print':
-            plt.savefig(os.path.join(params.debug_outdir, str(
-                params.device) + '_analyze_height_percentile.png'), dpi=params.dpi)
-            plt.close()
-        elif params.debug == 'plot':
-            # Use non-blocking mode in case the function is run more than once
-            plt.show(block=False)
-    else:
-        plt.close()
-
-    return bounds
+    return plotting_img
