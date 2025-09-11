@@ -71,16 +71,4 @@ def coverage(img, bin_mask, geojson):
     # Plot the GeoTIFF
     plotting_img = _show_geojson(img, geojson, ids=ids)
 
-    # Print or plot if debug is turned on
-    if params.debug is not None:
-        if params.debug == 'print':
-            plt.savefig(os.path.join(params.debug_outdir, str(
-                params.device) + '_analyze_coverage.png'), dpi=params.dpi)
-            plt.close()
-        elif params.debug == 'plot':
-            # Use non-blocking mode in case the function is run more than once
-            plt.show(block=False)
-    else:
-        plt.close()
-
     return plotting_img
