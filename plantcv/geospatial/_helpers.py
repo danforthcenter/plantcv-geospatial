@@ -220,5 +220,54 @@ def _gather_ids(geojson):
                 ids.append((row['properties']["FID"]))
             else:
                 # If there are no IDs in the geojson then use default labels
-                ids.append("default_" + str(i))
+                ids.append("default_" + str(i + 1))
     return ids
+
+
+def _plot_bounds_pseudocolored(img, geojson, vmin, vmax, data_label):
+    """Plot shapefile bounds on a pseudocolored data layer
+
+    Parameters:
+    -----------
+    img : [spectral_object]
+        Spectral_Data object of geotif data, used for plotting
+    geojson : str
+        Path to the shape file containing the regions
+    vmin : float
+        Minimum value to get plotted
+    vmax : float
+        Maximum value to get plotted
+
+    Returns:
+    --------
+    analysis_image = Debug image showing shapes from geojson on input image.
+    """
+    # Plot the GeoTIFF
+    bounds = geopandas.read_file(geojson)
+
+    # Gather representative coordinates for each polygone in the shapefile
+    bounds['coords'] = bounds['geometry'].apply(lambda x: x.representative_point().coords[:])
+    bounds['coords'] = [coords[0] for coords in bounds['coords']]
+
+    # Pseudocolor the DSM for plotting
+    _, ax = plt.subplots(figsize=(10, 10))
+    fig_extent = plotting_extent(img.array_data,
+                                 img.metadata['transform'])
+    ax.imshow(img.array_data, extent=fig_extent, cmap='viridis', vmin=vmin, vmax=vmax)
+
+    # Plot the shapefile bounds
+    bounds.boundary.plot(ax=ax, color="red")
+    plt.title("Shapefile on " + str(data_label))
+
+    # Print or plot if debug is turned on
+    if params.debug is not None:
+        if params.debug == 'print':
+            plt.savefig(os.path.join(params.debug_outdir, str(
+                params.device) + '_analyze_' + str(data_label) + '.png'), dpi=params.dpi)
+            plt.close()
+        elif params.debug == 'plot':
+            # Use non-blocking mode in case the function is run more than once
+            plt.show(block=False)
+    else:
+        plt.close()
+    return ax

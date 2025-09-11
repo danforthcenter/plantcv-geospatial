@@ -2,14 +2,15 @@
 
 After using a Napari viewer, and possibly the combination of `napari_grid` and `napari_polygon_grid`, this function takes a viewer's shapes layer and turns the center point of every polygon into a circular Region of Interest (ROI) for downstream analysis of individual objects. 
 
-**plantcv.geospatial.center_grid_rois**(*img, viewer, radius=10*)
+**plantcv.geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
 
 **returns** roi_objects
 
 - **Parameters:**
     - img - Image or pseudo_rgb attribute of a spectral object on which to draw the ROIs.
-    - veiwer - Napari viewer object. Must have a shapes layer called "grid_shapes" containing polygons, the centers of which will become the center of ROIs.
-    - radius - Pixel value of the radius of ROIs. Default is 10.  
+    - viewer - Napari viewer object. Must have a shapes layer containing polygons, the centers of which will become the center of ROIs.
+    - radius - Pixel value of the radius of ROIs. Default is 10.
+	- layername - Name of shape layer containing polygons, defaults to "Shapes".
 
 - **Context:**
     - Though this function is designed to be used after drawing polygons in a grid using `napari_grid` and `napari_polygon_grid`, it can be used to draw ROIs using polygons formed by hand, read in from a shapefile, or drawn using custom algorithms.
@@ -27,9 +28,9 @@ pcv.params.debug = "plot"
 
 # Read geotif in
 img = gcv.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
-# Open a napari viewer and add a shapes layer called "grid_shapes"
+# Open a napari viewer and add a shapes layer
 viewer = an.napari_open(img=img.pseudo_rgb)
-viewer.add_shapes(name="grid_shapes")
+viewer.add_shapes(name="Shapes")
 
 # Now, when the Napari viewer opens, the user can add polygons around individual plants or plots.
 
