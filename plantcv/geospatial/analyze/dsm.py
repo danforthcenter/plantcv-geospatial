@@ -139,14 +139,14 @@ def height_subtraction(dsm1, dsm0):
     #Check the coordinate reference system (CRS) is the same for both of the DSMs
     if dsm1.metadata["crs"] != dsm0.metadata["crs"]:
         fatal_error("The two input DSMs do not have the same coordinate reference system (CRS).")
-
-    #Check the shapes are equivalent
-    if dsm1.array_data[:, :] != dsm1.array_data[:, :]:
-        fatal_error("The two input DSMs do not have the same shape. You can change this in your DSMs with the 'cropto' function.")
     
     # DSM tifs contain just one band of data, so make the array 2D
     dsm1_data = dsm1.array_data[:, :, 0]
     dsm0_data = dsm0.array_data[:, :, 0]
+
+    #Check the shapes are equivalent
+    if dsm1.array_data[:, :, 0] != dsm0.array_data[:, :, 0]:
+        fatal_error("The two input DSMs do not have the same shape. You can change this in your DSMs with the 'cropto' function.")
     
     # Cast to float since zonal_stats gives overflow error on uint8 data
     dsm1_data = dsm1_data.astype(np.float32)
