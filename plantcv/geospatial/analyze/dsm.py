@@ -145,7 +145,7 @@ def height_subtraction(dsm1, dsm0):
     dsm0_data = dsm0.array_data[:, :, 0]
 
     #Check the shapes are equivalent
-    if dsm1.array_data[:, :, 0] != dsm0.array_data[:, :, 0]:
+    if dsm1.array_data.any[:, :, 0] != dsm0.array_data.any[:, :, 0]:
         fatal_error("The two input DSMs do not have the same shape. You can change this in your DSMs with the 'cropto' function.")
     
     # Cast to float since zonal_stats gives overflow error on uint8 data
