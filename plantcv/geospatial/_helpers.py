@@ -178,12 +178,11 @@ def _show_geojson(img, geojson, ids, **kwargs):
     fig_extent = plotting_extent(img.array_data[:, :, :3],
                                  img.metadata['transform'])
     # Add labels to vector features
-    if params.verbose:
-        if ids is not None:
-            for idx, row in bounds.iterrows():
-                x_coord = (row.geometry.bounds[0] + row.geometry.centroid.x) / 2
-                y_coord = row.geometry.centroid.y
-                plt.text(x_coord, y_coord, ids[idx], fontsize=10, c="m")
+    if params.verbose and ids is not None:
+        for idx, row in bounds.iterrows():
+            x_coord = (row.geometry.bounds[0] + row.geometry.centroid.x) / 2
+            y_coord = row.geometry.centroid.y
+            plt.text(x_coord, y_coord, ids[idx], fontsize=10, c="m")
 
     ax.imshow(flipped, extent=fig_extent, **kwargs)
     # Plot the shapefile
