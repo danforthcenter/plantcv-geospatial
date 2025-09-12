@@ -141,7 +141,7 @@ def height_subtraction(dsm1, dsm0):
         fatal_error("The two input DSMs do not have the same coordinate reference system (CRS).")
 
     #Check the shapes are equivalent
-    if dsm1.shape != dsm0.shape:
+    if dsm1.array_data[:, :] != dsm1.array_data[:, :]:
         fatal_error("The two input DSMs do not have the same shape. You can change this in your DSMs with the 'cropto' function.")
     
     # DSM tifs contain just one band of data, so make the array 2D
