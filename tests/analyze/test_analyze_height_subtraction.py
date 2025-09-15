@@ -55,6 +55,6 @@ def test_height_shape_check(test_data):
     dsm1_fake = joblib.load(test_data.rgb_pickled)
     dsm0_fake = joblib.load(test_data.rgb_pickled)
     # Check for shape
-    test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)
-    assert (dsm1_data == dsm0_data)
+    with pytest.raises(RuntimeError):
+        test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)
         
