@@ -4,6 +4,7 @@ import joblib
 import pytest
 import numpy as np
 from plantcv.plantcv import outputs, params
+from plantcv.plantcv import fatal_error
 from plantcv.geospatial.analyze import height_subtraction
 
 
@@ -53,8 +54,8 @@ def test_height_shape_check(test_data):
     params.debug = "plot"
     # Read in test data
     dsm1_fake = joblib.load(test_data.rgb_pickled)
-    dsm0_fake = joblib.load(test_data.rgb_pickled)
+    dsm0_fake = joblib.load(test_data.square_crop)
     # Check for shape
-    with pytest.raises(RuntimeError):
+    with pytest.raises(fatal_error):
         test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)
         
