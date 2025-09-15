@@ -18,7 +18,7 @@ def test_height_percentile(tmpdir, test_data):
     # Debug mode
     params.debug = "print"
     _ = height_percentile(dsm=img, geojson=test_data.square_crop)
-    assert outputs.observations["default_0"]["plant_height"]["value"] > 0
+    assert outputs.observations["default_1"]["plant_height"]["value"] > 0
 
 
 def test_height_percentile_with_geo_ids(test_data):
