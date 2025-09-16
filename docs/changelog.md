@@ -11,7 +11,7 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.height_percentile**(*dsm, geojson, lower=25, upper=90, label=None*)
 
-### geospatial.analyze.height_subtraction
+#### geospatial.analyze.height_subtraction
 
 * v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
