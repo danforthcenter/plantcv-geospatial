@@ -4,6 +4,7 @@ import joblib
 import pytest
 import numpy as np
 from plantcv.plantcv import outputs, params
+from plantcv.plantcv import fatal_error
 from plantcv.geospatial.analyze import height_subtraction
 
 
