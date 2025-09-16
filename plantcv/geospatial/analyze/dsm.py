@@ -123,7 +123,8 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
         plt.close()
 
     return bounds
-    
+
+
 def height_subtraction(dsm1, dsm0):
     """A function that subtracts the height of one DSM from the height of another and outputs a spectral array.
     Inputs:
@@ -132,7 +133,7 @@ def height_subtraction(dsm1, dsm0):
 
     Returns:
     New Spectral_Data array which is dsm1 - dsm0.
- 
+
     :param dsm1: [spectral object]
     :param dsm0: [spectral object]
     """
