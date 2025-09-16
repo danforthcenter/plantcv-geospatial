@@ -5,7 +5,6 @@ from plantcv.plantcv import outputs, params
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
-from plantcv.plantcv import fatal_error
 import numpy as np
 import geopandas
 import os
@@ -130,45 +129,27 @@ def height_subtraction(dsm1, dsm0):
     dsm1         = Spectral_Data object of geotif data, used for affine metadata - DSM with plant height
     dsm0         = Spectral_Data object of geotif data, used for affine metadata - DSM of bare ground
 
-    Returns: 
+    Returns:
     New Spectral_Data array which is dsm1 - dsm0.
-
+ 
     :param dsm1: [spectral object]
     :param dsm0: [spectral object]
     """
-    #Check the coordinate reference system (CRS) is the same for both of the DSMs
+    # Check the coordinate reference system (CRS) is the same for both of the DSMs
     if dsm1.metadata["crs"] != dsm0.metadata["crs"]:
         fatal_error("The two input DSMs do not have the same coordinate reference system (CRS).")
-    
+
     # DSM tifs contain just one band of data, so make the array 2D
     dsm1_data = dsm1.array_data[:, :, 0]
     dsm0_data = dsm0.array_data[:, :, 0]
 
-    #Check the shapes are equivalent
-    if (dsm1_data.shape == dsm0_data.shape) == False:
-        fatal_error("The two input DSMs do not have the same shape. You can change this in your DSMs with the 'cropto' function.")
-    
-    # Cast to float since zonal_stats gives overflow error on uint8 data
-    dsm1_data = dsm1_data.astype(np.float32)
-    dsm0_data = dsm0_data.astype(np.float32)
+    # Check the shapes are equivalent
+    if (dsm1_data.shape == dsm0_data.shape) is False:
+        fatal_error("Input DSMs do not have same shape, can be changed with PCV 'resize' function.")
 
-    if dsm1.metadata['nodata'] is not None:
-        nodata_value = dsm1.metadata['nodata']
-    else:
-        nodata_value = -999
-        
-    if dsm0.metadata['nodata'] is not None:
-        nodata_value = dsm0.metadata['nodata']
-    else:
-        nodata_value = -999
-        
-    # Scale of the data
-    scale1 = dsm1.metadata["crs"].linear_units
-    scale0 = dsm0.metadata["crs"].linear_units
-
-    #Perform the subtraction
+    # Perform the subtraction
     final_subtraction = dsm1_data - dsm0_data
-    
+
     # Make a Spectral_data instance to output
     spectral_array = Spectral_data(array_data=final_subtraction,
                                    max_wavelength=0,
@@ -181,6 +162,5 @@ def height_subtraction(dsm1, dsm0):
                                    pseudo_rgb=final_subtraction, filename=None,
                                    default_bands=[480, 540, 630],
                                    metadata=dsm0.metadata)
-    
+
     return spectral_array
-    
