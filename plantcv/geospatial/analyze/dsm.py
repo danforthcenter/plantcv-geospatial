@@ -1,8 +1,8 @@
 # Analyze Digital Surface Model (DSM) over many regions
 from plantcv.geospatial._helpers import _gather_ids
 from plantcv.plantcv.classes import Spectral_data
-from plantcv.plantcv import fatal_error
-from plantcv.plantcv import outputs, params
+from plantcv.plantcv import outputs, params, fatal_error
+from plantcv.plantcv._debug import _debug
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
@@ -150,19 +150,33 @@ def height_subtraction(dsm1, dsm0):
         fatal_error("Input DSMs do not have same shape, can be changed with PCV 'resize' function.")
 
     # Perform the subtraction
-    final_subtraction = dsm1_data - dsm0_data
+    final_data = dsm1_data - dsm0_data
 
-    # Make a Spectral_data instance to output
-    spectral_array = Spectral_data(array_data=final_subtraction,
+    # Change nodata values to Nan
+    final_data[final_data == min(np.unique(final_data))] = np.nan
+
+    # Stretch values to min/max for visualization
+    final_data = 255*((final_data - np.nanmin(final_data)) / (np.nanmax(final_data) - np.nanmin(final_data)))
+
+     # Return nodata values to 0
+    final_data = np.nan_to_num(final_data, nan=0.0)
+
+    # Convert to uint8
+    pseudo_rgb = final_data.astype(np.uint8)
+
+    # Make a Spectral_data instance before calculating a pseudo-rgb
+    spectral_array = Spectral_data(array_data=final_data,
                                    max_wavelength=0,
                                    min_wavelength=0,
-                                   max_value=np.max(final_subtraction), min_value=np.min(final_subtraction),
+                                   max_value=np.max(final_data), min_value=np.min(final_data),
                                    d_type=np.float32,
-                                   wavelength_dict=None, samples=int(np.shape(final_subtraction)[1]),
-                                   lines=int(np.shape(final_subtraction)[0]), interleave=None,
+                                   wavelength_dict=None, samples=int(np.shape(final_data)[1]),
+                                   lines=int(np.shape(final_data)[0]), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=final_subtraction, filename=None,
+                                   pseudo_rgb=pseudo_rgb, filename=None,
                                    default_bands=[480, 540, 630],
                                    metadata=dsm0.metadata)
 
+    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
     return spectral_array
+
