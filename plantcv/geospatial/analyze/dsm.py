@@ -155,11 +155,12 @@ def height_subtraction(dsm1, dsm0):
     # Define the visualization file
     final_vis = final_data
 
-    # Stretch values to min/max for visualization
-    final_vis = 255*((final_vis - np.nanmin(final_vis)) / (np.nanmax(final_vis) - np.nanmin(final_vis)))
-
     # Return nodata values to 0
     final_data = np.nan_to_num(final_data, nan=0.0)
+    final_vis = np.nan_to_num(final_data, nan=0.0)
+
+    # Stretch values to min/max for visualization
+    final_vis = 255*((final_vis - np.nanmin(final_vis)) / (np.nanmax(final_vis) - np.nanmin(final_vis)))
 
     # Convert to uint8
     pseudo_rgb = final_vis.astype(np.uint8)
