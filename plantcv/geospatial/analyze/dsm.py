@@ -152,17 +152,14 @@ def height_subtraction(dsm1, dsm0):
     # Perform the subtraction
     final_data = dsm1_data - dsm0_data
 
-    # Change nodata values to Nan
-    final_data[final_data == min(np.unique(final_data))] = np.nan
-
     # Stretch values to min/max for visualization
-    final_data = 255*((final_data - np.nanmin(final_data)) / (np.nanmax(final_data) - np.nanmin(final_data)))
+    final_vis = 255*((final_data - np.nanmin(final_data)) / (np.nanmax(final_data) - np.nanmin(final_data)))
 
      # Return nodata values to 0
     final_data = np.nan_to_num(final_data, nan=0.0)
 
     # Convert to uint8
-    pseudo_rgb = final_data.astype(np.uint8)
+    pseudo_rgb = final_vis.astype(np.uint8)
 
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=final_data,
