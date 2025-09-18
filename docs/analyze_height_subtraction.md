@@ -7,8 +7,8 @@ Create canopy height model (CHM) from bare soil and plant height digital elevati
 **returns** Spectral array of CHM.
 
 - **Parameters:**
-    - dsm1 - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
-    - dsm0 - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
+    - dsm1 - Spectral image object
+    - dsm0 - Spectral image object
 
 - **Context:**
     - This function will output a spectral array that can then be used with other functions to analyze plant height within a given area.
