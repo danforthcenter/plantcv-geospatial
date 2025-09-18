@@ -21,9 +21,6 @@ import plantcv.plantcv as pcv
 dsm1 = gcv.read_geotif(filename="./data/example_dsm.tif", bands=[0])
 dsm0 = gcv.read_geotif(filename="./data/example_dsm.tif", bands=[0])
 
-# Analyze coverage for each region in the geojson
-chm = gcv.analyze.height_subtraction(dsm1, dsm0)
-
 # To get the canopy height model:
 pcv.params.debug = "plot"
 
