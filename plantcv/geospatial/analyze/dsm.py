@@ -152,10 +152,13 @@ def height_subtraction(dsm1, dsm0):
     # Perform the subtraction
     final_data = dsm1_data - dsm0_data
 
-    # Stretch values to min/max for visualization
-    final_vis = 255*((final_data - np.nanmin(final_data)) / (np.nanmax(final_data) - np.nanmin(final_data)))
+    # Define the visualization file
+    final_vis = final_data
 
-     # Return nodata values to 0
+    # Stretch values to min/max for visualization
+    final_vis = 255*((final_vis - np.nanmin(final_vis)) / (np.nanmax(final_vis) - np.nanmin(final_vis)))
+
+    # Return nodata values to 0
     final_data = np.nan_to_num(final_data, nan=0.0)
 
     # Convert to uint8
@@ -165,10 +168,10 @@ def height_subtraction(dsm1, dsm0):
     spectral_array = Spectral_data(array_data=final_data,
                                    max_wavelength=0,
                                    min_wavelength=0,
-                                   max_value=np.max(final_data), min_value=np.min(final_data),
+                                   max_value=np.max(final_vis), min_value=np.min(final_vis),
                                    d_type=np.float32,
-                                   wavelength_dict=None, samples=int(np.shape(final_data)[1]),
-                                   lines=int(np.shape(final_data)[0]), interleave=None,
+                                   wavelength_dict=None, samples=int(np.shape(final_vis)[1]),
+                                   lines=int(np.shape(final_vis)[0]), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=pseudo_rgb, filename=None,
                                    default_bands=[480, 540, 630],
@@ -176,4 +179,3 @@ def height_subtraction(dsm1, dsm0):
 
     _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
     return spectral_array
-
