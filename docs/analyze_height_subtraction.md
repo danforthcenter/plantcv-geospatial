@@ -13,9 +13,6 @@ Create canopy height model (CHM) from bare soil and plant height digital elevati
 - **Context:**
     - This function will output a spectral array that can then be used with other functions to analyze plant height within a given area.
 
-- **Example use:**
-    - Example images and geojson from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
-
 ```python
 import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
@@ -23,17 +20,15 @@ import plantcv.plantcv as pcv
 # Read in dsm as geotif
 dsm1 = gcv.read_geotif(filename="./data/example_dsm.tif", bands=[0])
 dsm0 = gcv.read_geotif(filename="./data/example_dsm.tif", bands=[0])
-# Analyze coverage for each region in the geojson
-bounds = gcv.analyze.height_percentile(dsm=dsm,
-                           geojson="./shapefiles/experimental_plots.geojson",
-                           lower=25,
-                           upper=90,
-                           label="default")
 
-# To access individual observation values:
-print(pcv.outputs.observations["default_0"]["plant_height"]["value"])
+# Analyze coverage for each region in the geojson
+chm = gcv.analyze.height_subtraction(dsm1, dsm0)
+
+# To get the canopy height model:
+pcv.params.debug = "plot"
+
+chm = gcv.analyze.height_subtraction(dsm1, dsm0)
 
 ```
-![Screenshot](documentation_images/analyze_height_percentile.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/dsm.py)
