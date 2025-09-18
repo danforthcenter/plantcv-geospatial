@@ -1,6 +1,7 @@
 ## Analyze height by subtraction to get a canopy height model (CHM)
 
 Create canopy height model (CHM) from bare soil and plant height digital elevation model (DEM) or digital surface model (DSM) images. Calculates the soil elevation as a subtraction of the DSM with plant height from the DSM with bare soil. 
+Note: the input DSMs need to be the same shape.
 
 **plantcv.geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
