@@ -21,7 +21,7 @@ dependencies = [
     "joblib",
     "netCDF4"
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.11"
 authors = [
     {name = "PlantCV Team", email = "plantcv@danforthcenter.org"},
 ]
