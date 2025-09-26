@@ -12,19 +12,27 @@ import os
 
 
 def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
-    """A function that analyzes elevation averages over regions and outputs data.
-    Inputs:
-    dsm          = Spectral_Data object of geotif data, used for affine metadata
-    geojson      = Path to the shape file containing the regions for analysis
-    lower        = Lower percentile cut off, input as a list formatted  default lower=25
-    upper        = Upper percentile cut off, input as a list formatted  default upper=90
-    label        = Optional label parameter, modifies the variable name of
-                   observations recorded (default = pcv.params.sample_label).
+    """
+    A function that analyzes elevation averages over regions and outputs data.
 
-    :param dsm: [spectral object]
-    :param geojson: str
-    :param percentile: list
-    :param label: str
+    Parameters
+    ----------
+    dsm : Spectral_data
+        Spectral_data object of geotif data, used for affine metadata
+    geojson : str
+        Path to the shape file containing the regions for analysis
+    lower : int, optional
+        Lower percentile cut off, input as a list formatted  default lower=25
+    upper : int, optional
+        Upper percentile cut off, input as a list formatted  default upper=90
+    label : str, list, optional
+        Optional label parameter, modifies the variable name of observations
+        recorded (default = pcv.params.sample_label).
+
+    Returns
+    -------
+    bounds : list
+        List of geojson bounds analyzed
     """
     # DSM tifs contain just one band of data, so make the array 2D
     dsm_data = dsm.array_data[:, :, 0]
@@ -126,16 +134,20 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
 
 
 def height_subtraction(dsm1, dsm0):
-    """A function that subtracts the height of one DSM from the height of another and outputs a spectral array.
-    Inputs:
-    dsm1         = Spectral_Data object of geotif data, used for affine metadata - DSM with plant height
-    dsm0         = Spectral_Data object of geotif data, used for affine metadata - DSM of bare ground
+    """
+    A function that subtracts the height of one DSM from the height of another and outputs a Spectral_data object instance.
 
-    Returns:
-    New Spectral_Data array which is dsm1 - dsm0.
+    Parameters
+    ----------
+    dsm1 : Spectral_data
+        Spectral_data object of geotif DSM data - DSM with plant height
+    dsm0 : Spectral_data
+        Spectral_data object of geotif DSM data - DSM of bare ground
 
-    :param dsm1: [spectral object]
-    :param dsm0: [spectral object]
+    Returns
+    -------
+    subtracted_dsm : Spectral_data
+        New Spectral_data object with dsm1 - dsm0
     """
     # Check the coordinate reference system (CRS) is the same for both of the DSMs
     if dsm1.metadata["crs"] != dsm0.metadata["crs"]:
