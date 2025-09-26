@@ -164,7 +164,7 @@ def height_subtraction(dsm1, dsm0):
 
     # Perform the subtraction
     final_data = dsm1_data - dsm0_data
-    # Scale visualization 
+    # Scale visualization
     final_vis = np.nan_to_num(final_data, nan=0.0)
     debug = params.debug
     params.debug = None
