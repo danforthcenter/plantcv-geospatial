@@ -2,6 +2,7 @@
 from plantcv.geospatial._helpers import _gather_ids
 from plantcv.plantcv.classes import Spectral_data
 from plantcv.plantcv import outputs, params, fatal_error
+from plantcv.plantcv.transform import rescale
 from plantcv.plantcv._debug import _debug
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
@@ -163,16 +164,12 @@ def height_subtraction(dsm1, dsm0):
 
     # Perform the subtraction
     final_data = dsm1_data - dsm0_data
-
-    # Define the visualization file
-    final_vis = final_data
-
-    # Return nodata values to 0
-    final_data = np.nan_to_num(final_data, nan=0.0)
+    # Scale visualization 
     final_vis = np.nan_to_num(final_data, nan=0.0)
-
-    # Stretch values to min/max for visualization
-    final_vis = 255*((final_vis - np.nanmin(final_vis)) / (np.nanmax(final_vis) - np.nanmin(final_vis)))
+    debug = params.debug
+    params.debug = None
+    final_vis = rescale(final_vis, min_value=0, max_value=255)
+    params.debug = debug
 
     # Convert to uint8
     pseudo_rgb = final_vis.astype(np.uint8)
@@ -187,8 +184,8 @@ def height_subtraction(dsm1, dsm0):
                                    lines=int(np.shape(final_vis)[0]), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=pseudo_rgb, filename=None,
-                                   default_bands=[480, 540, 630],
+                                   default_bands=None,
                                    metadata=dsm0.metadata)
 
-    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
+    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
     return spectral_array
