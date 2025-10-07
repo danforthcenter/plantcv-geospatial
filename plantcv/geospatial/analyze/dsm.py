@@ -4,11 +4,10 @@ from plantcv.plantcv.classes import Spectral_data
 from plantcv.plantcv import outputs, params, fatal_error
 from plantcv.plantcv.transform import rescale
 from plantcv.plantcv._debug import _debug
-from rasterio.plot import plotting_extent
-from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
 import numpy as np
 import geopandas
+import os
 
 
 def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
