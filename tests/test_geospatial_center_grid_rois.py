@@ -15,7 +15,7 @@ def test_geospatial_center_rois_one(test_data):
     img = joblib.load(test_data.rgb_pickled)
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
-    viewer.add_shapes(field, name="grid_shapes")
+    viewer.add_shapes(field, name="Shapes")
     rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 1
     viewer.close()
@@ -34,7 +34,7 @@ def test_geospatial_center_rois_multi(test_data):
     img = joblib.load(test_data.rgb_pickled)
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
-    viewer.add_shapes(field, name="grid_shapes")
+    viewer.add_shapes(field, name="Shapes")
     rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 2
     viewer.close()

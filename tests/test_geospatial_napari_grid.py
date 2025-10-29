@@ -21,9 +21,9 @@ def test_geospatial_napari_grid(test_data):
     geo.napari_grid(viewer, numdivs=[1, 2], layername="field_polygon")
     geo.napari_polygon_grid(viewer)
     assert len(viewer.layers["grid_lines1"].data) == 2
-    assert len(viewer.layers["grid_shapes"].data) == 2
+    assert len(viewer.layers["Shapes"].data) == 2
     assert int(viewer.layers["grid_lines1"].data[0][1][0]) == 140
-    assert int(viewer.layers["grid_shapes"].data[0][1][0]) == 136
+    assert int(viewer.layers["Shapes"].data[0][1][0]) == 136
     viewer.close()
 
 

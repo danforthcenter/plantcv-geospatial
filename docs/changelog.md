@@ -11,6 +11,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.height_percentile**(*dsm, geojson, lower=25, upper=90, label=None*)
 
+#### geospatial.analyze.spectral_index
+
+* v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, percentiles=None, label=None*)
 #### geospatial.analyze.height_subtraction
 
 * v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
@@ -25,7 +28,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.center_grid_rois
 
-* v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10*)
+* v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
 
 #### geospatial.napari_grid
 
@@ -33,7 +36,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.napari_polygon_grid
 
-* v0.1dev: **geospatial.napari_polygon_grid**(*viewer*)
+* v0.1dev: **geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
 
 #### geospatial.read_geotif
 
@@ -62,4 +65,4 @@ All notable changes to this project will be documented below.
 
 #### geospatial.shapes_to_geojson
 
-* v0.1dev: coord = **geospatial.shapes_to_geojson**(*img, viewer, out_path*)
+* v0.1dev: coord = **geospatial.shapes_to_geojson**(*img, viewer, out_path, layername="Shapes"*)
