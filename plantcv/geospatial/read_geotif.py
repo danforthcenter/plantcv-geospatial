@@ -43,7 +43,7 @@ def _parse_bands(bands):
     list
         List of bands
     """
-    if not is.instance(bands, str):
+    if not isinstance(bands, str):
         return bands
     # Numeric list of bands
     band_list = []
