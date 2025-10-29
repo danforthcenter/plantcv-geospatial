@@ -35,7 +35,7 @@ def _parse_bands(bands):
 
     Parameters
     ----------
-    bands : str
+    bands : str or list
         Comma separated string listing the order of bands
 
     Returns
@@ -43,6 +43,8 @@ def _parse_bands(bands):
     list
         List of bands
     """
+    if not isinstance(bands, str):
+        return bands
     # Numeric list of bands
     band_list = []
 
@@ -132,13 +134,9 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         if len(np.unique(img_data[:, :, [i]])) == 2:
             mask_layer = img_data[:, :, [i]]
             img_data = np.delete(img_data, i, 2)
-    # Check if img is uint16
-    if img_data.dtype == "uint16":
-        img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
 
-    # Parse bands if input is a string
-    if isinstance(bands, str):
-        bands = _parse_bands(bands)
+    # Parse bands
+    bands = _parse_bands(bands)
     # Create a dictionary of wavelengths and their indices
     for i, wl in enumerate(bands):
         wavelengths[wl] = i
@@ -163,12 +161,9 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
                                 img_data[:, :, [id_green]],
                                 img_data[:, :, [id_red]]))
-        # Gamma correction
-        # if pseudo_rgb.dtype != 'uint8':
-        #     pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
-        #     pseudo_rgb = pseudo_rgb * 255
-        #     pseudo_rgb = pseudo_rgb.astype('uint8')
-        pseudo_rgb = pseudo_rgb.astype('uint8')
+        # normalize to [0, 255] if data is not already uint8. If it is uint8 then it should good already.
+        if pseudo_rgb.dtype != 'uint8':
+            pseudo_rgb = cv2.normalize(pseudo_rgb, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
     # Construct grayscale debug
     else:
         img_copy = img_data
@@ -187,6 +182,10 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         img_copy = np.nan_to_num(img_copy, nan=0.0)
         # Convert to uint8
         pseudo_rgb = img_copy.astype(np.uint8)
+    # Check if img is uint16
+    if img_data.dtype == "uint16":
+        img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
+        d_type = "uint8"
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=max(wavelengths.keys()),
