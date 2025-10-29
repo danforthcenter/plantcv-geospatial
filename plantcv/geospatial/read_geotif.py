@@ -163,12 +163,9 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
                                 img_data[:, :, [id_green]],
                                 img_data[:, :, [id_red]]))
-        # Gamma correction
-        # if pseudo_rgb.dtype != 'uint8':
-        #     pseudo_rgb = pseudo_rgb.astype('float32') ** (1 / 2.2)
-        #     pseudo_rgb = pseudo_rgb * 255
-        #     pseudo_rgb = pseudo_rgb.astype('uint8')
-        pseudo_rgb = pseudo_rgb.astype('uint8')
+        # normalize to [0, 255] if data is not already uint8. If it is uint8 then it should good already.
+        if pseudo_rgb.dtype != 'uint8':
+            pseudo_rgb = cv2.normalize(pseudo_rgb, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
     # Construct grayscale debug
     else:
         img_copy = img_data
