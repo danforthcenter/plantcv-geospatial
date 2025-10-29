@@ -134,9 +134,6 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         if len(np.unique(img_data[:, :, [i]])) == 2:
             mask_layer = img_data[:, :, [i]]
             img_data = np.delete(img_data, i, 2)
-    # Check if img is uint16
-    if img_data.dtype == "uint16":
-        img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
 
     # Parse bands
     bands = _parse_bands(bands)
@@ -185,6 +182,10 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         img_copy = np.nan_to_num(img_copy, nan=0.0)
         # Convert to uint8
         pseudo_rgb = img_copy.astype(np.uint8)
+    # Check if img is uint16
+    if img_data.dtype == "uint16":
+        img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
+        d_type = "uint8"
     # Make a Spectral_data instance before calculating a pseudo-rgb
     spectral_array = Spectral_data(array_data=img_data,
                                    max_wavelength=max(wavelengths.keys()),
