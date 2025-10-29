@@ -21,6 +21,7 @@ nav:
             - Analyze coverage: analyze_coverage.md
             - Analyze height (with percentiles): analyze_height_percentile.md
             - Analyze spectral indices: analyze_spectral_index.md
+            - Analyze height (with subtraction): analyze_height_subtraction.md
         - Grid cells with Napari: napari_field_grid.md
         - Points to ROI (circular): points2roi_circle.md
         - Read Geo-tif Data: read_geotif.md

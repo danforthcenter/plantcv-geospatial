@@ -14,6 +14,9 @@ All notable changes to this project will be documented below.
 #### geospatial.analyze.spectral_index
 
 * v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, percentiles=None, label=None*)
+#### geospatial.analyze.height_subtraction
+
+* v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
 #### geospatial.points2roi_circle
 
