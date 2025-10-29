@@ -35,7 +35,7 @@ def _parse_bands(bands):
 
     Parameters
     ----------
-    bands : str
+    bands : str or list
         Comma separated string listing the order of bands
 
     Returns
@@ -43,6 +43,8 @@ def _parse_bands(bands):
     list
         List of bands
     """
+    if not is.instance(bands, str):
+        return bands
     # Numeric list of bands
     band_list = []
 
@@ -136,9 +138,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     if img_data.dtype == "uint16":
         img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
 
-    # Parse bands if input is a string
-    if isinstance(bands, str):
-        bands = _parse_bands(bands)
+    # Parse bands
+    bands = _parse_bands(bands)
     # Create a dictionary of wavelengths and their indices
     for i, wl in enumerate(bands):
         wavelengths[wl] = i
