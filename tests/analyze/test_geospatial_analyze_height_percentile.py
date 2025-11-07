@@ -29,8 +29,8 @@ def test_height_percentile_with_geo_ids(test_data):
     params.debug = None
     # Read in test data
     img = joblib.load(test_data.rgb_pickled)
-    _ = height_percentile(dsm=img, geojson=test_data.geojson_with_id)
-    assert outputs.observations["888"]["plant_height"]["value"] > 0
+    _ = height_percentile(dsm=img, geojson=test_data.geojson_with_id, label="test")
+    assert outputs.observations["test_888"]["plant_height"]["value"] > 0
     
 def test_height_percentile_with_geo_fids(test_data):
     """Test for PlantCV."""
@@ -40,5 +40,5 @@ def test_height_percentile_with_geo_fids(test_data):
     params.debug = "plot"
     # Read in test data
     img = joblib.load(test_data.rgb_pickled)
-    _ = height_percentile(dsm=img, geojson=test_data.square_crop_with_plotname)
-    assert outputs.observations["888"]["plant_height"]["value"] > 0
+    _ = height_percentile(dsm=img, geojson=test_data.square_crop_with_plotname, label="test")
+    assert outputs.observations["test_888"]["plant_height"]["value"] > 0
