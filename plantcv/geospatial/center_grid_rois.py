@@ -5,7 +5,7 @@ from plantcv.plantcv.roi import multi, circle
 from shapely.geometry import Polygon
 
 
-def center_grid_rois(img, viewer, radius=10):
+def center_grid_rois(img, viewer, radius=10, layername="Shapes"):
     """Creates circular ROIs from the center points of polygons.
 
     Parameters
@@ -13,10 +13,12 @@ def center_grid_rois(img, viewer, radius=10):
     img : numpy.ndarray
         Image on which to draw the ROIs.
     viewer : Napari viewer object
-        Viewer containing a shapes layer called "grid_shapes".
+        Viewer containing a shapes layer named per shapename.
         Probably the output from napari_polygon_grid.
     radius : integer
         Width of the circular ROI in number of pixels
+    shapename : str
+        Name of layer containing shapes to use, defaults to "Shapes"
 
     Returns
     -------
@@ -24,7 +26,7 @@ def center_grid_rois(img, viewer, radius=10):
         Region of Interest object and heirarchies
     """
     points_list = []
-    for i in viewer.layers["grid_shapes"].data:
+    for i in viewer.layers[layername].data:
         point = shapely.centroid(Polygon(i))
         points_list.append((point.coords[0][1], point.coords[0][0]))
     if len(points_list) > 1:
