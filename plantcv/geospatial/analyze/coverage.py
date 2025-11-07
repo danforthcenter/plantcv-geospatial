@@ -23,7 +23,7 @@ def coverage(img, bin_mask, geojson, label=None):
     # Set lable to params.sample_label if None
     if label is None:
         label = params.sample_label
-        
+
     # zonal_stats "sum" gives the sum of pixel values, so change from [0,255] to [0,1]
     bin_mask = np.where(bin_mask > 0, 1, 0)
     all_ones = np.ones(bin_mask.shape[:2])
