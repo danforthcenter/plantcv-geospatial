@@ -23,4 +23,4 @@ def test_analyze_spectral_index(debug, tmpdir, test_data, percentiles):
     # Debug mode
     params.debug = debug
     _ = analyze_spectral(img=img, geojson=test_data.multipolygon, percentiles=percentiles)
-    assert outputs.observations["default_1"]["percentile_75_datacube"]["value"] <= 1
+    assert outputs.observations["default_0"]["percentile_75_datacube"]["value"] <= 1
