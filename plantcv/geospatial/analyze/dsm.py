@@ -68,7 +68,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     for i, id_lbl in enumerate(ids):
         # Initialize no data cases
         avg1, avg2, avg = [0.0, 0.0, nodata_value]
-        observation_sample = label + "-" + str(id_lbl)
+        observation_sample = label + "_" + str(id_lbl)
         # Save soil heights
         if region_lower_avgs[i][lower] is not None:
             avg1 = region_lower_avgs[i][lower]

@@ -43,7 +43,7 @@ def coverage(img, bin_mask, geojson, label=None):
 
     # Save data to outputs
     for i, id_lbl in enumerate(ids):
-        observation_sample = label + str(id_lbl)
+        observation_sample = label + "_" + str(id_lbl)
         # Save out pixel_count
         pixel_count = 0.0
         total = 1.0
