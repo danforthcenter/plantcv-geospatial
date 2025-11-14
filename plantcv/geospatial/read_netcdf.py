@@ -129,6 +129,12 @@ def read_netcdf(filename, cropto, output=False):
     pseudo_rgb = cv2.merge((cropped[:, :, [id_blue]],
                             cropped[:, :, [id_green]],
                             cropped[:, :, [id_red]]))
+    # here we could normalize to [0, 255] if data is not already uint8.
+    # If it is uint8 then it should good already.
+    # I do not know that netcdf data comes in anything else since I could not find more
+    # examples of netcdf files that worked locally. This would be the
+    # same stuff as line 165 of read_geotif
+
     height, width, depth = cropped.shape
     # Metadata
     metadata = {"driver": "GTiff", "height": height, "width": width,
