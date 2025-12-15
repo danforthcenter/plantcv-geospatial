@@ -43,7 +43,7 @@ def test_height_subtraction_unequal_crs(test_data):
     # Overwriting CRS
     dsm1_fake.metadata["crs"] = 0
     with pytest.raises(RuntimeError):
-        test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)
+        _ = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)
 
 def test_height_shape_check(test_data):
     """Test for PlantCV."""
@@ -56,4 +56,4 @@ def test_height_shape_check(test_data):
     dsm0_fake = joblib.load(test_data.multi_pickled)
     # Check for shape
     with pytest.raises(RuntimeError):
-        test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)      
+        _ = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)      
