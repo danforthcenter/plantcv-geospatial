@@ -236,7 +236,7 @@ def _gather_ids(geojson):
                 ids.append((row['properties']["plot_ids"]))
             else:
                 # If there are no IDs in the geojson then use default labels
-                ids.append(str(i))
+                ids.append(str(i + 1))
     return ids
 
 

@@ -18,7 +18,7 @@ def test_coverage(debug, tmpdir, test_data):
     # Debug mode
     params.debug = debug
     _ = analyze_coverage(img=img, bin_mask=bin_mask, geojson=test_data.square_crop)
-    assert outputs.observations["default_0"]["percent_coverage"]["value"] <= 1
+    assert outputs.observations["default_1"]["percent_coverage"]["value"] <= 1
 
 
 def test_coverage_with_geo_ids(test_data):
