@@ -68,7 +68,7 @@ def _channel_stats(img, mask, geojson, bins, label, channels, ids, histrange):
                                     trait=ids[idx]+' frequencies', method='plantcv.geospatial.analyze.color',
                                     scale='frequency', datatype=list,
                                     value=j["histogram"]["counts"], label=j["histogram"]["bin_edges"])
-            outputs.add_observation(sample=label+'_'+str(jdx+1), variable=ids[idx] + '_mean', 
+            outputs.add_observation(sample=label+'_'+str(jdx+1), variable=ids[idx] + '_mean',
                                     trait=ids[idx]+' mean', method='plantcv.geospatial.analyze.color',
                                     scale='none', datatype=float,
                                     value=j["mean"], label='none')
@@ -123,7 +123,7 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     hue_stats = zonal_stats(geojson, h,
                             affine=img.metadata["transform"],
                             nodata=-999, stats=['mean'],
-                            add_stats={'hue_stats': _hue_circ_stats(h)})
+                            add_stats={'hue_stats': lambda x: _hue_circ_stats(x)})
 
     for idx, i in enumerate(hue_stats):
         hcm.append(i["hue_stats"]["hue_circular_mean"])
