@@ -123,7 +123,8 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     hue_stats = zonal_stats(geojson, h,
                             affine=img.metadata["transform"],
                             nodata=-999, stats=['mean'],
-                            add_stats={'hue_stats': lambda x: _hue_circ_stats(x)})
+                            #add_stats={'hue_stats': lambda x: _hue_circ_stats(x)})
+                            add_stats={'hue_stats': _hue_circ_stats(h)})
 
     for idx, i in enumerate(hue_stats):
         hcm.append(i["hue_stats"]["hue_circular_mean"])
