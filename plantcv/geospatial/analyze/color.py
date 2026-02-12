@@ -148,7 +148,7 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
         _channel_stats(img, bin_mask, geojson, bins, label, channels=[h], ids=["h"], histrange=(0,359))
         _channel_stats(img, bin_mask, geojson, bins, label, channels=[s, v], ids=["s", "v"], histrange=(0,100))
 
-    hue_chart = outputs.plot_dists(variable="hue_stats")
-    _debug(visual=hue_chart, filename=os.path.join(params.debug_outdir, label + '_hue_ciruclar_mean.png'))
+    hue_chart = outputs.plot_dists(variable='hue_circular_mean')
+    _debug(visual=hue_chart, filename=os.path.join(params.debug_outdir, label + '_hue_circular_mean.png'))
 
     return img
