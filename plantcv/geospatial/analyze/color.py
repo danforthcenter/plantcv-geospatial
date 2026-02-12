@@ -2,6 +2,8 @@
 import cv2
 import os
 import numpy as np
+import pandas as pd
+import altair as alt
 from plantcv.plantcv import outputs, params
 from plantcv.plantcv._debug import _debug
 from plantcv.geospatial._helpers import _histogram_stats
@@ -115,12 +117,15 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     
     h = h.astype(np.float32)
     h[bin_mask == 0] = -999
+    
+    hcm = []
     hue_stats = zonal_stats(geojson, h,
                         affine=img.metadata["transform"],
                         nodata=-999, stats=['mean'],
                         add_stats={'hue_stats': lambda x: _hue_circ_stats(x)})
     
     for idx, i in enumerate(hue_stats):
+        hcm.append(i["hue_stats"]["hue_circular_mean"])
         outputs.add_observation(sample=label+'_'+str(idx), variable='hue_circular_mean', 
                                     trait='hue circular mean',method='plantcv.geospatial.analyze.color', 
                                     scale='degrees', datatype=float,
@@ -148,7 +153,10 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
         _channel_stats(img, bin_mask, geojson, bins, label, channels=[h], ids=["h"], histrange=(0,359))
         _channel_stats(img, bin_mask, geojson, bins, label, channels=[s, v], ids=["s", "v"], histrange=(0,100))
 
-    hue_chart = outputs.plot_dists(variable='hue_circular_mean')
+    df = pd.DataFrame({'value': hcm})
+    hue_chart = alt.Chart(df).mark_bar().encode(x=alt.X('value', bin=True, title='Hue Circular Mean'),
+                                                y=alt.Y('count()', title='Frequency'))
+
     _debug(visual=hue_chart, filename=os.path.join(params.debug_outdir, label + '_hue_circular_mean.png'))
 
     return img
