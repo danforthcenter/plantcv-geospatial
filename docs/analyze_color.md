@@ -32,6 +32,6 @@ vis = gcv.analyze.color(img=ortho1, bin_mask=plant_mask,
 print(pcv.outputs.observations["default_0"]["hue_circular_mean"]["value"])
 
 ```
-![Screenshot](documentation_images/analyze_coverage.png)
+![Screenshot](documentation_images/analyze_color.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/color.py)
