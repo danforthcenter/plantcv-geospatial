@@ -7,7 +7,31 @@ import geopandas
 import fiona
 import cv2
 import os
+import numpy as np
 
+def _histogram_stats(masked_array, bins, histrange):
+    """Helper function to calculate a histogram from a masked array
+
+    Parameters
+    ----------
+    masked_array : np.ndarray
+        Single channel from a masked image
+    bins : int
+        Number of bins in the output histogram
+    histrange : tuple
+        Range for the histogram, format (min, max)
+
+    Returns
+    -------
+    dict
+        Dictionary of counts and bin edges
+    """
+    counts, bin_edges = np.histogram(masked_array, bins, range=histrange)
+    
+    return {
+        'counts': counts.tolist(),
+        'bin_edges': bin_edges.tolist()
+    }
 
 def _transform_geojson_crs(img, geojson):
     """
