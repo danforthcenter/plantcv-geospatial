@@ -75,14 +75,14 @@ def _channel_stats(img, mask, geojson, bins, label, channels, ids, histrange):
     return
 
 
-def color(img, mask, geojson, bins=10, colorspaces="hsv", label=None):
+def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     """Analyze color in individual plots from a spectral object using plot boundaries.
 
     Parameters
     ----------
     img : [spectral_object]
         Spectral_Data object of geotif data, generated using [read_geotif]
-    mask : np.ndarray
+    bin_mask : np.ndarray
         Binary mask with objects of interest segmented
     geojson : str
         Path to a shapefile containing plot boundaries
@@ -104,7 +104,7 @@ def color(img, mask, geojson, bins=10, colorspaces="hsv", label=None):
         label = "plot"
         
     # Make masked image to convert to other colorspaces
-    masked = cv2.bitwise_and(img.pseudo_rgb, img.pseudo_rgb, mask=mask)
+    masked = cv2.bitwise_and(img.pseudo_rgb, img.pseudo_rgb, mask=bin_mask)
 
     # Always output hue circular stats:
     
@@ -114,7 +114,7 @@ def color(img, mask, geojson, bins=10, colorspaces="hsv", label=None):
     h, s, v = cv2.split(hsv)
     
     h = h.astype(np.float32)
-    h[mask == 0] = -999
+    h[bin_mask == 0] = -999
     hue_stats = zonal_stats(geojson, h,
                         affine=img.metadata["transform"],
                         nodata=-999, stats=['mean'],
@@ -134,19 +134,19 @@ def color(img, mask, geojson, bins=10, colorspaces="hsv", label=None):
     if colorspaces.upper() in ('RGB', 'ALL'):
         # Extract the blue, green, and red channels
         b, g, r = cv2.split(masked)
-        _channel_stats(img, mask, geojson, bins, label, channels=[b, g, r], ids=["b", "g", "r"], histrange=(0,255))
+        _channel_stats(img, bin_mask, geojson, bins, label, channels=[b, g, r], ids=["b", "g", "r"], histrange=(0,255))
         
     if colorspaces.upper() in ('LAB', 'ALL'):
          # Convert the BGR image to LAB
         lab = cv2.cvtColor(masked, cv2.COLOR_BGR2LAB)
         # Extract the lightness, green-magenta, and blue-yellow channels
         l, a, b = cv2.split(lab)
-        _channel_stats(img, mask, geojson, bins, label, channels=[l], ids=["l"], histrange=(0,100))
-        _channel_stats(img, mask, geojson, bins, label, channels=[a, b], ids=["a", "b"], histrange=(-128, 127))
+        _channel_stats(img, bin_mask, geojson, bins, label, channels=[l], ids=["l"], histrange=(0,100))
+        _channel_stats(img, bin_mask, geojson, bins, label, channels=[a, b], ids=["a", "b"], histrange=(-128, 127))
         
     if colorspaces.upper() in ('HSV', 'ALL'):
-        _channel_stats(img, mask, geojson, bins, label, channels=[h], ids=["h"], histrange=(0,359))
-        _channel_stats(img, mask, geojson, bins, label, channels=[s, v], ids=["s", "v"], histrange=(0,100))
+        _channel_stats(img, bin_mask, geojson, bins, label, channels=[h], ids=["h"], histrange=(0,359))
+        _channel_stats(img, bin_mask, geojson, bins, label, channels=[s, v], ids=["s", "v"], histrange=(0,100))
 
     hue_chart = outputs.plot_dists(variable="hue_circular_mean")
     _debug(visual=hue_chart, filename=os.path.join(params.debug_outdir, label + '_hue_ciruclar_mean.png'))
