@@ -62,15 +62,15 @@ def _channel_stats(img, mask, geojson, bins, label, channels, ids, histrange):
                         nodata=-999, stats=['mean', 'std'],
                         add_stats={'histogram': lambda x: _histogram_stats(x, bins=bins, histrange=histrange)})
         for jdx, j in enumerate(color_values):
-            outputs.add_observation(sample=label+'_'+str(jdx), variable=ids[idx] + '_frequencies', 
+            outputs.add_observation(sample=label+'_'+str(jdx+1), variable=ids[idx] + '_frequencies', 
                                     trait=ids[idx]+' frequencies',method='plantcv.geospatial.analyze.color', 
                                     scale='frequency', datatype=list,
                                     value=j["histogram"]["counts"], label=j["histogram"]["bin_edges"])
-            outputs.add_observation(sample=label+'_'+str(jdx), variable=ids[idx] + '_mean', 
+            outputs.add_observation(sample=label+'_'+str(jdx+1), variable=ids[idx] + '_mean', 
                                     trait=ids[idx]+' mean',method='plantcv.geospatial.analyze.color', 
                                     scale='none', datatype=float,
                                     value=j["mean"], label='none')
-            outputs.add_observation(sample=label+'_'+str(jdx), variable=ids[idx] + '_std', 
+            outputs.add_observation(sample=label+'_'+str(jdx+1), variable=ids[idx] + '_std', 
                                     trait=ids[idx]+' standard deviation',method='plantcv.geospatial.analyze.color', 
                                     scale='none', datatype=float,
                                     value=j["std"], label='none')
@@ -103,7 +103,7 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
         The input spectral object. 
     """
     if not label:
-        label = "plot"
+        label = "default"
         
     # Make masked image to convert to other colorspaces
     masked = cv2.bitwise_and(img.pseudo_rgb, img.pseudo_rgb, mask=bin_mask)
@@ -126,11 +126,11 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     
     for idx, i in enumerate(hue_stats):
         hcm.append(i["hue_stats"]["hue_circular_mean"])
-        outputs.add_observation(sample=label+'_'+str(idx), variable='hue_circular_mean', 
+        outputs.add_observation(sample=label+'_'+str(idx+1), variable='hue_circular_mean', 
                                     trait='hue circular mean',method='plantcv.geospatial.analyze.color', 
                                     scale='degrees', datatype=float,
                                     value=float(i["hue_stats"]["hue_circular_mean"]), label='degrees')
-        outputs.add_observation(sample=label+'_'+str(idx), variable='hue_circular_std', 
+        outputs.add_observation(sample=label+'_'+str(idx+1), variable='hue_circular_std', 
                                     trait='hue circular standard deviation',
                                     method='plantcv.geospatial.analyze.color', 
                                     scale='degrees', datatype=float,
