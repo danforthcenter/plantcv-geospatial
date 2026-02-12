@@ -9,6 +9,7 @@ import cv2
 import os
 import numpy as np
 
+
 def _histogram_stats(masked_array, bins, histrange):
     """Helper function to calculate a histogram from a masked array
 
@@ -27,11 +28,12 @@ def _histogram_stats(masked_array, bins, histrange):
         Dictionary of counts and bin edges
     """
     counts, bin_edges = np.histogram(masked_array, bins, range=histrange)
-    
+
     return {
         'counts': counts.tolist(),
         'bin_edges': bin_edges.tolist()
     }
+
 
 def _transform_geojson_crs(img, geojson):
     """
