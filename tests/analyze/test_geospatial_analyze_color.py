@@ -3,7 +3,7 @@ from plantcv.plantcv import outputs
 from plantcv.geospatial.analyze import color as analyze_color
 
 
-def test_coverage(test_data):
+def test_analyze_color(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()

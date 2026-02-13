@@ -29,7 +29,7 @@ vis = gcv.analyze.color(img=ortho1, bin_mask=plant_mask,
                            geojson="./shapefiles/experimental_plots.geojson")
 
 # To access individual observation values:
-print(pcv.outputs.observations["default_0"]["hue_circular_mean"]["value"])
+print(pcv.outputs.observations["default_1"]["hue_circular_mean"]["value"])
 
 ```
 ![Screenshot](documentation_images/analyze_color.png)
