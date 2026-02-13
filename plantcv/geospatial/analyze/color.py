@@ -9,6 +9,7 @@ from plantcv.plantcv._debug import _debug
 from plantcv.geospatial._helpers import _histogram_stats
 from rasterstats import zonal_stats
 from scipy import stats
+from functools import partial
 
 
 def _hue_circ_stats(h):
@@ -123,8 +124,7 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     hue_stats = zonal_stats(geojson, h,
                             affine=img.metadata["transform"],
                             nodata=-999, stats=['mean'],
-                            #add_stats={'hue_stats': lambda x: _hue_circ_stats(x)})
-                            add_stats={'hue_stats': _hue_circ_stats(h)})
+                            add_stats={'hue_stats': partial(_hue_circ_stats)})
 
     for idx, i in enumerate(hue_stats):
         hcm.append(i["hue_stats"]["hue_circular_mean"])
