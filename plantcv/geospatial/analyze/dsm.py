@@ -1,11 +1,9 @@
 # Analyze Digital Surface Model (DSM) over many regions
-from plantcv.geospatial._helpers import _gather_ids
+from plantcv.geospatial._helpers import _gather_ids, _show_geojson
 from plantcv.plantcv.classes import Spectral_data
 from plantcv.plantcv import outputs, params, fatal_error
 from plantcv.plantcv.transform import rescale
 from plantcv.plantcv._debug import _debug
-from rasterio.plot import plotting_extent
-from matplotlib import pyplot as plt
 from rasterstats import zonal_stats
 import numpy as np
 import geopandas
@@ -70,31 +68,32 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     for i, id_lbl in enumerate(ids):
         # Initialize no data cases
         avg1, avg2, avg = [0.0, 0.0, nodata_value]
+        observation_sample = label + "_" + str(id_lbl)
         # Save soil heights
         if region_lower_avgs[i][lower] is not None:
             avg1 = region_lower_avgs[i][lower]
-        outputs.add_observation(sample=id_lbl, variable="soil_elevation",
+        outputs.add_observation(sample=observation_sample, variable="soil_elevation",
                                 trait="dsm_mean_below_" + str(lower),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
-                                value=avg1, label=label)
+                                value=avg1, label=scale)
         soil_vals.append(avg1)
         # Save plant heights
         if region_upper_avgs[i][upper] is not None:
             avg2 = region_upper_avgs[i][upper]
-        outputs.add_observation(sample=id_lbl, variable="plant_elevation",
+        outputs.add_observation(sample=observation_sample, variable="plant_elevation",
                                 trait="dsm_mean_above_" + str(upper),
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
-                                value=avg2, label=label)
+                                value=avg2, label=scale)
         plant_vals.append(avg2)
         if avg1 != 0 and avg2 != 0:
             avg = avg2 - avg1
-        outputs.add_observation(sample=id_lbl, variable="plant_height",
+        outputs.add_observation(sample=observation_sample, variable="plant_height",
                                 trait="height",
                                 method="plantcv-geospatial.analyze.dsm",
                                 scale=scale, datatype=float,
-                                value=avg, label=label)
+                                value=avg, label=scale)
 
     # Min and max height of plots
     min_elevation = min(soil_vals)
@@ -107,31 +106,11 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     bounds['coords'] = bounds['geometry'].apply(lambda x: x.representative_point().coords[:])
     bounds['coords'] = [coords[0] for coords in bounds['coords']]
 
-    # Pseudocolor the DSM for plotting
-    _, ax = plt.subplots(figsize=(10, 10))
-    fig_extent = plotting_extent(dsm_data,
-                                 dsm.metadata['transform'])
-    ax.imshow(dsm_data, extent=fig_extent, cmap='viridis', vmin=min_elevation, vmax=max_elevation)
+    # Plot the GeoTIFF
+    plotting_img = _show_geojson(img=dsm, geojson=geojson, ids=ids,
+                                 cmap='viridis', vmin=min_elevation, vmax=max_elevation)
 
-    # Plot the shapefile bounds
-    bounds.boundary.plot(ax=ax, color="red")
-
-    # Set plot title and labels
-    plt.title("Shapefile on DSM")
-
-    # Print or plot if debug is turned on
-    if params.debug is not None:
-        if params.debug == 'print':
-            plt.savefig(os.path.join(params.debug_outdir, str(
-                params.device) + '_analyze_height_percentile.png'), dpi=params.dpi)
-            plt.close()
-        elif params.debug == 'plot':
-            # Use non-blocking mode in case the function is run more than once
-            plt.show(block=False)
-    else:
-        plt.close()
-
-    return bounds
+    return plotting_img
 
 
 def height_subtraction(dsm1, dsm0):

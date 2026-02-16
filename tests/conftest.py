@@ -32,8 +32,12 @@ class TestData:
         self.square_crop = os.path.join(self.datadir, "square_crop.geojson")
         # polygon shapefile with "ID" in properties
         self.geojson_with_id = os.path.join(self.datadir, "square_crop_with_id.geojson")
-        # polygon shapefile with "ID" in properties
+        # polygon shapefile with "FID" in properties
         self.geojson_with_fid = os.path.join(self.datadir, "square_crop_with_fid.geojson")
+        # polygon shapefile with "PlotName" in properties
+        self.square_crop_with_plotname = os.path.join(self.datadir, "square_crop_with_plotname.geojson")
+        # polygon shapefile with "plot_ids" in properties
+        self.square_crop_with_plot_ids = os.path.join(self.datadir, "square_crop_with_plot_ids.geojson")
         # points shapefile
         self.point_crop = os.path.join(self.datadir, "point_crop.geojson")
         # multi polygon shapefile
