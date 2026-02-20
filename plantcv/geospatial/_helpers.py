@@ -56,23 +56,24 @@ def _calc_direction_vectors(plot_bounds):
     """
     Helper function for opening plot boundaries and calculating direction vectors
 
-    Keyword inputs:
-    Inputs:
+    Parameters
+    ----------
     plot_bounds: path to Fiona formatted shapefile data of the plot boundary
 
-    Returns:
+    Returns
     --------
-    horizontal_dir
+    horizontal_dir, list
         Direction vector in the horizontal direction
-    vertical_dir
+    vertical_dir, list
         Direction vector in the vertical direction
-    anchor_point
+    anchor_point, tuple
         First coordinate in the boundary shapefile
-
-    :param plot_bounds: str
-    :return horizontal_dir: list
-    :return vertical_dir: list
-    :return anchor_point: tuple
+    crs, dict
+        crs attribute from the plot boundary shapefile
+    driver, str
+        OGR format driver used to open the plot boundary shapefile
+    schema, dict
+        plot boundary shapefile schema giving geometry and properties
     """
     # Read the four corner points shapefile
     with fiona.open(plot_bounds, 'r') as shapefile:
@@ -126,8 +127,8 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
 
     Returns:
     --------
-    list
-        List of polygon points
+    p1, p2, p3, p4
+        X,Y polygon points. Order is bottom left, bottom right, top left, top right.
     """
     # Calculate corners of each grid cell, starting with bottom_left
     p1 = (anchor_point[0][0] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[0] +
@@ -158,8 +159,8 @@ def _show_geojson(img, geojson):
 
     Returns:
     --------
-    list
-        List of polygon points
+    plotting_img
+        matplotlib.pyplot figure
     """
     bounds = geopandas.read_file(geojson)
 
@@ -207,7 +208,7 @@ def _gather_ids(geojson):
 
     Returns:
     --------
-    list
+    ids : list
         List of polygon IDs
     """
     with fiona.open(geojson, 'r') as shapefile:
