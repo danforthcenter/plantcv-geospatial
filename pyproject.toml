@@ -19,7 +19,8 @@ dependencies = [
     "napari",
     "rasterstats",
     "joblib",
-    "netCDF4"
+    "netCDF4",
+    "altair < 6"
 ]
 requires-python = ">=3.11"
 authors = [
