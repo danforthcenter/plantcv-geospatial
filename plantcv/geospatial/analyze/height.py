@@ -18,7 +18,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
 
     Parameters
     ----------
-    dsm : Spectral_data
+    dsm : plantcv.plantcv.classes.Spectral_data
         Spectral_data object of geotif data, used for affine metadata
     geojson : str
         Path to the shape file containing the regions for analysis
@@ -75,7 +75,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
             avg1 = region_lower_avgs[i][lower]
         outputs.add_observation(sample=id_lbl, variable="soil_elevation",
                                 trait="dsm_mean_below_" + str(lower),
-                                method="plantcv-geospatial.analyze.dsm",
+                                method="plantcv-geospatial.analyze.height",
                                 scale=scale, datatype=float,
                                 value=avg1, label=label)
         soil_vals.append(avg1)
@@ -84,7 +84,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
             avg2 = region_upper_avgs[i][upper]
         outputs.add_observation(sample=id_lbl, variable="plant_elevation",
                                 trait="dsm_mean_above_" + str(upper),
-                                method="plantcv-geospatial.analyze.dsm",
+                                method="plantcv-geospatial.analyze.height",
                                 scale=scale, datatype=float,
                                 value=avg2, label=label)
         plant_vals.append(avg2)
@@ -92,7 +92,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
             avg = avg2 - avg1
         outputs.add_observation(sample=id_lbl, variable="plant_height",
                                 trait="height",
-                                method="plantcv-geospatial.analyze.dsm",
+                                method="plantcv-geospatial.analyze.height",
                                 scale=scale, datatype=float,
                                 value=avg, label=label)
 
