@@ -8,7 +8,7 @@ def transform_polygons(img, geojson):
 
     Parameters
     ----------
-    img : spectral object
+    img : plantcv.Spectral_data object
         A spectral image object returned by ``read_geotif``.
     geojson : str
         Path to the shapefile or GeoJSON file containing polygon or multipolygon geometries.
