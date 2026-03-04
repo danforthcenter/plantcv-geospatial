@@ -13,35 +13,37 @@ from shapely.geometry import shape, MultiPoint, mapping
 
 
 def _find_closest_unsorted(array, target):
-    """Find closest index of array item with smallest distance from
+    """Find the index of the element in an unsorted array closest to a target value.
 
     Parameters
     ----------
     array : numpy.ndarray
-        Array of wavelength labels
-    target : int, float
-        Target value
+        Array of values to search (does not need to be sorted).
+    target : int or float
+        Target value to find the closest match for.
 
     Returns
     -------
     int
-        Index of closest value to the target
+        Index of the element in ``array`` with the smallest absolute difference from ``target``.
     """
     return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
 
 def _parse_bands(bands):
-    """Parse bands.
+    """Parse bands from a string or list into a list of wavelengths.
 
     Parameters
     ----------
     bands : str or list
-        Comma separated string listing the order of bands
+        Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list of wavelengths.
+        Currently Supported Band Symbols: R (650 nm), G (560 nm), B (480 nm), RE (717 nm),
+        N (842 nm), NIR (842 nm), GRAY (0).
 
     Returns
     -------
     list
-        List of bands
+        List of wavelength values corresponding to the input bands.
     """
     if not isinstance(bands, str):
         return bands
@@ -65,19 +67,24 @@ def _parse_bands(bands):
 
 
 def _read_geotif_and_shapefile(filename, cropto):
-    """Read Georeferenced TIF image from file and shapefile for cropping.
+    """Read Georeferenced TIF image from file and optionally crop to a shapefile boundary.
 
     Parameters
     ----------
     filename : str
-        Path of the TIF image file.
-    cropto : str
-        Path of the shapefile to crop the image
+        Path to the GeoTIF image file.
+    cropto : str or None
+        Path to the shapefile used to crop the image. If ``None``, the full image is read without cropping.
+        Supports polygon-type shapefiles (single feature) and point-type shapefiles (convex hull is computed).
 
     Returns
     -------
-    tuple
-        Tuple of image data, geotransform, data type, and crs
+    img_data : numpy.ndarray
+        Image data array with shape ``(bands, height, width)``.
+    d_type : str
+        Data type of the image bands (e.g., ``"uint8"``, ``"uint16"``).
+    metadata : dict
+        Rasterio metadata dictionary including CRS, transform, and driver information.
     """
     if cropto:
         with fiona.open(cropto, 'r') as shapefile:
@@ -113,17 +120,18 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     ----------
     filename : str
         Path of the TIF image file.
-    bands : str, list, optional
-        Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
-    cropto : str
-        Path of the shapefile to crop the image, defaults to None.
-    cutoff : float
-        Percentile above which to remove points, defaults to None.
+    bands : str or list, optional
+        Comma-separated string listing the order of bands (e.g., "R,G,B") or a list of wavelengths.
+        Supported band symbols: R, G, B, RE, N, NIR, GRAY. Default is "R,G,B".
+    cropto : str, optional
+        Path of the shapefile to crop the image. Default is None.
+    cutoff : float, optional
+        Percentile above which to remove points (only used for grayscale images). Default is None.
 
     Returns
     -------
     plantcv.plantcv.classes.Spectral_data
-        Orthomosaic image data in a Spectral_data class instance
+        Orthomosaic image data in a Spectral_data class instance.
     """
     # Read the geotif image and shapefile for cropping
     img_data, d_type, metadata = _read_geotif_and_shapefile(filename, cropto)
