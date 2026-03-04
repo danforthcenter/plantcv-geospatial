@@ -3,17 +3,22 @@ import fiona
 
 
 def transform_polygons(img, geojson):
-    """Takes a polygon or multi polygon-type shapefile/GeoJSON and transforms to numpy coordinates
-    Inputs:
-    img:        A spectral object from read_geotif.
-    geojson:    Path to the shape file containing the points.
+    """
+    Transform a polygon or multipolygon shapefile or GeoJSON into image pixel coordinates.
 
-    Returns:
-    coord:      Transformed polygons as a list of lists of numpy coordinates
+    Parameters
+    ----------
+    img : spectral object
+        A spectral image object returned by ``read_geotif``.
+    geojson : str
+        Path to the shapefile or GeoJSON file containing polygon or multipolygon geometries.
 
-    :param img: [spectral object]
-    :param geojson: str
-    :return coord: list
+    Returns
+    -------
+    coord : list of list of list of int
+        Pixel coordinates as a list of polygons, where each polygon is a list
+        of ``[col, row]`` integer pairs. The closing vertex of each polygon
+        is dropped to avoid duplication.
     """
     geo_transform = img.metadata["transform"]
     coord = []
