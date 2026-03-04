@@ -29,4 +29,4 @@ chm = gcv.analyze.height_subtraction(dsm1, dsm0)
 
 ```
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/dsm.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/height.py)
