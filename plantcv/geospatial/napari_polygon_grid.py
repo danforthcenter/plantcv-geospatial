@@ -57,7 +57,6 @@ def napari_polygon_grid(viewer, layername="Shapes"):
     None
         Polygons are added directly to the viewer as a side effect.
     """
-
     linelist1 = viewer.layers["grid_lines1"].data
     linelist2 = viewer.layers["grid_lines2"].data
 
