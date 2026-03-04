@@ -32,6 +32,8 @@ def transform_polygons(img, geojson):
             else:
                 square = row.geometry["coordinates"][0][0][:-1]
             for j in square:
+                # tilde inverts affine.Affine class geo_transform matrix
+                # to map world coordinates to pixel locations
                 vertex = ~(geo_transform) * j
                 temp_list.append([int(vertex[0]), int(vertex[1])])
             coord.append(temp_list)
