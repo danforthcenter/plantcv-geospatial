@@ -3,17 +3,21 @@ import fiona
 
 
 def transform_points(img, geojson):
-    """Takes a points-type shapefile/GeoJSON and transforms to numpy coordinates
-    Inputs:
-    img:        A spectral object from read_geotif.
-    geojson:    Path to the shape file containing the points.
+    """
+    Transform a points-type shapefile or GeoJSON into image pixel coordinates.
 
-    Returns:
-    coord:      Transformed points as a list of numpy coordinates
+    Parameters
+    ----------
+    img : plantcv.plantcv.classes.Spectral_data
+        A spectral image object returned by ``read_geotif``.
+    geojson : str
+        Path to the shapefile or GeoJSON file containing points.
 
-    :param img: [spectral object]
-    :param geojson: str
-    :return coord: list
+    Returns
+    -------
+    coord : list of tuple of int
+        Pixel coordinates as a list of ``(col, row)`` integer tuples,
+        one per point feature in the input file.
     """
     geo_transform = img.metadata["transform"]
 
