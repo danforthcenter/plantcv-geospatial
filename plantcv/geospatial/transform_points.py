@@ -8,7 +8,7 @@ def transform_points(img, geojson):
 
     Parameters
     ----------
-    img : spectral object
+    img : plantcv.plantcv.classes.Spectral_data
         A spectral image object returned by ``read_geotif``.
     geojson : str
         Path to the shapefile or GeoJSON file containing points.
