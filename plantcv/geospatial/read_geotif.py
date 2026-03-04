@@ -13,7 +13,8 @@ from shapely.geometry import shape, MultiPoint, mapping
 
 
 def _find_closest_unsorted(array, target):
-    """Find the index of the element in an unsorted array closest to a target value.
+    """Find the index of the element in an unsorted array closest to a target 
+    value.
 
     Parameters
     ----------
@@ -25,7 +26,8 @@ def _find_closest_unsorted(array, target):
     Returns
     -------
     int
-        Index of the element in ``array`` with the smallest absolute difference from ``target``.
+        Index of the element in ``array`` with the smallest absolute 
+        difference from ``target``.
     """
     return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
@@ -36,9 +38,10 @@ def _parse_bands(bands):
     Parameters
     ----------
     bands : str or list
-        Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list of wavelengths.
-        Currently Supported Band Symbols: R (650 nm), G (560 nm), B (480 nm), RE (717 nm),
-        N (842 nm), NIR (842 nm), GRAY (0).
+        Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list 
+        of wavelengths.
+        Currently Supported Band Symbols: R (650 nm), G (560 nm), B (480 nm), 
+        RE (717 nm), N (842 nm), NIR (842 nm), GRAY (0).
 
     Returns
     -------
@@ -54,7 +57,8 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, "NIR": 842, "GRAY": 0}
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, 
+                           "NIR": 842, "GRAY": 0}
 
     for band in band_strs:
         # Check if the band symbols are supported
@@ -67,15 +71,17 @@ def _parse_bands(bands):
 
 
 def _read_geotif_and_shapefile(filename, cropto):
-    """Read Georeferenced TIF image from file and optionally crop to a shapefile boundary.
+    """Read Georeferenced TIF image from file and optionally crop to a 
+    shapefile boundary.
 
     Parameters
     ----------
     filename : str
         Path to the GeoTIF image file.
     cropto : str or None
-        Path to the shapefile used to crop the image. If ``None``, the full image is read without cropping.
-        Supports polygon-type shapefiles (single feature) and point-type shapefiles (convex hull is computed).
+        Path to the shapefile used to crop the image. If ``None``, the full 
+        image is read without cropping. Supports polygon-type shapefiles 
+        (single feature) and point-type shapefiles (convex hull is computed).
 
     Returns
     -------
@@ -84,7 +90,8 @@ def _read_geotif_and_shapefile(filename, cropto):
     d_type : str
         Data type of the image bands (e.g., ``"uint8"``, ``"uint16"``).
     metadata : dict
-        Rasterio metadata dictionary including CRS, transform, and driver information.
+        Rasterio metadata dictionary including CRS, transform, and driver
+        information.
     """
     if cropto:
         with fiona.open(cropto, 'r') as shapefile:
@@ -92,7 +99,7 @@ def _read_geotif_and_shapefile(filename, cropto):
             if len(shapefile) == 1:
                 shapes = [feature['geometry'] for feature in shapefile]
             # points-type shapefile
-            if len(shapefile) != 1:
+            else:
                 points = [shape(feature["geometry"]) for feature in shapefile]
                 multi_point = MultiPoint(points)
                 convex_hull = multi_point.convex_hull
@@ -105,10 +112,10 @@ def _read_geotif_and_shapefile(filename, cropto):
             d_type = src.dtypes[0]
 
     else:
-        img = rasterio.open(filename)
-        img_data = img.read()
-        d_type = img.dtypes[0]
-        metadata = img.meta.copy()
+        with rasterio.open(filename, 'r') as img:
+            img_data = img.read()
+            d_type = img.dtypes[0]
+            metadata = img.meta.copy()
 
     return img_data, d_type, metadata
 
@@ -121,12 +128,14 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     filename : str
         Path of the TIF image file.
     bands : str or list, optional
-        Comma-separated string listing the order of bands (e.g., "R,G,B") or a list of wavelengths.
+        Comma-separated string listing the order of bands (e.g., "R,G,B") or a 
+        list of wavelengths.
         Supported band symbols: R, G, B, RE, N, NIR, GRAY. Default is "R,G,B".
     cropto : str, optional
         Path of the shapefile to crop the image. Default is None.
     cutoff : float, optional
-        Percentile above which to remove points (only used for grayscale images). Default is None.
+        Percentile above which to remove points (only used for grayscale 
+        images). Default is None.
 
     Returns
     -------
@@ -135,8 +144,8 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     """
     # Read the geotif image and shapefile for cropping
     img_data, d_type, metadata = _read_geotif_and_shapefile(filename, cropto)
-
-    img_data = img_data.transpose(1, 2, 0)  # reshape such that z-dimension is last
+    # reshape such that z-dimension is last
+    img_data = img_data.transpose(1, 2, 0)  
     height, width, depth = img_data.shape
     wavelengths = {}
 
@@ -153,7 +162,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     for i, wl in enumerate(bands):
         wavelengths[wl] = i
     # Check if user input matches image dimension in z direction
-    if depth != len(bands):
+    if depth > len(bands):
         warn(f"{depth} bands found in the image data but {filename} was provided with {bands}")
     if depth < len(bands):
         fatal_error("your image depth is less than the specified number of bands")
@@ -169,13 +178,14 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
         id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
         id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
-        # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
+        # Stack bands, BGR since plot_image will convert BGR2RGB automatically
         pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
                                 img_data[:, :, [id_green]],
                                 img_data[:, :, [id_red]]))
-        # normalize to [0, 255] if data is not already uint8. If it is uint8 then it should good already.
+        # normalize to [0, 255] if data is not already uint8.
         if pseudo_rgb.dtype != 'uint8':
-            pseudo_rgb = cv2.normalize(pseudo_rgb, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            pseudo_rgb = cv2.normalize(pseudo_rgb, None, 0, 255, 
+                                       cv2.NORM_MINMAX, dtype=cv2.CV_8U)
     # Construct grayscale debug
     else:
         img_copy = img_data
