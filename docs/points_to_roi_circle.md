@@ -2,7 +2,7 @@
 
 Transform the points from a Points-type georeferenced shapefile/GeoJSON into circular Regions of Interest (ROIs). 
 
-**plantcv.geospatial.points2roi_circle**(*img, geojson, radius*)
+**plantcv.geospatial.convert.points_to_roi_circle**(*img, geojson, radius*)
 
 **returns** list of ROIs (`plantcv.Objects` instance)
 
@@ -24,10 +24,10 @@ import plantcv.plantcv as pcv
 
 # Read geotif in
 spectral = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-rois = gcv.points2roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
+rois = gcv.convert.points_to_roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
 # Segmentation steps here
 labeled_mask = pcv.roi.filter(mask=vegetation_mask, roi=rois, roi_type="partial")
 
 ```
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/points2roi.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/convert/points_to_roi.py)
