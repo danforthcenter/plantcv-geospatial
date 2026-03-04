@@ -1,6 +1,6 @@
 ## Napari field grid
 
-Using a Napari viewer with a shapes layer polygon outlining the whole field, functions `napari_grid` and `napari_polygon_grid` create grid cells around individual units for measurement. Can be followed by either saving out the grid cells in a shapefile (coming soon!) or using the center points to make ROIs using `center_grid_rois`. 
+Using a Napari viewer with a shapes layer polygon outlining the whole field, functions `napari_grid` and `napari_polygon_grid` create grid cells around individual units for measurement. Can be followed by either saving out the grid cells in a shapefile or using the center points to make ROIs using `center_grid_rois`. 
 
 **plantcv.geospatial.napari_grid**(*viewer, numdivs, layername="Shapes"*)
 **plantcv.geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
