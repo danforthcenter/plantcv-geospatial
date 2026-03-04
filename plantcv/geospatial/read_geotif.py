@@ -13,7 +13,7 @@ from shapely.geometry import shape, MultiPoint, mapping
 
 
 def _find_closest_unsorted(array, target):
-    """Find the index of the element in an unsorted array closest to a target 
+    """Find the index of the element in an unsorted array closest to a target
     value.
 
     Parameters
@@ -26,7 +26,7 @@ def _find_closest_unsorted(array, target):
     Returns
     -------
     int
-        Index of the element in ``array`` with the smallest absolute 
+        Index of the element in ``array`` with the smallest absolute
         difference from ``target``.
     """
     return min(range(len(array)), key=lambda i: abs(array[i]-target))
@@ -38,9 +38,9 @@ def _parse_bands(bands):
     Parameters
     ----------
     bands : str or list
-        Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list 
+        Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list
         of wavelengths.
-        Currently Supported Band Symbols: R (650 nm), G (560 nm), B (480 nm), 
+        Currently Supported Band Symbols: R (650 nm), G (560 nm), B (480 nm),
         RE (717 nm), N (842 nm), NIR (842 nm), GRAY (0).
 
     Returns
@@ -57,7 +57,7 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842, 
+    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842,
                            "NIR": 842, "GRAY": 0}
 
     for band in band_strs:
@@ -71,7 +71,7 @@ def _parse_bands(bands):
 
 
 def _read_geotif_and_shapefile(filename, cropto):
-    """Read Georeferenced TIF image from file and optionally crop to a 
+    """Read Georeferenced TIF image from file and optionally crop to a
     shapefile boundary.
 
     Parameters
@@ -79,8 +79,8 @@ def _read_geotif_and_shapefile(filename, cropto):
     filename : str
         Path to the GeoTIF image file.
     cropto : str or None
-        Path to the shapefile used to crop the image. If ``None``, the full 
-        image is read without cropping. Supports polygon-type shapefiles 
+        Path to the shapefile used to crop the image. If ``None``, the full
+        image is read without cropping. Supports polygon-type shapefiles
         (single feature) and point-type shapefiles (convex hull is computed).
 
     Returns
@@ -128,13 +128,13 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     filename : str
         Path of the TIF image file.
     bands : str or list, optional
-        Comma-separated string listing the order of bands (e.g., "R,G,B") or a 
+        Comma-separated string listing the order of bands (e.g., "R,G,B") or a
         list of wavelengths.
         Supported band symbols: R, G, B, RE, N, NIR, GRAY. Default is "R,G,B".
     cropto : str, optional
         Path of the shapefile to crop the image. Default is None.
     cutoff : float, optional
-        Percentile above which to remove points (only used for grayscale 
+        Percentile above which to remove points (only used for grayscale
         images). Default is None.
 
     Returns
@@ -145,7 +145,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     # Read the geotif image and shapefile for cropping
     img_data, d_type, metadata = _read_geotif_and_shapefile(filename, cropto)
     # reshape such that z-dimension is last
-    img_data = img_data.transpose(1, 2, 0)  
+    img_data = img_data.transpose(1, 2, 0)
     height, width, depth = img_data.shape
     wavelengths = {}
 
@@ -184,7 +184,7 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
                                 img_data[:, :, [id_red]]))
         # normalize to [0, 255] if data is not already uint8.
         if pseudo_rgb.dtype != 'uint8':
-            pseudo_rgb = cv2.normalize(pseudo_rgb, None, 0, 255, 
+            pseudo_rgb = cv2.normalize(pseudo_rgb, None, 0, 255,
                                        cv2.NORM_MINMAX, dtype=cv2.CV_8U)
     # Construct grayscale debug
     else:
