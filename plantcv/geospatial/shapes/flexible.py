@@ -43,12 +43,12 @@ def flexible(img, field_corners_path, plot_geojson_path, out_path, range_length,
 
     # Create grid cells for each plot
     for points in plot_corner_points:
-        for col_num in range(num_rows):
+        for row_num in range(num_rows):
             anchor_point = points
             p1, p2, p3, p4 = _calc_plot_corners(
                 anchor_point, horizontal_dir, vertical_dir,
                 col_num=1, range_num=0, range_length=range_length,
-                row_length=row_length, row_num=col_num)
+                row_length=row_length, row_num=row_num)
 
             # Create polygon from corners
             cell = Polygon([p1, p2, p4, p3, p1])
