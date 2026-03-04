@@ -2,7 +2,7 @@
 
 Using a Napari or PlantCV-annotate viewer object with clicked points, output a shapefile.  
 
-**plantcv.geospatial.points_to_geojson**(*img, viewer, out_path*)
+**plantcv.geospatial.convert.points_to_geojson**(*img, viewer, out_path*)
 
 - **Parameters:**
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
@@ -28,9 +28,9 @@ viewer.add_points()
 ```
 ```python
 # In a separate cell, save the output after clicking:
-gcv.points_to_geojson(img, viewer, out_path="./points_example.geojson")
+gcv.convert.points_to_geojson(img, viewer, out_path="./points_example.geojson")
 ```
 
 ![Screenshot](documentation_images/napari_clicks.png)
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/points_to_geojson.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/convert/points_to_geojson.py)

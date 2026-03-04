@@ -22,8 +22,11 @@ nav:
             - Analyze height (with percentiles): analyze_height_percentile.md
             - Analyze spectral indices: analyze_spectral_index.md
             - Analyze height (with subtraction): analyze_height_subtraction.md
+        - Conversion tools:
+            - Points to ROI (circular): points_to_roi_circle.md
+            - Save clicked points as geojson: points_to_geojson.md
+            - Save drawn shapes as geojson: shapes_to_geojson.md
         - Grid cells with Napari: napari_field_grid.md
-        - Points to ROI (circular): points2roi_circle.md
         - Read Geo-tif Data: read_geotif.md
         - Read NetCDF Data: read_netcdf.md
         - ROIs from polygon centers: center_grid_rois.md
@@ -32,8 +35,6 @@ nav:
             - Shapes Grid : shapes_grid.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
-        - Save clicked points as geojson: points_to_geojson.md
-        - Save drawn shapes as geojson: shapes_to_geojson.md
 markdown_extensions:
   - toc:
       permalink: True
