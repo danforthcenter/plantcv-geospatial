@@ -6,7 +6,7 @@ Using a Napari or PlantCV-annotate viewer object with clicked points, output a s
 
 - **Parameters:**
     - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
-    - viewer - Napari viewer class object, possible created with PlantCV-Annotate.
+    - viewer - Napari viewer class object, possibly created with PlantCV-Annotate.
     - out_path - Path to save the geojson shapefile. Must be ".geojson" file type. 
 
 - **Context:**
