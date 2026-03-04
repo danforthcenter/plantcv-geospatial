@@ -13,10 +13,10 @@ def grid(img, field_corners_path, out_path, num_ranges, num_columns,
 
     Parameters:
     -----------
-    img : [spectral_object]
-        Spectral_Data object of geotif data, used for plotting
+    img : plantcv.Spectral_data
+        Spectral_data object of geotif data, used for plotting
     field_corners_path : str
-        Path to geojson containing four corner points
+        Path to Fiona formatted shapefile (geojson file) containing four corner points
     out_path : str
         Path where the output grid cells geojson will be saved
     num_ranges : int
