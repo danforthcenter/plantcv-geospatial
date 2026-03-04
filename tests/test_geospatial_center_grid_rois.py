@@ -2,8 +2,22 @@
 
 import napari
 import joblib
+import pytest
 import plantcv.geospatial as geo
 import numpy as np
+from plantcv.geospatial.center_grid_rois import center_grid_rois
+
+
+def test_geospatial_center_rois_none(test_data):
+    """Test for plantcv-geospatial."""
+    field = np.array([])
+    img = joblib.load(test_data.rgb_pickled)
+    viewer = napari.Viewer(show=False)
+    viewer.add_image(img.pseudo_rgb)
+    viewer.add_shapes(field, name="Shapes")
+    with pytest.raises(RuntimeError):
+        center_grid_rois(img.pseudo_rgb, viewer, radius=10)
+    viewer.close()
 
 
 def test_geospatial_center_rois_one(test_data):
