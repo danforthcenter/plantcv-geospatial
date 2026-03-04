@@ -18,7 +18,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
 
     Parameters
     ----------
-    dsm : plantcv.Spectral_data
+    dsm : plantcv.plantcv.classes.Spectral_data
         Spectral_data object of geotif data, used for affine metadata
     geojson : str
         Path to the shape file containing the regions for analysis

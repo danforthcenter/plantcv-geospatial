@@ -5,19 +5,19 @@ from plantcv.plantcv import fatal_error
 
 
 def _lineintersect(array1, array2):
-    """Takes in two lines in the form of end point lists and finds the intersection.
+    """Find the intersection point of two lines defined by their endpoints.
 
     Parameters
     ----------
-    array1 : list
-        Endpoints of first line
-    array2 : list
-        Endpoints of second line
+    array1 : list of list of float
+        Endpoints of the first line, as [[x0, y0], [x1, y1]].
+    array2 : list of list of float
+        Endpoints of the second line, as [[x0, y0], [x1, y1]].
 
     Returns
     -------
     [x,y] : list
-        X and Y coordinate of the intersection point
+        X and Y coordinate of the intersection point, as [x, y].
     """
     a1 = array1[1][1] - array1[0][1]
     b1 = array1[0][0] - array1[1][0]
@@ -38,18 +38,24 @@ def _lineintersect(array1, array2):
 
 
 def napari_polygon_grid(viewer, layername="Shapes"):
-    """Creates a grid of polygons in a Napari viewer.
+    """Create a grid of polygons from grid lines in a Napari viewer.
+
+    Reads lines from two Shapes layers named 'grid_lines1' and 'grid_lines2',
+    computes their pairwise intersections, and adds the resulting polygons as
+    a new Shapes layer.
 
     Parameters
     ----------
-    viewer : Napari viewer object
-        Viewer with a Shapes layer called "grid_lines" with lines in a grid
-    layername: str
-        name to save the shapes layer as, defaults to "Shapes"
+    viewer : napari.Viewer
+        Napari viewer containing Shapes layers named 'grid_lines1' and
+        'grid_lines2', each holding lines that form a grid.
+    layername : str, optional
+        Name for the new Shapes layer added to the viewer. Default is "Shapes".
 
     Returns
     -------
     None
+        Polygons are added directly to the viewer as a side effect.
     """
     linelist1 = viewer.layers["grid_lines1"].data
     linelist2 = viewer.layers["grid_lines2"].data
