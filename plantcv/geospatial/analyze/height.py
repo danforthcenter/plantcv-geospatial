@@ -140,14 +140,14 @@ def height_subtraction(dsm1, dsm0):
 
     Parameters
     ----------
-    dsm1 : planctcv.Spectral_data
+    dsm1 : plantcv.Spectral_data
         Spectral_data object of geotif DSM data - DSM with plant height
     dsm0 : plantcv.Spectral_data
         Spectral_data object of geotif DSM data - DSM of bare ground
 
     Returns
     -------
-    subtracted_dsm : Spectral_data
+    subtracted_dsm : plantcv.Spectral_data
         New Spectral_data object with dsm1 - dsm0
     """
     # Check the coordinate reference system (CRS) is the same for both of the DSMs
