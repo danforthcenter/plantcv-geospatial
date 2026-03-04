@@ -11,10 +11,10 @@ def flexible(img, field_corners_path, plot_geojson_path, out_path, range_length,
 
     Parameters:
     -----------
-    img : [spectral_object]
-        Spectral_Data object of geotif data, used for plotting
+    img : plantcv.Spectral_data
+        Spectral_data object of geotif data, used for plotting
     field_corners_path : str
-        Path to geojson containing four corner points
+        Path to Fiona formatted shapefile (geojson file) containing four corner points
     plot_geojson_path : str
         Path to geojson containing plot corner points
     out_path : str
