@@ -43,6 +43,9 @@ gcv.napari_polygon_grid(viewer)
 
 # At this point, polygons can be adjusted individually for even finer adjustment
 
+# Polygons can be saved to a geojson file for downstream use
+gcv.shapes_to_geojson(img, viewer, out_path="./grid_shapes.geojson")
+
 
 ```
 
