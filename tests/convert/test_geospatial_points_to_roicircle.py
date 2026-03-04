@@ -1,4 +1,4 @@
-"""Tests for geospatial.points2roi_circle"""
+"""Tests for geospatial.convert.points_to_roi_circle"""
 
 import numpy as np
 import joblib
