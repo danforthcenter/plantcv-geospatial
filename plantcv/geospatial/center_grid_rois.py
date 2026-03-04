@@ -10,22 +10,24 @@ from plantcv.plantcv.roi import multi, circle
 
 def center_grid_rois(img, viewer, radius=10, layername="Shapes"):
     """Create circular ROIs centered at the centroids of polygon shapes.
-    Inputs:
-    img         = Input image on which the ROIs will be drawn.
-    viewer      = Napari viewer object containing a shapes layer with polygons.
-                  Typically the output from napari_polygon_grid.
-    radius      = Radius of the circular ROIs in pixels (optional, default=10).
-    layername   = Name of the shapes layer to use (optional, default="Shapes").
 
-    Returns:
-    rois        = Multi-ROI object containing all circular regions of interest
+    Parameters
+    ----------
+    img : numpy.ndarray
+        Image on which to draw the ROIs.
+    viewer : Napari.viewer
+        Napari viewer object containing a shapes layer with polygons.
+        Typically the output from napari_polygon_grid.
+    radius : int, optional
+        Radius of the circular ROIs in pixels. Default is 10. 
+    layername : str, optional
+        Name of layer containing shapes to use. Default is "Shapes"
+
+    Returns
+    -------
+    rois : plantcv.plantcv.classes.Objects
+        Multi-ROI object containing all circular regions of interest
                   and their hierarchical relationships.
-
-    :param img: numpy.ndarray
-    :param viewer: napari.Viewer
-    :param radius: int
-    :param layername: str
-    :return rois: plantcv.plantcv.classes.Objects
     """
     points_list = []
     for i in viewer.layers[layername].data:
