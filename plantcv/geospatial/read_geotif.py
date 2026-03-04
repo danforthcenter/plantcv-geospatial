@@ -115,6 +115,10 @@ def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         Path of the TIF image file.
     bands : str, list, optional
         Comma separated string listing the order of bands or a list of wavelengths, by default "R,G,B"
+    cropto : str
+        Path of the shapefile to crop the image, defaults to None.
+    cutoff : float
+        Percentile above which to remove points, defaults to None.
 
     Returns
     -------

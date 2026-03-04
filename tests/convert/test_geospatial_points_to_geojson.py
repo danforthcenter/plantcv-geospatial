@@ -4,7 +4,7 @@ import pytest
 import os
 import napari
 import joblib
-from plantcv.geospatial import points_to_geojson
+from plantcv.geospatial.convert import points_to_geojson
 
 # Set up fake class just for testing the annotate output
 # Don't want to have to have annotate as a dependency
