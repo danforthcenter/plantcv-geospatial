@@ -8,12 +8,13 @@ def napari_grid(viewer, numdivs, layername="Shapes"):
 
     Parameters
     ----------
-    viewer : Napari viewer object
+    viewer : Napari.viewer
         Viewer with a Shapes layer containing a single polygon around the focal field.
-    numdivs : list of length 2
+    numdivs : array_like of int, length 2
         Number of divisions along the first and second axis of the field polygon.
-    layername : string
+    layername : str, optional
         Name of the Shapes layer in the viewer containing the whole field polygon.
+        Default is "Shapes".
 
     Returns
     -------

@@ -8,8 +8,8 @@ Using a Napari viewer with a shapes layer polygon outlining the whole field, fun
 Does not return anything, but adds shapes layers to the Napari viewer object that contain first the grid lines and then the polygons created by the line intersections.
 
 - **Parameters:**
-    - viewer - Napari viewer object. The input viewer to `napari_grid` must have a shapes layer where the user has added a  polygon that outlines the field on which to draw the grid.
-    - numdivs - A list of length two in the form [number of divisions across axis 1, number of divisions across axis 2]. The order of the axes is dependent on the order in which the corners are clicked during generation of the whole-field polygon. See example below for more information.
+    - viewer - Napari.viewer The input viewer to `napari_grid` must have a shapes layer where the user has added a  polygon that outlines the field on which to draw the grid.
+    - numdivs - array_like of int, length 2 [number of columns, number of ranges]. The polygon will be divided into shapes defined by the specified divisions. See example below for more information.
     - layername - String. Name given to the shapes layer of the Napari viewer in which the whole-field polygon is defined.
 
 - **Context:**
@@ -32,10 +32,7 @@ img = gcv.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
 viewer = an.napari_open(img=img.pseudo_rgb)
 viewer.add_shapes(name="field_polygon")
 
-# Now, when the Napari viewer opens, the user should add a polygon to the shapes layer around the field.
-# In the example image below, the corners are labeled in the order they were clicked.
-# The axes are also numbered for informing the numdivs parameter in the next step.
-# Clicking the field corners in a different order will change the axis direction.
+# Now, when the Napari viewer opens, the user should add a polygon to the shapes layer around the field using the polygon options.
 
 # Make grid lines
 gcv.napari_grid(viewer, numdivs=[7,6], layername="field_polygon")
@@ -45,6 +42,9 @@ gcv.napari_grid(viewer, numdivs=[7,6], layername="field_polygon")
 gcv.napari_polygon_grid(viewer)
 
 # At this point, polygons can be adjusted individually for even finer adjustment
+
+# Polygons can be saved to a geojson file for downstream use
+gcv.shapes_to_geojson(img, viewer, out_path="./grid_shapes.geojson")
 
 
 ```
