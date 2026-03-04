@@ -19,7 +19,7 @@ def center_grid_rois(img, viewer, radius=10, layername="Shapes"):
         Napari viewer object containing a shapes layer with polygons.
         Typically the output from napari_polygon_grid.
     radius : int, optional
-        Radius of the circular ROIs in pixels. Default is 10. 
+        Radius of the circular ROIs in pixels. Default is 10.
     layername : str, optional
         Name of layer containing shapes to use. Default is "Shapes"
 
