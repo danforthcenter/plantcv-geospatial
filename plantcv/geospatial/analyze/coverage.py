@@ -12,18 +12,19 @@ import cv2
 
 def coverage(img, bin_mask, geojson):
     """A function that analyzes pixel coverage in a binary mask and outputs data.
-    Inputs:
-    img          = Spectral_Data object of geotif data, used for affine metadata
-    bin_mask     = Binary mask of objects (32-bit).
-    geojson      = Path to the shape file containing the regions for analysis
+    Parameters:
+    -----------
+    img          = plantcv.Spectral_data object
+        geotif data, generally from read_geotif, used for affine metadata
+    bin_mask     = numpy.ndarray
+        Binary mask of objects (32-bit).
+    geojson      = str
+        Path to the shape file containing the regions for analysis
 
     Returns:
-    analysis_image = Debug image showing shapes from geojson on input image.
-
-    :param img: [spectral object]
-    :param bin_mask: numpy.ndarray
-    :param geojson: str
-    :return analysis_image: numpy.ndarray
+    --------
+    analysis_image = numpy.ndarray
+        Debug image showing shapes from geojson on input image.
     """
     # zonal_stats "sum" gives the sum of pixel values, so change from [0,255] to [0,1]
     bin_mask = np.where(bin_mask > 0, 1, 0)
@@ -62,7 +63,7 @@ def coverage(img, bin_mask, geojson):
         # Save out percent coverage
         outputs.add_observation(sample=id_lbl, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
-                                value=pixel_count/total, label="none")
+                                value=pixel_count / total, label="none")
 
     # Save out Ground Sampling Distance
     outputs.add_metadata(term="ground_sampling_distance_x", datatype=float, value=gsd_x)
