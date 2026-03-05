@@ -11,7 +11,7 @@ def flexible(img, field_corners_path, plot_geojson_path, out_path, range_length,
 
     Parameters:
     -----------
-    img : plantcv.Spectral_data
+    img : plantcv.plantcv.classes.Spectral_data
         Spectral_data object of geotif data, used for plotting
     field_corners_path : str
         Path to Fiona formatted shapefile (geojson file) containing four corner points
@@ -20,11 +20,11 @@ def flexible(img, field_corners_path, plot_geojson_path, out_path, range_length,
     out_path : str
         Path where the output grid cells geojson will be saved
     range_length : float, optional
-        Height of each grid cell, units the same as the field_corners_path shapefile CRS (default: 1 )
+        Height of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
     row_length : float, optional
-        Width of each grid cell, units the same as the field_corners_path shapefile CRS (default: 1 )
+        Width of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
     num_rows : int, optional
-        Number of rows per plot, default: 1
+        Number of rows per plot (default = 1)
 
     Returns:
     --------
