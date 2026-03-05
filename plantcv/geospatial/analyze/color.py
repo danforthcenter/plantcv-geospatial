@@ -67,23 +67,22 @@ def _channel_stats(img, mask, geojson, bins, label, channels, channel_ids, histr
                                    nodata=-999, stats=['mean', 'std'],
                                    add_stats={'histogram': lambda x: _histogram_stats(x, bins=bins, histrange=histrange)})
         for i, id in enumerate(ids):
-            color_values_for_id = color_values[i]
-            for jdx, j in enumerate(color_values):
-                outputs.add_observation(sample=id, variable=channel_ids[idx] + '_frequencies',
-                                        trait=channel_ids[idx]+' frequencies',
-                                        method='plantcv-geospatial.analyze.color',
-                                        scale='frequency', datatype=list,
-                                        value=j["histogram"]["counts"], label=j["histogram"]["bin_edges"])
-                outputs.add_observation(sample=id, variable=channel_ids[idx] + '_mean',
-                                        trait=channel_ids[idx]+' mean',
-                                        method='plantcv-geospatial.analyze.color',
-                                        scale='none', datatype=float,
-                                        value=j["mean"], label='none')
-                outputs.add_observation(sample=id, variable=channel_ids[idx] + '_std',
-                                        trait=channel_ids[idx]+' standard deviation',
-                                        method='plantcv-geospatial.analyze.color',
-                                        scale='none', datatype=float,
-                                        value=j["std"], label='none')
+            j = color_values[i]
+            outputs.add_observation(sample=id, variable=channel_ids[idx] + '_frequencies',
+                                    trait=channel_ids[idx]+' frequencies',
+                                    method='plantcv-geospatial.analyze.color',
+                                    scale='frequency', datatype=list,
+                                    value=j["histogram"]["counts"], label=j["histogram"]["bin_edges"])
+            outputs.add_observation(sample=id, variable=channel_ids[idx] + '_mean',
+                                    trait=channel_ids[idx]+' mean',
+                                    method='plantcv-geospatial.analyze.color',
+                                    scale='none', datatype=float,
+                                    value=j["mean"], label='none')
+            outputs.add_observation(sample=id, variable=channel_ids[idx] + '_std',
+                                    trait=channel_ids[idx]+' standard deviation',
+                                    method='plantcv-geospatial.analyze.color',
+                                    scale='none', datatype=float,
+                                    value=j["std"], label='none')
 
 
 def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
