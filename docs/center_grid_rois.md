@@ -13,8 +13,7 @@ After using a Napari viewer, and possibly the combination of `napari_grid` and `
 	- layername - Name of shape layer containing polygons, defaults to "Shapes".
 
 - **Context:**
-    - Though this function is designed to be used after drawing polygons in a grid using `napari_grid` and `napari_polygon_grid`, it can be used to draw ROIs using polygons formed by hand, read in from a shapefile, or drawn using custom algorithms.
-    - Users interested in more custom uses of this function should note that the shape layer of interest must be named "grid_shapes". 
+    - Though this function is designed to be used after drawing polygons in a grid using `napari_grid` and `napari_polygon_grid`, it can be used to draw ROIs using polygons formed by hand, read in from a shapefile, or drawn using custom algorithms. 
 
 - **Example use:**
     - Below is an example of using hand-drawn polygons. For an example of making grid polygons, see [Napari field grid documentation](https://github.com/danforthcenter/plantcv-geospatial/blob/main/docs/napari_field_grid.md)
@@ -55,4 +54,3 @@ rois = gcv.center_grid_rois(img.pseudo_rgb, viewer, radius=9)
 
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/center_grid_rois.py)
-

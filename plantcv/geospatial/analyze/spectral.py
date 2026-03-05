@@ -7,23 +7,26 @@ import fiona
 
 def spectral_index(img, geojson, percentiles=None, label=None):
     """A function that summarizes pixel intensity values per region for a spectral index
-    Inputs:
-    img          = Spectral_Data index object of geotif data, used for analysis
-    geojson      = Path to the shape file containing the regions for analysis
-    percentiles  = list (or other iterable) of percentiles [0-100] scale to calculate (default = None)
-    label        = Optional label parameter, modifies the variable name of
-                   observations recorded (default = pcv.params.sample_label).
+    Parameters:
+    -----------
+    img : plantcv.plantcv.classes.Spectral_data
+        index object of geotif data, used for analysis
+    geojson : str
+        Path to the shape file containing the regions for analysis
+    percentiles : list (or other iterable)
+        percentiles [0-100] scale to calculate (default = None)
+    label : str
+        Optional label parameter, modifies the variable name of
+        observations recorded (default = pcv.params.sample_label).
 
     Returns:
-    analysis_image = Debug image showing shapes from geojson on input image.
-
-    :param img: [spectral object]
-    :param geojson: str
-    :return analysis_image: numpy.ndarray
+    --------
+    analysis_image : numpy.ndarray
+        Debug image showing shapes from geojson on input image.
     """
     affine = img.metadata["transform"]
 
-    # Set lable to params.sample_label if no other labels provided
+    # Set label to params.sample_label if no other labels provided
     if label is None:
         # Gather plot IDs from the geojson
         label = _gather_ids(geojson=geojson)

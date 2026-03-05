@@ -4,7 +4,7 @@ import os
 import pytest
 import napari
 import joblib
-from plantcv.geospatial import shapes_to_geojson
+from plantcv.geospatial.convert import shapes_to_geojson
 
 
 def test_geospatial_shapes_to_geojson_napari(test_data, tmpdir):
