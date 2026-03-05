@@ -18,7 +18,7 @@ class TestData:
             Used for testing read_geotif
         multi_pickled      : str
             multi_img.spectral file
-            Contains a pickled plantcv.Spectral_data object
+            Contains a pickled 5-band plantcv.Spectral_data object
             Used for testing analyze.spectral_index and analyze.height_subtraction
         empty_tif          : str
             cropped_empty.tif file
@@ -38,7 +38,7 @@ class TestData:
             analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
-            Used for testing transform_points and points2roicircle
+            Used for testing transform_points and points_to_roi_circle
         single_pts_geojson : str
             single_test_pts.geojson file
             Used for testing transform_points
