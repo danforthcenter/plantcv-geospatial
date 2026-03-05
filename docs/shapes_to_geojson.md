@@ -13,17 +13,14 @@ Using a Napari viewer object with a shapes layer, output a shapefile.
 
 - **Context:**
     - Saved shapefiles can be used downstream for use with rasterstats or in parallel workflows.
-    - Thickness of the lines drawn in Napari can be adjusted using `plantcv.plantcv.params.line_thickness`. Note that while PlantCV's line thickness parameter does not have an upper limit, line thickness in Napari is capped at 40.  
+  
 - **Example use:**
     - below to save out plot boundaries
 
 
 ```python
 import plantcv.geospatial as gcv
-import plantcv.plantcv as pcv
 import napari
-# Adjust line thickness (default is 5)
-pcv.params.line_thickness = 8
 
 # Read geotif in
 img = gcv.read_geotif("./rgb.tif", bands="R,G,B")
