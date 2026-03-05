@@ -15,6 +15,7 @@ Does not return anything, but adds shapes layers to the Napari viewer object tha
 - **Context:**
     - These two functions are designed to be used to define boundaries for single plants or single plots in a field that is planted in a grid, but maybe not precision planted. 
     - The use of a Napari viewer means the user can adjust both the lines and the polygons after they are created in case the spacing is not perfect, or that is inconsistent across the field.
+    - Thickness of the lines drawn in Napari can be adjusted using `plantcv.plantcv.params.line_thickness`. Note that while PlantCV's line thickness parameter does not have an upper limit, line thickness in Napari is capped at 40.
 
 - **Example use:**
     - below
@@ -25,6 +26,8 @@ import plantcv.annotate as an
 import plantcv.geospatial as gcv
 
 pcv.params.debug = "plot"
+# Adjust line thickness (default is 5)
+pcv.params.line_thickness = 8
 
 # Read geotif in
 img = gcv.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
