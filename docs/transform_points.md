@@ -7,7 +7,7 @@ Transform the points from a georeferenced shapefile/GeoJSON based on an image si
 **returns** list of transformed coordinates
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`read_geotif`](read_geotif.md)
+    - img - Spectral image object returned by [`read_geotif`](read_geotif.md)
     - geojson - Path to the shapefile/GeoJSON containing the points. Can be Point or MultiPoint geometry.
 
 - **Context:**
