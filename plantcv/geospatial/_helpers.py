@@ -8,7 +8,6 @@ import geopandas
 import fiona
 import cv2
 import os
-import numpy as np
 
 
 def _histogram_stats(masked_array, bins, histrange):
