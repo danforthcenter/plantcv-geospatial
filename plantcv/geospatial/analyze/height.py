@@ -16,7 +16,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
 
     Parameters
     ----------
-    dsm : Spectral_data
+    dsm : plantcv.plantcv.classes.Spectral_data
         Spectral_data object of geotif data, used for affine metadata
     geojson : str
         Path to the shape file containing the regions for analysis
@@ -74,7 +74,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
             avg1 = region_lower_avgs[i][lower]
         outputs.add_observation(sample=observation_sample, variable="soil_elevation",
                                 trait="dsm_mean_below_" + str(lower),
-                                method="plantcv-geospatial.analyze.dsm",
+                                method="plantcv-geospatial.analyze.height",
                                 scale=scale, datatype=float,
                                 value=avg1, label=scale)
         soil_vals.append(avg1)
@@ -83,7 +83,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
             avg2 = region_upper_avgs[i][upper]
         outputs.add_observation(sample=observation_sample, variable="plant_elevation",
                                 trait="dsm_mean_above_" + str(upper),
-                                method="plantcv-geospatial.analyze.dsm",
+                                method="plantcv-geospatial.analyze.height",
                                 scale=scale, datatype=float,
                                 value=avg2, label=scale)
         plant_vals.append(avg2)
@@ -91,7 +91,7 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
             avg = avg2 - avg1
         outputs.add_observation(sample=observation_sample, variable="plant_height",
                                 trait="height",
-                                method="plantcv-geospatial.analyze.dsm",
+                                method="plantcv-geospatial.analyze.height",
                                 scale=scale, datatype=float,
                                 value=avg, label=scale)
 
@@ -119,14 +119,14 @@ def height_subtraction(dsm1, dsm0):
 
     Parameters
     ----------
-    dsm1 : Spectral_data
+    dsm1 : plantcv.plantcv.classes.Spectral_data
         Spectral_data object of geotif DSM data - DSM with plant height
-    dsm0 : Spectral_data
+    dsm0 : plantcv.plantcv.classes.Spectral_data
         Spectral_data object of geotif DSM data - DSM of bare ground
 
     Returns
     -------
-    subtracted_dsm : Spectral_data
+    subtracted_dsm : plantcv.plantcv.classes.Spectral_data
         New Spectral_data object with dsm1 - dsm0
     """
     # Check the coordinate reference system (CRS) is the same for both of the DSMs

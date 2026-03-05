@@ -7,8 +7,8 @@ Transform the points from a polygon or multi polygon-type georeferenced shapefil
 **returns** list of transformed coordinates
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`read_geotif`](read_geotif.md)
-    - geojson - Path to the shapefile/GeoJSON containing the points. Can be Polygon or MultiPolygon geometry.
+    - img - Spectral image object returned by [`read_geotif`](read_geotif.md)
+    - geojson - Path to the shapefile or GeoJSON containing polygon or multipolygon geometries.
 
 - **Context:**
     - Transformed points can be used downstream for PlantCV analysis, such as defining ROIs. 

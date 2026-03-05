@@ -1,6 +1,6 @@
 ## Analyze spectral index signatures for regions in a geojson shapefile using zonalstats
 
-Vectorize approach to spectral index analysis per region in a shapefile.
+Vectorized approach to spectral index analysis per region in a shapefile.
 
 **plantcv.geospatial.analyze.spectral_index**(*img, geojson, percentiles=None, label=None*)
 

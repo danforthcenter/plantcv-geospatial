@@ -39,4 +39,4 @@ print(pcv.outputs.observations["default_0"]["plant_height"]["value"])
 ```
 ![Screenshot](documentation_images/analyze_height_percentile.png)
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/dsm.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/height.py)
