@@ -34,7 +34,7 @@ def _hue_circ_stats(h):
     }
 
 
-def _channel_stats(img, mask, geojson, bins, label, channels, channel_ids, histrange, ids):
+def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, ids):
     """Uses raster stats to calculate color summary stats and histograms from individual channels
 
     Parameters
@@ -47,8 +47,6 @@ def _channel_stats(img, mask, geojson, bins, label, channels, channel_ids, histr
         Path to a shapefile containing plot boundaries
     bins : int
         Number of bins for the histogram
-    label : str
-        Optional label for numbered plots
     channels : list
         List of the single channel arrays to calculate stats
     channel_ids : list
@@ -147,7 +145,7 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     if colorspaces.upper() in ('RGB', 'ALL'):
         # Extract the blue, green, and red channels
         b, g, r = cv2.split(masked)
-        _channel_stats(img, bin_mask, geojson, bins, label, channels=[b, g, r],
+        _channel_stats(img, bin_mask, geojson, bins, channels=[b, g, r],
                        channel_ids=["blue", "green", "red"], histrange=(0, 255), ids=ids)
 
     if colorspaces.upper() in ('LAB', 'ALL'):
@@ -155,12 +153,12 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
         lmy = cv2.cvtColor(masked, cv2.COLOR_BGR2LAB)
         # Extract the lightness, green-magenta, and blue-yellow channels
         l, m, y = cv2.split(lmy)
-        _channel_stats(img, bin_mask, geojson, bins, label, channels=[l, m, y],
+        _channel_stats(img, bin_mask, geojson, bins, channels=[l, m, y],
                        channel_ids=["lightness", "green-magenta", "blue-yellow"],
                        histrange=(0, 255), ids=ids)
 
     if colorspaces.upper() in ('HSV', 'ALL'):
-        _channel_stats(img, bin_mask, geojson, bins, label, channels=[h, s, v],
+        _channel_stats(img, bin_mask, geojson, bins, channels=[h, s, v],
                        channel_ids=["hue", "saturation", "value"], histrange=(0, 255), ids=ids)
 
     df = pd.DataFrame({'value': hcm})
