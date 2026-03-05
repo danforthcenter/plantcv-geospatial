@@ -4,7 +4,7 @@ Read in data from a GeoTIFF file (e.g., georeferenced aerial or multispectral im
 
 **plantcv.geospatial.read_geotif**(*filename, bands="R,G,B", cropto=None, cutoff=None*)
 
-**returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance.
+**returns** [PlantCV Spectral_data](https://docs.plantcv.org/en/stable/Spectral_data/) object instance.
 
 - **Parameters:**
     - filename - Path of the TIF image file.
