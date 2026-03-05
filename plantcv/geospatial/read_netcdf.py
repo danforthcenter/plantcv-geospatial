@@ -21,7 +21,7 @@ def _combine_bands(ds):
 
     Returns
     -------
-    fullmat : numpy ndarray
+    fullmat : numpy.ndarray
         Array of combined data from all bands
     wavelengths : dictionary
         Dictionary of wavelengths
@@ -57,7 +57,7 @@ def _crop_allbands(fulldf, ds, bounds):
 
     Parameters
     ----------
-    fulldf : numpy ndarray
+    fulldf : numpy.ndarray
         Combined data frame of all bands
     ds : netCDF dataset read in with netCDF4 package
     bounds : list
@@ -65,11 +65,11 @@ def _crop_allbands(fulldf, ds, bounds):
 
     Returns
     -------
-    fulldf_cropped : numpy ndarray
+    fulldf_cropped : numpy.ndarray
         Combine bands data frame cropped to bounds
-    lat_cropped : numpy ndarray
+    lat_cropped : numpy.ndarray
         Cropped latitude data frame
-    lon_cropped : numpy ndarray
+    lon_cropped : numpy.ndarray
         Cropped longitutde data frame
     """
     # Read in lat/long data from dataset
@@ -101,9 +101,9 @@ def read_netcdf(filename, cropto, output=False):
     filename : str
         Path of the netCDF file.
     crop : str or list
-        Path to a shapefile or list of min/max latitude and longitude for cropping
-    output : str (defaults to False, no output)
-        Path to output Spectral object as a geotif
+        Path to a shapefile or list of min/max latitude and longitude for cropping.
+    output : str (optional)
+        Path to output Spectral object as a geotif (defaults to False, no output).
 
     Returns
     -------
