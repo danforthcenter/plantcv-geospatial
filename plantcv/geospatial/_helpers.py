@@ -13,7 +13,7 @@ def _transform_geojson_crs(img, geojson):
     """
     Helper function for converting the CRS of a geojson to that of a
     corresponding image.
-    
+
     Parameters:
     -----------
     geojson : str
