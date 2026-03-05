@@ -12,16 +12,16 @@ def shapes_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
 
     Parameters
     ----------
-    img : PlantCV spectral_data class object
+    img : plantcv.plantcv.classes.Spectral_data
         The image used for making the Napari viewer, should be from read_geotif.
-    viewer: Napari viewer class object.
+    viewer: Napari.viewer
         The viewer used to draw the shapes.
     out_path : str
         Path to save to shapefile. Must have "geojson" file extension.
-    shapetype: str
-        Geometry type from Napari viewer shape layer desired for geojson output.
-    shapename: str
-        Name of shapes layer, defaults to "Shapes"
+    shapetype: str, optional
+        Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
+    shapename: str, optional
+        Name of shapes layer, defaults to "Shapes."
 
     Raises:
     -------
