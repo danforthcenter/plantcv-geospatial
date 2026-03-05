@@ -31,6 +31,9 @@ def _combine_bands(ds):
     params.debug = None
     bands = []
     wavelengths = {}
+    # Currently only supporting NASA formatting where all bands are in
+    # the `geospatial_data` variables, could be extended to have more
+    # modes if other reasonable formats are popularized.
     for idx, i in enumerate(ds.groups['geophysical_data'].variables):
         if i[0:4] == "rhos":
             bands.append(i)
@@ -133,7 +136,7 @@ def read_netcdf(filename, cropto, output=False):
     # If it is uint8 then it should good already.
     # I do not know that netcdf data comes in anything else since I could not find more
     # examples of netcdf files that worked locally. This would be the
-    # same stuff as line 165 of read_geotif
+    # same stuff as line 169 of read_geotif
 
     height, width, depth = cropped.shape
     # Metadata
