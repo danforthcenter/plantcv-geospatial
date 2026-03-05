@@ -179,7 +179,7 @@ def _show_geojson(img, geojson, ids, **kwargs):
 
     Parameters:
     -----------
-    img : [spectral_object]
+    img : plantcv.plantcv.classes.Spectral_data
         Spectral_Data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
