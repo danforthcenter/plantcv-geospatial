@@ -26,7 +26,9 @@ import plantcv.plantcv as pcv
 spectral = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 rois = gcv.convert.points_to_roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
 # Segmentation steps here
-labeled_mask = pcv.roi.filter(mask=vegetation_mask, roi=rois, roi_type="partial")
+masks = []
+for roi in rois:  # PlantCV ROI tools generally expect one ROI at a time.
+    masks.append(pcv.roi.quick_filter(mask=vegetation_mask, roi=roi, roi_type="partial"))
 
 ```
 
