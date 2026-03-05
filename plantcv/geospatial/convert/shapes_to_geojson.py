@@ -1,5 +1,6 @@
 # Save shapes from a Napari shapes layer as a geojson polygon file.
 
+import os
 import geojson
 import rasterio
 from shapely.geometry import Polygon, mapping
@@ -21,6 +22,10 @@ def shapes_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         Geometry type from Napari viewer shape layer desired for geojson output.
     shapename: str
         Name of shapes layer, defaults to "Shapes"
+
+    Raises:
+    -------
+    RunTimeError if outpath is not to a .geojson file
     """
     features = []
     for i in viewer.layers[layername].data:
@@ -49,7 +54,7 @@ def shapes_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         }
     }
 
-    if ".geojson" in out_path:
+    if os.path.splitext(out_path)[1].lower() == ".geojson":
         with open(out_path, 'w') as f:
             geojson.dump(feature_collection, f)
     else:
