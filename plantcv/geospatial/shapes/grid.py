@@ -13,7 +13,7 @@ def grid(img, field_corners_path, out_path, num_ranges, num_columns,
 
     Parameters:
     -----------
-    img : plantcv.Spectral_data
+    img : plantcv.plantcv.classes.Spectral_data
         Spectral_data object of geotif data, used for plotting
     field_corners_path : str
         Path to Fiona formatted shapefile (geojson file) containing four corner points
