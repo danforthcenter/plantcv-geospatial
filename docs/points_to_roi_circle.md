@@ -13,7 +13,7 @@ Transform the points from a Points-type georeferenced shapefile/GeoJSON into cir
                 in units matching the coordinate system of the image
 
 - **Context:**
-    - Directly create ROIs with a consistent georeferenced radius
+    - Directly create ROIs with a consistent georeferenced radius and write geojson of ROIs.
 - **Example use:**
     - below
 
