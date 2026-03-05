@@ -11,9 +11,9 @@ def points_to_geojson(img, viewer, out_path):
 
     Parameters
     ----------
-    img : PlantCV spectral_data class object
+    img : plantcv.plantcv.classes.Spectral_data
         The image used for clicking on points, should be from read_geotif.
-    viewer: Napari viewer class object or plantcv-annotate Points class object.
+    viewer: Napari.viewer or plantcv.annotate.classes.Points object.
         The viewer used to make the clicks.
     out_path : str
         Path to save to shapefile. Must have "geojson" file extension
