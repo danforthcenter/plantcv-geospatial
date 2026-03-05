@@ -21,13 +21,17 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
-#### geospatial.points2roi_circle
+#### geospatial.convert.points_to_roi_circle
 
-* v0.1dev: rois = **geospatial.points2roi_circle**(*img, geojson, radius*)
+* v0.1dev: rois = **geospatial.convert.points_to_roi_circle**(*img, geojson, radius*)
 
-#### geospatial.points_to_geojson
+#### geospatial.convert.points_to_geojson
 
-* v0.1dev: **geospatial.points_to_geojson**(*img, viewer, out_path*)
+* v0.1dev: **geospatial.convert.points_to_geojson**(*img, viewer, out_path*)
+
+#### geospatial.convert.shapes_to_geojson
+
+* v0.1dev: coord = **geospatial.convert.shapes_to_geojson**(*img, viewer, out_path, layername="Shapes"*)
 
 #### geospatial.center_grid_rois
 
@@ -65,7 +69,3 @@ All notable changes to this project will be documented below.
 #### geospatial.transform_polygons
 
 * v0.1dev: coord = **geospatial.transform_polygons**(*img, geojson*)
-
-#### geospatial.shapes_to_geojson
-
-* v0.1dev: coord = **geospatial.shapes_to_geojson**(*img, viewer, out_path, layername="Shapes"*)
