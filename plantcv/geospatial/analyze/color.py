@@ -34,7 +34,7 @@ def _hue_circ_stats(h):
     }
 
 
-def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, ids):
+def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, ids, label):
     """Uses raster stats to calculate color summary stats and histograms from individual channels
 
     Parameters
@@ -55,6 +55,8 @@ def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, i
         Min and max of the range for the histogram
     ids : list
         List of string names for ids in geojson, returned from _gather_ids
+    label : str
+        Label to include as prefix
     """
     for idx, channel in enumerate(channels):
         # Convert to float and fill in no data values required for zonal stats
@@ -66,17 +68,21 @@ def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, i
                                    add_stats={'histogram': lambda x: _histogram_stats(x, bins=bins, histrange=histrange)})
         for i, id in enumerate(ids):
             j = color_values[i]
-            outputs.add_observation(sample=id, variable=channel_ids[idx] + '_frequencies',
+            observation_sample = label + "_" + str(id)
+            outputs.add_observation(sample=observation_sample,
+                                    variable=channel_ids[idx] + '_frequencies',
                                     trait=channel_ids[idx]+' frequencies',
                                     method='plantcv-geospatial.analyze.color',
                                     scale='frequency', datatype=list,
                                     value=j["histogram"]["counts"], label=j["histogram"]["bin_edges"])
-            outputs.add_observation(sample=id, variable=channel_ids[idx] + '_mean',
+            outputs.add_observation(sample=observation_sample,
+                                    variable=channel_ids[idx] + '_mean',
                                     trait=channel_ids[idx]+' mean',
                                     method='plantcv-geospatial.analyze.color',
                                     scale='none', datatype=float,
                                     value=j["mean"], label='none')
-            outputs.add_observation(sample=id, variable=channel_ids[idx] + '_std',
+            outputs.add_observation(sample=observation_sample,
+                                    variable=channel_ids[idx] + '_std',
                                     trait=channel_ids[idx]+' standard deviation',
                                     method='plantcv-geospatial.analyze.color',
                                     scale='none', datatype=float,
@@ -106,8 +112,9 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     plantcv.plantcv.classes.Spectral_data
         The input spectral object.
     """
-    if not label:
-        label = "default"
+    # Set label to params.sample_label if None
+    if label is None:
+        label = params.sample_label
 
     # Make masked image to convert to other colorspaces
     masked = cv2.bitwise_and(img.pseudo_rgb, img.pseudo_rgb, mask=bin_mask)
@@ -131,12 +138,15 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
                             add_stats={'hue_stats': partial(_hue_circ_stats)})
 
     for idx, i in enumerate(hue_stats):
+        observation_sample = label + "_" + str(ids[idx])
         hcm.append(i["hue_stats"]["hue_circular_mean"])
-        outputs.add_observation(sample=ids[idx], variable='hue_circular_mean',
+        outputs.add_observation(sample=observation_sample,
+                                variable='hue_circular_mean',
                                 trait='hue circular mean', method='plantcv-geospatial.analyze.color',
                                 scale='degrees', datatype=float,
                                 value=float(i["hue_stats"]["hue_circular_mean"]), label='degrees')
-        outputs.add_observation(sample=ids[idx], variable='hue_circular_std',
+        outputs.add_observation(sample=observation_sample,
+                                variable='hue_circular_std',
                                 trait='hue circular standard deviation',
                                 method='plantcv-geospatial.analyze.color',
                                 scale='degrees', datatype=float,
@@ -146,7 +156,8 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
         # Extract the blue, green, and red channels
         b, g, r = cv2.split(masked)
         _channel_stats(img, bin_mask, geojson, bins, channels=[b, g, r],
-                       channel_ids=["blue", "green", "red"], histrange=(0, 255), ids=ids)
+                       channel_ids=["blue", "green", "red"], histrange=(0, 255),
+                       ids=ids, label=label)
 
     if colorspaces.upper() in ('LAB', 'ALL'):
         # Convert the BGR image to LAB
@@ -155,11 +166,12 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
         l, m, y = cv2.split(lmy)
         _channel_stats(img, bin_mask, geojson, bins, channels=[l, m, y],
                        channel_ids=["lightness", "green-magenta", "blue-yellow"],
-                       histrange=(0, 255), ids=ids)
+                       histrange=(0, 255), ids=ids, label=label)
 
     if colorspaces.upper() in ('HSV', 'ALL'):
         _channel_stats(img, bin_mask, geojson, bins, channels=[h, s, v],
-                       channel_ids=["hue", "saturation", "value"], histrange=(0, 255), ids=ids)
+                       channel_ids=["hue", "saturation", "value"], histrange=(0, 255),
+                       ids=ids, label=label)
 
     df = pd.DataFrame({'value': hcm})
     hue_chart = alt.Chart(df).mark_bar().encode(x=alt.X('value', bin=True, title='Hue Circular Mean'),
