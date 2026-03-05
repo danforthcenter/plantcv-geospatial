@@ -1,6 +1,7 @@
 # Takes a viewer object with the 4-sided field polygon shape and makes a grid of lines
 
 import numpy as np
+from plantcv.plantcv import params
 
 
 def napari_grid(viewer, numdivs, layername="Shapes"):
@@ -56,10 +57,12 @@ def napari_grid(viewer, numdivs, layername="Shapes"):
     # add mixed shapes using the `add` method
     shapes_layer1.add(
         linelist1,
-        shape_type='line')
+        shape_type='line',
+        edge_width=params.line_thickness)
 
     shapes_layer2 = viewer.add_shapes(name='grid_lines2')
     # add mixed shapes using the `add` method
     shapes_layer2.add(
         linelist2,
-        shape_type='line')
+        shape_type='line',
+        edge_width=params.line_thickness)
