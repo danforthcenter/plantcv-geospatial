@@ -12,7 +12,8 @@ Using a Napari viewer object with a shapes layer, output a shapefile.
 	- layername - The name of the shape layer to use, defaults to "Shapes".
 
 - **Context:**
-    - Saved shapefiles can be used downstream for use with rasterstats or in parallel workflows. 
+    - Saved shapefiles can be used downstream for use with rasterstats or in parallel workflows.
+  
 - **Example use:**
     - below to save out plot boundaries
 
