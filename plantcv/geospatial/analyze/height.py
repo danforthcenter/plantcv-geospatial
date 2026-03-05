@@ -33,6 +33,9 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     bounds : list
         List of geojson bounds analyzed
     """
+    # Set label to params.sample_label if None
+    if label is None:
+        label = params.sample_label
     # DSM tifs contain just one band of data, so make the array 2D
     dsm_data = dsm.array_data[:, :, 0]
     # Cast to float since zonal_stats gives overflow error on uint8 data
@@ -57,10 +60,6 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
                                     nodata=nodata_value, stats=upper)
     # Gather plot IDs from the geojson
     ids = _gather_ids(geojson=geojson)
-
-    # Set lable to params.sample_label if None
-    if label is None:
-        label = params.sample_label
 
     soil_vals = []
     plant_vals = []

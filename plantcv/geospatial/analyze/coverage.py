@@ -20,7 +20,7 @@ def coverage(img, bin_mask, geojson, label=None):
     :param geojson: str
     :return analysis_image: numpy.ndarray
     """
-    # Set lable to params.sample_label if None
+    # Set label to params.sample_label if None
     if label is None:
         label = params.sample_label
 
