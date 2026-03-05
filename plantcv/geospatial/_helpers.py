@@ -11,17 +11,19 @@ import os
 
 def _transform_geojson_crs(img, geojson):
     """
-    Helper function for opening and transforming Coordinate System
-    of a geojson/shapefile
+    Helper function for converting the CRS of a geojson to that of a
+    corresponding image.
 
-    Keyword inputs:
-    Inputs:
-    img:        A spectral object from read_geotif.
-    geojson:    Path to the shapefile.
+    Parameters:
+    -----------
+    geojson : str
+        Path to the shapefile.
+    img : plantcv.plantcv.classes.Spectral_data
+        PlantCV Spectral class image, often from read_geotif
 
-    :param img: [spectral object]
-    :return geojson: str
-    :return gdf: geopandas
+    Returns:
+    --------
+    gdf     : geopandas.GeoDataFrame
     """
     gdf = geopandas.read_file(geojson)
 
@@ -38,12 +40,15 @@ def _unpack_point_shapefiles(shapefile):
     """
     Helper function for opening and unpacking Point and Multi-Point type shapefile data
 
-    Keyword inputs:
-    Inputs:
-    shapefile: Fiona formatted shapefile data
+    Parameters:
+    -----------
+    shapefile : fiona.collection.Collection
+        Fiona formatted shapefile data
 
-    :param shapefile: class 'fiona.collection.Collection'
-    :return coordinates: list
+    Returns:
+    --------
+    coordinates : list
+        coordinates from shapefile
     """
     if type(shapefile[0]['geometry']['coordinates']) is list:
         coordinates = [shape['geometry']['coordinates'] for shape in shapefile]
@@ -58,21 +63,22 @@ def _calc_direction_vectors(plot_bounds):
 
     Parameters
     ----------
-    plot_bounds: path to Fiona formatted shapefile data of the plot boundary
+    plot_bounds: str
+        Path to Fiona formatted shapefile data of the plot boundary
 
     Returns
     --------
-    horizontal_dir, list
+    horizontal_dir : list
         Direction vector in the horizontal direction
-    vertical_dir, list
+    vertical_dir : list
         Direction vector in the vertical direction
-    anchor_point, tuple
+    anchor_point : tuple
         First coordinate in the boundary shapefile
-    crs, dict
+    crs : dict
         crs attribute from the plot boundary shapefile
-    driver, str
+    driver : str
         OGR format driver used to open the plot boundary shapefile
-    schema, dict
+    schema : dict
         plot boundary shapefile schema giving geometry and properties
     """
     # Read the four corner points shapefile
@@ -104,26 +110,33 @@ def _calc_direction_vectors(plot_bounds):
 def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
                        range_num=0, range_length=3.6576, row_length=0.9144,
                        range_spacing=0, column_spacing=0, row_num=0, col_length=0):
-    """Create a rectangular/parallelogram polygon
+    """
+    Helper function to create a rectangular/parallelogram polygon
 
     Parameters:
     -----------
     anchor_point : list
-        Path to geojson containing four corner points
+        list containing one X, Y coordinate point
     horizontal_dir : tuple
         Horizontal direction vector
     vertical_dir: tuple
         Vertical direction vector
-    horizontal_length : float
-        Length of the plot in the horizontal dimension
-    vertical_length : float
-        Length of the plot in the vertical dimension
-    alley_size : float
-        Length of the alley between plots (vertical dimension)
     col_num : int
         Current column number
-    range_num : int
-        Current range number
+    range_num : int, optional
+        Current range number, defaults to 0.
+    range_length : float, optional
+        Length of the plot in the horizontal dimension, defaults to 3.6576
+    row_length : float, optional
+        Length of the plot in the vertical dimension, defaults to 0.9144
+    range_spacing : int or float, optional
+        Length of spacing between horizontal boundaries, defaults to 0
+    column_spacing : int or float, optional
+        Length of spacing between vertical boundaries, defaults to 0
+    row_num : int, optional
+        Number of Rows, defaults to 0
+    col_length : int, optional
+        Length of columns, defaults to 0
 
     Returns:
     --------
@@ -131,10 +144,13 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
         X,Y polygon points. Order is bottom left, bottom right, top left, top right.
     """
     # Calculate corners of each grid cell, starting with bottom_left
-    p1 = (anchor_point[0][0] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[0] +
-          (range_num * (range_spacing + range_length)) * vertical_dir[0],  # bottom_left
-          anchor_point[0][1] + ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[1] +
-          ((range_num * (range_spacing + range_length)) * vertical_dir[1]))
+    p1 = (anchor_point[0][0] +
+          ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[0] +
+          (range_num * (range_spacing + range_length)) * vertical_dir[0],
+          anchor_point[0][1] +
+          ((col_num * (column_spacing + col_length)) + (row_num * row_length)) * horizontal_dir[1] +
+          ((range_num * (range_spacing + range_length)) * vertical_dir[1])
+          )  # bottom_left
     p2 = (p1[0] + row_length * horizontal_dir[0],  # bottom_right
           p1[1] + row_length * horizontal_dir[1])
 
@@ -148,19 +164,19 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
 
 
 def _show_geojson(img, geojson):
-    """Split a polygon into equidistant subplots
+    """
+    Helper function to split a polygon into equidistant subplots
 
     Parameters:
     -----------
-    img : [spectral_object]
-        Spectral_Data object of geotif data, used for plotting
+    img : plantcv.plantcv.classes.Spectral_data
+        Spectral_data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
 
     Returns:
     --------
-    plotting_img
-        matplotlib.pyplot figure
+    plotting_img : matplotlib.pyplot
     """
     bounds = geopandas.read_file(geojson)
 
@@ -197,12 +213,11 @@ def _show_geojson(img, geojson):
 
 
 def _gather_ids(geojson):
-    """Gather plot IDs from a geojson if available, or auto-populate with default labels
+    """
+    Helper function to gather plot IDs from a geojson if available, or auto-populate with default labels
 
     Parameters:
     -----------
-    img : [spectral_object]
-        Spectral_Data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
 
@@ -226,22 +241,26 @@ def _gather_ids(geojson):
 
 
 def _plot_bounds_pseudocolored(img, geojson, vmin, vmax, data_label):
-    """Plot shapefile bounds on a pseudocolored data layer
+    """
+    Helper function to plot shapefile bounds on a pseudocolored data layer
 
     Parameters:
     -----------
-    img : [spectral_object]
-        Spectral_Data object of geotif data, used for plotting
+    img : plantcv.plantcv.classes.Spectral_data
+        Spectral_data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
     vmin : float
         Minimum value to get plotted
     vmax : float
         Maximum value to get plotted
+    data_label : str
+        label to use when plotting
 
     Returns:
     --------
-    analysis_image = Debug image showing shapes from geojson on input image.
+    analysis_image : matplotlib.pyplot
+        Debug image showing shapes from geojson on input image.
     """
     # Plot the GeoTIFF
     bounds = geopandas.read_file(geojson)
