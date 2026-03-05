@@ -1,6 +1,6 @@
 ## Output clicked points as a geojson shapefile
 
-Using a Napari or PlantCV-annotate viewer object with clicked points, output a shapefile.  
+Using a Napari or PlantCV-annotate viewer object with clicked points, output a shapefile.
 
 **plantcv.geospatial.convert.points_to_geojson**(*img, viewer, out_path*)
 
