@@ -2,7 +2,7 @@
 
 Vectorized approach to color stats and histograms per region in a shapefile using a binary mask. 
 
-**plantcv.geospatial.analyze.color**(*(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None)*)
+**plantcv.geospatial.analyze.color**(*img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None*)
 
 **returns** Debug histogram of hue circular mean across plots.
 
