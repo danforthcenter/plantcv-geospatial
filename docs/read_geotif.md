@@ -1,14 +1,14 @@
 ## Read Geo-tif Data
 
-Read in data (from tif format, most likely georeferenced image data). 
+Read in data from a GeoTIFF file (e.g., georeferenced aerial or multispectral imagery).
 
 **plantcv.geospatial.read_geotif**(*filename, bands="R,G,B", cropto=None, cutoff=None*)
 
-**returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance.
+**returns** [PlantCV Spectral_data](https://docs.plantcv.org/en/stable/Spectral_data/) object instance.
 
 - **Parameters:**
     - filename - Path of the TIF image file.
-    - bands - Comma separated string representing the order of image bands (e.g., `bands="R,G,B"`), or a list of wavelengths (e.g., `bands=[650, 560, 480]`)
+    - bands - A comma-separated string of band labels (e.g., "R,G,B") or a list of wavelengths in nm (e.g., [650, 560, 480]). Default is "R,G,B".
         - Supported symbols (case insensitive) and their default wavelengths: 
             - "R" (red) = 650nm
             - "G" (green) = 560nm
@@ -17,8 +17,8 @@ Read in data (from tif format, most likely georeferenced image data).
             - "N" or "NIR" (near infrared) = 842nm
             - "mask" (a binary mask to represent regions of no data in the image) = 0nm
             - "gray" (a grayscale image, usually a digital surface or elevation model) = 0nm
-    - cropto - A geoJSON-type shapefile to crop the input image as it is read in. Default is None.
-    - cutoff - An optional cutoff (0-1) for removing noise from grayscale images. Points greater than the percentile will be removed from the array data.
+    - cropto - A path to a GeoJSON file used to crop the input image upon reading. Default is None.
+    - cutoff - An optional percentile threshold (0–1) for clipping high values in grayscale bands (e.g., to remove noise from power lines or bright artifacts). Values above this percentile are set to 0. Default is None.
 
 - **Context:**
     - This function aims to handle variability in data type, depth, and common "No-Data" values of Geo-tifs. There is some flexibility in formats supported but we encourage people to reach out on [GitHub](https://github.com/danforthcenter/plantcv-geospatial/issues) and collaborate with the PlantCV community to expand our support.
@@ -27,13 +27,13 @@ Read in data (from tif format, most likely georeferenced image data).
     - Setting cutoff is useful if you have things like power lines in your image. The debug image will be scaled to min and max value after filtering, so it is useful for choosing an appropriate threshold. 
 
 - **Example use:**
-    - below
+    - Read in geospatial data
 
 ```python
 import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="B,G,R,RE,NIR")
 ortho2 = gcv.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
                          cropto="./shapefiles/experimental_bounds.geojson")
 ortho3 = gcv.read_geotif(filename="./data/example_gray_img.tif", bands="gray", cutoff=0.99)
