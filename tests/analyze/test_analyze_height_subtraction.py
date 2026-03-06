@@ -57,3 +57,17 @@ def test_height_shape_check(test_data):
     # Check for shape
     with pytest.raises(RuntimeError):
         test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)      
+
+
+def test_height_equal_arrays(test_data, capsys):
+    """Test for PlantCV."""
+    # Clear previous outputs
+    outputs.clear()
+    # Read in test data
+    dsm1 = joblib.load(test_data.rgb_pickled)
+    # Subtract self from self
+    flat = height_subtraction(dsm1=dsm1, dsm0=dsm1)
+    # check captured stdout
+    captured = capsys.readouterr()
+    # check message
+    assert captured.out == "Warning: dsm1 and dsm0 have identical array_data, result will be flat.\n"
