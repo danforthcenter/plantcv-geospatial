@@ -2,7 +2,7 @@
 
 Read in data from a GeoTIFF file (e.g., georeferenced aerial or multispectral imagery).
 
-**plantcv.geospatial.read_geotif**(*filename, bands="R,G,B", cropto=None, cutoff=None*)
+**plantcv.geospatial.read.geotif**(*filename, bands="R,G,B", cropto=None, cutoff=None*)
 
 **returns** [PlantCV Spectral_data](https://docs.plantcv.org/en/stable/Spectral_data/) object instance.
 
@@ -33,10 +33,10 @@ Read in data from a GeoTIFF file (e.g., georeferenced aerial or multispectral im
 import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="B,G,R,RE,NIR")
-ortho2 = gcv.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
+ortho1 = gcv.read.geotif(filename="./data/example_img.tif", bands="B,G,R,RE,NIR")
+ortho2 = gcv.read.geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
                          cropto="./shapefiles/experimental_bounds.geojson")
-ortho3 = gcv.read_geotif(filename="./data/example_gray_img.tif", bands="gray", cutoff=0.99)
+ortho3 = gcv.read.geotif(filename="./data/example_gray_img.tif", bands="gray", cutoff=0.99)
 
 ```
 
@@ -46,4 +46,4 @@ ortho3 = gcv.read_geotif(filename="./data/example_gray_img.tif", bands="gray", c
 
 ![Screenshot](documentation_images/gray.png)
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read_geotif.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read/geotif.py)
