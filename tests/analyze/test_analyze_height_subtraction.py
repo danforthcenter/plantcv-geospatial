@@ -66,7 +66,7 @@ def test_height_equal_arrays(test_data, capsys):
     # Read in test data
     dsm1 = joblib.load(test_data.rgb_pickled)
     # Subtract self from self
-    flat = height_subtraction(dsm1=dsm1, dsm0=dsm1)
+    _ = height_subtraction(dsm1=dsm1, dsm0=dsm1)
     # check captured stdout
     captured = capsys.readouterr()
     # check message
