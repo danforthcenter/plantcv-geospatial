@@ -120,7 +120,7 @@ def _read_geotif_and_shapefile(filename, cropto):
     return img_data, d_type, metadata
 
 
-def read_geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
+def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     """Read Georeferenced TIF image from file.
 
     Parameters
