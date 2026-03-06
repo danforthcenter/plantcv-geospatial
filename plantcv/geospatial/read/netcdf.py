@@ -93,7 +93,7 @@ def _crop_allbands(fulldf, ds, bounds):
     return fulldf_cropped, lat_cropped, lon_cropped
 
 
-def read_netcdf(filename, cropto, output=False):
+def netcdf(filename, cropto, output=False):
     """Read NASA-formatted netCDF file to a Spectral Data image.
 
     Parameters
