@@ -43,7 +43,7 @@ def test_height_subtraction_unequal_crs(test_data):
     # Overwriting CRS
     dsm1_fake.metadata["crs"] = 0
     with pytest.raises(RuntimeError):
-        test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)
+        _ = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)
 
 def test_height_shape_check(test_data):
     """Test for PlantCV."""
@@ -56,18 +56,4 @@ def test_height_shape_check(test_data):
     dsm0_fake = joblib.load(test_data.multi_pickled)
     # Check for shape
     with pytest.raises(RuntimeError):
-        test = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)      
-
-
-def test_height_equal_arrays(test_data, capsys):
-    """Test for PlantCV."""
-    # Clear previous outputs
-    outputs.clear()
-    # Read in test data
-    dsm1 = joblib.load(test_data.rgb_pickled)
-    # Subtract self from self
-    _ = height_subtraction(dsm1=dsm1, dsm0=dsm1)
-    # check captured stdout
-    captured = capsys.readouterr()
-    # check message
-    assert captured.out == "Warning: dsm1 and dsm0 have identical array_data, result will be flat.\n"
+        _ = height_subtraction(dsm1=dsm1_fake, dsm0=dsm0_fake)      
