@@ -14,16 +14,16 @@ def coverage(img, bin_mask, geojson):
     """A function that analyzes pixel coverage in a binary mask and outputs data.
     Parameters:
     -----------
-    img          = plantcv.plantcv.classes.Spectral_data
+    img : plantcv.plantcv.classes.Spectral_data
         geotif data, generally from read_geotif, used for affine metadata
-    bin_mask     = numpy.ndarray
+    bin_mask : numpy.ndarray
         Binary mask of objects (32-bit).
-    geojson      = str
+    geojson : str
         Path to the shape file containing the regions for analysis
 
     Returns:
     --------
-    analysis_image = numpy.ndarray
+    analysis_image : numpy.ndarray
         Debug image showing shapes from geojson on input image.
     """
     # zonal_stats "sum" gives the sum of pixel values, so change from [0,255] to [0,1]
