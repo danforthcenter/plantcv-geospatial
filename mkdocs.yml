@@ -29,6 +29,8 @@ nav:
         - Grid cells with Napari: napari_field_grid.md
         - Read Geo-tif Data: read_geotif.md
         - Read NetCDF Data: read_netcdf.md
+        - RGB index calculator: rgb_index.md
+        - Split pseudo-rgb channels: split_rgb_channels.md
         - ROIs from polygon centers: center_grid_rois.md
         - Shapefile tools:
             - Shapes Flexible : shapes_flexible.md
