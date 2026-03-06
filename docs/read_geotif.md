@@ -33,10 +33,10 @@ Read in data from a GeoTIFF file (e.g., georeferenced aerial or multispectral im
 import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="B,G,R,RE,NIR")
-ortho2 = gcv.read_geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
+ortho1 = gcv.read.geotif(filename="./data/example_img.tif", bands="B,G,R,RE,NIR")
+ortho2 = gcv.read.geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
                          cropto="./shapefiles/experimental_bounds.geojson")
-ortho3 = gcv.read_geotif(filename="./data/example_gray_img.tif", bands="gray", cutoff=0.99)
+ortho3 = gcv.read.geotif(filename="./data/example_gray_img.tif", bands="gray", cutoff=0.99)
 
 ```
 
