@@ -7,18 +7,19 @@ import numpy as np
 
 def coverage(img, bin_mask, geojson, label=None):
     """A function that analyzes pixel coverage in a binary mask and outputs data.
-    Inputs:
-    img          = Spectral_Data object of geotif data, used for affine metadata
-    bin_mask     = Binary mask of objects (32-bit).
-    geojson      = Path to the shape file containing the regions for analysis
+    Parameters:
+    -----------
+    img : plantcv.plantcv.classes.Spectral_data
+        geotif data, generally from read_geotif, used for affine metadata
+    bin_mask : numpy.ndarray
+        Binary mask of objects (32-bit).
+    geojson : str
+        Path to the shape file containing the regions for analysis
 
     Returns:
-    analysis_image = Debug image showing shapes from geojson on input image.
-
-    :param img: [spectral object]
-    :param bin_mask: numpy.ndarray
-    :param geojson: str
-    :return analysis_image: numpy.ndarray
+    --------
+    analysis_image : numpy.ndarray
+        Debug image showing shapes from geojson on input image.
     """
     # Set label to params.sample_label if None
     if label is None:
@@ -62,7 +63,7 @@ def coverage(img, bin_mask, geojson, label=None):
         # Save out percent coverage
         outputs.add_observation(sample=observation_sample, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
-                                value=pixel_count/total, label="none")
+                                value=pixel_count / total, label="none")
 
     # Save out Ground Sampling Distance
     outputs.add_metadata(term="ground_sampling_distance_x", datatype=float, value=gsd_x)
