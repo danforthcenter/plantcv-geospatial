@@ -12,18 +12,18 @@ def points_to_roi_circle(img, geojson, radius):
 
     Parameters:
     -----------
-    img:        plantcv.Spectral_data
+    img : plantcv.plantcv.classes.Spectral_data
         A spectral object from read_geotif.
-    geojson:    str
+    geojson : str
         Path to the shape file containing the points.
-    radius:     float
+    radius : float
         Radius of circular ROIs to get created,
         in units matching the coordinate system (CRS) of the image
         e.g. meters
 
     Returns:
     --------
-    rois:       list
+    rois : list
         List of circular ROIs (plantcv Objects class instances)
     """
     gdf = _transform_geojson_crs(img=img, geojson=geojson)
@@ -44,12 +44,12 @@ def _points2roi(polygon_list):
 
     Parameters:
     -----------
-    polygon_list  = list
+    polygon_list : list
         Pixel coordinates as a nested list of polygons as returned from transform_polygons
 
     Returns:
     --------
-    rois    = plantcv.Objects instance
+    rois : plantcv.Objects instance
         grouped contours list
     """
     rois = Objects()
