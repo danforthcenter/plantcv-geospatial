@@ -158,6 +158,10 @@ def height_subtraction(dsm1, dsm0):
     dsm1_data = dsm1.array_data[:, :, 0]
     dsm0_data = dsm0.array_data[:, :, 0]
 
+    # Check for equal arrays
+    if np.array_equal(dsm1_data, dsm0_data, equal_nan=True):
+        print("Warning: dsm1 and dsm0 have identical array_data, result will be flat.")
+
     # Check the shapes are equivalent
     if (dsm1_data.shape == dsm0_data.shape) is False:
         fatal_error("Input DSMs do not have same shape, can be changed with PCV 'resize' function.")
