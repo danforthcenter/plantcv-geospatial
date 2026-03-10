@@ -1,6 +1,6 @@
 ## ROIs from the center of gridded polygons
 
-After using a Napari viewer, and possibly the combination of `create_shapes.napari_grid` and `napari_polygon_grid`, this function takes a viewer's shapes layer and turns the center point of every polygon into a circular Region of Interest (ROI) for downstream analysis of individual objects. 
+After using a Napari viewer, and possibly the combination of `create_shapes.napari_grid` and `create_shapes.napari_polygon_grid`, this function takes a viewer's shapes layer and turns the center point of every polygon into a circular Region of Interest (ROI) for downstream analysis of individual objects. 
 
 **plantcv.geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
 
@@ -13,7 +13,7 @@ After using a Napari viewer, and possibly the combination of `create_shapes.napa
 	- layername - Name of shape layer containing polygons, defaults to "Shapes".
 
 - **Context:**
-    - Though this function is designed to be used after drawing polygons in a grid using `create_shapes.napari_grid` and `napari_polygon_grid`, it can be used to draw ROIs using polygons formed by hand, read in from a shapefile, or drawn using custom algorithms. 
+    - Though this function is designed to be used after drawing polygons in a grid using `create_shapes.napari_grid` and `create_shapes.napari_polygon_grid`, it can be used to draw ROIs using polygons formed by hand, read in from a shapefile, or drawn using custom algorithms. 
 
 - **Example use:**
     - Below is an example of using hand-drawn polygons. For an example of making grid polygons, see [Napari field grid documentation](https://github.com/danforthcenter/plantcv-geospatial/blob/main/docs/napari_field_grid.md)

@@ -37,10 +37,6 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
 
-#### geospatial.napari_polygon_grid
-
-* v0.1dev: **geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
-
 #### geospatial.read_geotif
 
 * v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
@@ -61,6 +57,10 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.napari_grid
 
 * v0.1dev: **geospatial.create_shapes.napari_grid**(*viewer, numdivs, layername="Shapes"*)
+
+#### geospatial.create_shapes.napari_polygon_grid
+
+* v0.1dev: **geospatial.create_shapes.napari_polygon_grid**(*viewer, layername="Shapes"*)
 
 #### geospatial.transform_points
 
