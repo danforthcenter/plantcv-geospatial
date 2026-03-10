@@ -44,6 +44,10 @@ def _points_to_geojson(img, viewer, out_path):
     out_path : str
         Path to save to shapefile. Must have "geojson" file extension
 
+    Returns:
+    --------
+    feature_collection : dict, geojson data as a dictionary
+
     Raises:
     -------
     RunTimeError if out_path is not to a geojson file or viewer is not recognized.
@@ -72,7 +76,7 @@ def _points_to_geojson(img, viewer, out_path):
     with open(out_path, 'w') as f:
         geojson.dump(feature_collection, f)
 
-    return geojson
+    return feature_collection
 
 
 def _geojson_to_points(filename):
