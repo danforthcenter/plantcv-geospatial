@@ -87,7 +87,6 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         out_path = out_path + ".geojson"
         print("File type not supported, writing to " + out_path + " instead")
 
-
     with open(out_path, 'w') as f:
         geojson.dump(feature_collection, f)
 
