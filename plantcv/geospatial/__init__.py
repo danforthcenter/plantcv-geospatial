@@ -4,7 +4,7 @@ from plantcv.geospatial.transform_points import transform_points
 from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial import convert
 from plantcv.geospatial import analyze
-from plantcv.geospatial import shapes
+from plantcv.geospatial import create_shapes
 from plantcv.geospatial.napari_grid import napari_grid
 from plantcv.geospatial.napari_polygon_grid import napari_polygon_grid
 from plantcv.geospatial.center_grid_rois import center_grid_rois
@@ -18,7 +18,7 @@ __all__ = [
     "transform_points",
     "transform_polygons",
     "analyze",
-    "shapes",
+    "create_shapes",
     "napari_grid",
     "napari_polygon_grid",
     "center_grid_rois",
