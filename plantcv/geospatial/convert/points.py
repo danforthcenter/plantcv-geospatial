@@ -6,7 +6,7 @@ from plantcv.plantcv.fatal_error import fatal_error
 
 
 def points(frm, to=None, img=None):
-    """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
+    """Convert between Points/Napari.viewer objects and geojson objects/files
 
     Parameters
     ----------
