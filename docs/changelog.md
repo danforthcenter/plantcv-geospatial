@@ -25,9 +25,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: rois = **geospatial.convert.points_to_roi_circle**(*img, geojson, radius*)
 
-#### geospatial.convert.points_to_geojson
+#### geospatial.convert.points
 
-* v0.1dev: **geospatial.convert.points_to_geojson**(*img, viewer, out_path*)
+* v0.1dev: **geospatial.convert.points**(*from, to=None, img=None*)
 
 #### geospatial.convert.shapes_to_geojson
 
