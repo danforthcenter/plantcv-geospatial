@@ -8,12 +8,12 @@ from plantcv.plantcv.fatal_error import fatal_error
 def shapes(frm, to=None, outpath=None, shapetype="polygon", layername="Shapes"):
     """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
-    Parameters
-    ----------
-    frm : str, Napari.viewer, or plantcv.annotate.classes.Points object.
+    Parameters:
+    -----------
+    frm : str, Napari.viewer
         Either a geojson file or the viewer used to make the clicks.
         A geojson file will return a list of coordinates from that geojson.
-        A Napari viewer or Points object will save and return a geojson object.
+        A Napari viewer will save and return a geojson object.
     to : str,
         Path to save to a geojson file to save if frm is a Napari viewer or Points object.
         Defaults to None, only required if 'frm' is a Napari view or Points object.
@@ -25,9 +25,10 @@ def shapes(frm, to=None, outpath=None, shapetype="polygon", layername="Shapes"):
     shapename: str, optional
         Name of shapes layer, defaults to "Shapes."
 
-    Raises:
-    -------
-    RunTimeError if frm is not an str, Napari.viewer, or plantcv.annotate.classes.Points object.
+    Returns:
+    --------
+    list or dict, if frm is a str then returns a list of X,Y coordinates.
+        If frm is a Napari.viewer then a dictionary of geojson data is returned.
     """
     if isinstance(frm, str):
         # a shape here is just a collection of points, so we use the points helper
@@ -50,15 +51,11 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
     shapetype: str, optional
         Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
     shapename: str, optional
-        Name of shapes layer, defaults to "Shapes."
+        Name of shapes layer, defaults to "Shapes".
 
     Returns:
     --------
     feature_collection : dict, geojson data as a dictionary
-
-    Raises:
-    -------
-    RunTimeError if outpath is not to a .geojson file
     """
     features = []
     for i in viewer.layers[layername].data:
