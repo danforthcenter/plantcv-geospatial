@@ -1,7 +1,6 @@
 """Tests for geospatial.convert.shapes"""
 
 import os
-import pytest
 import napari
 import joblib
 from plantcv.geospatial.convert.shapes import shapes

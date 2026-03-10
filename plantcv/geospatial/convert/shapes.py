@@ -2,7 +2,6 @@ import os
 import geojson
 import rasterio
 from shapely.geometry import Polygon, mapping
-from plantcv.plantcv.fatal_error import fatal_error
 from plantcv.geospatial.convert.points import _geojson_to_points
 
 
