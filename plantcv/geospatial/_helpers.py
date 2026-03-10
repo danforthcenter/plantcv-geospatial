@@ -3,10 +3,36 @@ from shapely.geometry import LineString
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from plantcv.plantcv import params
+import numpy as np
 import geopandas
 import fiona
 import cv2
 import os
+
+
+def _histogram_stats(masked_array, bins, histrange):
+    """Helper function to calculate a histogram from a masked array
+
+    Parameters
+    ----------
+    masked_array : np.ndarray
+        Single channel from a masked image
+    bins : int
+        Number of bins in the output histogram
+    histrange : tuple
+        Range for the histogram, format (min, max)
+
+    Returns
+    -------
+    dict
+        Dictionary of counts and bin edges
+    """
+    counts, bin_edges = np.histogram(masked_array, bins, range=histrange)
+
+    return {
+        'counts': counts.tolist(),
+        'bin_edges': bin_edges.tolist()
+    }
 
 
 def _transform_geojson_crs(img, geojson):
@@ -163,7 +189,7 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
     return p1, p2, p3, p4
 
 
-def _show_geojson(img, geojson):
+def _show_geojson(img, geojson, ids, **kwargs):
     """
     Helper function to split a polygon into equidistant subplots
 
@@ -173,6 +199,8 @@ def _show_geojson(img, geojson):
         Spectral_data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
+    ids : list
+        List of plot IDs from _gather_ids
 
     Returns:
     --------
@@ -182,16 +210,25 @@ def _show_geojson(img, geojson):
 
     # Plot the GeoTIFF
     # Make a flipped image for graphing
-    flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
-                         img.pseudo_rgb[:, :, [1]],
-                         img.pseudo_rgb[:, :, [0]]))
+    flipped = img.array_data
+    if len(np.shape(img.pseudo_rgb)) > 2:
+        flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
+                            img.pseudo_rgb[:, :, [1]],
+                            img.pseudo_rgb[:, :, [0]]))
 
     _, ax = plt.subplots(figsize=(10, 10))
     fig_extent = plotting_extent(img.array_data[:, :, :3],
                                  img.metadata['transform'])
-    ax.imshow(flipped, extent=fig_extent)
+    # Add labels to vector features
+    if params.verbose and ids is not None:
+        for idx, row in bounds.iterrows():
+            x_coord = (row.geometry.bounds[0] + row.geometry.centroid.x) / 2
+            y_coord = row.geometry.centroid.y
+            plt.text(x_coord, y_coord, ids[idx], fontsize=10, c="m")
+
+    ax.imshow(flipped, extent=fig_extent, **kwargs)
     # Plot the shapefile
-    bounds.boundary.plot(ax=ax, color="red")
+    bounds.boundary.plot(ax=ax, color="blue")
     # Set plot title and labels
     plt.title("GeoJSON shapes on GeoTIFF")
     # Store the plot
@@ -230,13 +267,17 @@ def _gather_ids(geojson):
         # If IDs within the geojson
         ids = []
         for i, row in enumerate(shapefile):
-            if 'ID' in row['properties']:
+            if 'PlotName' in row['properties']:
+                ids.append((row['properties']["PlotName"]))
+            elif 'ID' in row['properties']:
                 ids.append((row['properties']["ID"]))
             elif 'FID' in row['properties']:
                 ids.append((row['properties']["FID"]))
+            elif 'plot_ids' in row['properties']:
+                ids.append((row['properties']["plot_ids"]))
             else:
                 # If there are no IDs in the geojson then use default labels
-                ids.append("default_" + str(i + 1))
+                ids.append(str(i + 1))
     return ids
 
 
