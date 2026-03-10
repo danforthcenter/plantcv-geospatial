@@ -6,7 +6,7 @@ from plantcv.geospatial._helpers import _transform_geojson_crs
 from plantcv.plantcv import Objects
 
 
-def to_roi(img, geojson, radius):
+def points_to_roi_circle(img, geojson, radius):
     """Takes a points-type shapefile/GeoJSON and transforms circular ROIs,
     saves these out to a new geoJSON file and creates ROI Objects instances
 
