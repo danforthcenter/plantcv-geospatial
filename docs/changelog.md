@@ -45,9 +45,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
 
-#### geospatial.read_geotif
+#### geospatial.read.geotif
 
-* v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
+* v0.1dev: spectral = **geospatial.read.geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
 
 #### geospatial.read_netcdf
 
