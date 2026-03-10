@@ -32,7 +32,7 @@ nav:
             - Save drawn shapes as geojson: shapes_to_geojson.md
         - Grid cells with Napari: napari_field_grid.md
         - ROIs from polygon centers: center_grid_rois.md
-        - Shapefile tools:
+        - Shape creation tools:
             - Shapes Flexible : shapes_flexible.md
             - Shapes Grid : shapes_grid.md
         - Transform coordinate points: transform_points.md

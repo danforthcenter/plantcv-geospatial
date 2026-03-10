@@ -30,4 +30,4 @@ spectral_data = gcv.read.netcdf(filename=nasafile, cropto="./bigspiritlake.geojs
 ![Screenshot](documentation_images/bigspiritlake.png)
 
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read_netcdf.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read.netcdf.py)
