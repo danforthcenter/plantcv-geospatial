@@ -1,4 +1,4 @@
-"""Tests for geospatial.napari_grid and geospatial.napari_polygon_grid"""
+"""Tests for geospatial.create_shapes.napari_grid and geospatial.napari_polygon_grid"""
 
 import pytest
 import joblib
@@ -18,7 +18,7 @@ def test_geospatial_napari_grid(test_data):
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes(field, name="field_polygon")
-    geo.napari_grid(viewer, numdivs=[1, 2], layername="field_polygon")
+    geo.create_shapes.napari_grid(viewer, numdivs=[1, 2], layername="field_polygon")
     geo.napari_polygon_grid(viewer)
     assert len(viewer.layers["grid_lines1"].data) == 2
     assert len(viewer.layers["Shapes"].data) == 2
