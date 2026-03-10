@@ -5,7 +5,7 @@ from shapely.geometry import Polygon, mapping
 from plantcv.plantcv.fatal_error import fatal_error
 
 
-def shapes(frm, to=None, outpath=None):
+def shapes(frm, to=None, outpath=None, shapetype="polygon", layername="Shapes"):
     """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
     Parameters
@@ -20,9 +20,78 @@ def shapes(frm, to=None, outpath=None):
     img : plantcv.plantcv.classes.Spectral_data
         The image used for clicking on points, should be from read_geotif.
         Defaults to None, only required if 'frm' is a Napari view or Points object.
+    shapetype: str, optional
+        Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
+    shapename: str, optional
+        Name of shapes layer, defaults to "Shapes."
 
     Raises:
     -------
-    RunTimeError if frm is not an str, Napari.viewr, or plantcv.annotate.classes.Points object.
+    RunTimeError if frm is not an str, Napari.viewer, or plantcv.annotate.classes.Points object.
     """
-    
+    if isinstance(frm, str):
+        # a shape here is just a collection of points, so we use the points helper
+        return _geojson_to_points(filename=frm)
+    # otherwise frm should be a napari viewer
+    return _shape_to_geojson(img=img, viewer=frm, out_path=to, shapetype=shapetype, layername=layername)
+
+
+def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Shapes"):
+    """Use shapes from a Napari to output a geojson shapefile.
+
+    Parameters
+    ----------
+    img : plantcv.plantcv.classes.Spectral_data
+        The image used for making the Napari viewer, should be from read_geotif.
+    viewer: Napari.viewer
+        The viewer used to draw the shapes.
+    out_path : str
+        Path to save to shapefile. Must have "geojson" file extension.
+    shapetype: str, optional
+        Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
+    shapename: str, optional
+        Name of shapes layer, defaults to "Shapes."
+
+    Returns:
+    --------
+    feature_collection : dict, geojson data as a dictionary
+
+    Raises:
+    -------
+    RunTimeError if outpath is not to a .geojson file
+    """
+    features = []
+    for i in viewer.layers[layername].data:
+        shape = []
+        for j in i:
+            shape.append((img.metadata["transform"]*(j[1], j[0])))
+        features.append(shape)
+
+    polygon_list = []
+    for i, _ in enumerate(features):
+        shape_type = viewer.layers[layername].shape_type[i]
+        if shape_type == shapetype:
+            polygon = Polygon(features[i])
+            geojson_feature = {
+                "type": "Feature",
+                "geometry": mapping(polygon),
+                "properties": {}
+            }
+            polygon_list.append(geojson_feature)
+
+    feature_collection = geojson.FeatureCollection(polygon_list)
+    feature_collection['crs'] = {
+        "type": "name",
+        "properties": {
+            "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
+        }
+    }
+    if os.path.splitext(out_path)[1].lower() != ".geojson":
+        out_path = out_path + ".geojson"
+        print("File type not supported, writing to " + out_path + " instead")
+
+
+    with open(out_path, 'w') as f:
+        geojson.dump(feature_collection, f)
+
+    return feature_collection
