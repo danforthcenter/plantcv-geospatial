@@ -27,7 +27,7 @@ nav:
             - Analyze spectral indices: analyze_spectral_index.md
             - Analyze height (with subtraction): analyze_height_subtraction.md
         - Conversion tools:
-            - Points to ROI (circular): points_to_roi_circle.md
+            - Convert Points to ROI: to_roi.md
             - Convert points to/from geojson: convert_points.md
             - Save drawn shapes as geojson: shapes_to_geojson.md
         - Grid cells with Napari: napari_field_grid.md
