@@ -27,7 +27,7 @@ def points(frm, to=None, img=None):
     """
     if isinstance(frm, str):
         # if frm is a string then it is path to a geojson file
-        return _geojson_to_points(geojson=frm)
+        return _geojson_to_points(filename=frm)
     # otherwise, frm should be a napari viewer or Points object
     return _points_to_geojson(img, viewer=frm, out_path=to)
 
@@ -50,13 +50,13 @@ def _points_to_geojson(img, viewer, out_path):
     """
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):
-        points = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers["Points"].data]
+        pts = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers["Points"].data]
     # Annotate output
     elif hasattr(viewer, 'coords'):
-        points = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
+        pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
     else:
         fatal_error("Viewer class type not recognized. Currently, Napari and PlantCV-annotate viewers supported.")
-    features = [geojson.Feature(geometry=geojson.Point((lon, lat))) for lon, lat in points]
+    features = [geojson.Feature(geometry=geojson.Point((lon, lat))) for lon, lat in pts]
     feature_collection = geojson.FeatureCollection(features)
     # Make sure the coordinate system is the same as the original image
     feature_collection['crs'] = {
@@ -75,19 +75,19 @@ def _points_to_geojson(img, viewer, out_path):
     return geojson
 
 
-def _geojson_to_points(geojson):
+def _geojson_to_points(filename):
     """Extract coordinates fr0m geojson
 
     Parameters
     ----------
-    geojson : str, path to geojson file.
+    filename : str, path to geojson file.
 
     Returns:
     -------
     pts : list, list of X,Y coordinates frm the geometry.coordinates of the geojson file.
     """
     pts = []
-    with fiona.open(geojson, "r") as shapefile:
+    with fiona.open(filename, "r") as shapefile:
         for row in shapefile:
             pts.append(row['geometry']['coordinates'])
     return pts
