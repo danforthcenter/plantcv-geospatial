@@ -3,9 +3,10 @@ import geojson
 import rasterio
 from shapely.geometry import Polygon, mapping
 from plantcv.plantcv.fatal_error import fatal_error
+from plantcv.geospatial.convert.points import _geojson_to_points
 
 
-def shapes(frm, to=None, outpath=None, shapetype="polygon", layername="Shapes"):
+def shapes(frm, to=None, img=None, shapetype="polygon", layername="Shapes"):
     """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
     Parameters:
