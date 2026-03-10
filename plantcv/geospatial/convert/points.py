@@ -23,7 +23,7 @@ def points(frm, to=None, img=None):
 
     Raises:
     -------
-    RunTimeError if frm is not an str, Napari.viewr, or plantcv.annotate.classes.Points object.
+    RunTimeError if frm is not an str, Napari.viewer, or plantcv.annotate.classes.Points object.
     """
     if isinstance(frm, str):
         # if frm is a string then it is path to a geojson file
