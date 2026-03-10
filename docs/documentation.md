@@ -7,7 +7,7 @@ the code. Because Read the Docs supports static content build tools like
 Markdown format that will be built into HTML automatically whenever a 
 new version of code is pushed to the PlantCV GitHub repository.
 
-### Updating PlantCV documentation
+### Updating PlantCV-Geospatial documentation
 
 Follow the [installation guide](installation.md#installing-plantcv-geospatial-for-contributors) to learn how clone a copy of the PlantCV-Geospatial
 repository. Then see the main PlantCV [contributing guide](https://plantcv.readthedocs.io/en/latest/CONTRIBUTING/) for an overview on how to edit files, and generate a `pull` request to merge your updates back into the repository. Changes to PlantCV-Geospatial should be done in a branch, and pull against the 
