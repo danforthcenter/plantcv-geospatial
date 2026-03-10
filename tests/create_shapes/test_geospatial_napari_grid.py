@@ -1,11 +1,11 @@
-"""Tests for geospatial.create_shapes.napari_grid and geospatial.napari_polygon_grid"""
+"""Tests for geospatial.create_shapes.napari_grid and geospatial.create_shapes.napari_polygon_grid"""
 
 import pytest
 import joblib
 import napari
-import plantcv.geospatial as geo
 import numpy as np
-from plantcv.geospatial.napari_polygon_grid import _lineintersect
+from plantcv.geospatial.create_shapes.napari_polygon_grid import napari_polygon_grid, _lineintersect
+from plantcv.geospatial.create_shapes.napari_grid import napari_grid
 
 
 def test_geospatial_napari_grid(test_data):
@@ -18,8 +18,8 @@ def test_geospatial_napari_grid(test_data):
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes(field, name="field_polygon")
-    geo.create_shapes.napari_grid(viewer, numdivs=[1, 2], layername="field_polygon")
-    geo.napari_polygon_grid(viewer)
+    napari_grid(viewer, numdivs=[1, 2], layername="field_polygon")
+    napari_polygon_grid(viewer)
     assert len(viewer.layers["grid_lines1"].data) == 2
     assert len(viewer.layers["Shapes"].data) == 2
     assert int(viewer.layers["grid_lines1"].data[0][1][0]) == 140
