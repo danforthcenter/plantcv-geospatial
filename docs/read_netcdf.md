@@ -2,7 +2,7 @@
 
 Read in data from a NetCDF file, formatted as NASA data downloads with all bands contained in the geophysical data group variables. 
 
-**plantcv.geospatial.read_netcdf**(*filename, cropto, output=False*)
+**plantcv.geospatial.read.netcdf**(*filename, cropto, output=False*)
 
 **returns** [PlantCV Spectral_data](https://plantcv.readthedocs.io/en/latest/Spectral_data/) object instance.
 
@@ -23,11 +23,11 @@ import plantcv.geospatial as gcv
 
 # Read in NetCDF file
 nasafile = "./sentinel-3_example.nc"
-spectral_data = gcv.read_netcdf(filename=nasafile, cropto="./bigspiritlake.geojson") 
+spectral_data = gcv.read.netcdf(filename=nasafile, cropto="./bigspiritlake.geojson") 
 
 ```
 
 ![Screenshot](documentation_images/bigspiritlake.png)
 
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read_netcdf.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/read.netcdf.py)
