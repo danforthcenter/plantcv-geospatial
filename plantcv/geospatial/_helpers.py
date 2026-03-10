@@ -190,12 +190,13 @@ def _calc_plot_corners(anchor_point, horizontal_dir, vertical_dir, col_num,
 
 
 def _show_geojson(img, geojson, ids, **kwargs):
-    """Split a polygon into equidistant subplots
+    """
+    Helper function to split a polygon into equidistant subplots
 
     Parameters:
     -----------
     img : plantcv.plantcv.classes.Spectral_data
-        Spectral_Data object of geotif data, used for plotting
+        Spectral_data object of geotif data, used for plotting
     geojson : str
         Path to the shape file containing the regions
     ids : list
