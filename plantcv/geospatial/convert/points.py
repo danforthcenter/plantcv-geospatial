@@ -21,6 +21,11 @@ def points(frm, to=None, img=None):
         The image used for clicking on points, should be from read_geotif.
         Defaults to None, only required if 'frm' is a Napari view or Points object.
 
+    Returns:
+    --------
+    list or dict, if frm is a str then returns a list of X,Y coordinates.
+        If frm is a Napari.viewer/Points object then a dictionary of geojson data is returned.
+
     Raises:
     -------
     RunTimeError if frm is not an str, Napari.viewer, or plantcv.annotate.classes.Points object.
