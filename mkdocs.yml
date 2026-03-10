@@ -25,7 +25,7 @@ nav:
             - Analyze height (with subtraction): analyze_height_subtraction.md
         - Conversion tools:
             - Points to ROI (circular): points_to_roi_circle.md
-            - Save clicked points as geojson: points_to_geojson.md
+            - Convert points to/from geojson: convert_points.md
             - Save drawn shapes as geojson: shapes_to_geojson.md
         - Grid cells with Napari: napari_field_grid.md
         - Read Geo-tif Data: read_geotif.md
