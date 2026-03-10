@@ -21,9 +21,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
-#### geospatial.convert.to_roi
+#### geospatial.convert.points_to_roi_circle
 
-* v0.1dev: rois = **geospatial.convert.to_roi**(*img, geojson, radius*)
+* v0.1dev: rois = **geospatial.convert.points_to_roi_circle**(*img, geojson, radius*)
 
 #### geospatial.convert.points
 
