@@ -34,7 +34,7 @@ class TestData:
             Contains a pickled plantcv.Spectral_data object
             Used for testing center_grid_rois, points_to_geojson, transform_points,
             points2roicircle, _helpers, transform_polygons, napari_grid, shapes_to_geojson,
-            shapes.grid, shapes.flexible, analyze.height_percentile, analyze.coverage,
+            create_shapes.grid, create_shapes.grid_from_coords, analyze.height_percentile, analyze.coverage,
             analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
@@ -55,7 +55,7 @@ class TestData:
             Used for testing analyze.height_percentile
         point_crop         : str
             point_crop.geojson  file
-            Used for testing read_geotif, shapes.grid and shapes.flexible
+            Used for testing read_geotif, create_shapes.grid and create_shapes.grid_from_coords
         multipolygon       : str
             multipolygon_fortests.geojson file
             Used for testing transform.polygons and analyze.spectral_index
@@ -64,10 +64,10 @@ class TestData:
             Used for testing _helpers._transform_geojson_crs
         plot_bounds        : str
             docs_four_points.geojson file
-            Used for testing shapes.flexible
+            Used for testing create_shapes.grid_from_coords
         plot_points        : str
             plot_points.geojson file
-            Used for testing shapes.flexible
+            Used for testing create_shapes.grid_from_coords
         test_netcdf        : str
             subset_test.nc file
             Used for testing read_netcdf
@@ -76,7 +76,7 @@ class TestData:
             Used for testing read_netcdf
         gray_tif           : str
             gray.tif file
-            Used for testing read_geotif        
+            Used for testing read_geotif
         """
         # Test data directory
         self.datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdata")
