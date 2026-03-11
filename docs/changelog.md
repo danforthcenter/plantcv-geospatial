@@ -62,6 +62,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.create_shapes.napari_grid**(*viewer, numdivs, layername="Shapes"*)
 
+#### geospatial.create_shapes.napari_polygon_grid
+
+* v0.1dev: **geospatial.create_shapes.napari_polygon_grid**(*viewer, layername="Shapes"*)
+
 #### geospatial.transform_points
 
 * v0.1dev: coord = **geospatial.transform_points**(*img, geojson*)
