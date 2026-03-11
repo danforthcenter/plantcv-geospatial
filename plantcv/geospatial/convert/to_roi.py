@@ -58,7 +58,8 @@ def _points_to_circular_rois(img, geojson, radius):
     gdf = _transform_geojson_crs(img=img, geojson=geojson)
     # check that these are points, not polygons
     if "Point" not in gdf.geom_type.unique()[0]:
-        fatal_error("Circular ROIs can only be specified with points layers, geojson file is geom_type '" + ", ".join(gdf.geom_type.unique()) + "'")
+        fatal_error("Circular ROIs can only be specified with points layers, geojson file is geom_type '" +
+                    ", ".join(gdf.geom_type.unique()) + "'")
 
     gdf['geometry'] = gdf.geometry.buffer(radius)
 
@@ -91,7 +92,8 @@ def _polygon_to_roi(img, geojson):
     gdf = _transform_geojson_crs(img=img, geojson=geojson)
     # check that these are polygons, not points
     if "Polygon" not in gdf.geom_type.unique()[0]:
-        fatal_error("Polygon ROIs can only be specified with polygon layers, geojson file is geom_type '" + ", ".join(gdf.geom_type.unique()) + "'")
+        fatal_error("Polygon ROIs can only be specified with polygon layers, geojson file is geom_type '" +
+                    ", ".join(gdf.geom_type.unique()) + "'")
 
     buffered_geojson = os.path.splitext(geojson)[0] + '_polygons.geojson'
     gdf.to_file(buffered_geojson, driver='GeoJSON')
