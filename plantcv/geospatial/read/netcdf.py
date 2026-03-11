@@ -8,7 +8,7 @@ import rasterio
 from plantcv.plantcv import params, transform
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.classes import Spectral_data
-from plantcv.geospatial.read_geotif import _find_closest_unsorted
+from plantcv.geospatial.read.geotif import _find_closest_unsorted
 from geopandas import GeoDataFrame
 
 
@@ -93,7 +93,7 @@ def _crop_allbands(fulldf, ds, bounds):
     return fulldf_cropped, lat_cropped, lon_cropped
 
 
-def read_netcdf(filename, cropto, output=False):
+def netcdf(filename, cropto, output=False):
     """Read NASA-formatted netCDF file to a Spectral Data image.
 
     Parameters

@@ -37,22 +37,26 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
 
-#### geospatial.read_geotif
+#### geospatial.napari_polygon_grid
 
-* v0.1dev: spectral = **geospatial.read_geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
+* v0.1dev: **geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
 
-#### geospatial.read_netcdf
+#### geospatial.read.geotif
 
-* v0.1dev: spectral = **geospatial.read_netcdf**(*filename, cropto, output=False*)
+* v0.1dev: spectral = **geospatial.read.geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
+
+#### geospatial.read.netcdf
+
+* v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
 
 #### geospatial.create_shapes.grid
 
 * v0.1dev: cells = **geospatial.create_shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
          range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0*)
 
-#### geospatial.create_shapes.grid_from_points
+#### geospatial.create_shapes.grid_from_coords
 
-* v0.1dev: cells = **geospatial.create_shapes.grid_from_points**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
+* v0.1dev: cells = **geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
 
 #### geospatial.create_shapes.napari_grid
 
