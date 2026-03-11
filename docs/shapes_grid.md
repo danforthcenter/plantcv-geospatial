@@ -1,6 +1,6 @@
 ## Create a grid of cells and save them to a new GeoJSON/Shapefile
 
-**plantcv.geospatial.shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
+**plantcv.geospatial.create_shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
          range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0*)
 
 **returns** figure
@@ -33,7 +33,7 @@ import plantcv.geospatial as gcv
 # Read geotif in
 ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 # Create and visualize GeoJSON of plots
-figure = gcv.shapes.grid(img=img, field_corners_path="bounds.geojson", 
+figure = gcv.create_shapes.grid(img=img, field_corners_path="bounds.geojson", 
             out_path="gridcells.geojson", num_ranges=22, num_columns=13,
             num_rows=1, range_spacing=1.5,  range_length=2.5, row_length=1.6)
 
@@ -42,4 +42,4 @@ figure = gcv.shapes.grid(img=img, field_corners_path="bounds.geojson",
 
 ![Screenshot](documentation_images/grid_cells.png)
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/shapes/grid.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/create_shapes/grid.py)
