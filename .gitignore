@@ -168,3 +168,4 @@ cython_debug/
 Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+tests/testdata/square_crop_polygon.geojson

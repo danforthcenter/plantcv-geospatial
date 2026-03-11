@@ -33,7 +33,7 @@ class TestData:
             rgb_img.spectral file
             Contains a pickled plantcv.Spectral_data object
             Used for testing center_grid_rois, points_to_geojson, transform_points,
-            points2roicircle, _helpers, transform_polygons, napari_grid, shapes_to_geojson,
+            convert.to_roi, _helpers, transform_polygons, napari_grid, shapes_to_geojson,
             shapes.grid, shapes.flexible, analyze.height_percentile, analyze.coverage,
             analyze.height_subtraction
         pts_geojson        : str
