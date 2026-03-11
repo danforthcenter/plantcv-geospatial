@@ -37,10 +37,6 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
 
-#### geospatial.napari_grid
-
-* v0.1dev: **geospatial.napari_grid**(*viewer, numdivs, layername="Shapes"*)
-
 #### geospatial.napari_polygon_grid
 
 * v0.1dev: **geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
@@ -61,6 +57,10 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.grid_from_coords
 
 * v0.1dev: cells = **geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
+
+#### geospatial.create_shapes.napari_grid
+
+* v0.1dev: **geospatial.create_shapes.napari_grid**(*viewer, numdivs, layername="Shapes"*)
 
 #### geospatial.transform_points
 
