@@ -1,16 +1,19 @@
 ## Create Circular ROIs from georeferenced points
 
-Transform the points from a Points-type georeferenced shapefile/GeoJSON into circular Regions of Interest (ROIs) and save the shapefile/GeoJSON with points added to the `geojson` path with `_circles.geojson` appended to the extensionless basename.
+Transform features from shapefile/GeoJSON to Regions of Interest (ROIs) and save a shapefile/GeoJSON of those ROIs.
 
-**plantcv.geospatial.convert.to_roi**(*img, geojson, radius*)
+Shapefiles/GeoJSONs will be written with the `_circles` or `_polygons` suffix.
+
+**plantcv.geospatial.convert.to_roi**(*img, geojson, radius=None*)
 
 **returns** list of ROIs (`plantcv.Objects` instance)
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
-    - geojson - Path to the shapefile/GeoJSON containing the points.
-    - radius - Radius of circular ROIs to get created,
-                in units matching the coordinate system of the image
+    - img - Spectral image object, likely read in with [`geo.read.geotif`](read_geotif.md)
+    - geojson - Path to the shapefile/GeoJSON containing the points or polygons.
+    - radius - Optional radius of circular ROIs to get created,
+                in units matching the coordinate system of the image.
+				If this is provided then the geojson is assumed to contain points.
 
 - **Context:**
     - Directly create ROIs with a consistent georeferenced radius and write geojson of ROIs.
