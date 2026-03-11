@@ -7,7 +7,7 @@ from plantcv.geospatial._helpers import (_calc_direction_vectors,
 import fiona
 
 
-def grid(img, field_corners_path, out_path, num_ranges, num_columns,
+def auto_grid(img, field_corners_path, out_path, num_ranges, num_columns,
          range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0, ids=None):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
