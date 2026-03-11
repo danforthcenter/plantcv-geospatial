@@ -93,7 +93,7 @@ def _polygon_to_roi(img, geojson):
     if "Polygon" not in gdf.geom_type.unique()[0]:
         fatal_error("Polygon ROIs can only be specified with polygon layers, geojson file is geom_type '" + ", ".join(gdf.geom_type.unique()) + "'")
 
-    buffered_geojson = os.path.splitext(geojson)[0] + '_polygon.geojson'
+    buffered_geojson = os.path.splitext(geojson)[0] + '_polygons.geojson'
     gdf.to_file(buffered_geojson, driver='GeoJSON')
 
     geo_polygons = transform_polygons(img=img, geojson=buffered_geojson)
