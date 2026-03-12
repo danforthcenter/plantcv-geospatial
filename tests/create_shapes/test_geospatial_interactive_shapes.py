@@ -30,8 +30,7 @@ def test_interactive_badviewer(test_data):
     """Test for plantcv-geospatial."""
     img = joblib.load(test_data.rgb_pickled)
     with pytest.raises(RuntimeError):
-        editor = InteractiveShapes(img, viewer_type="nonsense", show=False)
-    editor.viewer.close()
+        _ = InteractiveShapes(img, viewer_type="nonsense", show=False)
 
 
 def test_interactive_addshapes(test_data):
