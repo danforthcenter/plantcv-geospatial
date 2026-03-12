@@ -26,12 +26,21 @@ def test_geospatial_interactive_grid(test_data):
     editor.viewer.close()
 
 
+def test_interactive_badviewer(test_data):
+    """Test for plantcv-geospatial."""
+    img = joblib.load(test_data.rgb_pickled)
+    with pytest.raises(RuntimeError):
+        editor = InteractiveShapes(img, viewer_type="nonsense", show=False)
+    editor.viewer.close()
+
+
 def test_interactive_addshapes(test_data):
     """Test for plantcv-geospatial."""
     img = joblib.load(test_data.rgb_pickled)
     editor = InteractiveShapes(img, show=False)
     editor.add_layer()
     assert editor.device == 1
+    editor.viewer.close()
 
 
 def test_interactive_addpoints(test_data):
@@ -40,6 +49,7 @@ def test_interactive_addpoints(test_data):
     editor = InteractiveShapes(img, show=False)
     editor.add_layer(layer_type="points", layer_name="Points")
     assert editor.device == 1
+    editor.viewer.close()
 
 
 def test_interactive_wronglayername(test_data):
