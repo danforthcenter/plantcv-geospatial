@@ -1,8 +1,6 @@
 ## Create Circular ROIs from georeferenced points
 
-Transform features from shapefile/GeoJSON to Regions of Interest (ROIs) and save a shapefile/GeoJSON of those ROIs.
-
-Shapefiles/GeoJSONs will be written with the `_circles` or `_polygons` suffix.
+Transform features from shapefile/GeoJSON to Regions of Interest (ROIs) and save a shapefile/GeoJSON of those ROIs. Shapefiles/GeoJSONs will be written with the `_circles` or `_polygons` suffix.
 
 **plantcv.geospatial.convert.to_roi**(*img, geojson, radius=None*)
 
@@ -27,7 +25,7 @@ import plantcv.plantcv as pcv
 
 # Read geotif in
 spectral = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-rois = gcv.convert.to_roi(img=spectral, geojson="./points_example.geojson", radius=1)
+rois = gcv.convert.points_to_roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
 # "./points_example_circles.geojson" file can be used for gcv.analyze functions
 res = gcv.analyze.height_percentile(img=spectral, geojson="./points_example_circles.geojson")
 # Segmentation steps here
@@ -35,4 +33,4 @@ pcv.roi.quick_filter(mask=vegetation_mask, roi=roi, roi_type="partial")
 
 ```
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/convert/to_roi.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/convert/points_to_roi.py)
