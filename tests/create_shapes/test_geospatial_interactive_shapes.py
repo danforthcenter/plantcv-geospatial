@@ -16,6 +16,7 @@ def test_geospatial_interactive_grid(test_data):
     img = joblib.load(test_data.rgb_pickled)
     editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
     editor.viewer.add_shapes(field, name="field_bounds")
+    editor.layer_dict["field_boundary"] = "field_bounds"
     editor.grid(numdivs=[1,2])
     editor.plots()
     assert len(editor.viewer.layers["grid_lines1"].data) == 2
