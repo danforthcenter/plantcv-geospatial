@@ -1,4 +1,4 @@
-# Takes a viewer object with lines from napari_grid and turns those intersections into polygons
+# Takes a viewer object with lines from create_shapes.napari_grid and turns those intersections into polygons
 
 import numpy as np
 from plantcv.plantcv import fatal_error
