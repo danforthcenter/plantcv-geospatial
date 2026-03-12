@@ -27,7 +27,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.convert.points
 
-* v0.1dev: **geospatial.convert.points**(*from, to=None, img=None*)
+* v0.1dev: **geospatial.convert.points**(*source, dest=None, img=None*)
 
 #### geospatial.convert.shapes_to_geojson
 
