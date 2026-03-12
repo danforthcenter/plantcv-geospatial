@@ -1,13 +1,13 @@
 ## Convert Points between geojson and lists
 
-Using a Napari or PlantCV-annotate viewer object with clicked points, output a shapefile.
+Using a Napari or PlantCV-annotate viewer object with clicked points, output a shapefile. Or read in a Point- or MultiPoint-type geojson shapefile and output a list of coordinates in numpy space. 
 
-**plantcv.geospatial.convert.points**(*source, dest=None, img=None*)
+**plantcv.geospatial.convert.points**(*img, source, dest=None*)
 
 - **Parameters:**
+    - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md). If `source` is the path to a shapefile, the metadata of this image will be used to convert points to numpy coordinates.
     - source - str, Napari.viewer, or plantcv.annotate.classes.Points object. If this is an str then it should be a path to a geojson file to read points from. A Napari.viewer or Points object will be saved to a geojson specified by `dest`.
 	- dest - str, Path to save a geojson file if `source` is a Napari.viewer or Points object. This is not required if `source` is a geojson file path.
-    - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md).  This is not required if `source` is a geojson file path.
 
 
 - **Context:**
