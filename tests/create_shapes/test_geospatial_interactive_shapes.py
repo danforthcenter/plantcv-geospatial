@@ -20,9 +20,9 @@ def test_geospatial_interactive_grid(test_data):
     editor.grid(numdivs=[1,2])
     editor.plots()
     assert len(editor.viewer.layers["grid_lines1"].data) == 2
-    assert len(editor.viewer.layers["Shapes"].data) == 2
+    assert len(editor.viewer.layers["Plots"].data) == 2
     assert int(editor.viewer.layers["grid_lines1"].data[0][1][0]) == 140
-    assert int(editor.viewer.layers["Shapes"].data[0][1][0]) == 136
+    assert int(editor.viewer.layers["Plots"].data[0][1][0]) == 136
     editor.viewer.close()
 
 

@@ -8,7 +8,7 @@ from plantcv.geospatial.create_shapes.napari_polygon_grid import napari_polygon_
 
 class InteractiveShapes:
     """Plantcv-Geospatial interactive shapes class."""
-    
+
     def __init__(self, img, viewer_type="napari", field_layer=None, show=True):
         """Initialize parameters.
 
