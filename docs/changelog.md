@@ -29,9 +29,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.convert.points**(*source, dest=None, img=None*)
 
-#### geospatial.convert.shapes_to_geojson
+#### geospatial.convert.shapes
 
-* v0.1dev: coord = **geospatial.convert.shapes_to_geojson**(*img, viewer, out_path, layername="Shapes"*)
+* v0.1dev: coord = **geospatial.convert.shapes**(*source, dest=None, img=None*)
 
 #### geospatial.center_grid_rois
 

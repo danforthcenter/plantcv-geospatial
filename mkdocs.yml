@@ -29,7 +29,7 @@ nav:
         - Conversion tools:
             - Points to ROI (circular): points_to_roi_circle.md
             - Convert points to/from geojson: convert_points.md
-            - Save drawn shapes as geojson: shapes_to_geojson.md
+            - Convert polygons to/from geojson: convert_shapes.md
         - ROIs from polygon centers: center_grid_rois.md
         - Shape creation tools:
             - Grid from plot coordinates : shapes_grid_from_coords.md
