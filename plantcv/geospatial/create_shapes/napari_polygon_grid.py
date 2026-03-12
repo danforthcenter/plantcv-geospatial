@@ -37,7 +37,7 @@ def _lineintersect(array1, array2):
     return [x, y]
 
 
-def napari_polygon_grid(viewer, layername="Shapes"):
+def napari_polygon_grid(viewer, layername="Shapes", lines1="grid_lines1", lines2="grid_lines2"):
     """Create a grid of polygons from grid lines in a Napari viewer.
 
     Reads lines from two Shapes layers named 'grid_lines1' and 'grid_lines2',
@@ -51,14 +51,17 @@ def napari_polygon_grid(viewer, layername="Shapes"):
         'grid_lines2', each holding lines that form a grid.
     layername : str, optional
         Name for the new Shapes layer added to the viewer. Default is "Shapes".
-
+    lines1 : str, optional
+        Name of layer containing column lines. Default is "grid_lines1".
+    lines2 : str, optional
+        Name of layer containing range lines. Default is "grid_lines2".
     Returns
     -------
     None
         Polygons are added directly to the viewer as a side effect.
     """
-    linelist1 = viewer.layers["grid_lines1"].data
-    linelist2 = viewer.layers["grid_lines2"].data
+    linelist1 = viewer.layers[lines1].data
+    linelist2 = viewer.layers[lines2].data
 
     polygonlist = []
     for i in range(len(linelist1)-1):

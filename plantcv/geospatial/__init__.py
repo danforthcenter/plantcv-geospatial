@@ -6,6 +6,7 @@ from plantcv.geospatial import convert
 from plantcv.geospatial import analyze
 from plantcv.geospatial import create_shapes
 from plantcv.geospatial.center_grid_rois import center_grid_rois
+from plantcv.geospatial.classes import InteractiveShapes
 
 # Auto versioning
 __version__ = version("plantcv-geospatial")
@@ -17,5 +18,6 @@ __all__ = [
     "analyze",
     "create_shapes",
     "center_grid_rois",
-    "convert"
+    "convert",
+    "InteractiveShapes"
 ]
