@@ -21,25 +21,21 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
-#### geospatial.convert.to_roi
+#### geospatial.convert.points_to_roi_circle
 
-* v0.1dev: rois = **geospatial.convert.to_roi**(*img, geojson, radius*)
+* v0.1dev: rois = **geospatial.convert.points_to_roi_circle**(*img, geojson, radius*)
 
 #### geospatial.convert.points
 
-* v0.1dev: **geospatial.convert.points**(*from, to=None, img=None*)
+* v0.1dev: **geospatial.convert.points**(*source, dest=None, img=None*)
 
-#### geospatial.convert.shapes_to_geojson
+#### geospatial.convert.shapes
 
-* v0.1dev: coord = **geospatial.convert.shapes_to_geojson**(*img, viewer, out_path, layername="Shapes"*)
+* v0.1dev: coord = **geospatial.convert.shapes**(*source, dest=None, img=None*)
 
 #### geospatial.center_grid_rois
 
 * v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
-
-#### geospatial.napari_grid
-
-* v0.1dev: **geospatial.napari_grid**(*viewer, numdivs, layername="Shapes"*)
 
 #### geospatial.napari_polygon_grid
 
@@ -58,9 +54,17 @@ All notable changes to this project will be documented below.
 * v0.1dev: cells = **geospatial.create_shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
          range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0*)
 
-#### geospatial.create_shapes.flexible
+#### geospatial.create_shapes.grid_from_coords
 
-* v0.1dev: cells = **geospatial.create_shapes.flexible**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
+* v0.1dev: cells = **geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
+
+#### geospatial.create_shapes.napari_grid
+
+* v0.1dev: **geospatial.create_shapes.napari_grid**(*viewer, numdivs, layername="Shapes"*)
+
+#### geospatial.create_shapes.napari_polygon_grid
+
+* v0.1dev: **geospatial.create_shapes.napari_polygon_grid**(*viewer, layername="Shapes"*)
 
 #### geospatial.transform_points
 

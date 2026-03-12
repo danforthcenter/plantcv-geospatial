@@ -1,9 +1,8 @@
-"""Tests for geospatial.napari_grid and geospatial.napari_polygon_grid"""
+"""Tests for geospatial.center_grid_rois"""
 
 import napari
 import joblib
 import pytest
-import plantcv.geospatial as geo
 import numpy as np
 from plantcv.geospatial.center_grid_rois import center_grid_rois
 
@@ -30,7 +29,7 @@ def test_geospatial_center_rois_one(test_data):
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes(field, name="Shapes")
-    rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
+    rois = center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 1
     viewer.close()
 
@@ -49,6 +48,6 @@ def test_geospatial_center_rois_multi(test_data):
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes(field, name="Shapes")
-    rois = geo.center_grid_rois(img.pseudo_rgb, viewer, radius=10)
+    rois = center_grid_rois(img.pseudo_rgb, viewer, radius=10)
     assert len(rois.contours) == 2
     viewer.close()

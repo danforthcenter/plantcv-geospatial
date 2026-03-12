@@ -5,45 +5,45 @@ import fiona
 from plantcv.plantcv.fatal_error import fatal_error
 
 
-def points(frm, to=None, img=None):
+def points(source, dest=None, img=None):
     """Convert between Points/Napari.viewer objects and geojson objects/files
 
     Parameters
     ----------
-    frm : str, Napari.viewer, or plantcv.annotate.classes.Points object.
+    source : str, Napari.viewer, or plantcv.annotate.classes.Points object.
         Either a geojson file or the viewer used to make the clicks.
         A geojson file will return a list of coordinates from that geojson.
         A Napari viewer or Points object will save and return a geojson object.
-    to : str,
-        Path to save to a geojson file to save if frm is a Napari viewer or Points object.
-        Defaults to None, only required if 'frm' is a Napari view or Points object.
+    dest : str,
+        Path to save to a geojson file to save if source is a Napari viewer or Points object.
+        Defaults to None, only required if 'source' is a Napari view or Points object.
     img : plantcv.plantcv.classes.Spectral_data
         The image used for clicking on points, should be from read_geotif.
-        Defaults to None, only required if 'frm' is a Napari view or Points object.
+        Defaults to None, only required if 'source' is a Napari view or Points object.
 
     Returns:
     --------
-    list or dict, if frm is a str then returns a list of X,Y coordinates.
-        If frm is a Napari.viewer/Points object then a dictionary of geojson data is returned.
+    list or dict, if source is a str then returns a list of X,Y coordinates.
+        If source is a Napari.viewer/Points object then a dictionary of geojson data is returned.
 
     Raises:
     -------
-    RunTimeError if frm is not an str, Napari.viewer, or plantcv.annotate.classes.Points object.
+    RunTimeError if source is not an str, Napari.viewer, or plantcv.annotate.classes.Points object.
     """
-    if isinstance(frm, str):
-        # if frm is a string then it is path to a geojson file
-        return _geojson_to_points(filename=frm)
-    # otherwise, frm should be a napari viewer or Points object
-    return _points_to_geojson(img, viewer=frm, out_path=to)
+    if isinstance(source, str):
+        # if source is a string then it is path to a geojson file
+        return _geojson_to_points(filename=source)
+    # otherwise, source should be a napari viewer or Points object
+    return _points_to_geojson(img, viewer=source, out_path=dest)
 
 
 def _points_to_geojson(img, viewer, out_path):
-    """Use clicks frm a Napari or plantcv-annotate viewer to output a geojson shapefile.
+    """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
     Parameters
     ----------
     img : plantcv.plantcv.classes.Spectral_data
-        The image used for clicking on points, should be frm read_geotif.
+        The image used for clicking on points, should be from read_geotif.
     viewer: Napari.viewer or plantcv.annotate.classes.Points object.
         The viewer used to make the clicks.
     out_path : str
@@ -85,7 +85,7 @@ def _points_to_geojson(img, viewer, out_path):
 
 
 def _geojson_to_points(filename):
-    """Extract coordinates fr0m geojson
+    """Extract coordinates from geojson
 
     Parameters
     ----------
@@ -93,7 +93,7 @@ def _geojson_to_points(filename):
 
     Returns:
     -------
-    pts : list, list of X,Y coordinates frm the geometry.coordinates of the geojson file.
+    pts : list, list of X,Y coordinates from the geometry.coordinates of the geojson file.
     """
     pts = []
     with fiona.open(filename, "r") as shapefile:

@@ -2,8 +2,8 @@
 
 Using a Napari viewer with a shapes layer polygon outlining the whole field, functions `napari_grid` and `napari_polygon_grid` create grid cells around individual units for measurement. Can be followed by either saving out the grid cells in a shapefile or using the center points to make ROIs using `center_grid_rois`. 
 
-**plantcv.geospatial.napari_grid**(*viewer, numdivs, layername="Shapes"*)
-**plantcv.geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
+**plantcv.geospatial.create_shapes.napari_grid**(*viewer, numdivs, layername="Shapes"*)
+**plantcv.geospatial.create_shapes.napari_polygon_grid**(*viewer, layername="Shapes"*)
 
 Does not return anything, but adds shapes layers to the Napari viewer object that contain first the grid lines and then the polygons created by the line intersections.
 
@@ -38,11 +38,11 @@ viewer.add_shapes(name="field_polygon")
 # Now, when the Napari viewer opens, the user should add a polygon to the shapes layer around the field using the polygon options.
 
 # Make grid lines
-gcv.napari_grid(viewer, numdivs=[7,6], layername="field_polygon")
+gcv.create_shapes.napari_grid(viewer, numdivs=[7,6], layername="field_polygon")
 
 # User can at this point adjust the position of the lines to better match any planting irregularities.
 # Make grid polygons
-gcv.napari_polygon_grid(viewer)
+gcv.create_shapes.napari_polygon_grid(viewer)
 
 # At this point, polygons can be adjusted individually for even finer adjustment
 
@@ -68,5 +68,5 @@ gcv.shapes_to_geojson(img, viewer, out_path="./grid_shapes.geojson")
 
 ![Screenshot](documentation_images/grid_polygons.png)
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/napari_grid.py)
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/napari_polygon_grid.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/create_shapes/napari_grid.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/create_shapes/napari_polygon_grid.py)

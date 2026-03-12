@@ -29,12 +29,12 @@ nav:
         - Conversion tools:
             - Convert Points to ROI: points_to_roi_circle.md
             - Convert points to/from geojson: convert_points.md
-            - Save drawn shapes as geojson: shapes_to_geojson.md
-        - Grid cells with Napari: napari_field_grid.md
+            - Convert polygons to/from geojson: convert_shapes.md
         - ROIs from polygon centers: center_grid_rois.md
         - Shape creation tools:
-            - Shapes Flexible : shapes_flexible.md
+            - Grid from plot coordinates : shapes_grid_from_coords.md
             - Shapes Grid : shapes_grid.md
+            - Grid of plots with Napari: napari_field_grid.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
 markdown_extensions:
