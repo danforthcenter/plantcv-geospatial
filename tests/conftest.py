@@ -34,7 +34,7 @@ class TestData:
             Contains a pickled plantcv.Spectral_data object
             Used for testing center_grid_rois, points_to_geojson, transform_points,
             points2roicircle, _helpers, transform_polygons, classes.InteractiveShapes, shapes_to_geojson,
-            create_shapes.grid, create_shapes.grid_from_coords, analyze.height_percentile, analyze.coverage,
+            create_shapes.auto_grid, create_shapes.grid_from_coords, analyze.height_percentile, analyze.coverage,
             analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
@@ -55,7 +55,7 @@ class TestData:
             Used for testing analyze.height_percentile
         point_crop         : str
             point_crop.geojson  file
-            Used for testing read_geotif, create_shapes.grid and create_shapes.grid_from_coords
+            Used for testing read_geotif, create_shapes.auto_grid and create_shapes.grid_from_coords
         multipolygon       : str
             multipolygon_fortests.geojson file
             Used for testing transform.polygons and analyze.spectral_index
