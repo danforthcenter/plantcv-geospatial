@@ -4,11 +4,15 @@ from shapely.geometry import Polygon, mapping
 from plantcv.geospatial._helpers import (_calc_direction_vectors,
                                          _calc_plot_corners,
                                          _show_geojson)
+from plantcv.geospatial import field_layout
 import fiona
 
 
-def grid(img, field_corners_path, out_path, num_ranges, num_columns,
-         range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0, ids=None):
+def grid(img, field_corners_path, out_path, num_ranges=field_layout.num_ranges,
+         num_columns=field_layout.num_columns, range_length=field_layout.range_length,
+         row_length=field_layout.row_length, num_rows=field_layout.num_rows,
+         range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing,
+         ids=None):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -21,18 +25,25 @@ def grid(img, field_corners_path, out_path, num_ranges, num_columns,
         Path where the output grid cells geojson will be saved
     num_ranges : int
         Number of ranges (vertical cell rows)
+        Defaults to field_layout attribute num_ranges.
     num_columns : int
         Number of columns (horizontal cell columns)
+        Defaults to field_layout attribute num_columns.
     range_length : float, optional
         Height of each grid cell, units the same as the field_corners_path shapefile CRS
+        Defaults to field_layout attribute range_length.
     row_length : float, optional
         Width of each grid cell, units the same as the field_corners_path shapefile CRS
+        Defaults to field_layout attribute row_length.
     num_rows : int, optional
         Number of cells to divide the horizontal edge into (default: 1)
-    range_spacing : float
+        Defaults to field_layout attribute num_rows.
+    range_spacing : float, optional
         Size of alley spaces beteen ranges, units match shapefile CRS (default: 0)
-    column_spacing : float
+        Defaults to field_layout attribute range_spacing.
+    column_spacing : float, optional
         Size of alley spaces beteen columns, units match shapefile CRS (default: 0)
+        Defaults to field_layout attribute column_spacing.
     ids : list
         List of plot IDs (optional) to label geojson plots
 

@@ -1,7 +1,6 @@
 ## Create a grid of cells and save them to a new GeoJSON/Shapefile
 
-**plantcv.geospatial.create_shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
-         range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0*)
+**plantcv.geospatial.create_shapes.grid**(*img, field_corners_path, out_path, num_ranges=field_layout.num_ranges, num_columns=field_layout.num_columns, range_length=field_layout.range_length, row_length=field_layout.row_length, num_rows=field_layout.num_rows, range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing, ids=None*)
 
 **returns** figure
 
@@ -9,13 +8,13 @@
     - img - Spectral_Data object of geotif data, used for plotting a debug image, likely read in with [`read_geotif`](read_geotif.md)
     - field_corners_path - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
-    - num_ranges - Number of ranges to get created
-    - num_columns - Number of columns to get created
-    - range_length - Length of each grid cell in the horizontal direction, in units matching the coordinate system of the `field_corners_path`
-    - row_length - Length of each grid cell in the vertical direction, in units matching the coordinate system of the `field_corners_path`
-    - num_rows - Number of rows within a single plot, default: 1
-    - range_spacing - Length of "alley" spaces between ranges, default: 0
-    - column_spacing - Length of "alley" spaces between columns, default: 0
+    - num_ranges - Number of ranges to get created. Defaults to the `num_ranges` attribute of the `Field_layout` class. 
+    - num_columns - Number of columns to get created. Defaults to the `num_columns` attribute of the `Field_layout` class. 
+    - range_length - Length of each grid cell in the horizontal direction, in units matching the coordinate system of the `field_corners_path`. Defaults to the `range_length` attribute of the `Field_layout` class. 
+    - row_length - Length of each grid cell in the vertical direction, in units matching the coordinate system of the `field_corners_path`. Defaults to the `row_length` attribute of the `Field_layout` class. 
+    - num_rows - Number of rows within a single plot. Defaults to the `num_rows` attribute of the `Field_layout` class. 
+    - range_spacing - Length of "alley" spaces between ranges. Defaults to the `range_spacing` attribute of the `Field_layout` class. 
+    - column_spacing - Length of "alley" spaces between columns. Defaults to the `column_spacing` attribute of the `Field_layout` class. 
 
 - **Context:**
     - Helpful for precision planted experiments

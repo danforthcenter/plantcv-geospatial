@@ -3,10 +3,14 @@
 from shapely.geometry import Polygon, mapping
 from plantcv.geospatial._helpers import (_calc_direction_vectors, _unpack_point_shapefiles,
                                          _calc_plot_corners, _show_geojson)
+from plantcv.geospatial import field_layout
 import fiona
 
 
-def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1, ids=None):
+def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path,
+                     range_length=field_layout.range_length,
+                     row_length=field_layout.row_length, num_rows=field_layout.num_rows,
+                     ids=None):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -21,10 +25,13 @@ def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path, range
         Path where the output grid cells geojson will be saved
     range_length : float, optional
         Height of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
+        Defaults to field_layout attribute range_length.
     row_length : float, optional
         Width of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
+        Defaults to field_layout attribute row_length.
     num_rows : int, optional
         Number of rows per plot, default: 1
+        Defaults to field_layout attribute num_rows.
     ids : list
         List of plot IDs (optional) to label geojson plots
 
