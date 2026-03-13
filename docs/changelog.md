@@ -49,9 +49,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
 
-#### geospatial.create_shapes.grid
+#### geospatial.create_shapes.auto_grid
 
-* v0.1dev: cells = **geospatial.create_shapes.grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
+* v0.1dev: cells = **geospatial.create_shapes.auto_grid**(*img, field_corners_path, out_path, num_ranges, num_columns,
          range_length, row_length, num_rows=1, range_spacing=0, column_spacing=0*)
 
 #### geospatial.create_shapes.grid_from_coords
