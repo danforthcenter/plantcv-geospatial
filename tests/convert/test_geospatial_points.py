@@ -63,4 +63,4 @@ def test_geospatial_points_from_geojson_to_list(test_data):
     """Test for plantcv-geospatial."""
     l = points(source=test_data.square_crop)
     # this is length 5 because the final point "closes" the polygon
-    assert len(l[0][0]) == 5
+    assert len(l) == 5

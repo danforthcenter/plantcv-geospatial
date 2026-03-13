@@ -60,9 +60,11 @@ def _points_to_geojson(img, viewer, out_path):
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):
         pts = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers["Points"].data]
+        pts_return = [reversed(i) for i in viewer.layers["Points"].data]
     # Annotate output
     elif hasattr(viewer, 'coords'):
         pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
+        pts_return = [i for i in viewer.coords['default']]
     else:
         fatal_error("Viewer class type not recognized. Currently, Napari and PlantCV-annotate viewers supported.")
     features = [geojson.Feature(geometry=geojson.Point((lon, lat))) for lon, lat in pts]
@@ -81,7 +83,7 @@ def _points_to_geojson(img, viewer, out_path):
     with open(out_path, 'w') as f:
         geojson.dump(feature_collection, f)
 
-    return feature_collection
+    return pts_return
 
 
 def _geojson_to_points(img, filename):
