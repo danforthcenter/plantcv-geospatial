@@ -7,6 +7,7 @@ from plantcv.geospatial import analyze
 from plantcv.geospatial import create_shapes
 from plantcv.geospatial.center_grid_rois import center_grid_rois
 
+
 # Auto versioning
 __version__ = version("plantcv-geospatial")
 
