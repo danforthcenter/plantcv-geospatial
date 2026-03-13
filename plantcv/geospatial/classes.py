@@ -8,11 +8,11 @@ from plantcv.geospatial.create_shapes.napari_polygon_grid import napari_polygon_
 
 class Field_layout:
     """PlantCV-Geospatial field layout metadata class."""
-    
-    def __init__(self, num_ranges=None, num_columns=None, range_length=None, 
+
+    def __init__(self, num_ranges=None, num_columns=None, range_length=None,
                  row_length=None, num_rows=1, range_spacing=0, column_spacing=0):
         """Initialize parameters.
-        
+
         Parameters
         ----------
         num_ranges : int
@@ -37,7 +37,7 @@ class Field_layout:
         self.num_rows = num_rows
         self.range_spacing = range_spacing
         self.column_spacing = column_spacing
-    
+
 
 class InteractiveShapes:
     """Plantcv-Geospatial interactive shapes class."""
