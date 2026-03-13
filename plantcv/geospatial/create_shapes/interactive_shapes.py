@@ -27,6 +27,7 @@ class InteractiveShapes:
         else:
             fatal_error("Only napari viewers are currently supported.")
 
+        self.img = img
         self.layer_dict = {}
         self.viewer.add_image(img.pseudo_rgb)
         if field_layer is not None:
