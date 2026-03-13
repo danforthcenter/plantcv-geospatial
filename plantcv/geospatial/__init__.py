@@ -1,5 +1,4 @@
 from importlib.metadata import version
-from plantcv.geospatial.transform_points import transform_points
 from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial import read
 from plantcv.geospatial import convert
@@ -11,7 +10,6 @@ from plantcv.geospatial.center_grid_rois import center_grid_rois
 __version__ = version("plantcv-geospatial")
 
 __all__ = [
-    "transform_points",
     "transform_polygons",
     "read",
     "analyze",
