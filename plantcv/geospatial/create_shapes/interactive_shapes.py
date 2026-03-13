@@ -9,7 +9,7 @@ from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon
 class InteractiveShapes:
     """Plantcv-Geospatial interactive shapes class."""
 
-    def __init__(self, img, viewer_type="napari", field_layer=None, show=True):
+    def __init__(self, img, viewer_type="napari", field_layer="field_boundary", show=True):
         """Initialize parameters.
 
         Parameters
@@ -18,8 +18,8 @@ class InteractiveShapes:
             Type of viewer to initialize. Defaults to "napari".
         img : plantcv.plantcv.classes.Spectral_data
             Image to add to the first layer in an initialized viewer. Defaults to None.
-        field_layer : str, optional
-            Name to call the first added shapes layer. Defaults to None.
+        field_layer : str
+            Name to call the first added shapes layer. Defaults to "field_boundary".
         """
         self.device = 0
         if viewer_type == "napari":
@@ -30,9 +30,9 @@ class InteractiveShapes:
         self.img = img
         self.layer_dict = {}
         self.viewer.add_image(img.pseudo_rgb)
-        if field_layer is not None:
-            self.viewer.add_shapes(name=field_layer)
-            self.layer_dict["field_boundary"] = field_layer
+        self.viewer.add_shapes(name=field_layer)
+        self.layer_dict["field_boundary"] = field_layer
+
 
     def add_layer(self, layer_type="shapes", layer_name="Shapes"):
         """Add a layer to the viewer.
