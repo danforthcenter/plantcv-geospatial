@@ -59,9 +59,16 @@ def test_geospatial_points_from_napari_to_geojson_badfilename(test_data, tmpdir)
     assert os.path.exists(filename + ".geojson")
 
 
-def test_geospatial_points_from_geojson_to_list(test_data):
+def test_geospatial_points_from_geojson(test_data):
     """Test for plantcv-geospatial."""
     img = joblib.load(test_data.rgb_pickled)
-    l = points(img=img, source=test_data.square_crop)
-    # this is length 5 because the final point "closes" the polygon
-    assert len(l) == 5
+    coords = points(img=img, geojson=test_data.pts_geojson)
+    assert len(coords) == 4
+
+
+def test_geospatial_single_points_from_geojson(test_data):
+    """Test for plantcv-geospatial."""
+    # read in small 5-band tif image
+    img = joblib.load(test_data.rgb_pickled)
+    coords = points(img=img, geojson=test_data.single_pts_geojson)
+    assert len(coords) == 8

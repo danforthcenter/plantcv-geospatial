@@ -32,16 +32,16 @@ class TestData:
         rgb_pickled        : str
             rgb_img.spectral file
             Contains a pickled plantcv.Spectral_data object
-            Used for testing center_grid_rois, points_to_geojson, transform_points,
+            Used for testing center_grid_rois, convert.points,
             points2roicircle, _helpers, transform_polygons, create_shapes.napari_grid, shapes_to_geojson,
             create_shapes.grid, create_shapes.grid_from_coords, analyze.height_percentile, analyze.coverage,
             analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
-            Used for testing transform_points and points_to_roi_circle
+            Used for testing convert.points and points_to_roi_circle
         single_pts_geojson : str
             single_test_pts.geojson file
-            Used for testing transform_points
+            Used for testing convert.points
         square_crop        : str
             square_crop.geojson file, a square shape.
             Used for testing analyze.coverage, analyze.height_percentile, and read_geotif.
