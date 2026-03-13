@@ -33,7 +33,6 @@ class InteractiveShapes:
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
-
     def add_layer(self, layer_type="shapes", layer_name="Shapes"):
         """Add a layer to the viewer.
 
@@ -78,6 +77,6 @@ class InteractiveShapes:
             Name of new layer created. Defaults to "Plots".
         """
         _napari_polygon_grid(self.viewer, plot_layer,
-                            lines1=self.layer_dict["grid_lines_columns"],
-                            lines2=self.layer_dict["grid_lines_ranges"])
+                             lines1=self.layer_dict["grid_lines_columns"],
+                             lines2=self.layer_dict["grid_lines_ranges"])
         self.layer_dict["plot_polygons"] = plot_layer
