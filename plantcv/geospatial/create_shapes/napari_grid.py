@@ -4,7 +4,7 @@ import numpy as np
 from plantcv.plantcv import params
 
 
-def napari_grid(viewer, numdivs, layername="Shapes"):
+def _napari_grid(viewer, numdivs, layername="Shapes"):
     """Creates a grid of lines in a Napari viewer.
 
     Parameters

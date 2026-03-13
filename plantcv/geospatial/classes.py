@@ -2,8 +2,8 @@
 
 import napari
 from plantcv.plantcv import fatal_error
-from plantcv.geospatial.create_shapes.napari_grid import napari_grid
-from plantcv.geospatial.create_shapes.napari_polygon_grid import napari_polygon_grid
+from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
+from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 
 
 class InteractiveShapes:
@@ -64,7 +64,7 @@ class InteractiveShapes:
         field_layer : str, optional
             Name of layer with field boundary. Defaults to None.
         """
-        napari_grid(self.viewer, numdivs, layername=self.layer_dict["field_boundary"])
+        _napari_grid(self.viewer, numdivs, layername=self.layer_dict["field_boundary"])
         self.layer_dict["grid_lines_columns"] = "grid_lines1"
         self.layer_dict["grid_lines_ranges"] = "grid_lines2"
 
@@ -76,7 +76,7 @@ class InteractiveShapes:
         plot_layer : str, optional
             Name of new layer created. Defaults to "Plots".
         """
-        napari_polygon_grid(self.viewer, plot_layer,
+        _napari_polygon_grid(self.viewer, plot_layer,
                             lines1=self.layer_dict["grid_lines_columns"],
                             lines2=self.layer_dict["grid_lines_ranges"])
         self.layer_dict["plot_polygons"] = plot_layer
