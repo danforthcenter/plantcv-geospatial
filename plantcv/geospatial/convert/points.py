@@ -11,7 +11,7 @@ def points(img, source, dest=None):
     Parameters
     ----------
     img : plantcv.plantcv.classes.Spectral_data
-        The image used for clicking on points, or that points from a file should be transformed to match, 
+        The image used for clicking on points, or that points from a file should be transformed to match,
         should be from read_geotif.
     source : str, Napari.viewer, or plantcv.annotate.classes.Points object.
         Either a geojson file or a viewer used to click points.
@@ -64,7 +64,7 @@ def _points_to_geojson(img, viewer, out_path):
     # Annotate output
     elif hasattr(viewer, 'coords'):
         pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
-        pts_return = [i for i in viewer.coords['default']]
+        pts_return = viewer.coords['default']
     else:
         fatal_error("Viewer class type not recognized. Currently, Napari and PlantCV-annotate viewers supported.")
     features = [geojson.Feature(geometry=geojson.Point((lon, lat))) for lon, lat in pts]

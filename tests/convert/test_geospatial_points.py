@@ -23,7 +23,7 @@ def test_geospatial_points_from_napari_to_geojson_napari(test_data, tmpdir):
     viewer.add_image(img.pseudo_rgb)
     viewer.add_points()
     filename = os.path.join(cache_dir, 'test_out.geojson')
-    _ = points(source=viewer, dest=filename, img=img)
+    _ = points(img=img, source=viewer, dest=filename)
     assert os.path.exists(filename)
 
 
@@ -34,7 +34,7 @@ def test_geospatial_points_from_napari_to_geojson_an(test_data, tmpdir):
     viewer = FakePoints()
     viewer.coords["default"] = []
     filename = os.path.join(cache_dir, 'test_out.geojson')
-    _ = points(source=viewer, dest=filename, img=img)
+    _ = points(img=img, source=viewer, dest=filename)
     assert os.path.exists(filename)
 
 
@@ -45,7 +45,7 @@ def test_geospatial_points_from_napari_to_geojson_badviewer(test_data, tmpdir):
     viewer = []
     filename = os.path.join(cache_dir, 'test_out.geojson')
     with pytest.raises(RuntimeError):
-        _ = points(source=viewer, dest=filename, img=img)
+        _ = points(img=img, source=viewer, dest=filename)
 
 
 def test_geospatial_points_from_napari_to_geojson_badfilename(test_data, tmpdir):
@@ -55,12 +55,13 @@ def test_geospatial_points_from_napari_to_geojson_badfilename(test_data, tmpdir)
     viewer = FakePoints()
     viewer.coords["default"] = []
     filename = os.path.join(cache_dir, 'test_out.txt')
-    _ = points(source=viewer, dest=filename, img=img)
+    _ = points(img=img, source=viewer, dest=filename)
     assert os.path.exists(filename + ".geojson")
 
 
 def test_geospatial_points_from_geojson_to_list(test_data):
     """Test for plantcv-geospatial."""
-    l = points(source=test_data.square_crop)
+    img = joblib.load(test_data.rgb_pickled)
+    l = points(img=img, source=test_data.square_crop)
     # this is length 5 because the final point "closes" the polygon
     assert len(l) == 5
