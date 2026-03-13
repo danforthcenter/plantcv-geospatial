@@ -38,10 +38,10 @@ class TestData:
             analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
-            Used for testing transform_points and points_to_roi_circle
+            Used for testing convert.points and points_to_roi_circle
         single_pts_geojson : str
             single_test_pts.geojson file
-            Used for testing transform_points
+            Used for testing convert.points
         square_crop        : str
             square_crop.geojson file, a square shape.
             Used for testing analyze.coverage, analyze.height_percentile, and read_geotif.
