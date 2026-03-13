@@ -33,8 +33,8 @@ nav:
         - ROIs from polygon centers: center_grid_rois.md
         - Shape creation tools:
             - Grid from plot coordinates : shapes_grid_from_coords.md
-            - Automatic grid : shapes_grid.md
-            - Grid of plots with Napari: napari_field_grid.md
+            - Automatic Grid : shapes_grid.md
+            - Interactive shape creation: InteractiveShapes.md
         - Transform coordinate polygons: transform_polygons.md
 markdown_extensions:
   - toc:
