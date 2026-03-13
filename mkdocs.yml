@@ -35,7 +35,6 @@ nav:
             - Grid from plot coordinates : shapes_grid_from_coords.md
             - Automatic Grid : shapes_grid.md
             - Interactive shape creation: InteractiveShapes.md
-            - Grid of plots with Napari: napari_field_grid.md
         - Transform coordinate points: transform_points.md
         - Transform coordinate polygons: transform_polygons.md
 markdown_extensions:
