@@ -32,7 +32,7 @@ def shapes(source, dest=None, img=None, shapetype="polygon", layername="Shapes")
     """
     if isinstance(source, str):
         # a shape here is just a collection of points, so we use the points helper
-        return _geojson_to_points(img, source, layername=layername)
+        return _geojson_to_points(img, filename=source)
     # otherwise source should be a napari viewer
     return _shape_to_geojson(img=img, viewer=source, out_path=dest, shapetype=shapetype, layername=layername)
 
