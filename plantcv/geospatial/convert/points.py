@@ -5,7 +5,7 @@ import fiona
 from plantcv.plantcv.fatal_error import fatal_error
 
 
-def points(img, source, dest=None):
+def points(img, source, dest=None, layername="Points"):
     """Convert between Points/Napari.viewer objects and geojson objects/files
 
     Parameters
@@ -17,10 +17,13 @@ def points(img, source, dest=None):
         Either a geojson file or a viewer used to click points.
         A geojson file will return a list of coordinates from that geojson.
         A Napari viewer or Points object will save a geojson and return a list of coordinates.
-    dest : str,
+    dest : str
         Path to save to a geojson file to save if source is a Napari viewer or Points object.
         Defaults to None, only required if 'source' is a Napari view or Points object.
-
+    layername : str, optional
+        Name of the viewer layer from which to take points. 
+        Only used if source is a Napari viewer. Defaults to "Points".
+        
     Returns:
     --------
     list or dict, if source is a str then returns a list of X,Y coordinates.
@@ -34,10 +37,10 @@ def points(img, source, dest=None):
         # if source is a string then it is path to a geojson file
         return _geojson_to_points(img, filename=source)
     # otherwise, source should be a napari viewer or Points object
-    return _points_to_geojson(img, viewer=source, out_path=dest)
+    return _points_to_geojson(img, viewer=source, out_path=dest, layername=layername)
 
 
-def _points_to_geojson(img, viewer, out_path):
+def _points_to_geojson(img, viewer, out_path, layername):
     """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
     Parameters
@@ -48,6 +51,8 @@ def _points_to_geojson(img, viewer, out_path):
         The viewer used to make the clicks.
     out_path : str
         Path to save to shapefile. Must have "geojson" file extension
+    layername : str
+        Name of the Napari viewer layer from which to take points.
 
     Returns:
     --------
@@ -59,8 +64,8 @@ def _points_to_geojson(img, viewer, out_path):
     """
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):
-        pts = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers["Points"].data]
-        pts_return = [reversed(i) for i in viewer.layers["Points"].data]
+        pts = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers[layername].data]
+        pts_return = [reversed(i) for i in viewer.layers[layername].data]
     # Annotate output
     elif hasattr(viewer, 'coords'):
         pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
