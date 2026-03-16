@@ -21,9 +21,9 @@ def points(img, source, dest=None, layername="Points"):
         Path to save to a geojson file to save if source is a Napari viewer or Points object.
         Defaults to None, only required if 'source' is a Napari view or Points object.
     layername : str, optional
-        Name of the viewer layer from which to take points. 
+        Name of the viewer layer from which to take points.
         Only used if source is a Napari viewer. Defaults to "Points".
-        
+
     Returns:
     --------
     list or dict, if source is a str then returns a list of X,Y coordinates.
