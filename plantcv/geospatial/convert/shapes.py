@@ -64,7 +64,7 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         shape_return = []
         for j in i:
             shape.append((img.metadata["transform"]*(j[1], j[0])))
-            shape_return.append((j[1], j[0]))
+            shape_return.append((float(j[1]), float(j[0])))
         features.append(shape)
         features_return.append(shape_return)
 
