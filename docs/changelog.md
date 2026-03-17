@@ -30,9 +30,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.convert.points**(*img, source, dest=None, layername="Points"*)
 
-#### geospatial.convert.shapes_to_geojson
+#### geospatial.convert.shapes
 
-* v0.1dev: coord = **geospatial.convert.shapes_to_geojson**(*img, viewer, out_path, layername="Shapes"*)
+* v0.1dev: coord = **geospatial.convert.shapes**(*img, source, dest=None, shapetype="polygon", layername="Shapes"*)
 
 #### geospatial.center_grid_rois
 
@@ -58,7 +58,3 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.InteractiveShapes
 
 * v0.1dev: object = **geospatial.create_shapes.InteractiveShapes**(*img, viewer_type="napari", field_layer=None, show=True*)
-
-#### geospatial.transform_polygons
-
-* v0.1dev: coord = **geospatial.transform_polygons**(*img, geojson*)
