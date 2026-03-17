@@ -58,7 +58,3 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.InteractiveShapes
 
 * v0.1dev: object = **geospatial.create_shapes.InteractiveShapes**(*img, viewer_type="napari", field_layer=None, show=True*)
-
-#### geospatial.transform_polygons
-
-* v0.1dev: coord = **geospatial.transform_polygons**(*img, geojson*)
