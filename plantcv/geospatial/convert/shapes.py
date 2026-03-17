@@ -2,14 +2,17 @@ import os
 import geojson
 import rasterio
 from shapely.geometry import Polygon, mapping
-from plantcv.geospatial.convert.points import _geojson_to_points
+from plantcv.geospatial.transform_polygons import transform_polygons
 
 
-def shapes(source, dest=None, img=None, shapetype="polygon", layername="Shapes"):
+def shapes(img, source, dest=None, shapetype="polygon", layername="Shapes"):
     """Use clicks from a Napari or plantcv-annotate viewer to output a geojson shapefile.
 
     Parameters:
     -----------
+    img : plantcv.plantcv.classes.Spectral_data
+        The image used for clicking on points, should be from read_geotif.
+        Defaults to None, only required if 'source' is a Napari view or Points object.
     source : str, Napari.viewer
         Either a geojson file or the viewer used to make the clicks.
         A geojson file will return a list of coordinates from that geojson.
@@ -17,12 +20,9 @@ def shapes(source, dest=None, img=None, shapetype="polygon", layername="Shapes")
     dest : str,
         Path to save to a geojson file to save if source is a Napari viewer or Points object.
         Defaults to None, only required if 'source' is a Napari view or Points object.
-    img : plantcv.plantcv.classes.Spectral_data
-        The image used for clicking on points, should be from read_geotif.
-        Defaults to None, only required if 'source' is a Napari view or Points object.
     shapetype: str, optional
         Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
-    shapename: str, optional
+    layername: str, optional
         Name of shapes layer, defaults to "Shapes."
 
     Returns:
@@ -32,7 +32,7 @@ def shapes(source, dest=None, img=None, shapetype="polygon", layername="Shapes")
     """
     if isinstance(source, str):
         # a shape here is just a collection of points, so we use the points helper
-        return _geojson_to_points(img, filename=source)
+        return transform_polygons(img, geojson=source)
     # otherwise source should be a napari viewer
     return _shape_to_geojson(img=img, viewer=source, out_path=dest, shapetype=shapetype, layername=layername)
 
@@ -50,7 +50,7 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         Path to save to shapefile. Must have "geojson" file extension.
     shapetype: str, optional
         Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
-    shapename: str, optional
+    layername: str, optional
         Name of shapes layer, defaults to "Shapes".
 
     Returns:
