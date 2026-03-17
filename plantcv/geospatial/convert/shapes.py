@@ -31,7 +31,7 @@ def shapes(img, source, dest=None, shapetype="polygon", layername="Shapes"):
         If source is a Napari.viewer then a dictionary of geojson data is returned.
     """
     if isinstance(source, str):
-        # a shape here is just a collection of points, so we use the points helper
+        # If path to a file, use transform_polygons
         return transform_polygons(img, geojson=source)
     # otherwise source should be a napari viewer
     return _shape_to_geojson(img=img, viewer=source, out_path=dest, shapetype=shapetype, layername=layername)
@@ -58,11 +58,15 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
     feature_collection : dict, geojson data as a dictionary
     """
     features = []
+    features_return = []
     for i in viewer.layers[layername].data:
         shape = []
+        shape_return = []
         for j in i:
             shape.append((img.metadata["transform"]*(j[1], j[0])))
+            shape_return.append((j[1], j[0]))
         features.append(shape)
+        features_return.append(shape_return)
 
     polygon_list = []
     for i, _ in enumerate(features):
@@ -90,4 +94,4 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
     with open(out_path, 'w') as f:
         geojson.dump(feature_collection, f)
 
-    return feature_collection
+    return features_return

@@ -35,7 +35,6 @@ nav:
             - Grid from plot coordinates : shapes_grid_from_coords.md
             - Automatic Grid : shapes_grid.md
             - Interactive shape creation: InteractiveShapes.md
-        - Transform coordinate polygons: transform_polygons.md
 markdown_extensions:
   - toc:
       permalink: True
