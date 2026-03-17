@@ -32,7 +32,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.convert.shapes
 
-* v0.1dev: coord = **geospatial.convert.shapes**(*source, dest=None, img=None*)
+* v0.1dev: coord = **geospatial.convert.shapes**(*img, source, dest=None, shapetype="polygon", layername="Shapes"*)
 
 #### geospatial.center_grid_rois
 
