@@ -14,7 +14,7 @@ def test_geospatial_shapes_from_napari_to_geojson(test_data, tmpdir):
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes([[2, 3], [3, 3], [3, 4], [2, 4]], shape_type="polygon")
     filename = os.path.join(cache_dir, 'test_out.geojson')
-    _ = shapes(source=viewer, dest=filename, img=img)
+    _ = shapes(img=img, source=viewer, dest=filename)
     assert os.path.exists(filename)
 
 
@@ -26,12 +26,12 @@ def test_geospatial_shapes_to_geojson_badfilename(test_data, tmpdir):
     viewer.add_image(img.pseudo_rgb)
     viewer.add_shapes([[2, 3], [3, 3], [3, 4], [2, 4]], shape_type="polygon")
     filename = os.path.join(cache_dir, 'test_out.txt')
-    _ = shapes(source=viewer, dest=filename, img=img)
+    _ = shapes(img=img, source=viewer, dest=filename)
     assert os.path.exists(filename + ".geojson")
 
 
 def test_geospatial_shapes_from_geojson_to_list(test_data):
     """Test for plantcv-geospatial."""
-    l = shapes(source=test_data.square_crop)
-    # this is length 5 because the final point "closes" the polygon
-    assert len(l[0][0]) == 5
+    img = joblib.load(test_data.rgb_pickled)
+    l = shapes(img=img, source=test_data.square_crop)
+    assert len(l[0]) == 4
