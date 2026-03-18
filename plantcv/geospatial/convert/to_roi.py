@@ -9,7 +9,7 @@ from plantcv.plantcv.roi.roi_methods import _draw_roi
 
 
 def to_roi(img, geojson, radius=None):
-    """Takes a points- or polygon-type shapefile/GeoJSON and transforms to ROIs, 
+    """Takes a points- or polygon-type shapefile/GeoJSON and transforms to ROIs,
     and creates ROI Objects instances. If points, saves circular ROIs out to a new geoJSON file.
 
     Parameters:
@@ -48,7 +48,7 @@ def _points_to_circular_rois(img, geojson, radius):
     img : plantcv.plantcv.classes.Spectral_data
         A spectral object from read.geotif.
     geojson : str
-        Path to the shape file containing the points.    
+        Path to the shape file containing the points.
     radius : float
         Points from the geojson will be treated as centers
         of circular ROIs with this radius
