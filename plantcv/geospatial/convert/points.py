@@ -56,7 +56,7 @@ def _points_to_geojson(img, viewer, out_path, layername):
 
     Returns:
     --------
-    pts_return : ???, transformed points from the viewer
+    pts_return : list, transformed points from the viewer
 
     Raises:
     -------
