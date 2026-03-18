@@ -89,13 +89,17 @@ class InteractiveShapes:
         Parameters:
         -----------
         dest : str, Optional
-            Path to save a geojson file to if desired. Defaults to None, which will return the points as an array instead of writing a geojson shapefile.
+            Path to save a geojson file to if desired.
+            Defaults to None, which will return the points
+            as an array instead of writing a geojson shapefile.
         layername : str, Optional
             Name of the viewer layer from which to take the points. Defaults to "Points"
 
         Returns:
         --------
-        list or dict, if dest is None then a list of coordinates, if dest is str then a dictionary of what was written to the geojson file.
+        list or dict,
+            if dest is None then a list of coordinates,
+            if dest is str then a dictionary of what was written to the geojson file.
         """
         return points(img=self.img, source=self.viewer, dest=dest, layername=layername)
 
