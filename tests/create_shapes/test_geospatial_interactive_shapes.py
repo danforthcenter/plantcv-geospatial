@@ -26,14 +26,14 @@ def test_geospatial_interactive_grid(test_data):
     editor.viewer.close()
 
 
-def test_interactive_badviewer(test_data):
+def test_geospatial_interactive_badviewer(test_data):
     """Test for plantcv-geospatial."""
     img = joblib.load(test_data.rgb_pickled)
     with pytest.raises(RuntimeError):
         _ = InteractiveShapes(img, viewer_type="nonsense", show=False)
 
 
-def test_interactive_addshapes(test_data):
+def test_geospatial_interactive_addshapes(test_data):
     """Test for plantcv-geospatial."""
     img = joblib.load(test_data.rgb_pickled)
     editor = InteractiveShapes(img, show=False)
@@ -42,16 +42,16 @@ def test_interactive_addshapes(test_data):
     editor.viewer.close()
 
 
-def test_interactive_addpoints(test_data):
+def test_geospatial_interactive_addpoints(test_data):
     """Test for plantcv-geospatial."""
     img = joblib.load(test_data.rgb_pickled)
     editor = InteractiveShapes(img, show=False)
-    editor.add_layer(layer_type="points", layer_name="Points")
+    editor.add_layer(layer_type="points", layername="Points")
     assert editor.device == 1
     editor.viewer.close()
 
 
-def test_interactive_wronglayername(test_data):
+def test_geospatial_interactive_wronglayername(test_data):
     """Test for plantcv-geospatial."""
     img = joblib.load(test_data.rgb_pickled)
     editor = InteractiveShapes(img, show=False)
@@ -63,3 +63,52 @@ def test_geospatial_lineintersect():
     """Test for plantcv-geospatial."""
     with pytest.raises(RuntimeError):
         _ = _lineintersect([(0, 0), (0, 1)], [(1, 0), (1, 1)])
+
+
+def test_geospatial_interactive_to_shapes(test_data):
+    """Test for plantcv-geospatial."""
+    field = np.array([[64.11229125, 128.74165877],
+                      [136.25692447, 203.82241079],
+                      [213.85434974, 139.64724287],
+                      [140.45137989,  59.95258989]])
+    # arbitrary polygon, coordinates in transformed units
+    poly = np.array([
+        [720199.027175007, 4302928.330937517],
+        [720198.754862791, 4302927.838197185],
+        [720199.4709430378, 4302927.54657541],
+        [720199.4709430378, 4302928.562223758],
+        [720199.027175007, 4302928.330937517]
+    ])
+    img = joblib.load(test_data.rgb_pickled)
+    editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
+    editor.viewer.add_shapes(field, name="field_bounds")
+    editor.layer_dict["field_boundary"] = "field_bounds"
+    # instead of calling the add_layer method we make a layer manually to test
+    editor.viewer.add_shapes(poly, shape_type="polygon", name="Shapes")
+    x = editor.to_shapes()
+    assert len(x[0]["geometry"]["coordinates"][0]) == 5
+
+
+
+def test_geospatial_interactive_to_points(test_data):
+    """Test for plantcv-geospatial."""
+    field = np.array([[64.11229125, 128.74165877],
+                      [136.25692447, 203.82241079],
+                      [213.85434974, 139.64724287],
+                      [140.45137989,  59.95258989]])
+    # arbitrary points, coordinates in transformed units
+    points = np.array([
+        [720199.027175007, 4302928.330937517],
+        [720198.754862791, 4302927.838197185],
+        [720199.4709430378, 4302927.54657541],
+        [720199.4709430378, 4302928.562223758],
+        [720199.027175007, 4302928.330937517]
+    ])
+    img = joblib.load(test_data.rgb_pickled)
+    editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
+    editor.viewer.add_shapes(field, name="field_bounds")
+    editor.layer_dict["field_boundary"] = "field_bounds"
+    # instead of calling the add_layer method we make a layer manually to test
+    editor.viewer.add_points(points, name="Points")
+    x = editor.to_points()
+    assert len(x) == 5
