@@ -1,11 +1,5 @@
 from importlib.metadata import version
-from plantcv.geospatial._globals import Field_layout
-
-# Initialize an instance of Field_layout class with default values
-# Field_layout is available when PlantCV-Geospatial is imported
-
-field_layout = Field_layout()
-
+from plantcv.geospatial._globals import Field_layout, field_layout
 from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial import read
 from plantcv.geospatial import convert

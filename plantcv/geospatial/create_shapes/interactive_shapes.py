@@ -5,6 +5,7 @@ from plantcv.plantcv import fatal_error
 from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 
+
 class InteractiveShapes:
     """Plantcv-Geospatial interactive shapes class."""
 
