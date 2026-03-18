@@ -9,8 +9,8 @@ from plantcv.plantcv.roi.roi_methods import _draw_roi
 
 
 def to_roi(img, geojson, radius=None):
-    """Takes a points- or polygon-type shapefile/GeoJSON and transforms to ROIs,
-    saves these out to a new geoJSON file and creates ROI Objects instances
+    """Takes a points- or polygon-type shapefile/GeoJSON and transforms to ROIs, 
+    and creates ROI Objects instances. If points, saves circular ROIs out to a new geoJSON file.
 
     Parameters:
     -----------
@@ -99,9 +99,6 @@ def _polygon_to_roi(img, geojson):
     if "Polygon" not in gdf.geom_type.unique()[0]:
         fatal_error("Polygon ROIs can only be specified with polygon layers, geojson file is geom_type '" +
                     ", ".join(gdf.geom_type.unique()) + "'")
-
-    #buffered_geojson = os.path.splitext(geojson)[0] + '_polygons.geojson'
-    #gdf.to_file(buffered_geojson, driver='GeoJSON')
 
     geo_polygons = transform_polygons(img=img, geojson=geojson)
 

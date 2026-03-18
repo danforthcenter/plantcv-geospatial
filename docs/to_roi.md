@@ -1,6 +1,6 @@
-## Create Circular ROIs from georeferenced points
+## Create ROIs from points or polygon shapefiles
 
-Transform features from shapefile/GeoJSON to Regions of Interest (ROIs) and save a shapefile/GeoJSON of those ROIs. Shapefiles/GeoJSONs will be written with the `_circles` or `_polygons` suffix.
+Transform features from shapefile/GeoJSON to Regions of Interest (ROIs). If shapefile contains points, this function saves a shapefile/GeoJSON of the created circular ROIs wiht `_circles` suffix.
 
 **plantcv.geospatial.convert.to_roi**(*img, geojson, radius=None*)
 
@@ -38,5 +38,9 @@ res = gcv.analyze.height_percentile(img, geojson="./points_example_circles.geojs
 labeled_mask, num_plants = pcv.create_labels(mask=binary_mask, 
                                              rois=rois, roi_type="partial")
 ```
+
+![Screenshot](documentation_images/rois_from_points.png)
+
+![Screenshot](documentation_images/labeled_mask_from_points.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/convert/points_to_roi.py)
