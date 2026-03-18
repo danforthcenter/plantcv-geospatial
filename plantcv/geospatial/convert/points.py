@@ -64,8 +64,8 @@ def _points_to_geojson(img, viewer, out_path, layername):
     """
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):
-        pts = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers[layername].data]
-        pts_return = [reversed(i) for i in viewer.layers[layername].data]
+        pts = [(img.metadata["transform"]*(float(i[1]), float(i[0]))) for i in viewer.layers[layername].data]
+        pts_return = [(float(i[1]), float(i[0])) for i in viewer.layers[layername].data]
     # Annotate output
     elif hasattr(viewer, 'coords'):
         pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
