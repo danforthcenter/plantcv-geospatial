@@ -29,8 +29,8 @@ class Field_layout:
         self.num_rows = num_rows
         self.range_spacing = range_spacing
         self.column_spacing = column_spacing
-        
+
+
 # Initialize an instance of Field_layout class with default values
 # Field_layout is available when PlantCV-Geospatial is imported
-
 field_layout = Field_layout()
