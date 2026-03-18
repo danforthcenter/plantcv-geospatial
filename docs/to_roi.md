@@ -24,12 +24,20 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read geotif in
-spectral = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
-rois = gcv.convert.points_to_roi_circle(img=spectral, geojson="./points_example.geojson", radius=1)
+img = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+
+# Make ROIs from a points-type shapefile
+rois = gcv.convert.points_to_roi_circle(img, geojson="./points_example.geojson", 
+                                        radius=1)
+
 # "./points_example_circles.geojson" file can be used for gcv.analyze functions
-res = gcv.analyze.height_percentile(img=spectral, geojson="./points_example_circles.geojson")
-# Segmentation steps here
-pcv.roi.quick_filter(mask=vegetation_mask, roi=roi, roi_type="partial")
+res = gcv.analyze.height_percentile(img, geojson="./points_example_circles.geojson")
+
+# ROIs can be used in main PlantCV 
+# Segment plants to get a binary mask
+labeled_mask, num_plants = pcv.create_labels(mask=binary_mask, 
+                                             rois=rois, roi_type="partial")
+
 
 ```
 
