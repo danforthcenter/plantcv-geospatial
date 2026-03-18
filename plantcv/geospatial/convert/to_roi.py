@@ -5,6 +5,7 @@ from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial._helpers import _transform_geojson_crs
 from plantcv.plantcv.fatal_error import fatal_error
 from plantcv.plantcv.classes import Objects
+from plantcv.plantcv.roi.roi_methods import _draw_roi
 
 
 def to_roi(img, geojson, radius=None):
@@ -32,6 +33,9 @@ def to_roi(img, geojson, radius=None):
         rois = _points_to_circular_rois(img, geojson, radius)
     else :
         rois = _polygon_to_roi(img, geojson)
+
+    # Draw rois if requested
+    _draw_roi(img=img.pseudo_rgb, roi_contour=rois)
 
     return rois
 
