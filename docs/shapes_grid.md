@@ -1,6 +1,6 @@
 ## Automatically create a grid of cells from a field layout
 
-**plantcv.geospatial.create_shapes.auto_grid**(*img, field_corners_path, out_path, num_ranges=field_layout.num_ranges, num_columns=field_layout.num_columns, range_length=field_layout.range_length, row_length=field_layout.row_length, num_rows=field_layout.num_rows, range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing*)
+**plantcv.geospatial.create_shapes.auto_grid**(*img, field_corners_path, out_path, num_ranges=field_layout.num_ranges, num_columns=field_layout.num_columns, range_length=field_layout.range_length, row_length=field_layout.row_length, num_rows=field_layout.num_rows, range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing, ids=None*)
 
 **returns** figure
 
@@ -15,6 +15,7 @@
     - num_rows - Number of rows within a single plot. Defaults to the `num_rows` attribute of the `Field_layout` class. 
     - range_spacing - Length of "alley" spaces between ranges. Defaults to the `range_spacing` attribute of the `Field_layout` class. 
     - column_spacing - Length of "alley" spaces between columns. Defaults to the `column_spacing` attribute of the `Field_layout` class. 
+	- ids - Optional IDs to label the geojson plots.
 
 - **Context:**
     - Helpful for precision planted experiments

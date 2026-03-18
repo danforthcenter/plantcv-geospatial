@@ -9,9 +9,10 @@ import fiona
 
 
 def auto_grid(img, field_corners_path, out_path, num_ranges=field_layout.num_ranges,
-         num_columns=field_layout.num_columns, range_length=field_layout.range_length,
-         row_length=field_layout.row_length, num_rows=field_layout.num_rows,
-         range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing):
+              num_columns=field_layout.num_columns, range_length=field_layout.range_length,
+              row_length=field_layout.row_length, num_rows=field_layout.num_rows,
+              range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing
+              ids=None):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
