@@ -12,6 +12,7 @@ __version__ = version("plantcv-geospatial")
 
 __all__ = [
     "Field_layout",
+    "field_layout",
     "transform_polygons",
     "read",
     "analyze",
