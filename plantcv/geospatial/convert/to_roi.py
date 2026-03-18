@@ -8,7 +8,7 @@ from plantcv.plantcv.classes import Objects
 
 
 def to_roi(img, geojson, radius=None):
-    """Takes a points-type shapefile/GeoJSON and transforms circular ROIs,
+    """Takes a points- or polygon-type shapefile/GeoJSON and transforms to ROIs,
     saves these out to a new geoJSON file and creates ROI Objects instances
 
     Parameters:
@@ -16,9 +16,9 @@ def to_roi(img, geojson, radius=None):
     img : plantcv.plantcv.classes.Spectral_data
         A spectral object from read.geotif.
     geojson : str
-        Path to the shape file containing the point or polygon layer.
+        Path to the shape file containing the points or polygons.
     radius : optional float
-        If provided then points from the geojson will be treated as centers
+        If provided, then points from the geojson will be treated as centers
         of circular ROIs with this radius
         in units matching the coordinate system (CRS) of the image
         e.g. meters
@@ -44,8 +44,9 @@ def _points_to_circular_rois(img, geojson, radius):
     img : plantcv.plantcv.classes.Spectral_data
         A spectral object from read.geotif.
     geojson : str
-        Path to the shape file containing the points.    radius : optional float
-        If provided then points from the geojson will be treated as centers
+        Path to the shape file containing the points.    
+    radius : float
+        Points from the geojson will be treated as centers
         of circular ROIs with this radius
         in units matching the coordinate system (CRS) of the image
         e.g. meters
@@ -75,14 +76,14 @@ def _points_to_circular_rois(img, geojson, radius):
 
 
 def _polygon_to_roi(img, geojson):
-    """Make circular ROIs from points in a geojson file
+    """Make ROIs from polygons in a geojson file
 
     Parameters:
     -----------
     img : plantcv.plantcv.classes.Spectral_data
         A spectral object from read.geotif.
     geojson : str
-        Path to the shape file containing the points.
+        Path to the shape file containing the polygons.
 
     Returns:
     --------
@@ -95,10 +96,10 @@ def _polygon_to_roi(img, geojson):
         fatal_error("Polygon ROIs can only be specified with polygon layers, geojson file is geom_type '" +
                     ", ".join(gdf.geom_type.unique()) + "'")
 
-    buffered_geojson = os.path.splitext(geojson)[0] + '_polygons.geojson'
-    gdf.to_file(buffered_geojson, driver='GeoJSON')
+    #buffered_geojson = os.path.splitext(geojson)[0] + '_polygons.geojson'
+    #gdf.to_file(buffered_geojson, driver='GeoJSON')
 
-    geo_polygons = transform_polygons(img=img, geojson=buffered_geojson)
+    geo_polygons = transform_polygons(img=img, geojson=geojson)
 
     rois = Objects()
     for polygon in geo_polygons:

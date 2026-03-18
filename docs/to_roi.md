@@ -37,8 +37,6 @@ res = gcv.analyze.height_percentile(img, geojson="./points_example_circles.geojs
 # Segment plants to get a binary mask
 labeled_mask, num_plants = pcv.create_labels(mask=binary_mask, 
                                              rois=rois, roi_type="partial")
-
-
 ```
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/convert/points_to_roi.py)
