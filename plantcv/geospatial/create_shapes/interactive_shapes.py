@@ -5,6 +5,7 @@ from plantcv.plantcv import fatal_error
 from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 from plantcv.geospatial.convert.points import points
+from plantcv.geospatial.convert.shapes import shapes
 
 
 class InteractiveShapes:
@@ -34,23 +35,23 @@ class InteractiveShapes:
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
-    def add_layer(self, layer_type="shapes", layer_name="Shapes"):
+    def add_layer(self, layer_type="shapes", layername="Shapes"):
         """Add a layer to the viewer.
 
         Parameters
         ----------
         layer_type : str, optional
             Type of layer to add. Options are "shapes" or "points". Defaults to "shapes".
-        layer_name : str, optional
+        layername : str, optional
             Name of added layer. Defaults to "Shapes".
         """
         if layer_type == "shapes":
-            self.viewer.add_shapes(name=layer_name)
-            self.layer_dict["shapes_"+str(self.device)] = layer_name
+            self.viewer.add_shapes(name=layername)
+            self.layer_dict["shapes_"+str(self.device)] = layername
             self.device += 1
         elif layer_type == "points":
-            self.viewer.add_points(name=layer_name)
-            self.layer_dict["points_"+str(self.device)] = layer_name
+            self.viewer.add_points(name=layername)
+            self.layer_dict["points_"+str(self.device)] = layername
             self.device += 1
         else:
             fatal_error(f"Layer type {layer_type} is not supported. Layer_type must be 'shapes' or 'points'.")
@@ -96,15 +97,9 @@ class InteractiveShapes:
         --------
         list or dict, if dest is None then a list of coordinates, if dest is str then a dictionary of what was written to the geojson file.
         """
-        if dest is None:
-            # if dest is None then we want to return the points as if we read them from a geojson file
-            # NOTE we could have a flag in points/shapes that looks for if dest is None in addition to what source is,
-            # NOTE then if dest is None it doesn't write the geojson, it just returns the data. I actually rather like that.
-            return _viewer_to_points(img=self.img, viewer=self.viewer, layername=layername)
-        # otherwise we are writing a geojson
         return points(img=self.img, source=self.viewer, dest=dest, layername=layername)
 
-    def to_shape(self, dest=None, shapetype="polygon", layername="Shapes"):
+    def to_shapes(self, dest=None, shapetype="polygon", layername="Shapes"):
         """Make a polygon array or save a geojson of polygons from an InteractiveShapes object
 
         Parameters:
@@ -122,36 +117,4 @@ class InteractiveShapes:
         list or dict, if dest is a str then a geojson is written and a dictionary is returned
             If dest is None (the default) then returns a list of X,Y coordinates.
         """
-        if dest is None:
-            # possibly another custom viewer_to_polygon function like _viewer_to_points below
-            return 1
         return shapes(img=self.img, source=self.viewer, dest=dest, shapetype=shapetype, layername=layername)
-
-
-def _viewer_to_points(img, viewer, layername="Points"):
-    """Return points from a viewer as though using convert.points on a geojson file
-
-    Parameters:
-    -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        The image used for clicking on points, should be from read_geotif.
-    viewer: Napari.viewer or plantcv.annotate.classes.Points object.
-        The viewer used to make the clicks.
-    layername : str
-        Name of the Napari viewer layer from which to take points.
-
-    Returns:
-    --------
-    pts_return : ???, transformed points from the viewer
-    """
-    # Napari output, points must be reversed
-    if hasattr(viewer, 'layers'):
-        pts = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers[layername].data]
-        pts_return = [reversed(i) for i in viewer.layers[layername].data]
-    # Annotate output
-    elif hasattr(viewer, 'coords'):
-        pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
-        pts_return = viewer.coords['default']
-    else:
-        fatal_error("Viewer class type not recognized. Currently, Napari and PlantCV-annotate viewers supported.")
-    return pts_return
