@@ -37,7 +37,7 @@ def _lineintersect(array1, array2):
     return [x, y]
 
 
-def napari_polygon_grid(viewer, layername="Shapes", lines1="grid_lines1", lines2="grid_lines2"):
+def _napari_polygon_grid(viewer, layername="Shapes", lines1="grid_lines1", lines2="grid_lines2"):
     """Create a grid of polygons from grid lines in a Napari viewer.
 
     Reads lines from two Shapes layers named 'grid_lines1' and 'grid_lines2',

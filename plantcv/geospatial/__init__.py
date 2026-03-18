@@ -1,5 +1,4 @@
 from importlib.metadata import version
-from plantcv.geospatial.transform_points import transform_points
 from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial import read
 from plantcv.geospatial import convert
@@ -18,7 +17,6 @@ field_layout = Field_layout()
 __version__ = version("plantcv-geospatial")
 
 __all__ = [
-    "transform_points",
     "transform_polygons",
     "read",
     "analyze",

@@ -17,29 +17,26 @@ All notable changes to this project will be documented below.
 #### geospatial.analyze.spectral_index
 
 * v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, percentiles=None, label=None*)
+
 #### geospatial.analyze.height_subtraction
 
 * v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
-#### geospatial.convert.points_to_roi_circle
+#### geospatial.convert.to_roi
 
-* v0.1dev: rois = **geospatial.convert.points_to_roi_circle**(*img, geojson, radius*)
+* v0.1dev: rois = **geospatial.convert.to_roi**(*img, geojson, radius=None*)
 
-#### geospatial.convert.points_to_geojson
+#### geospatial.convert.points
 
-* v0.1dev: **geospatial.convert.points_to_geojson**(*img, viewer, out_path*)
+* v0.1dev: **geospatial.convert.points**(*img, source, dest=None, layername="Points"*)
 
-#### geospatial.convert.shapes_to_geojson
+#### geospatial.convert.shapes
 
-* v0.1dev: coord = **geospatial.convert.shapes_to_geojson**(*img, viewer, out_path, layername="Shapes"*)
+* v0.1dev: coord = **geospatial.convert.shapes**(*img, source, dest=None, shapetype="polygon", layername="Shapes"*)
 
 #### geospatial.center_grid_rois
 
 * v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
-
-#### geospatial.napari_polygon_grid
-
-* v0.1dev: **geospatial.napari_polygon_grid**(*viewer, layername="Shapes"*)
 
 #### geospatial.read.geotif
 
@@ -49,26 +46,14 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
 
-#### geospatial.create_shapes.grid
+#### geospatial.create_shapes.auto_grid
 
-* v0.1dev: cells = **geospatial.create_shapes.grid**(*img, field_corners_path, out_path, num_ranges=field_layout.num_ranges,num_columns=field_layout.num_columns, range_length=field_layout.range_length, row_length=field_layout.row_length, num_rows=field_layout.num_rows, range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing, ids=None*)
+* v0.1dev: cells = **geospatial.create_shapes.auto_grid**(*img, field_corners_path, out_path, num_ranges=field_layout.num_ranges,num_columns=field_layout.num_columns, range_length=field_layout.range_length, row_length=field_layout.row_length, num_rows=field_layout.num_rows, range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing*)
 
 #### geospatial.create_shapes.grid_from_coords
 
 * v0.1dev: cells = **geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path,range_length=field_layout.range_length, row_length=field_layout.row_length, num_rows=field_layout.num_rows, ids=None*)
 
-#### geospatial.create_shapes.napari_grid
+#### geospatial.create_shapes.InteractiveShapes
 
-* v0.1dev: **geospatial.create_shapes.napari_grid**(*viewer, numdivs, layername="Shapes"*)
-
-#### geospatial.create_shapes.napari_polygon_grid
-
-* v0.1dev: **geospatial.create_shapes.napari_polygon_grid**(*viewer, layername="Shapes"*)
-
-#### geospatial.transform_points
-
-* v0.1dev: coord = **geospatial.transform_points**(*img, geojson*)
-
-#### geospatial.transform_polygons
-
-* v0.1dev: coord = **geospatial.transform_polygons**(*img, geojson*)
+* v0.1dev: object = **geospatial.create_shapes.InteractiveShapes**(*img, viewer_type="napari", field_layer=None, show=True*)

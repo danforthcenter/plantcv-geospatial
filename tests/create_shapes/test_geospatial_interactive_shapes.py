@@ -3,7 +3,7 @@
 import pytest
 import joblib
 import numpy as np
-from plantcv.geospatial import InteractiveShapes
+from plantcv.geospatial.create_shapes.interactive_shapes import InteractiveShapes
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _lineintersect
 
 
