@@ -6,7 +6,7 @@ A PlantCV-Geospatial object class.
 
 `Field_layout` is a class used to store parameters of a field planting strategy. These parameters can then be used in automatic plot boundary shapefile creation, such as using `plantcv.geospatial.create_shapes.auto_grid` and `plantcv.geospatial.create_shapes.grid_from_coords`.    
 
-An instance of the `Field_layout` class called "field_layout" is initiated on importing PlantCV-Geospatial. We recommend filling in known parameters of your field as a first step in creating an analysis workflow (see example below).  
+An instance of the `Field_layout` class called "field_layout" is initiated on importing PlantCV-Geospatial. We recommend filling in known parameters of your field as a first step in creating an analysis workflow (see example below). This is similar to how `plantcv` uses `params` in many functions if you are already familiar with the main `plantcv` package.
 
 ### Attributes
 

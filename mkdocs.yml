@@ -30,6 +30,7 @@ nav:
             - Convert GeoJSON to ROI: to_roi.md
             - Convert points to/from geojson: convert_points.md
             - Convert polygons to/from geojson: convert_shapes.md
+        - Field Layout: Field_layout.md
         - ROIs from polygon centers: center_grid_rois.md
         - Shape creation tools:
             - Grid from plot coordinates : shapes_grid_from_coords.md
