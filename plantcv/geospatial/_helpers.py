@@ -352,7 +352,6 @@ def _check_field_parameters(arglist, argnames):
     RuntimeError if any arguments are None
     """
     if any(val is None for val in arglist):
-        argnames = ["range_length", "row_length", "num_rows"]
         areNone = [val is None for val in arglist]
         noneArgs = [val for i, val in enumerate(argnames) if areNone[i]]
         fatal_error("Got None for " + str(noneArgs) + ", specify as a kwarg or add to field_layout object")
