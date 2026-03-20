@@ -94,4 +94,4 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         with open(out_path, 'w') as f:
             geojson.dump(feature_collection, f)
 
-    return polygon_list
+    return features_return
