@@ -2,11 +2,12 @@
 
 from shapely.geometry import Polygon, mapping
 from plantcv.geospatial._helpers import (_calc_direction_vectors, _unpack_point_shapefiles,
-                                         _calc_plot_corners, _show_geojson)
+                                         _calc_plot_corners, _show_geojson, _check_field_parameters)
+from plantcv.geospatial import field_layout
 import fiona
 
 
-def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1, ids=None):
+def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path, ids=None, **kwargs):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -19,20 +20,33 @@ def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path, range
         Path to geojson containing plot corner points
     out_path : str
         Path where the output grid cells geojson will be saved
-    range_length : float, optional
-        Height of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
-    row_length : float, optional
-        Width of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
-    num_rows : int, optional
-        Number of rows per plot, default: 1
     ids : list
         List of plot IDs (optional) to label geojson plots
+    **kwargs
+        Other keyword arguments
+        range_length : float, optional
+            Height of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
+            Defaults to field_layout attribute range_length.
+        row_length : float, optional
+            Width of each grid cell, units the same as the field_corners_path shapefile CRS (default = 1)
+            Defaults to field_layout attribute row_length.
+        num_rows : int, optional
+            Number of rows per plot, default: 1
+            Defaults to field_layout attribute num_rows.
 
     Returns:
     --------
     fig
         matplotlib figure displaying the created grid cell polygons
     """
+    range_length = kwargs.get("range_length", field_layout.range_length)
+    row_length = kwargs.get("row_length", field_layout.row_length)
+    num_rows = kwargs.get("num_rows", field_layout.num_rows)
+
+    arglist = [range_length, row_length, num_rows]
+    argnames = ["range_length", "row_length", "num_rows"]
+    _check_field_parameters(arglist, argnames)
+
     # Calculate direction vectors based on plot boundaries
     horizontal_dir, vertical_dir, _, crs, driver, schema = _calc_direction_vectors(
         plot_bounds=field_corners_path)
