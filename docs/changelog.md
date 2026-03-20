@@ -52,7 +52,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.create_shapes.grid_from_coords
 
-* v0.1dev: cells = **geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path,range_length=field_layout.range_length, row_length=field_layout.row_length, num_rows=field_layout.num_rows, ids=None*)
+* v0.1dev: cells = **geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path, ids=None, \*\*kwargs*)
 
 #### geospatial.create_shapes.InteractiveShapes
 

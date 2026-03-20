@@ -30,3 +30,11 @@ def test_geospatial_shape_grid_from_coords_single_points(test_data, tmpdir):
     _ = grid_from_coords(img=img, field_corners_path=test_data.point_crop, plot_geojson_path=test_data.plot_points,
                  out_path=filename, num_rows=8, range_length=4, row_length=0.5)
     assert os.path.exists(filename)
+
+
+def test_geospatial_shape_grid_None(test_data):
+    """Test for plantcv-geospatial."""
+    img = joblib.load(test_data.rgb_pickled)
+    with pytest.raises(RuntimeError):
+        _ = grid_from_coords(img=img, field_corners_path=test_data.point_crop,
+                             plot_geojson_path = "plot.geojson", out_path="file.geojson")
