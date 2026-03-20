@@ -1,6 +1,7 @@
 # Create rectangular geojsons
 
 from shapely.geometry import Polygon, mapping
+from plantcv.plantcv.fatal_error import fatal_error
 from plantcv.geospatial._helpers import (_calc_direction_vectors,
                                          _calc_plot_corners,
                                          _show_geojson)
@@ -58,6 +59,18 @@ def auto_grid(img, field_corners_path, out_path, ids=None, **kwargs):
     num_rows = kwargs.get("num_rows", field_layout.num_rows)
     range_spacing = kwargs.get("range_spacing", field_layout.range_spacing)
     column_spacing = kwargs.get("column_spacing", field_layout.column_spacing)
+
+    arglist = [num_ranges, num_columns, range_length,
+                                   row_length, num_rows, range_spacing,
+                                   column_spacing]
+
+    if any(val is None for val in arglist):
+        argnames = ["num_ranges", "num_columns", "range_length",
+                    "row_length", "num_rows", "range_spacing",
+                    "column_spacing"]
+        areNone = [val is None for val in arglist]
+        noneArgs = [val for i, val in enumerate(argnames) if areNone[i]]
+        fatal_error("Got None for " + str(noneArgs) + ", specify as a kwarg or add to field_layout object")
 
     # Calculate direction vectors based on plot boundaries
     horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _calc_direction_vectors(
