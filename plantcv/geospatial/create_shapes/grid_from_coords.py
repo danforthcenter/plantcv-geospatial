@@ -47,7 +47,6 @@ def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path, ids=N
     argnames = ["range_length", "row_length", "num_rows"]
     _check_field_parameters(arglist, argnames)
 
-                     
     # Calculate direction vectors based on plot boundaries
     horizontal_dir, vertical_dir, _, crs, driver, schema = _calc_direction_vectors(
         plot_bounds=field_corners_path)
