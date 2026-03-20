@@ -61,8 +61,8 @@ def auto_grid(img, field_corners_path, out_path, ids=None, **kwargs):
     column_spacing = kwargs.get("column_spacing", field_layout.column_spacing)
 
     arglist = [num_ranges, num_columns, range_length,
-                                   row_length, num_rows, range_spacing,
-                                   column_spacing]
+               row_length, num_rows, range_spacing,
+               column_spacing]
 
     if any(val is None for val in arglist):
         argnames = ["num_ranges", "num_columns", "range_length",
