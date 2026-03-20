@@ -8,11 +8,7 @@ from plantcv.geospatial import field_layout
 import fiona
 
 
-def auto_grid(img, field_corners_path, out_path, num_ranges=field_layout.num_ranges,
-              num_columns=field_layout.num_columns, range_length=field_layout.range_length,
-              row_length=field_layout.row_length, num_rows=field_layout.num_rows,
-              range_spacing=field_layout.range_spacing, column_spacing=field_layout.column_spacing,
-              ids=None):
+def auto_grid(img, field_corners_path, out_path, ids=None, **kwargs):
     """Create a grid of cells from input shapefiles and save them to a new shapefile.
 
     Parameters:
@@ -23,35 +19,46 @@ def auto_grid(img, field_corners_path, out_path, num_ranges=field_layout.num_ran
         Path to Fiona formatted shapefile (geojson file) containing four corner points
     out_path : str
         Path where the output grid cells geojson will be saved
-    num_ranges : int
-        Number of ranges (vertical cell rows)
-        Defaults to field_layout attribute num_ranges.
-    num_columns : int
-        Number of columns (horizontal cell columns)
-        Defaults to field_layout attribute num_columns.
-    range_length : float, optional
-        Height of each grid cell, units the same as the field_corners_path shapefile CRS
-        Defaults to field_layout attribute range_length.
-    row_length : float, optional
-        Width of each grid cell, units the same as the field_corners_path shapefile CRS
-        Defaults to field_layout attribute row_length.
-    num_rows : int, optional
-        Number of cells to divide the horizontal edge into (default: 1)
-        Defaults to field_layout attribute num_rows.
-    range_spacing : float, optional
-        Size of alley spaces beteen ranges, units match shapefile CRS (default: 0)
-        Defaults to field_layout attribute range_spacing.
-    column_spacing : float, optional
-        Size of alley spaces beteen columns, units match shapefile CRS (default: 0)
-        Defaults to field_layout attribute column_spacing.
     ids : list
         List of plot IDs (optional) to label geojson plots
+    **kwargs
+        Other keyword arguments
+
+        num_ranges : int
+            Number of ranges (vertical cell rows)
+            Defaults to field_layout attribute num_ranges.
+        num_columns : int
+            Number of columns (horizontal cell columns)
+            Defaults to field_layout attribute num_columns.
+        range_length : float, optional
+            Height of each grid cell, units the same as the field_corners_path shapefile CRS
+            Defaults to field_layout attribute range_length.
+        row_length : float, optional
+            Width of each grid cell, units the same as the field_corners_path shapefile CRS
+            Defaults to field_layout attribute row_length.
+        num_rows : int, optional
+            Number of cells to divide the horizontal edge into (default: 1)
+            Defaults to field_layout attribute num_rows.
+        range_spacing : float, optional
+            Size of alley spaces beteen ranges, units match shapefile CRS (default: 0)
+            Defaults to field_layout attribute range_spacing.
+        column_spacing : float, optional
+            Size of alley spaces beteen columns, units match shapefile CRS (default: 0)
+            Defaults to field_layout attribute column_spacing.
 
     Returns:
     --------
     fig
         matplotlib figure displaying the created grid cell polygons
     """
+    num_ranges = kwargs.get("num_ranges", field_layout.num_ranges)
+    num_columns = kwargs.get("num_columns", field_layout.num_columns)
+    range_length = kwargs.get("range_length", field_layout.range_length)
+    row_length = kwargs.get("row_length", field_layout.row_length)
+    num_rows = kwargs.get("num_rows", field_layout.num_rows)
+    range_spacing = kwargs.get("range_spacing", field_layout.range_spacing)
+    column_spacing = kwargs.get("column_spacing", field_layout.column_spacing)
+
     # Calculate direction vectors based on plot boundaries
     horizontal_dir, vertical_dir, anchor_point, crs, driver, schema = _calc_direction_vectors(
         plot_bounds=field_corners_path)
