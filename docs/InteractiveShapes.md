@@ -27,15 +27,25 @@ Attributes are accessed as `interactive_shapes_instance.attribute`.
 
 ### Methods
 
-* **add_layer**: (*layer_type="shapes", layer_name="Shapes"*): Add a layer to the viewer.
+* **add_layer**: (*layer_type="shapes", layername="Shapes"*): Add a layer to the viewer.
     * layer_type (str, default = "shapes"): Type of layer to add, must be `"shapes"` or `"points"`
-    * layer_name (str, default = "Shapes"): Name for the new layer.
+    * layername (str, default = "Shapes"): Name for the new layer.
 
 * **grid**: (*numdivs*): Add layers with lines evenly dividing a grid within the field boundary. Adds new `"grid_lines_columns"` and `"grid_lines_ranges"` layers.
     * numdivs (array, required): length 2 array-like of int specifying numbers of columns and ranges as `[N columns, N ranges]`
 	
 * **plots**: (*plot_layer="Plots"*): Add a layer of polygons divided by `"grid_lines_columns"` and `"grid_lines_ranges"` layers.
     * plot_layer (str, default = "Plots"): Name for the new layer of polygons.
+
+* **to_points**: (*dest=None, layername="Points"*): Return the points from the viewer as a list, writing to a geojson file specified by `dest`. Calls `plantcv.geospatial.convert.points`.
+    * dest (str, optional): File path to write a geojson of the specified points layer to.
+	* layername (str, default = "Points"): Name of the layer to return/write.
+
+* **to_shapes**: (*dest=None, shapetype="polygon", layername="Shapes"*): Return the polygons from the viewer as a list, writing to a geojson file specified by `dest`. Calls `plantcv.geospatial.convert.shapes`.
+    * dest (str, optional): File path to write a geojson of the specified points layer to.
+	* shapetype (str, default = "polygon"): Type of shape to use.
+	* layername (str, default = "Shapes"): Name of the layer to return/write.
+
 
 ### Examples
 
@@ -61,8 +71,7 @@ editor.grid(numdivs=[3,4])
 editor.plots()
 
 # Individual plot boundaries can then be saved to a file
-gcv.convert.shapes_to_geojson(img, viewer=editor.viewer, out_path="./plots.geojson",
-                                layername=editor.layer_dict["plot_polygons"])
+editor.to_shapes(dest="./plots.geojson", layername="Plots")
 
 # Custom layers can be added for other more manual shape creation
 editor.add_layer(layer_type="shapes")
