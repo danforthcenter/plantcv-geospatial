@@ -109,7 +109,7 @@ class InteractiveShapes:
         -----------
         dest : str, optional
             Path to save to a geojson file to save shapes if desired.
-            Defaults to None which will return shapes as an array 
+            Defaults to None which will return shapes as an array
             instead of writing to a geojson shapefile.
         shapetype: str, optional
             Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
@@ -118,7 +118,7 @@ class InteractiveShapes:
 
         Returns:
         --------
-        list 
+        list
             List of X,Y coordinates of shape vertices.
         """
         return shapes(img=self.img, source=self.viewer, dest=dest, shapetype=shapetype, layername=layername)
