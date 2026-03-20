@@ -27,9 +27,9 @@ Attributes are accessed as `interactive_shapes_instance.attribute`.
 
 ### Methods
 
-* **add_layer**: (*layer_type="shapes", layer_name="Shapes"*): Add a layer to the viewer.
+* **add_layer**: (*layer_type="shapes", layername="Shapes"*): Add a layer to the viewer.
     * layer_type (str, default = "shapes"): Type of layer to add, must be `"shapes"` or `"points"`
-    * layer_name (str, default = "Shapes"): Name for the new layer.
+    * layername (str, default = "Shapes"): Name for the new layer.
 
 * **grid**: (*numdivs*): Add layers with lines evenly dividing a grid within the field boundary. Adds new `"grid_lines_columns"` and `"grid_lines_ranges"` layers.
     * numdivs (array, required): length 2 array-like of int specifying numbers of columns and ranges as `[N columns, N ranges]`
@@ -43,7 +43,7 @@ Attributes are accessed as `interactive_shapes_instance.attribute`.
 
 * **to_shapes**: (*dest=None, shapetype="polygon", layername="Shapes"*): Return the polygons from the viewer as a list, writing to a geojson file specified by `dest`. Calls `plantcv.geospatial.convert.shapes`.
     * dest (str, optional): File path to write a geojson of the specified points layer to.
-	* shapetype (str, default = "polygon"): Type of layer to use.
+	* shapetype (str, default = "polygon"): Type of shape to use.
 	* layername (str, default = "Shapes"): Name of the layer to return/write.
 
 

@@ -58,7 +58,6 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.InteractiveShapes
 
 * v0.1dev: object = **geospatial.create_shapes.InteractiveShapes**(*img, viewer_type="napari", field_layer=None, show=True*)
-<<<<<<< interactiveShapes-conversion-methods
 
 #### geospatial.create_shapes.InteractiveShapes.add_layer
 
@@ -79,5 +78,3 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.InteractiveShapes.to_shapes
 
 * v0.1dev: **geospatial.create_shapes.InteractiveShapes.to_shapes**(*dest=None, shapetype="polygon", layername="Shapes"*)
-=======
->>>>>>> main

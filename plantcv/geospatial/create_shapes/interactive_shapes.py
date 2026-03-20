@@ -89,7 +89,7 @@ class InteractiveShapes:
         Parameters:
         -----------
         dest : str, Optional
-            Path to save a geojson file to if desired.
+            Path to save a geojson file to save points if desired.
             Defaults to None, which will return the points
             as an array instead of writing a geojson shapefile.
         layername : str, Optional
@@ -97,9 +97,8 @@ class InteractiveShapes:
 
         Returns:
         --------
-        list or dict,
-            if dest is None then a list of coordinates,
-            if dest is str then a dictionary of what was written to the geojson file.
+        list
+            List of point coordinates from viewer layer
         """
         return points(img=self.img, source=self.viewer, dest=dest, layername=layername)
 
@@ -109,8 +108,9 @@ class InteractiveShapes:
         Parameters:
         -----------
         dest : str, optional
-            Path to save to a geojson file to save if source is a Napari viewer or Points object.
-            Defaults to None, only required if 'source' is a Napari view or Points object.
+            Path to save to a geojson file to save shapes if desired.
+            Defaults to None which will return shapes as an array 
+            instead of writing to a geojson shapefile.
         shapetype: str, optional
             Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
         layername: str, optional
@@ -118,7 +118,7 @@ class InteractiveShapes:
 
         Returns:
         --------
-        list or dict, if dest is a str then a geojson is written and a dictionary is returned
-            If dest is None (the default) then returns a list of X,Y coordinates.
+        list 
+            List of X,Y coordinates of shape vertices.
         """
         return shapes(img=self.img, source=self.viewer, dest=dest, shapetype=shapetype, layername=layername)
