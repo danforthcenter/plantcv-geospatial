@@ -58,3 +58,23 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.InteractiveShapes
 
 * v0.1dev: object = **geospatial.create_shapes.InteractiveShapes**(*img, viewer_type="napari", field_layer=None, show=True*)
+
+#### geospatial.create_shapes.InteractiveShapes.add_layer
+
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.add_layer**(*layer_type="shapes", layername="Shapes"*)
+
+#### geospatial.create_shapes.InteractiveShapes.grid
+
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.grid**(*numdivs*)
+
+#### geospatial.create_shapes.InteractiveShapes.plots
+
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.plots**(*plot_layer="Plots"*)
+
+#### geospatial.create_shapes.InteractiveShapes.to_points
+
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.to_points**(*dest=None, layername="Points"*)
+
+#### geospatial.create_shapes.InteractiveShapes.to_shapes
+
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.to_shapes**(*dest=None, shapetype="polygon", layername="Shapes"*)

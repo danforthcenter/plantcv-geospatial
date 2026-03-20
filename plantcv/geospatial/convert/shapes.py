@@ -79,19 +79,19 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
                 "properties": {}
             }
             polygon_list.append(geojson_feature)
-
-    feature_collection = geojson.FeatureCollection(polygon_list)
-    feature_collection['crs'] = {
-        "type": "name",
-        "properties": {
-            "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
+    if out_path is not None:
+        feature_collection = geojson.FeatureCollection(polygon_list)
+        feature_collection['crs'] = {
+            "type": "name",
+            "properties": {
+                "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
+            }
         }
-    }
-    if os.path.splitext(out_path)[1].lower() != ".geojson":
-        out_path = out_path + ".geojson"
-        print("File type not supported, writing to " + out_path + " instead")
+        if os.path.splitext(out_path)[1].lower() != ".geojson":
+            out_path = out_path + ".geojson"
+            print("File type not supported, writing to " + out_path + " instead")
 
-    with open(out_path, 'w') as f:
-        geojson.dump(feature_collection, f)
+        with open(out_path, 'w') as f:
+            geojson.dump(feature_collection, f)
 
     return features_return
