@@ -33,7 +33,7 @@ class GEO(Image):
     def __new__(cls, input_array: np.ndarray, filename: str, wavelengths: list,
                 default_wavelengths : list, crs : str, transform : affine.Affine):
         # Create an instance of Image with default attributes
-        obj = Image.__new__(cls, input_array, filename)
+        obj = super().__new__(cls, input_array, filename)
         # Add HSI-specific attributes
         obj.wavelengths = wavelengths
         obj.default_wavelengths = default_wavelengths
@@ -43,6 +43,10 @@ class GEO(Image):
 
     def __array_finalize__(self, obj, **kwargs):
         super().__array_finalize__(obj)
+        self.wavelengths = getattr(obj, 'wavelengths', None)
+        self.default_wavelengths = getattr(obj, 'default_wavelengths', [480, 540, 630])
+        self.crs = getattr(obj, 'crs', None)
+        self.transform = getattr(obj, 'transform', None)
         self.thumb = self._create_thumb()
 
     def get_wavelength(self, wavelength):
@@ -82,7 +86,7 @@ class DSM(Image):
     def __new__(cls, input_array: np.ndarray, filename: str, crs : str,
                 transform : affine.Affine, cutoff : float):
         # Create an instance of Image with default attributes
-        obj = Image.__new__(cls, input_array, filename)
+        obj = super().__new__(cls, input_array, filename)
         # Add HSI-specific attributes
         obj.crs = crs
         obj.transform = transform
@@ -91,6 +95,9 @@ class DSM(Image):
 
     def __array_finalize__(self, obj, **kwargs):
         super().__array_finalize__(obj)
+        self.crs = getattr(obj, 'crs', None)
+        self.transform = getattr(obj, 'transform', None)
+        self.cutoff = getattr(obj, 'cutoff', None)
         self.data_array = self._gray_cutoff()
         self.thumb = self._create_thumb()
 
