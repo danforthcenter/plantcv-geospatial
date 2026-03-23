@@ -34,15 +34,25 @@ class GEO(Image):
                 default_wavelengths : list, crs : str, transform : affine.Affine):
         # Create an instance of Image with default attributes
         obj = Image.__new__(cls, input_array, filename)
-        # Add HSI-specific attributes
+        # Add GEO-specific attributes
         obj.wavelengths = wavelengths
         obj.default_wavelengths = default_wavelengths
         obj.crs = crs
         obj.transform = transform
         return obj
 
-    def __init__(self, **kwargs):
+    def __init__(self, input_array: np.ndarray, filename: str, wavelengths: list,
+                 default_wavelengths: list, crs: str, transform: affine.Affine):
+        super().__init__(input_array, filename)
         self.thumb = self._create_thumb()
+
+    def __array_finalize__(self, obj):
+        super().__array_finalize__(obj)
+        if obj is not None:
+            self.wavelengths = getattr(obj, "wavelengths", None)
+            self.default_wavelengths = getattr(obj, "default_wavelengths", None)
+            self.crs = getattr(obj, "crs", None)
+            self.transform = getattr(obj, "transform", None)
 
     def get_wavelength(self, wavelength):
         """Finds channel closest to a provided numerical wavelength
@@ -88,9 +98,18 @@ class DSM(Image):
         obj.cutoff = cutoff
         return obj
 
-    def __init__(self, **kwargs):
+    def __init__(self, input_array: np.ndarray, filename: str, crs: str,
+                 transform: affine.Affine, cutoff: float):
+        super().__init__(input_array, filename)
         self.data_array = self._gray_cutoff()
         self.thumb = self._create_thumb()
+
+    def __array_finalize__(self, obj):
+        super().__array_finalize__(obj)
+        if obj is not None:
+            self.crs = getattr(obj, "crs", None)
+            self.transform = getattr(obj, "transform", None)
+            self.cutoff = getattr(obj, "cutoff", None)
 
     def _gray_cutoff(self):
         """Converts all pixels in a dsm above a value threshold to no data.
