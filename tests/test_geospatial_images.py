@@ -28,6 +28,6 @@ def test_geo():
 
 def test_dsm():
     """Test creating a DSM class image."""
-    dsm = DSM(input_array=np.zeros((10, 10), dtype=np.uint8), filename="dsm.tif", 
+    dsm = DSM(input_array=np.zeros((10, 10), dtype=np.float32), filename="dsm.tif", 
               crs = None, transform = None, cutoff = 1.0)
     assert isinstance(dsm, DSM)
