@@ -41,7 +41,8 @@ class GEO(Image):
         obj.transform = transform
         return obj
 
-    def __init__(self, **kwargs):
+    def __array_finalize__(self, obj, **kwargs):
+        super().__array_finalize__(obj)
         self.thumb = self._create_thumb()
 
     def get_wavelength(self, wavelength):
@@ -88,7 +89,8 @@ class DSM(Image):
         obj.cutoff = cutoff
         return obj
 
-    def __init__(self, **kwargs):
+    def __array_finalize__(self, obj, **kwargs):
+        super().__array_finalize__(obj)
         self.data_array = self._gray_cutoff()
         self.thumb = self._create_thumb()
 
@@ -124,4 +126,3 @@ class DSM(Image):
         # Convert to uint8
         thumb = img_copy.astype(np.uint8)
         return thumb
-
