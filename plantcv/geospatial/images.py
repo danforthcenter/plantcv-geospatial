@@ -29,14 +29,12 @@ class GEO(Image):
     """Subclass of Image for geospatial images."""
     
     def __new__(cls, input_array: np.ndarray, filename: str, wavelengths: list, 
-                default_wavelengths : list, channels : list, crs : str, 
-                transform : affine.Affine):
+                default_wavelengths : list, crs : str, transform : affine.Affine):
         # Create an instance of Image with default attributes
         obj = Image.__new__(cls, input_array, filename)
         # Add HSI-specific attributes
         obj.wavelengths = wavelengths
         obj.default_wavelengths = default_wavelengths
-        obj.channels = channels
         obj.crs = crs
         obj.transform = transform
         return obj
