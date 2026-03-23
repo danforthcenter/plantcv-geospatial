@@ -1,6 +1,6 @@
 ## Create plot boundaries from input coordinates
 
-**plantcv.geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path, range_length, row_length, num_rows=1*)
+**plantcv.geospatial.create_shapes.grid_from_coords**(*img, field_corners_path, plot_geojson_path, out_path, ids=None, \*\*kwargs*)
 
 **returns** figure
 
@@ -8,10 +8,11 @@
     - img - Spectral_Data object of geotif data, used for plotting a debug image, likely read in with [`read_geotif`](read_geotif.md)
     - field_corners_path - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - plot_geojson_path - Path to geojson containing plot corner points
-    - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
-    - range_length - Vertical dimension of each plot, in units matching the coordinate system of the `field_corners_path`
-    - row_length - Horizontal dimension of each plot, in units matching the coordinate system of the `field_corners_path`
-    - num_rows - Number of rows per plot, default: 1
+    - out_path - Path to save the geojson shapefile. Should be ".geojson" file type.
+	- **kwargs
+        - range_length - Vertical dimension of each plot, in units matching the coordinate system of the `field_corners_path`.Defaults to the `range_length` attribute of the `Field_layout` class.
+        - row_length - Horizontal dimension of each plot, in units matching the coordinate system of the `field_corners_path`. Defaults to the `row_length` attribute of the `Field_layout` class. 
+        - num_rows - Number of rows per plot. Defaults to the `num_rows` attribute of the `Field_layout` class. 
 
 - **Context:**
     - Helpful for precision planters without GPS

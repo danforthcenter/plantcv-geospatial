@@ -27,15 +27,15 @@ nav:
             - Analyze spectral indices: analyze_spectral_index.md
             - Analyze height (with subtraction): analyze_height_subtraction.md
         - Conversion tools:
-            - Points to ROI (circular): points_to_roi_circle.md
+            - Convert GeoJSON to ROI: to_roi.md
             - Convert points to/from geojson: convert_points.md
-            - Save drawn shapes as geojson: shapes_to_geojson.md
+            - Convert polygons to/from geojson: convert_shapes.md
+        - Field Layout: Field_layout.md
         - ROIs from polygon centers: center_grid_rois.md
         - Shape creation tools:
             - Grid from plot coordinates : shapes_grid_from_coords.md
             - Automatic Grid : shapes_grid.md
             - Interactive shape creation: InteractiveShapes.md
-        - Transform coordinate polygons: transform_polygons.md
 markdown_extensions:
   - toc:
       permalink: True

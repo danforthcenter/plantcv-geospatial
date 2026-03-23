@@ -4,6 +4,8 @@ import napari
 from plantcv.plantcv import fatal_error
 from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
+from plantcv.geospatial.convert.points import points
+from plantcv.geospatial.convert.shapes import shapes
 
 
 class InteractiveShapes:
@@ -33,23 +35,23 @@ class InteractiveShapes:
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
-    def add_layer(self, layer_type="shapes", layer_name="Shapes"):
+    def add_layer(self, layer_type="shapes", layername="Shapes"):
         """Add a layer to the viewer.
 
         Parameters
         ----------
         layer_type : str, optional
             Type of layer to add. Options are "shapes" or "points". Defaults to "shapes".
-        layer_name : str, optional
+        layername : str, optional
             Name of added layer. Defaults to "Shapes".
         """
         if layer_type == "shapes":
-            self.viewer.add_shapes(name=layer_name)
-            self.layer_dict["shapes_"+str(self.device)] = layer_name
+            self.viewer.add_shapes(name=layername)
+            self.layer_dict["shapes_"+str(self.device)] = layername
             self.device += 1
         elif layer_type == "points":
-            self.viewer.add_points(name=layer_name)
-            self.layer_dict["points_"+str(self.device)] = layer_name
+            self.viewer.add_points(name=layername)
+            self.layer_dict["points_"+str(self.device)] = layername
             self.device += 1
         else:
             fatal_error(f"Layer type {layer_type} is not supported. Layer_type must be 'shapes' or 'points'.")
@@ -80,3 +82,43 @@ class InteractiveShapes:
                              lines1=self.layer_dict["grid_lines_columns"],
                              lines2=self.layer_dict["grid_lines_ranges"])
         self.layer_dict["plot_polygons"] = plot_layer
+
+    def to_points(self, dest=None, layername="Points"):
+        """Make an array of coordinates or save a geojson of points from an InteractiveShapes object
+
+        Parameters:
+        -----------
+        dest : str, Optional
+            Path to save a geojson file to save points if desired.
+            Defaults to None, which will return the points
+            as an array instead of writing a geojson shapefile.
+        layername : str, Optional
+            Name of the viewer layer from which to take the points. Defaults to "Points"
+
+        Returns:
+        --------
+        list
+            List of point coordinates from viewer layer
+        """
+        return points(img=self.img, source=self.viewer, dest=dest, layername=layername)
+
+    def to_shapes(self, dest=None, shapetype="polygon", layername="Shapes"):
+        """Make a polygon array or save a geojson of polygons from an InteractiveShapes object
+
+        Parameters:
+        -----------
+        dest : str, optional
+            Path to save to a geojson file to save shapes if desired.
+            Defaults to None which will return shapes as an array
+            instead of writing to a geojson shapefile.
+        shapetype: str, optional
+            Geometry type from Napari viewer shape layer desired for geojson output, defaults to "polygon."
+        layername: str, optional
+            Name of shapes layer, defaults to "Shapes."
+
+        Returns:
+        --------
+        list
+            List of X,Y coordinates of shape vertices.
+        """
+        return shapes(img=self.img, source=self.viewer, dest=dest, shapetype=shapetype, layername=layername)

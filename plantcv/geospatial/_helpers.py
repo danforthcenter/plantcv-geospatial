@@ -3,6 +3,7 @@ from shapely.geometry import LineString
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from plantcv.plantcv import params
+from plantcv.plantcv.fatal_error import fatal_error
 import numpy as np
 import geopandas
 import fiona
@@ -332,3 +333,25 @@ def _plot_bounds_pseudocolored(img, geojson, vmin, vmax, data_label):
     else:
         plt.close()
     return ax
+
+
+def _check_field_parameters(arglist, argnames):
+    """
+    Helper function check that none of the arguments are None that should be defined
+    by kwargs or field_layout
+
+    Parameters:
+    -----------
+    arglist : list
+        list of kwargs values (after default replacement)
+    argnames : list
+        list of names for kwarg arguments
+
+    Raises:
+    --------
+    RuntimeError if any arguments are None
+    """
+    if any(val is None for val in arglist):
+        areNone = [val is None for val in arglist]
+        noneArgs = [val for i, val in enumerate(argnames) if areNone[i]]
+        fatal_error("Got None for " + str(noneArgs) + ", specify as a kwarg or add to field_layout object")

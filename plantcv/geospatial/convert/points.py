@@ -56,7 +56,7 @@ def _points_to_geojson(img, viewer, out_path, layername):
 
     Returns:
     --------
-    feature_collection : dict, geojson data as a dictionary
+    pts_return : list, transformed points from the viewer
 
     Raises:
     -------
@@ -64,29 +64,31 @@ def _points_to_geojson(img, viewer, out_path, layername):
     """
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):
-        pts = [(img.metadata["transform"]*reversed(i)) for i in viewer.layers[layername].data]
-        pts_return = [reversed(i) for i in viewer.layers[layername].data]
+        pts = [(img.metadata["transform"]*(float(i[1]), float(i[0]))) for i in viewer.layers[layername].data]
+        pts_return = [(float(i[1]), float(i[0])) for i in viewer.layers[layername].data]
     # Annotate output
     elif hasattr(viewer, 'coords'):
         pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
         pts_return = viewer.coords['default']
     else:
         fatal_error("Viewer class type not recognized. Currently, Napari and PlantCV-annotate viewers supported.")
-    features = [geojson.Feature(geometry=geojson.Point((lon, lat))) for lon, lat in pts]
-    feature_collection = geojson.FeatureCollection(features)
-    # Make sure the coordinate system is the same as the original image
-    feature_collection['crs'] = {
-        "type": "name",
-        "properties": {
-            "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
-        }
-    }
-    if os.path.splitext(out_path)[1].lower() != ".geojson":
-        out_path = out_path + ".geojson"
-        print("File type not supported, writing to " + out_path + " instead")
 
-    with open(out_path, 'w') as f:
-        geojson.dump(feature_collection, f)
+    if out_path is not None:
+        features = [geojson.Feature(geometry=geojson.Point((lon, lat))) for lon, lat in pts]
+        feature_collection = geojson.FeatureCollection(features)
+        # Make sure the coordinate system is the same as the original image
+        feature_collection['crs'] = {
+            "type": "name",
+            "properties": {
+                "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
+            }
+        }
+        if os.path.splitext(out_path)[1].lower() != ".geojson":
+            out_path = out_path + ".geojson"
+            print("File type not supported, writing to " + out_path + " instead")
+
+        with open(out_path, 'w') as f:
+            geojson.dump(feature_collection, f)
 
     return pts_return
 
