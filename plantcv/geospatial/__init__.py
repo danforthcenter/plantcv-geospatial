@@ -5,6 +5,7 @@ from plantcv.geospatial import convert
 from plantcv.geospatial import analyze
 from plantcv.geospatial import create_shapes
 from plantcv.geospatial.center_grid_rois import center_grid_rois
+from plantcv.geospatial.images import Image, GEO, DSM
 
 
 # Auto versioning
@@ -16,5 +17,8 @@ __all__ = [
     "analyze",
     "create_shapes",
     "center_grid_rois",
-    "convert"
+    "convert",
+    "Image",
+    "GEO",
+    "DSM"
 ]
