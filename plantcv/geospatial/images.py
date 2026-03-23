@@ -3,6 +3,7 @@
 import numpy as np
 import affine
 
+
 class Image(np.ndarray):
     """The generic Image class extends the np.ndarray class by adding attributes."""
 
@@ -24,11 +25,12 @@ class Image(np.ndarray):
         # Idea from NumPy examples of subclassing:
         value = super(Image, self).__getitem__(key)
         return value
-    
+
+
 class GEO(Image):
     """Subclass of Image for geospatial images."""
-    
-    def __new__(cls, input_array: np.ndarray, filename: str, wavelengths: list, 
+
+    def __new__(cls, input_array: np.ndarray, filename: str, wavelengths: list,
                 default_wavelengths : list, crs : str, transform : affine.Affine):
         # Create an instance of Image with default attributes
         obj = Image.__new__(cls, input_array, filename)
@@ -43,20 +45,40 @@ class GEO(Image):
         self.thumb = self._create_thumb()
 
     def get_wavelength(self, wavelength):
+        """Finds channel closest to a provided numerical wavelength
+
+        Parameters
+        ----------
+        wavelength : int
+            Desired wavelength
+
+        Returns
+        -------
+        numpy.ndarray
+            2D array from channel closest to wavelength
+        """
         idx = np.abs(np.array(self.wavelengths) - wavelength).argmin()
         obj = super(GEO, self).__getitem__(np.s_[:, :, idx])
         return obj
 
     def _create_thumb(self):
+        """Creates a pseudo_rgb thumbnail image for debugging
+
+        Returns
+        -------
+        numpy.ndarray
+            Thumbnail image
+        """
         thumb = np.dstack([self.get_wavelength(self.default_wavelengths[0]),
                            self.get_wavelength(self.default_wavelengths[1]),
                            self.get_wavelength(self.default_wavelengths[2])])
         return thumb
 
+
 class DSM(Image):
     """Subclass of Image for digital surface models."""
-    
-    def __new__(cls, input_array: np.ndarray, filename: str, crs : str, 
+
+    def __new__(cls, input_array: np.ndarray, filename: str, crs : str,
                 transform : affine.Affine, cutoff : float):
         # Create an instance of Image with default attributes
         obj = Image.__new__(cls, input_array, filename)
@@ -69,8 +91,15 @@ class DSM(Image):
     def __init__(self, **kwargs):
         self.data_array = self._gray_cutoff()
         self.thumb = self._create_thumb()
-        
+
     def _gray_cutoff(self):
+        """Converts all pixels in a dsm above a value threshold to no data.
+
+        Returns
+        -------
+        numpy.ndarray
+            DSM with values above threshold converted to no data
+        """
         img_copy = np.squeeze(self)
         if self.cutoff is not None :
             quantile = np.quantile(img_copy, self.cutoff)
@@ -78,6 +107,13 @@ class DSM(Image):
         return img_copy
 
     def _create_thumb(self):
+        """Creates a stretched DSM for visualization.
+
+        Returns
+        -------
+        numpy.ndarray
+            Stretched thumbnail
+        """
         img_copy = self.data_array
         # Change nodata values to Nan
         img_copy[img_copy == min(np.unique(img_copy))] = np.nan
@@ -88,4 +124,4 @@ class DSM(Image):
         # Convert to uint8
         thumb = img_copy.astype(np.uint8)
         return thumb
-    
+
