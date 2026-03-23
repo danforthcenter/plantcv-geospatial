@@ -71,7 +71,7 @@ class DSM(Image):
         self.thumb = self._create_thumb()
         
     def _gray_cutoff(self):
-        img_copy = np.squeeze(self.input_array)
+        img_copy = np.squeeze(self)
         if self.cutoff is not None :
             quantile = np.quantile(img_copy, self.cutoff)
             img_copy[img_copy >= quantile] = np.nan
