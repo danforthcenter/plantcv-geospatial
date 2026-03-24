@@ -8,21 +8,21 @@ If you haven't already, check out our [installation instructions](installation.m
 
 ### Table of contents
 1. [Obtaining geospatial images for analysis](#geospatial)
-- [Photogrammetry](#photo)
-- [Digital Surface Models](#dsm)
-- [Radiometric calibration](#radio)
-- [Georeferencing](#georef)
+    - [Photogrammetry](#photo)
+    - [Digital Surface Models](#dsm)
+    - [Radiometric calibration](#radio)
+    - [Georeferencing](#georef)
 2. [Building an analysis workflow](#analysis)
-- [Opening a notebook](#notebook)
-- [Reading in an image](#reading)
-- [Making plot boundaries](#plots)
-- [Extracting traits](#traits)
+    - [Opening a notebook](#notebook)
+    - [Reading in an image](#reading)
+    - [Making plot boundaries](#plots)
+    - [Extracting traits](#traits)
 3. [Analyzing your data](#finally)
 
-**Geospatial images** 
-[Some information about where inputs come from]
+**Geospatial images** <a name="geospatial"></a>
+Geospatial images can come from a variety of sources like drone flights, publically available datasets of processed field images, or satellites (either publically funded government datasets or commercially available on-demand images). 
 
-**Preprocessing** <a name="geospatial"></a>
+**Preprocessing**
 
 - **Photogrammetry** - <a name="photo"></a> If you have images from an Uncrewed Aerial System (UAS), like a drone with a camera, those many individual images must be put together to form a picture of your whole field. The process by which this happens is called *photogrammetry* and there are several software programs available for this step. The most commonly used photogrammetry software packages are proprietary and require the purchase of a license. These include Pix4D and MetaShape, though there are many others. OpenDroneMap is a free, open-source option and is more flexible but less user-friendly. Your options might depend on what is available through your institution. 
 
@@ -30,7 +30,7 @@ If you haven't already, check out our [installation instructions](installation.m
 
 - **Radiometric calibration** - <a name="radio"></a> [I don't know anything about this, come back to it]
 
-- **Georeferencing** - <a name="georef"></a>
+- **Georeferencing** - <a name="georef"></a> While many UAS are equipped with a GPS that provides some information about where on Earth each individual image is taken from, this information is often insufficient for guaranteeing that all images in a time series perfectly align. The standard practice is to include Ground Control Points (GCPs) in the field, which are usually black and white checkerboards that are large enough to be clearly visible in the orthomosaic. Since these points do not move during a field season, they provide reference points for aligning images. Georeferencing can be done by either transforming individual orthomosaics using known lat/long coordinates of GCPs, or by choosing a reference image and aligning all other images in the dataset to the coordinates of the reference image's GCPs. Georeferencing can be done using many tools, including the free-to-use QGIS. 
 
 
 **You have images, now what?** <a name="analysis"></a>
