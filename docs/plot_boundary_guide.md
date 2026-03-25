@@ -11,6 +11,7 @@ If this is your first time using PlantCV-Geospatial, we recommend checking out o
 3. [Row crops](#rows)
     - [Precision planted](#precision)
     - [Irregular spacing](#row_irregular)
+4. [Isolated plots](#isolated)
 
 
 **Field layout vocabulary** <a name="vocab"></a> <br>
@@ -38,7 +39,7 @@ gcv.field_layout.range_spacing=0
 gcv.field_layout.column_spacing=0
 ```
 
-**Individual plants** <a name="individual"></a> 
+**Individual plants** <a name="individual"></a> <br>
 Your experimental units might be individual plants, like this:
 
 ![Screenshot](documentation_images/silphium_subfield.png)
@@ -53,3 +54,29 @@ gcv.create_shapes.auto_grid(img, cropto="./field_corners.geojson", outpath="./pl
 ![Screenshot](documentation_images/indiv_plot_autogrid.png)
 
 - **Irregularly spaced** <a name="irregular"></a> - If your individual plants are planted less uniformly, [Write about interactive shapes]
+
+<br>
+**Row crops** <a name="rows"></a> <br>
+Especially in systems like small grains, your experimental units might be plots composed of rows of the same genotype or treatment. 
+[REMINDER TO INCLUDE CITATION TO BISONFLY]
+
+![Screenshot](documentation_images/bisonfly_sub.png)
+
+- **Precision planted** <a name="precision"></a> - Precision planters can result in fields where plots are predictably spaced with evenly-spaced alleyways between ranges and columns. In this case, the automatic grid approach described above for single plants can work well: 
+
+```python
+gcv.field_layout.num_ranges=3
+gcv.field_layout.num_columns=5
+gcv.field_layout.range_length=2.7
+gcv.field_layout.row_length=0.18
+gcv.field_layout.num_rows=8
+gcv.field_layout.range_spacing=1.28
+gcv.field_layout.column_spacing=0.195
+
+gcv.create_shapes.auto_grid(img, cropto="./field_corners.geojson", outpath="./plots.geojson")
+```
+
+![Screenshot](documentation_images/bisonfly_autogrid.png)
+
+- **Irregular spacing** <a name="row_irregular"></a> -
+

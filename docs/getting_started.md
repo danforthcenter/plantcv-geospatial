@@ -20,6 +20,7 @@ If you haven't already, check out our [installation instructions](installation.m
 3. [Saving your data](#save)
 4. [Analyzing your data](#analysis)
 
+<br>
 **Geospatial images** <a name="geospatial"></a>
 Geospatial images can come from a variety of sources like drone flights, publically available datasets of processed field images, or satellites (either publically funded government datasets or commercially available on-demand images).
 
@@ -35,8 +36,8 @@ Geospatial images can come from a variety of sources like drone flights, publica
 
     ![Screenshot](documentation_images/example_GCP.png)
 
-
-**You have images, now what?** <a name="analysis"></a>
+<br>
+**You have images, now what?** <a name="analysis"></a> <br>
 A PlantCV-Geospatial analysis starts with an orthomosaic image, usually saved as a geotif with a `.tif` extension, which is output by whatever photogrammetry software you have used. Now you're ready to build an analysis workflow! 
 
 - **Open a Jupyter notebook** - <a name="notebook"></a> We recommend interacting with PlantCV-Geospatial in a Jupyter notebook. If you have followed the installation instructions and also installed Jupyter, simply run `jupyter lab` from your computer terminal. Alternatively, your favorite interactive environment running python works, too. Your first cell might look something like this:
@@ -54,7 +55,7 @@ pcv.params.debug = "plot" # For visualization
 
 ![Screenshot](documentation_images/rgb.png)
 
-- **Make plot boundaries** - <a name="plots"></a> Perhaps the most difficult step in a geospatial analysis workflow is determining where in space your individual experimental units are. PlantCV-Geospatial attempts to make this process somewhat flexible with regard to planting strategy and type of plant. Generally, we support various methods for drawing shapes around plants or plots and then saving those shapes to a geojson that will be used by analysis functions. The benefit to this strategy is that if you have many images of the same field over time, as long as they are georeferenced, you can reuse the same plot boundary shapefile for all images, instead of creating new plot boundaries every time. See our [plot boundary guide](place holder for link) for some examples of how to create plot boundaries in PlantCV-Geospatial for various types of plantings. 
+- **Make plot boundaries** - <a name="plots"></a> Perhaps the most difficult step in a geospatial analysis workflow is determining where in space your individual experimental units are. PlantCV-Geospatial attempts to make this process somewhat flexible with regard to planting strategy and type of plant. Generally, we support various methods for drawing shapes around plants or plots and then saving those shapes to a geojson that will be used by analysis functions. The benefit to this strategy is that if you have many images of the same field over time, as long as they are georeferenced, you can reuse the same plot boundary shapefile for all images, instead of creating new plot boundaries every time. See our [plot boundary guide](plot_boundary_guide.md) for some examples of how to create plot boundaries in PlantCV-Geospatial for various types of plantings. 
 
 ![Screenshot](documentation_images/grid_cells.png)
 
