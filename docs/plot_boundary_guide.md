@@ -78,5 +78,18 @@ gcv.create_shapes.auto_grid(img, cropto="./field_corners.geojson", outpath="./pl
 
 ![Screenshot](documentation_images/bisonfly_autogrid.png)
 
-- **Irregular spacing** <a name="row_irregular"></a> -
+- **Irregular spacing** <a name="row_irregular"></a> - If your row crops are less precisely planted, PlantCV-Geospatial has a more manual plot boundary creation method, [`create_shapes.grid_from_coords`](shapes_grid_from_coords.md) that uses points you provide describing where the corners of each plot are. This information is in a points-type geojson shapefile created by clicking on the top corner of each plot. This file can be made in a separate program, like QGIS, or using the `add_layer` and `to_points` methods of an `InteractiveShapes` class object. See an example in the [docs here](InteractiveShapes.md). 
+
+! [Screenshot](documentation_images/bisonfly_irreg.png)
+
+```python
+gcv.field_layout.range_length=3.4
+gcv.field_layout.row_length=0.18
+gcv.field_layout.num_rows=8
+
+gcv.create_shapes.grid_from_coords(img, field_corners_path="./field_corners.geojson", 
+                                   plot_geojson_path="./plot_corners.geojson", out_path="./plots.geojson)
+```
+
+![Screenshot](documentation_images/bisonfly_irreg_plots.png)
 
