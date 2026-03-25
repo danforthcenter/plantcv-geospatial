@@ -93,3 +93,10 @@ gcv.create_shapes.grid_from_coords(img, field_corners_path="./field_corners.geoj
 
 ![Screenshot](documentation_images/bisonfly_irreg_plots.png)
 
+!!! tip
+    If you only want measurements for some rows within each plot, such as when you might be concerned about edge effects, you can click your plot corners inside of rows you would like to exclude and decrease the `num_rows` parameter.  
+    Alternatively, output measurements for all rows and filter then during analysis. 
+
+
+**Isolated plots** <a name="isolated"></a> <br>
+If you instead have few, disjointed or randomly placed single plants or row plots that might be far apart, more manual plot boundary creation methods might end up being easier or faster.  
