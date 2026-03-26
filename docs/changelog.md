@@ -22,6 +22,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
+#### geospatial.center_grid_rois
+
+* v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
+
 #### geospatial.convert.to_roi
 
 * v0.1dev: rois = **geospatial.convert.to_roi**(*img, geojson, radius=None*)
@@ -33,18 +37,6 @@ All notable changes to this project will be documented below.
 #### geospatial.convert.shapes
 
 * v0.1dev: coord = **geospatial.convert.shapes**(*img, source, dest=None, shapetype="polygon", layername="Shapes"*)
-
-#### geospatial.center_grid_rois
-
-* v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
-
-#### geospatial.read.geotif
-
-* v0.1dev: spectral = **geospatial.read.geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
-
-#### geospatial.read.netcdf
-
-* v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
 
 #### geospatial.create_shapes.auto_grid
 
@@ -77,3 +69,23 @@ All notable changes to this project will be documented below.
 #### geospatial.create_shapes.InteractiveShapes.to_shapes
 
 * v0.1dev: **geospatial.create_shapes.InteractiveShapes.to_shapes**(*dest=None, shapetype="polygon", layername="Shapes"*)
+
+#### geospatial.DSM
+
+* v0.1dev: object = **geospatial.DSM**(*input_array, filename, crs, transform, cutoff*)
+
+#### geospatial.GEO
+
+* v0.1dev: object = **geospatial.GEO**(*input_array, filename, wavelengths, default_wavelengths, crs, transform*)
+
+#### geospatial.Image
+
+* v0.1dev: object = **geospatial.Image**(*input_array, filename*)
+
+#### geospatial.read.geotif
+
+* v0.1dev: spectral = **geospatial.read.geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
+
+#### geospatial.read.netcdf
+
+* v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
