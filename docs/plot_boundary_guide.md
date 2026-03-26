@@ -53,12 +53,13 @@ gcv.create_shapes.auto_grid(img, cropto="./field_corners.geojson", outpath="./pl
 
 ![Screenshot](documentation_images/indiv_plot_autogrid.png)
 
-- **Irregularly spaced** <a name="irregular"></a> - If your individual plants are planted less uniformly, [Write about interactive shapes]
+- **Irregularly spaced** <a name="irregular"></a> - If your individual plants are planted less uniformly, and you need the flexibility to modify the grid, PlantCV-Geospatial provides a set of steps that automatically create shapes, but give you the chance to manual change them in between steps to fit around your plants. See the [docs](InteractiveShapes.md) for the `InteractiveShapes` class for more about how this works. Briefly, you will open an interactive window where you will draw a box around your field. Then, lines will be automatically drawn forming a grid with your field dimensions (number of ranges x number of columns). You can manually move the lines until you are satisfied with their positions relative to your plants. Finally, polygons will be automatically drawn using the intersection of the grid lines. You can again manually change the position of the polygons until you are satisfied, at which point you can save the shapes to a geojson that can be used for analysis. 
 
 <br>
+
 **Row crops** <a name="rows"></a> <br>
 Especially in systems like small grains, your experimental units might be plots composed of rows of the same genotype or treatment. 
-[REMINDER TO INCLUDE CITATION TO BISONFLY]
+Example images below are from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly). 
 
 ![Screenshot](documentation_images/bisonfly_sub.png)
 
@@ -99,4 +100,27 @@ gcv.create_shapes.grid_from_coords(img, field_corners_path="./field_corners.geoj
 
 
 **Isolated plots** <a name="isolated"></a> <br>
-If you instead have few, disjointed or randomly placed single plants or row plots that might be far apart, more manual plot boundary creation methods might end up being easier or faster.  
+If you instead have few, disjointed or randomly placed single plants or row plots that might be far apart, more manual plot boundary creation methods might end up being easier or faster. Because the [`InteractiveShapes`](InteractiveShapes.md) class opens an interactive viewer, it is possible to add custom shapes that fit any field that can be directly saved to a geojson for use in analysis functions.
+
+Example images below from Brown, K. E., Schuhl, H., Srivastava, D., Beyene, G., Li, M., Fahlgren, N., & Murphy, K. M. (2026). Quantifying growth and lodging in Tef (Eragrostis tef) with Uncrewed Aerial Systems (UAS). [bioRxiv, 2026-01.](https://www.biorxiv.org/content/10.64898/2026.01.06.697717v1.full.pdf)
+
+![Screenshot](documentation_images/tef_example.png)
+
+```python
+geotif = "./isolated_plots.tif"
+cropto = "./crop.geojson"
+
+
+img = gcv.read.geotif(geotif, bands="b,g,r", cropto=cropto)
+editor = gcv.create_shapes.InteractiveShapes(img)
+editor.add_layer(layer_type="shapes")
+```
+
+After adding your shapes using the polygon drawing tool:
+![Screenshot](documentation_images/tef_napari.png)
+
+And finally, save the shapes in the next cell:
+
+```python
+editor.to_shapes(dest="./plots.geojson", layername="Shapes")
+```
