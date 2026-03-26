@@ -13,8 +13,9 @@ If this is your first time using PlantCV-Geospatial, we recommend checking out o
     - [Irregular spacing](#row_irregular)
 4. [Isolated plots](#isolated)
 
+<a name="vocab"></a> <br>
 
-**Field layout vocabulary** <a name="vocab"></a> <br>
+**Field layout vocabulary** <br>
 Several plot boundary creation tools in PlantCV-Geospatial rely on named parameters that follow a consistent way of describing how you might layout a field experiment. Refer to the diagram below for the common terms. Because of the transformation from latitude and longitude, your field might be tilted, so the designation of range vs column is relative to the top left corner of the field. PlantCV-Geospatial has a [`Field_layout` class](Field_layout.md) designed to keep track of these parameters. We recommend filling this out at the beginning of your notebook.
 
 ![Screenshot](documentation_images/row_plot_vocab.png)
@@ -39,7 +40,9 @@ gcv.field_layout.range_spacing=0
 gcv.field_layout.column_spacing=0
 ```
 
-**Individual plants** <a name="individual"></a> <br>
+<a name="individual"></a> <br>
+
+**Individual plants** <br>
 Your experimental units might be individual plants, like this:
 
 ![Screenshot](documentation_images/silphium_subfield.png)
@@ -55,9 +58,9 @@ gcv.create_shapes.auto_grid(img, cropto="./field_corners.geojson", outpath="./pl
 
 - **Irregularly spaced** <a name="irregular"></a> - If your individual plants are planted less uniformly, and you need the flexibility to modify the grid, PlantCV-Geospatial provides a set of steps that automatically create shapes, but give you the chance to manual change them in between steps to fit around your plants. See the [docs](InteractiveShapes.md) for the `InteractiveShapes` class for more about how this works. Briefly, you will open an interactive window where you will draw a box around your field. Then, lines will be automatically drawn forming a grid with your field dimensions (number of ranges x number of columns). You can manually move the lines until you are satisfied with their positions relative to your plants. Finally, polygons will be automatically drawn using the intersection of the grid lines. You can again manually change the position of the polygons until you are satisfied, at which point you can save the shapes to a geojson that can be used for analysis. 
 
-<br>
+<a name="rows"></a> <br>
 
-**Row crops** <a name="rows"></a> <br>
+**Row crops**<br>
 Especially in systems like small grains, your experimental units might be plots composed of rows of the same genotype or treatment. 
 Example images below are from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly). 
 
@@ -81,7 +84,7 @@ gcv.create_shapes.auto_grid(img, cropto="./field_corners.geojson", outpath="./pl
 
 - **Irregular spacing** <a name="row_irregular"></a> - If your row crops are less precisely planted, PlantCV-Geospatial has a more manual plot boundary creation method, [`create_shapes.grid_from_coords`](shapes_grid_from_coords.md) that uses points you provide describing where the corners of each plot are. This information is in a points-type geojson shapefile created by clicking on the top corner of each plot. This file can be made in a separate program, like QGIS, or using the `add_layer` and `to_points` methods of an `InteractiveShapes` class object. See an example in the [docs here](InteractiveShapes.md). 
 
-! [Screenshot](documentation_images/bisonfly_irreg.png)
+![Screenshot](documentation_images/bisonfly_irreg.png)
 
 ```python
 gcv.field_layout.range_length=3.4

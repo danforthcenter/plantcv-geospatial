@@ -12,7 +12,7 @@ If you haven't already, check out our [installation instructions](installation.m
     - [Digital Surface Models](#dsm)
     - [Radiometric calibration](#radio)
     - [Georeferencing](#georef)
-2. [Building an analysis workflow](#analysis)
+2. [Building an analysis workflow](#extract)
     - [Opening a notebook](#notebook)
     - [Reading in an image](#reading)
     - [Making plot boundaries](#plots)
@@ -36,8 +36,8 @@ Geospatial images can come from a variety of sources like drone flights, publica
 
     ![Screenshot](documentation_images/example_GCP.png)
 
-<br>
-**You have images, now what?** <a name="analysis"></a> <br>
+<br> <a name="extract"></a>
+**You have images, now what?**<br>
 A PlantCV-Geospatial analysis starts with an orthomosaic image, usually saved as a geotif with a `.tif` extension, which is output by whatever photogrammetry software you have used. Now you're ready to build an analysis workflow! 
 
 - **Open a Jupyter notebook** - <a name="notebook"></a> We recommend interacting with PlantCV-Geospatial in a Jupyter notebook. If you have followed the installation instructions and also installed Jupyter, simply run `jupyter lab` from your computer terminal. Alternatively, your favorite interactive environment running python works, too. Your first cell might look something like this:
@@ -70,7 +70,9 @@ pcv.params.debug = "plot" # For visualization
     - Height - PlantCV-Geospatial can calculate average height of plants in a plot in two ways, depending on what data you have. If you have an image of the field before plants have started growing, sometimes called a "bare ground flight," `analyze.height_subtraction` creates a Canopy Height Model (CHM) representing the height of every pixel from a timepoint with plants minus the bare ground (see [docs here](analyze_height_subtraction.md)). The CHM is then used to calculate distributions and summary statistics of height for every plot. If you do not have a bare ground flight, PlantCV-Geospatial can calculate height by assuming that, within a plot, the tallest pixels belong to the top of the plant canopy and the shortest pixels represent the soil between plants. Then, by setting a percentile cutoff for the top and bottom, and subtracting the two, `analyze.height_percentile` outputs an average value for height per plot (see [docs here](analyze_height_percentile.md)). 
 
 
-**Saving your data** <a name="save"></a>
+<a name="save"></a>
+<br>
+**Saving your data** <br>
 
 PlantCV-Geospatial uses main PlantCV's [`Outputs` class](https://docs.plantcv.org/en/stable/outputs/#class-outputs) to store the results from any of the analysis functions described above. An object containing all of your results is created automatically when you run any analysis function, along with important metadata like the date the workflow was run and the version of PlantCV you have installed. Individual plots are ID'd using the geojson plot boundary file, so the same plot will have the same label across time points. To combine data from multiple timepoints during a field season, we recommend adding a metadata term to the outputs, like in the example below:
 
