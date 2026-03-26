@@ -10,7 +10,7 @@ def shapes(img, source, dest=None, shapetype="polygon", layername="Shapes"):
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
+    img : plantcv.geospatial.images.GEO object
         The image used for clicking on points, should be from read_geotif.
         Defaults to None, only required if 'source' is a Napari view or Points object.
     source : str, Napari.viewer
@@ -42,7 +42,7 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
 
     Parameters
     ----------
-    img : plantcv.plantcv.classes.Spectral_data
+    img : plantcv.geospatial.images.GEO object
         The image used for making the Napari viewer, should be from read_geotif.
     viewer: Napari.viewer
         The viewer used to draw the shapes.
@@ -63,7 +63,7 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         shape = []
         shape_return = []
         for j in i:
-            shape.append((img.metadata["transform"]*(float(j[1]), float(j[0]))))
+            shape.append((img.transform*(float(j[1]), float(j[0]))))
             shape_return.append((float(j[1]), float(j[0])))
         features.append(shape)
         features_return.append(shape_return)
@@ -84,7 +84,7 @@ def _shape_to_geojson(img, viewer, out_path, shapetype="polygon", layername="Sha
         feature_collection['crs'] = {
             "type": "name",
             "properties": {
-                "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
+                "name": rasterio.crs.CRS.to_string(img.crs)
             }
         }
         if os.path.splitext(out_path)[1].lower() != ".geojson":
