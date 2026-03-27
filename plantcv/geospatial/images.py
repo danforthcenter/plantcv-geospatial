@@ -31,7 +31,7 @@ class GEO(Image):
     """Subclass of Image for geospatial images."""
 
     def __new__(cls, input_array: np.ndarray, filename: str, wavelengths: list,
-                default_wavelengths : list, crs : str, transform : affine.Affine):
+                default_wavelengths : list, crs : str, transform : affine.Affine, nodata : float):
         # Create an instance of Image with default attributes
         obj = Image.__new__(cls, input_array, filename)
         # Add GEO-specific attributes
@@ -39,6 +39,7 @@ class GEO(Image):
         obj.default_wavelengths = default_wavelengths
         obj.crs = crs
         obj.transform = transform
+        obj.nodata = nodata
         return obj
 
     def __init__(self, input_array: np.ndarray, filename: str, wavelengths: list,
@@ -53,6 +54,7 @@ class GEO(Image):
             self.default_wavelengths = getattr(obj, "default_wavelengths", None)
             self.crs = getattr(obj, "crs", None)
             self.transform = getattr(obj, "transform", None)
+            self.nodata = getattr(obj, "nodata", None)
 
     def get_wavelength(self, wavelength):
         """Finds channel closest to a provided numerical wavelength
@@ -89,13 +91,14 @@ class DSM(Image):
     """Subclass of Image for digital surface models."""
 
     def __new__(cls, input_array: np.ndarray, filename: str, crs : str,
-                transform : affine.Affine, cutoff : float):
+                transform : affine.Affine, cutoff : float, nodata : float):
         # Create an instance of Image with default attributes
         obj = Image.__new__(cls, input_array, filename)
         # Add HSI-specific attributes
         obj.crs = crs
         obj.transform = transform
         obj.cutoff = cutoff
+        obj.nodata = nodata
         return obj
 
     def __init__(self, input_array: np.ndarray, filename: str, crs: str,
@@ -110,6 +113,7 @@ class DSM(Image):
             self.crs = getattr(obj, "crs", None)
             self.transform = getattr(obj, "transform", None)
             self.cutoff = getattr(obj, "cutoff", None)
+            self.nodata = getattr(obj, "nodata", None)
 
     def _gray_cutoff(self):
         """Converts all pixels in a dsm above a value threshold to no data.
