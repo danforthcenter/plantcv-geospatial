@@ -33,8 +33,7 @@ class TestData:
             rgb_img.spectral file
             Contains a pickled plantcv.Spectral_data object
             Used for testing center_grid_rois,
-            _helpers, analyze.height_percentile,
-            analyze.height_subtraction
+            _helpers, analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
             Used for testing convert.points and points_to_roi_circle
@@ -85,7 +84,7 @@ class TestData:
         dsm_pickled
             dsm_test.pkl
             Pickled DSM class object
-            Used for testing 
+            Used for testing analyze.height_percentile
         """
         # Test data directory
         self.datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdata")
