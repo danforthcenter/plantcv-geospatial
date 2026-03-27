@@ -194,8 +194,8 @@ def _show_geojson(img, geojson, ids, **kwargs):
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        Spectral_data object of geotif data, used for plotting
+    img : plantcv.geospatial.images.GEO object
+        geotif data, generally from read_geotif
     geojson : str
         Path to the shape file containing the regions
     ids : list
@@ -209,15 +209,15 @@ def _show_geojson(img, geojson, ids, **kwargs):
 
     # Plot the GeoTIFF
     # Make a flipped image for graphing
-    flipped = img.array_data
-    if len(np.shape(img.pseudo_rgb)) > 2:
-        flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
-                            img.pseudo_rgb[:, :, [1]],
-                            img.pseudo_rgb[:, :, [0]]))
+    flipped = img
+    if len(np.shape(img.thumb)) > 2:
+        flipped = cv2.merge((img.thumb[:, :, [2]],
+                            img.thumb[:, :, [1]],
+                            img.thumb[:, :, [0]]))
 
     _, ax = plt.subplots(figsize=(10, 10))
-    fig_extent = plotting_extent(img.array_data[:, :, :3],
-                                 img.metadata['transform'])
+    fig_extent = plotting_extent(img[:, :, :3],
+                                 img.transform)
     # Add labels to vector features
     if params.verbose and ids is not None:
         for idx, row in bounds.iterrows():
