@@ -31,7 +31,7 @@ def test_height_percentile_with_geo_ids(test_data):
     # Read in test data
     with open(test_data.dsm_pickled, "rb") as f:
         img = pickle.load(f)
-    img.nodata = 0
+    img.nodata = None
     _ = height_percentile(dsm=img, geojson=test_data.geojson_with_id, label="test")
     assert outputs.observations["test_888"]["plant_height"]["value"] == 0
     
@@ -44,6 +44,6 @@ def test_height_percentile_with_geo_fids(test_data):
     # Read in test data
     with open(test_data.dsm_pickled, "rb") as f:
         img = pickle.load(f)
-    img.nodata = 0
+    img.nodata = None
     _ = height_percentile(dsm=img, geojson=test_data.square_crop_with_plotname, label="test")
     assert outputs.observations["test_888"]["plant_height"]["value"] == 0
