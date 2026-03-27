@@ -45,8 +45,8 @@ def _transform_geojson_crs(img, geojson):
     -----------
     geojson : str
         Path to the shapefile.
-    img : plantcv.plantcv.classes.Spectral_data
-        PlantCV Spectral class image, often from read_geotif
+    img : plantcv.geospatial.images.GEO object
+        A GEO image object returned by ``read_geotif``.
 
     Returns:
     --------
@@ -54,11 +54,9 @@ def _transform_geojson_crs(img, geojson):
     """
     gdf = geopandas.read_file(geojson)
 
-    img_crs = img.metadata['crs']
-
     # Check spectral object and geojson have the same CRS, if not then convert
-    if not gdf.crs == img_crs:
-        gdf = gdf.to_crs(crs=img_crs)
+    if not gdf.crs == img.crs:
+        gdf = gdf.to_crs(crs=img.crs)
 
     return gdf
 
@@ -196,8 +194,8 @@ def _show_geojson(img, geojson, ids, **kwargs):
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        Spectral_data object of geotif data, used for plotting
+    img : plantcv.geospatial.images.GEO object
+        geotif data, generally from read_geotif
     geojson : str
         Path to the shape file containing the regions
     ids : list
@@ -211,15 +209,15 @@ def _show_geojson(img, geojson, ids, **kwargs):
 
     # Plot the GeoTIFF
     # Make a flipped image for graphing
-    flipped = img.array_data
-    if len(np.shape(img.pseudo_rgb)) > 2:
-        flipped = cv2.merge((img.pseudo_rgb[:, :, [2]],
-                            img.pseudo_rgb[:, :, [1]],
-                            img.pseudo_rgb[:, :, [0]]))
+    flipped = img
+    if len(np.shape(img.thumb)) > 2:
+        flipped = cv2.merge((img.thumb[:, :, [2]],
+                            img.thumb[:, :, [1]],
+                            img.thumb[:, :, [0]]))
 
     _, ax = plt.subplots(figsize=(10, 10))
-    fig_extent = plotting_extent(img.array_data[:, :, :3],
-                                 img.metadata['transform'])
+    fig_extent = plotting_extent(img[:, :, :3],
+                                 img.transform)
     # Add labels to vector features
     if params.verbose and ids is not None:
         for idx, row in bounds.iterrows():

@@ -23,11 +23,11 @@ def test_geo():
     geo = GEO(input_array=np.zeros((10, 10, 3), dtype=np.uint8), filename="geo.tif", 
               wavelengths=[630, 540, 480],
               default_wavelengths=[480, 540, 630], crs = None, 
-              transform = None)
+              transform = None, nodata = None)
     assert isinstance(geo, GEO)
 
 def test_dsm():
     """Test creating a DSM class image."""
     dsm = DSM(input_array=np.zeros((10, 10), dtype=np.float32), filename="dsm.tif", 
-              crs = None, transform = None, cutoff = 1.0)
+              crs = None, transform = None, cutoff = 1.0, nodata = None)
     assert isinstance(dsm, DSM)

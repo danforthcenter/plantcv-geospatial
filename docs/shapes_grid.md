@@ -5,7 +5,7 @@
 **returns** figure
 
 - **Parameters:**
-    - img - Spectral_Data object of geotif data, used for plotting a debug image, likely read in with [`read.geotif`](read_geotif.md)
+    - img - GEO image object, used for plotting a debug image, likely read in with [`geo.read_geotif`](read_geotif.md)
     - field_corners_path - Path to GeoJSON/shapefile containing four corner points (used to determine polygon directions, and the output CRS)
     - out_path - Path to save the geojson shapefile. Should be ".geojson" file type. 
 	- ids - Optional IDs to label the geojson plots.

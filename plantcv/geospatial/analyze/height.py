@@ -16,8 +16,8 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
 
     Parameters
     ----------
-    dsm : plantcv.plantcv.classes.Spectral_data
-        Spectral_data object of geotif data, used for affine metadata
+    dsm : plantcv.geospatial.images.DSM object
+        Digital surface model data, generally from read_geotif
     geojson : str
         Path to the shape file containing the regions for analysis
     lower : int, optional
@@ -37,26 +37,26 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
     if label is None:
         label = params.sample_label
     # DSM tifs contain just one band of data, so make the array 2D
-    dsm_data = dsm.array_data[:, :, 0]
+    dsm_data = dsm[:, :, 0]
     # Cast to float since zonal_stats gives overflow error on uint8 data
     dsm_data = dsm_data.astype(np.float32)
 
-    if dsm.metadata['nodata'] is not None:
-        nodata_value = dsm.metadata['nodata']
+    if dsm.nodata is not None:
+        nodata_value = dsm.nodata
     else:
         nodata_value = -999
     # Scale of the data
-    scale = dsm.metadata["crs"].linear_units
+    scale = dsm.crs.linear_units
 
     # Vectorize the calculation of mean elevation per region
     lower = "percentile_" + str(lower)
     region_lower_avgs = zonal_stats(geojson, dsm_data,
-                                    affine=dsm.metadata["transform"],
+                                    affine=dsm.transform,
                                     nodata=nodata_value, stats=lower)
     # Vectorize the calculation of mean elevation per region
     upper = "percentile_" + str(upper)
     region_upper_avgs = zonal_stats(geojson, dsm_data,
-                                    affine=dsm.metadata["transform"],
+                                    affine=dsm.transform,
                                     nodata=nodata_value, stats=upper)
     # Gather plot IDs from the geojson
     ids = _gather_ids(geojson=geojson)
