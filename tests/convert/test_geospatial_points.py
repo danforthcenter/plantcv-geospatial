@@ -21,7 +21,7 @@ def test_geospatial_points_from_napari_to_geojson_napari(test_data, tmpdir):
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
     viewer = napari.Viewer(show=False)
-    viewer.add_image(img.pseudo_rgb)
+    viewer.add_image(img.thumb)
     viewer.add_points()
     filename = os.path.join(cache_dir, 'test_out.geojson')
     _ = points(img=img, source=viewer, dest=filename)

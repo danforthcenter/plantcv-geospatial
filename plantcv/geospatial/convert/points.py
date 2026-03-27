@@ -110,7 +110,6 @@ def _geojson_to_points(img, filename):
         Pixel coordinates as a list of ``(col, row)`` integer tuples,
         one per point feature in the input file.
     """
-
     coord = []
     with fiona.open(filename, 'r') as shapefile:
         for row in shapefile:
