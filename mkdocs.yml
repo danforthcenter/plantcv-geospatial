@@ -10,6 +10,8 @@ nav:
 - Home: index.md
 - Documentation:
   - 'Installation': installation.md
+  - 'Getting Started': getting_started.md
+  - 'Plot Boundary Guide': plot_boundary_guide.md
   - 'Change Log': changelog.md
   - 'Contributing':
     - 'Contributing Guide': CONTRIBUTING.md
