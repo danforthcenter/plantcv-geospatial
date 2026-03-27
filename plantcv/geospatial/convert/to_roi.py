@@ -14,8 +14,8 @@ def to_roi(img, geojson, radius=None):
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        A spectral object from read.geotif.
+    img : plantcv.geospatial.images.GEO object
+        A GEO image object returned by ``read_geotif``.
     geojson : str
         Path to the shape file containing the points or polygons.
     radius : optional float
@@ -35,7 +35,7 @@ def to_roi(img, geojson, radius=None):
         rois = _polygon_to_roi(img, geojson)
 
     # Draw rois if requested
-    _draw_roi(img=img.pseudo_rgb, roi_contour=rois)
+    _draw_roi(img=img.thumb, roi_contour=rois)
 
     return rois
 
@@ -45,8 +45,8 @@ def _points_to_circular_rois(img, geojson, radius):
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        A spectral object from read.geotif.
+    img : plantcv.geospatial.images.GEO object
+        A GEO image object returned by ``read_geotif``.
     geojson : str
         Path to the shape file containing the points.
     radius : float
@@ -84,8 +84,8 @@ def _polygon_to_roi(img, geojson):
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        A spectral object from read.geotif.
+    img : plantcv.geospatial.images.GEO object
+        A GEO image object returned by ``read_geotif``.
     geojson : str
         Path to the shape file containing the polygons.
 
