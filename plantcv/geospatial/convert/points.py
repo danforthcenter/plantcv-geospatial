@@ -10,7 +10,7 @@ def points(img, source, dest=None, layername="Points"):
 
     Parameters
     ----------
-    img : plantcv.plantcv.classes.Spectral_data
+    img : plantcv.geospatial.images.GEO object
         The image used for clicking on points, or that points from a file should be transformed to match,
         should be from read_geotif.
     source : str, Napari.viewer, or plantcv.annotate.classes.Points object.
@@ -45,7 +45,7 @@ def _points_to_geojson(img, viewer, out_path, layername):
 
     Parameters
     ----------
-    img : plantcv.plantcv.classes.Spectral_data
+    img : plantcv.geospatial.images.GEO object
         The image used for clicking on points, should be from read_geotif.
     viewer: Napari.viewer or plantcv.annotate.classes.Points object.
         The viewer used to make the clicks.
@@ -64,11 +64,11 @@ def _points_to_geojson(img, viewer, out_path, layername):
     """
     # Napari output, points must be reversed
     if hasattr(viewer, 'layers'):
-        pts = [(img.metadata["transform"]*(float(i[1]), float(i[0]))) for i in viewer.layers[layername].data]
+        pts = [(img.transform*(float(i[1]), float(i[0]))) for i in viewer.layers[layername].data]
         pts_return = [(float(i[1]), float(i[0])) for i in viewer.layers[layername].data]
     # Annotate output
     elif hasattr(viewer, 'coords'):
-        pts = [(img.metadata["transform"]*i) for i in viewer.coords['default']]
+        pts = [(img.transform*i) for i in viewer.coords['default']]
         pts_return = viewer.coords['default']
     else:
         fatal_error("Viewer class type not recognized. Currently, Napari and PlantCV-annotate viewers supported.")
@@ -80,7 +80,7 @@ def _points_to_geojson(img, viewer, out_path, layername):
         feature_collection['crs'] = {
             "type": "name",
             "properties": {
-                "name": rasterio.crs.CRS.to_string(img.metadata["crs"])
+                "name": rasterio.crs.CRS.to_string(img.crs)
             }
         }
         if os.path.splitext(out_path)[1].lower() != ".geojson":
@@ -99,7 +99,7 @@ def _geojson_to_points(img, filename):
 
     Parameters
     ----------
-    img : plantcv.plantcv.classes.Spectral_data
+    img : plantcv.geospatial.images.GEO object
         A spectral image object returned by ``read_geotif``.
     filename : str
         Path to the shapefile or GeoJSON file containing points.
@@ -110,15 +110,14 @@ def _geojson_to_points(img, filename):
         Pixel coordinates as a list of ``(col, row)`` integer tuples,
         one per point feature in the input file.
     """
-    geo_transform = img.metadata["transform"]
 
     coord = []
     with fiona.open(filename, 'r') as shapefile:
         for row in shapefile:
             if type((row.geometry["coordinates"])) is list:
-                pixel_point = ~(geo_transform) * (row.geometry["coordinates"][0])
+                pixel_point = ~(img.transform) * (row.geometry["coordinates"][0])
             if type((row.geometry["coordinates"])) is tuple:
-                pixel_point = ~(geo_transform) * (row.geometry["coordinates"])
+                pixel_point = ~(img.transform) * (row.geometry["coordinates"])
             rounded = (int(pixel_point[0]), int(pixel_point[1]))
             coord.append(rounded)
 

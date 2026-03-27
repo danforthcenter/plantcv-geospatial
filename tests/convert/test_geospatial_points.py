@@ -3,7 +3,7 @@
 import pytest
 import os
 import napari
-import joblib
+import dill as pickle
 from plantcv.geospatial.convert.points import points
 
 # Set up fake class just for testing the annotate output
@@ -18,7 +18,8 @@ class FakePoints:
 def test_geospatial_points_from_napari_to_geojson_napari(test_data, tmpdir):
     """Test for plantcv-geospatial."""
     cache_dir = tmpdir.mkdir("cache")
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     viewer = napari.Viewer(show=False)
     viewer.add_image(img.pseudo_rgb)
     viewer.add_points()
@@ -30,7 +31,8 @@ def test_geospatial_points_from_napari_to_geojson_napari(test_data, tmpdir):
 def test_geospatial_points_from_napari_to_geojson_an(test_data, tmpdir):
     """Test for plantcv-geospatial."""
     cache_dir = tmpdir.mkdir("cache")
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     viewer = FakePoints()
     viewer.coords["default"] = []
     filename = os.path.join(cache_dir, 'test_out.geojson')
@@ -41,7 +43,8 @@ def test_geospatial_points_from_napari_to_geojson_an(test_data, tmpdir):
 def test_geospatial_points_from_napari_to_geojson_badviewer(test_data, tmpdir):
     """Test for plantcv-geospatial."""
     cache_dir = tmpdir.mkdir("cache")
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     viewer = []
     filename = os.path.join(cache_dir, 'test_out.geojson')
     with pytest.raises(RuntimeError):
@@ -51,7 +54,8 @@ def test_geospatial_points_from_napari_to_geojson_badviewer(test_data, tmpdir):
 def test_geospatial_points_from_napari_to_geojson_badfilename(test_data, tmpdir):
     """Test for plantcv-geospatial."""
     cache_dir = tmpdir.mkdir("cache")
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     viewer = FakePoints()
     viewer.coords["default"] = []
     filename = os.path.join(cache_dir, 'test_out.txt')
@@ -61,7 +65,8 @@ def test_geospatial_points_from_napari_to_geojson_badfilename(test_data, tmpdir)
 
 def test_geospatial_points_from_geojson(test_data):
     """Test for plantcv-geospatial."""
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     coords = points(img=img, source=test_data.pts_geojson)
     assert len(coords) == 4
 
@@ -69,6 +74,7 @@ def test_geospatial_points_from_geojson(test_data):
 def test_geospatial_single_points_from_geojson(test_data):
     """Test for plantcv-geospatial."""
     # read in small 5-band tif image
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     coords = points(img=img, source=test_data.single_pts_geojson)
     assert len(coords) == 8

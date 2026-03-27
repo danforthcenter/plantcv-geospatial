@@ -21,7 +21,7 @@ def test_geospatial_polygon_to_roi(test_data):
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
     roi = to_roi(img=img, geojson=test_data.square_crop)
-    assert len(roi.contours[0]) == 4
+    assert len(roi.contours[0][0]) == 4
 
 
 def test_geospatial_points_to_roi_badinput(test_data):

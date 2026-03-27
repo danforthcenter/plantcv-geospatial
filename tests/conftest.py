@@ -32,10 +32,9 @@ class TestData:
         rgb_pickled        : str
             rgb_img.spectral file
             Contains a pickled plantcv.Spectral_data object
-            Used for testing center_grid_rois, points_to_geojson, transform_points,
-            _helpers, classes.InteractiveShapes,
-            create_shapes.auto_grid, create_shapes.grid_from_coords, analyze.height_percentile, analyze.coverage,
-            analyze.height_subtraction
+            Used for testing center_grid_rois,
+            _helpers, create_shapes.auto_grid, create_shapes.grid_from_coords, analyze.height_percentile,
+            analyze.coverage, analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
             Used for testing convert.points and points_to_roi_circle
@@ -80,7 +79,8 @@ class TestData:
         geo_pickled
             geo_test.pkl
             Pickled GEO class object
-            Used for testing transform.polygons, convert.shapes, conver.to_roi, transform_polygons
+            Used for testing transform.polygons, convert.shapes, conver.to_roi, transform_polygons,
+            classes.InteractiveShapes, convert.points
         dsm_pickled
             dsm_test.pkl
             Pickled DSM class object

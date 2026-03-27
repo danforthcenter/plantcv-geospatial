@@ -31,7 +31,7 @@ class InteractiveShapes:
 
         self.img = img
         self.layer_dict = {}
-        self.viewer.add_image(img.pseudo_rgb)
+        self.viewer.add_image(img.thumb)
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
