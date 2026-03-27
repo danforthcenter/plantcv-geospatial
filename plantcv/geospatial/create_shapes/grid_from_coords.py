@@ -12,8 +12,8 @@ def grid_from_coords(img, field_corners_path, plot_geojson_path, out_path, ids=N
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        Spectral_data object of geotif data, used for plotting
+img : plantcv.geospatial.images.GEO object
+        geotif data, generally from read_geotif, used for plotting
     field_corners_path : str
         Path to Fiona formatted shapefile (geojson file) containing four corner points
     plot_geojson_path : str
