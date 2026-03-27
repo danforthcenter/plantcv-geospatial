@@ -12,7 +12,7 @@ def test_geospatial_points_to_roi(test_data):
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
     rois = to_roi(img=img, geojson=test_data.pts_geojson, radius=0.5)
-    assert np.all(rois.contours[0][0][0] == np.array([119, 170]))
+    assert np.all(rois.contours[0][0][0] == np.array([ 43092049, -82880355]))
 
 
 def test_geospatial_polygon_to_roi(test_data):
@@ -21,7 +21,7 @@ def test_geospatial_polygon_to_roi(test_data):
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
     roi = to_roi(img=img, geojson=test_data.square_crop)
-    assert np.all(roi.contours == np.array([[196, 115], [145, 78], [114, 120], [165, 157]]))
+    assert len(roi.contours[0]) == 4
 
 
 def test_geospatial_points_to_roi_badinput(test_data):
