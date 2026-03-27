@@ -45,8 +45,8 @@ def _transform_geojson_crs(img, geojson):
     -----------
     geojson : str
         Path to the shapefile.
-    img : plantcv.plantcv.classes.Spectral_data
-        PlantCV Spectral class image, often from read_geotif
+    img : plantcv.geospatial.images.GEO object
+        A GEO image object returned by ``read_geotif``.
 
     Returns:
     --------
@@ -54,11 +54,9 @@ def _transform_geojson_crs(img, geojson):
     """
     gdf = geopandas.read_file(geojson)
 
-    img_crs = img.metadata['crs']
-
     # Check spectral object and geojson have the same CRS, if not then convert
-    if not gdf.crs == img_crs:
-        gdf = gdf.to_crs(crs=img_crs)
+    if not gdf.crs == img.crs:
+        gdf = gdf.to_crs(crs=img.crs)
 
     return gdf
 

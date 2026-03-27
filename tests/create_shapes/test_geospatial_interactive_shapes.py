@@ -1,7 +1,7 @@
 """Tests for geospatial.classes.InteractiveShapes"""
 
 import pytest
-import joblib
+import dill as pickle
 import numpy as np
 from plantcv.geospatial.create_shapes.interactive_shapes import InteractiveShapes
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _lineintersect
@@ -13,7 +13,8 @@ def test_geospatial_interactive_grid(test_data):
                       [136.25692447, 203.82241079],
                       [213.85434974, 139.64724287],
                       [140.45137989,  59.95258989]])
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
     editor.viewer.add_shapes(field, name="field_bounds")
     editor.layer_dict["field_boundary"] = "field_bounds"
@@ -28,14 +29,16 @@ def test_geospatial_interactive_grid(test_data):
 
 def test_geospatial_interactive_badviewer(test_data):
     """Test for plantcv-geospatial."""
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     with pytest.raises(RuntimeError):
         _ = InteractiveShapes(img, viewer_type="nonsense", show=False)
 
 
 def test_geospatial_interactive_addshapes(test_data):
     """Test for plantcv-geospatial."""
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     editor = InteractiveShapes(img, show=False)
     editor.add_layer()
     assert editor.device == 1
@@ -44,7 +47,8 @@ def test_geospatial_interactive_addshapes(test_data):
 
 def test_geospatial_interactive_addpoints(test_data):
     """Test for plantcv-geospatial."""
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     editor = InteractiveShapes(img, show=False)
     editor.add_layer(layer_type="points", layername="Points")
     assert editor.device == 1
@@ -53,7 +57,8 @@ def test_geospatial_interactive_addpoints(test_data):
 
 def test_geospatial_interactive_wronglayername(test_data):
     """Test for plantcv-geospatial."""
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     editor = InteractiveShapes(img, show=False)
     with pytest.raises(RuntimeError):
         editor.add_layer(layer_type="nonsense")
@@ -71,7 +76,8 @@ def test_geospatial_interactive_to_shapes(test_data):
                       [136.25692447, 203.82241079],
                       [213.85434974, 139.64724287],
                       [140.45137989,  59.95258989]])
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
     editor.viewer.add_shapes(field, name="field_bounds")
     editor.layer_dict["field_boundary"] = "field_bounds"
@@ -88,7 +94,8 @@ def test_geospatial_interactive_to_points(test_data):
                       [136.25692447, 203.82241079],
                       [213.85434974, 139.64724287],
                       [140.45137989,  59.95258989]])
-    img = joblib.load(test_data.rgb_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
     editor.viewer.add_shapes(field, name="field_bounds")
     editor.layer_dict["field_boundary"] = "field_bounds"

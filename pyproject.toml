@@ -20,7 +20,8 @@ dependencies = [
     "rasterstats",
     "joblib",
     "netCDF4",
-    "altair < 6"
+    "altair < 6",
+    "dill"
 ]
 requires-python = ">=3.11"
 authors = [
