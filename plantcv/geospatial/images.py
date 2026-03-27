@@ -43,7 +43,7 @@ class GEO(Image):
         return obj
 
     def __init__(self, input_array: np.ndarray, filename: str, wavelengths: list,
-                 default_wavelengths: list, crs: str, transform: affine.Affine):
+                 default_wavelengths: list, crs: str, transform: affine.Affine, nodata: float):
         super().__init__()
         self.thumb = self._create_thumb()
 
@@ -102,7 +102,7 @@ class DSM(Image):
         return obj
 
     def __init__(self, input_array: np.ndarray, filename: str, crs: str,
-                 transform: affine.Affine, cutoff: float):
+                 transform: affine.Affine, cutoff: float, nodata: float):
         super().__init__()
         self.data_array = self._gray_cutoff()
         self.thumb = self._create_thumb()
