@@ -7,7 +7,7 @@ Vectorize approach to pixel count and percent coverage per region in a shapefile
 **returns** Debug image with regions drawn on the input image.
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
+    - img - GEO image object, likely read in with [`geo.read_geotif`](read_geotif.md)
     - bin_mask - Binary mask, numpy array
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.
 
