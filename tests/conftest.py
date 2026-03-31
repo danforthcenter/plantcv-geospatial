@@ -79,7 +79,7 @@ class TestData:
             geo_test.pkl
             Pickled GEO class object
             Used for testing transform.polygons, convert.shapes, convert.to_roi, transform_polygons,
-            classes.InteractiveShapes, convert.points
+            classes.InteractiveShapes, convert.points, analyze.color
         dsm_pickled
             dsm_test.pkl
             Pickled DSM class object
@@ -91,7 +91,8 @@ class TestData:
         poly_crop
             single_crop.geojson
             Single polygon shapefile
-            Using for testing transform_polygons, analyze.coverage, analyze.height_percentile
+            Using for testing transform_polygons, analyze.coverage, analyze.height_percentile,
+            analyze.color
         poly_crop_plotid
             single_crop_plotid.geojson
             Single polygon shapefile with plot_ids property
