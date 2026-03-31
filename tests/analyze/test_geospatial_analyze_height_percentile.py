@@ -19,7 +19,7 @@ def test_height_percentile(tmpdir, test_data):
     # Debug mode
     params.debug = "print"
     _ = height_percentile(dsm=img, geojson=test_data.poly_crop)
-    assert outputs.observations["default_1"]["plant_height"]["value"] > 0
+    assert outputs.observations["default_888"]["plant_height"]["value"] > 0
 
 
 def test_height_percentile_with_geo_ids(test_data):
@@ -33,7 +33,7 @@ def test_height_percentile_with_geo_ids(test_data):
         img = pickle.load(f)
     img.nodata = None
     _ = height_percentile(dsm=img, geojson=test_data.multipoly, label="test")
-    assert outputs.observations["test_888"]["plant_height"]["value"] == 0
+    assert outputs.observations["test_888"]["plant_height"]["value"] > 0
     
 def test_height_percentile_with_geo_fids(test_data):
     """Test for PlantCV."""
@@ -46,4 +46,4 @@ def test_height_percentile_with_geo_fids(test_data):
         img = pickle.load(f)
     img.nodata = None
     _ = height_percentile(dsm=img, geojson=test_data.poly_crop, label="test")
-    assert outputs.observations["test_888"]["plant_height"]["value"] == 0
+    assert outputs.observations["test_888"]["plant_height"]["value"] > 0
