@@ -78,13 +78,25 @@ class TestData:
         geo_pickled
             geo_test.pkl
             Pickled GEO class object
-            Used for testing transform.polygons, convert.shapes, conver.to_roi, transform_polygons,
-            classes.InteractiveShapes, convert.points, analyze.coverage, create_shapes.auto_grid,
-            create_shapes.grid_from_coords
+            Used for testing transform.polygons, convert.shapes, convert.to_roi, transform_polygons,
+            classes.InteractiveShapes, convert.points
         dsm_pickled
             dsm_test.pkl
             Pickled DSM class object
-            Used for testing analyze.height_percentile
+            Used for testing 
+        multipoly
+            multipoly.geojson
+            Multiple polygon shapefile with "ID" 
+            Used for testing transform_polygons
+        poly_crop
+            single_crop.geojson
+            Single polygon shapefile
+            Using for testing transform_polygons
+        single_points
+            single_points.geojson
+            Points shapefile
+            Used for testing convert.to_roi
+
         """
         # Test data directory
         self.datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testdata")
@@ -133,6 +145,12 @@ class TestData:
         self.geo_pickled = os.path.join(self.datadir, "geo_test.pkl")
         # Pickled DSM object
         self.dsm_pickled = os.path.join(self.datadir, "dsm_test.pkl")
+        # Multiple polygon geojson
+        self.multipoly = os.path.join(self.datadir, "multipoly.geojson")
+        # Single polygon geojson
+        self.poly_crop = os.path.join(self.datadir, "single_crop.geojson")
+        # Points geojson
+        self.single_points = os.path.join(self.datadir, "single_points.geojson")
 
 @pytest.fixture(scope="session")
 def test_data():
