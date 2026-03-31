@@ -18,5 +18,5 @@ def test_geospatial_transform_single_polygons(test_data):
     # read in small 5-band tif image
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
-    coords = transform_polygons(img=img, geojson=test_data.multipoly)
+    coords = transform_polygons(img=img, geojson=test_data.multipolygon)
     assert coords[0] == [[1601, 350], [1931, 350], [1931, 652], [1601, 652]]
