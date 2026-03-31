@@ -87,11 +87,11 @@ class TestData:
         multipoly
             multipoly.geojson
             Multiple polygon shapefile with "ID" 
-            Used for testing transform_polygons
+            Used for testing transform_polygons, analyze.coverage, analyze.height_percentile
         poly_crop
             single_crop.geojson
             Single polygon shapefile
-            Using for testing transform_polygons
+            Using for testing transform_polygons, analyze.coverage, analyze.height_percentile
         single_points
             single_points.geojson
             Points shapefile
