@@ -39,8 +39,8 @@ def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, i
 
     Parameters
     ----------
-    img : plantcv.plantcv.classes.Spectral_data
-        Spectral_Data object of geotif data, generated using [read_geotif]
+    img : plantcv.geospatial.images.GEO object
+        geotif data, generally from read_geotif, used for affine metadata
     mask : np.ndarray
         Binary mask with objects of interest segmented
     geojson : str
@@ -63,7 +63,7 @@ def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, i
         channel = channel.astype(np.float32)
         channel[mask == 0] = -999
         color_values = zonal_stats(geojson, channel,
-                                   affine=img.metadata["transform"],
+                                   affine=img.transform,
                                    nodata=-999, stats=['mean', 'std'],
                                    add_stats={'histogram': lambda x: _histogram_stats(x, bins=bins, histrange=histrange)})
         for i, id in enumerate(ids):
@@ -94,8 +94,8 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
 
     Parameters
     ----------
-    img : plantcv.plantcv.classes.Spectral_data
-        Spectral_Data object of geotif data, generated using [read_geotif]
+    img : plantcv.geospatial.images.GEO object
+        geotif data, generally from read_geotif, used for affine metadata
     bin_mask : np.ndarray
         Binary mask with objects of interest segmented
     geojson : str
@@ -107,17 +107,13 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     label : str, optional
         Optional label for plots, by default None
 
-    Returns
-    -------
-    plantcv.plantcv.classes.Spectral_data
-        The input spectral object.
     """
     # Set label to params.sample_label if None
     if label is None:
         label = params.sample_label
 
     # Make masked image to convert to other colorspaces
-    masked = cv2.bitwise_and(img.pseudo_rgb, img.pseudo_rgb, mask=bin_mask)
+    masked = cv2.bitwise_and(img.thumb, img.thumb, mask=bin_mask)
 
     # Always output hue circular stats:
 
@@ -133,7 +129,7 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
 
     hcm = []
     hue_stats = zonal_stats(geojson, h,
-                            affine=img.metadata["transform"],
+                            affine=img.transform,
                             nodata=-999, stats=['mean'],
                             add_stats={'hue_stats': partial(_hue_circ_stats)})
 
@@ -179,4 +175,3 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
 
     _debug(visual=hue_chart, filename=os.path.join(params.debug_outdir, label + '_hue_circular_mean.png'))
 
-    return img
