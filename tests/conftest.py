@@ -92,6 +92,10 @@ class TestData:
             single_crop.geojson
             Single polygon shapefile
             Using for testing transform_polygons, analyze.coverage, analyze.height_percentile
+        poly_crop_plotid
+            single_crop_plotid.geojson
+            Single polygon shapefile with plot_ids property
+            Using for testing analyze.height_percentile, needed for coverage of _helpers._gather_ids
         single_points
             single_points.geojson
             Points shapefile
@@ -149,6 +153,8 @@ class TestData:
         self.multipoly = os.path.join(self.datadir, "multipoly.geojson")
         # Single polygon geojson
         self.poly_crop = os.path.join(self.datadir, "single_crop.geojson")
+        # Single polygon geojson with plot_id property
+        self.poly_crop_plotid = os.path.join(self.datadir, "single_crop_plotid.geojson")
         # Points geojson
         self.single_points = os.path.join(self.datadir, "single_points.geojson")
 

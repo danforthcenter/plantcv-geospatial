@@ -45,5 +45,5 @@ def test_height_percentile_with_geo_fids(test_data):
     with open(test_data.dsm_pickled, "rb") as f:
         img = pickle.load(f)
     img.nodata = None
-    _ = height_percentile(dsm=img, geojson=test_data.poly_crop, label="test")
+    _ = height_percentile(dsm=img, geojson=test_data.poly_crop_plotid, label="test")
     assert outputs.observations["test_888"]["plant_height"]["value"] > 0
