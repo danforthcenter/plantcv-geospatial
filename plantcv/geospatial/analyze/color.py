@@ -174,4 +174,3 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
                                                 y=alt.Y('count()', title='Frequency'))
 
     _debug(visual=hue_chart, filename=os.path.join(params.debug_outdir, label + '_hue_circular_mean.png'))
-
