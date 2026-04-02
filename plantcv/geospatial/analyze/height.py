@@ -118,23 +118,23 @@ def height_subtraction(dsm1, dsm0):
 
     Parameters
     ----------
-    dsm1 : plantcv.plantcv.classes.Spectral_data
-        Spectral_data object of geotif DSM data - DSM with plant height
-    dsm0 : plantcv.plantcv.classes.Spectral_data
-        Spectral_data object of geotif DSM data - DSM of bare ground
+    dsm1 : plantcv.geospatial.images.DSM object
+        Digital surface model data, generally from read_geotif, DSM with plant height
+    dsm0 : plantcv.geospatial.images.DSM object
+        Digital surface model data, generally from read_geotif, DSM of bare ground
 
     Returns
     -------
-    subtracted_dsm : plantcv.plantcv.classes.Spectral_data
-        New Spectral_data object with dsm1 - dsm0
+    subtracted_dsm : plantcv.geospatial.images.DSM object
+        New DSM image object with dsm1 - dsm0
     """
     # Check the coordinate reference system (CRS) is the same for both of the DSMs
-    if dsm1.metadata["crs"] != dsm0.metadata["crs"]:
+    if dsm1.crs != dsm0.crs:
         fatal_error("The two input DSMs do not have the same coordinate reference system (CRS).")
 
     # DSM tifs contain just one band of data, so make the array 2D
-    dsm1_data = dsm1.array_data[:, :, 0]
-    dsm0_data = dsm0.array_data[:, :, 0]
+    dsm1_data = np.squeeze(dsm1)
+    dsm0_data = np.squeeze(dsm0)
 
     # Check for equal arrays
     if np.array_equal(dsm1_data, dsm0_data, equal_nan=True):
@@ -146,28 +146,8 @@ def height_subtraction(dsm1, dsm0):
 
     # Perform the subtraction
     final_data = dsm1_data - dsm0_data
-    # Scale visualization
-    final_vis = np.nan_to_num(final_data, nan=0.0)
-    debug = params.debug
-    params.debug = None
-    final_vis = rescale(final_vis, min_value=0, max_value=255)
-    params.debug = debug
+    # Create thumb
+    final_data.thumb = final_data._create_thumb()
 
-    # Convert to uint8
-    pseudo_rgb = final_vis.astype(np.uint8)
-
-    # Make a Spectral_data instance before calculating a pseudo-rgb
-    spectral_array = Spectral_data(array_data=final_data,
-                                   max_wavelength=0,
-                                   min_wavelength=0,
-                                   max_value=np.max(final_vis), min_value=np.min(final_vis),
-                                   d_type=np.float32,
-                                   wavelength_dict=None, samples=int(np.shape(final_vis)[1]),
-                                   lines=int(np.shape(final_vis)[0]), interleave=None,
-                                   wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=pseudo_rgb, filename=None,
-                                   default_bands=None,
-                                   metadata=dsm0.metadata)
-
-    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
-    return spectral_array
+    _debug(visual=final_data.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
+    return final_data
