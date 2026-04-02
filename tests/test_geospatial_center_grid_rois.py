@@ -1,6 +1,5 @@
 """Tests for geospatial.center_grid_rois"""
 
-import napari
 import dill as pickle
 import pytest
 import numpy as np
@@ -10,7 +9,6 @@ from plantcv.geospatial.create_shapes.interactive_shapes import InteractiveShape
 
 def test_geospatial_center_rois_none(test_data):
     """Test for plantcv-geospatial."""
-    field = np.array([])
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
     editor = InteractiveShapes(img, show=False)
