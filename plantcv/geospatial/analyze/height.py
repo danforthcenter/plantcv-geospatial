@@ -147,6 +147,7 @@ def height_subtraction(dsm1, dsm0):
     # Perform the subtraction
     final_data = dsm1_data - dsm0_data
     # Create thumb
+    final_data.data_array = final_data._gray_cutoff()
     final_data.thumb = final_data._create_thumb()
 
     _debug(visual=final_data.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
