@@ -145,7 +145,7 @@ def height_subtraction(dsm1, dsm0):
         fatal_error("Input DSMs do not have same shape, can be changed with PCV 'resize' function.")
 
     # Perform the subtraction
-    final_data = dsm1_data - dsm0_data
+    final_data = np.subtract(dsm1_data, dsm0_data)
     # Create thumb
     final_data.data_array = final_data._gray_cutoff()
     final_data.thumb = final_data._create_thumb()
