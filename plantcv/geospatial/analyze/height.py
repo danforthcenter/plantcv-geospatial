@@ -1,8 +1,7 @@
 # Analyze Digital Surface Model (DSM) over many regions
 from plantcv.geospatial._helpers import _gather_ids, _show_geojson
-from plantcv.plantcv.classes import Spectral_data
+from plantcv.geospatial.images import DSM
 from plantcv.plantcv import outputs, params, fatal_error
-from plantcv.plantcv.transform import rescale
 from plantcv.plantcv._debug import _debug
 from rasterstats import zonal_stats
 import numpy as np
@@ -133,8 +132,9 @@ def height_subtraction(dsm1, dsm0):
         fatal_error("The two input DSMs do not have the same coordinate reference system (CRS).")
 
     # DSM tifs contain just one band of data, so make the array 2D
-    dsm1_data = np.squeeze(dsm1)
-    dsm0_data = np.squeeze(dsm0)
+    # Needs to be asarray for subtraction to work
+    dsm1_data = np.asarray(np.squeeze(dsm1))
+    dsm0_data = np.asarray(np.squeeze(dsm0))
 
     # Check for equal arrays
     if np.array_equal(dsm1_data, dsm0_data, equal_nan=True):
@@ -146,9 +146,9 @@ def height_subtraction(dsm1, dsm0):
 
     # Perform the subtraction
     final_data = np.subtract(dsm1_data, dsm0_data)
-    # Create thumb
-    final_data.data_array = final_data._gray_cutoff()
-    final_data.thumb = final_data._create_thumb()
+    # Convert back to DSM object
+    chm = DSM(input_array = final_data, filename = None, crs  = dsm1.crs,
+                transform = dsm1.transform, cutoff = dsm1.cutoff, nodata = dsm1.cutoff)
 
-    _debug(visual=final_data.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
-    return final_data
+    _debug(visual=chm.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
+    return chm
