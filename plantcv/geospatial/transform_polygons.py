@@ -8,8 +8,8 @@ def transform_polygons(img, geojson):
 
     Parameters
     ----------
-    img : plantcv.Spectral_data object
-        A spectral image object returned by ``read_geotif``.
+    img : plantcv.geospatial.images.GEO object
+        A GEO image object returned by ``read_geotif``.
     geojson : str
         Path to the shapefile or GeoJSON file containing polygon or multipolygon geometries.
 
@@ -20,7 +20,7 @@ def transform_polygons(img, geojson):
         of ``[col, row]`` integer pairs. The closing vertex of each polygon
         is dropped to avoid duplication.
     """
-    geo_transform = img.metadata["transform"]
+    geo_transform = img.transform
     coord = []
     with fiona.open(geojson, 'r') as shapefile:
         for row in shapefile:

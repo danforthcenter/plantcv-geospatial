@@ -7,7 +7,7 @@ Transform features from shapefile/GeoJSON to Regions of Interest (ROIs). If shap
 **returns** list of ROIs (`plantcv.Objects` instance)
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`geo.read.geotif`](read_geotif.md)
+    - img -  GEO image object, likely read in with [`gcv.read_geotif`](read_geotif.md).
     - geojson - Path to the shapefile/GeoJSON containing the points or polygons.
     - radius - Optional radius of circular ROIs to get created,
                 in units matching the coordinate system of the image.
