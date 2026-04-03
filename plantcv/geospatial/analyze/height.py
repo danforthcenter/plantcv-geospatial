@@ -1,6 +1,5 @@
 # Analyze Digital Surface Model (DSM) over many regions
 from plantcv.geospatial._helpers import _gather_ids, _show_geojson
-from plantcv.geospatial.images import DSM
 from plantcv.plantcv import outputs, params, fatal_error
 from plantcv.plantcv._debug import _debug
 from rasterstats import zonal_stats
@@ -147,9 +146,6 @@ def height_subtraction(dsm1, dsm0):
     final_data.transform = dsm1.transform
     final_data.cutoff = dsm1.cutoff
     final_data.nodata = dsm1.nodata
-    
-    final_data.data_array = final_data._gray_cutoff()
-    final_data.thumb = final_data._create_thumb()
 
     _debug(visual=final_data.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
     return final_data

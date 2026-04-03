@@ -20,19 +20,6 @@ def test_height_subtraction(test_data):
     test = height_subtraction(dsm1=dsm, dsm0=dsm)
     assert np.nansum(test) == 0
 
-#def test_height_subtraction_metadata(test_data):
-#    """Test for PlantCV."""
-#    # Clear previous outputs
-#    outputs.clear()
-#    # Debug mode
-#    params.debug = "plot"
-#    # Read in test data
-#    dsm = joblib.load(test_data.rgb_pickled)
-#    # Setting metadata
-#    dsm.metadata['nodata'] = 1
-#    test = height_subtraction(dsm1=dsm, dsm0=dsm)
-#    assert np.sum(test.array_data) == 0
-
 def test_height_subtraction_unequal_crs(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
