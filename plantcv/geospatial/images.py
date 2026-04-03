@@ -114,8 +114,6 @@ class DSM(Image):
             self.transform = getattr(obj, "transform", None)
             self.cutoff = getattr(obj, "cutoff", None)
             self.nodata = getattr(obj, "nodata", None)
-            self.data_array = self._gray_cutoff()
-            self.thumb = self._create_thumb()
 
     def _gray_cutoff(self):
         """Converts all pixels in a dsm above a value threshold to no data.
