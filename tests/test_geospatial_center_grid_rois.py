@@ -1,22 +1,21 @@
 """Tests for geospatial.center_grid_rois"""
 
-import napari
-import joblib
+import dill as pickle
 import pytest
 import numpy as np
 from plantcv.geospatial.center_grid_rois import center_grid_rois
+from plantcv.geospatial.create_shapes.interactive_shapes import InteractiveShapes
 
 
 def test_geospatial_center_rois_none(test_data):
     """Test for plantcv-geospatial."""
-    field = np.array([])
-    img = joblib.load(test_data.rgb_pickled)
-    viewer = napari.Viewer(show=False)
-    viewer.add_image(img.pseudo_rgb)
-    viewer.add_shapes(field, name="Shapes")
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, show=False)
+    editor.add_layer()
     with pytest.raises(RuntimeError):
-        center_grid_rois(img.pseudo_rgb, viewer, radius=10)
-    viewer.close()
+        center_grid_rois(editor, radius=10)
+    editor.viewer.close()
 
 
 def test_geospatial_center_rois_one(test_data):
@@ -25,13 +24,13 @@ def test_geospatial_center_rois_one(test_data):
                       [136.25692447, 203.82241079],
                       [213.85434974, 139.64724287],
                       [140.45137989,  59.95258989]])
-    img = joblib.load(test_data.rgb_pickled)
-    viewer = napari.Viewer(show=False)
-    viewer.add_image(img.pseudo_rgb)
-    viewer.add_shapes(field, name="Shapes")
-    rois = center_grid_rois(img.pseudo_rgb, viewer, radius=10)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, show=False)
+    editor.viewer.add_shapes(field, name="Shapes")
+    rois = center_grid_rois(editor, radius=10)
     assert len(rois.contours) == 1
-    viewer.close()
+    editor.viewer.close()
 
 
 def test_geospatial_center_rois_multi(test_data):
@@ -44,10 +43,10 @@ def test_geospatial_center_rois_multi(test_data):
                        [143.80694423, 174.88066839],
                        [187.00983506, 135.0333419],
                        [143.80694423,  83.44154024]])]
-    img = joblib.load(test_data.rgb_pickled)
-    viewer = napari.Viewer(show=False)
-    viewer.add_image(img.pseudo_rgb)
-    viewer.add_shapes(field, name="Shapes")
-    rois = center_grid_rois(img.pseudo_rgb, viewer, radius=10)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, show=False)
+    editor.viewer.add_shapes(field, name="Shapes")
+    rois = center_grid_rois(editor, radius=10)
     assert len(rois.contours) == 2
-    viewer.close()
+    editor.viewer.close()

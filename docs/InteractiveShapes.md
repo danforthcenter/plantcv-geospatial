@@ -70,6 +70,9 @@ editor.grid(numdivs=[3,4])
 # to find layers containing lines
 editor.plots()
 
+# PlantCV Regions of Interest (ROIs) can be drawn from centers of polygons
+rois = gcv.center_grid_rois(editor, radius=9, layername="Plots")
+
 # Individual plot boundaries can then be saved to a file
 editor.to_shapes(dest="./plots.geojson", layername="Plots")
 
