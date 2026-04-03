@@ -20,8 +20,7 @@ dependencies = [
     "rasterstats",
     "joblib",
     "netCDF4",
-    "altair < 6",
-    "dill"
+    "altair < 6"
 ]
 requires-python = ">=3.11"
 authors = [
@@ -41,8 +40,8 @@ classifiers = [
 test = [
     "pytest",
     "pytest-cov",
+    "dill"
 ]
-
 [project.urls]
 Homepage = "https://plantcv.org"
 Documentation = "https://plantcv.readthedocs.io"
