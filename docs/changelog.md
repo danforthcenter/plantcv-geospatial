@@ -24,7 +24,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.center_grid_rois
 
-* v0.1dev: rois = **geospatial.center_grid_rois**(*img, viewer, radius=10, layername="Shapes"*)
+* v0.1dev: rois = **geospatial.center_grid_rois**(*editor, radius=10, layername="Shapes"*)
 
 #### geospatial.convert.to_roi
 
