@@ -7,7 +7,7 @@ Vectorized approach to color stats and histograms per region in a shapefile usin
 **returns** Debug histogram of hue circular mean across plots.
 
 - **Parameters:**
-    - img - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
+    - img - GEO image object, likely read in with [`gcv.read_geotif`](read_geotif.md)
     - bin_mask - Binary mask, numpy array
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.
 
@@ -23,7 +23,7 @@ import plantcv.plantcv as pcv
 ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 # Create or read in a binary mask 
 # Analyze coverage for each region in the geojson
-vis = gcv.analyze.color(img=ortho1, bin_mask=plant_mask,
+gcv.analyze.color(img=ortho1, bin_mask=plant_mask,
                            geojson="./shapefiles/experimental_plots.geojson")
 
 # To access individual observation values:

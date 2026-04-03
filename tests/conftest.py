@@ -79,7 +79,7 @@ class TestData:
             geo_test.pkl
             Pickled GEO class object
             Used for testing transform.polygons, convert.shapes, convert.to_roi, transform_polygons,
-            classes.InteractiveShapes, convert.points
+            classes.InteractiveShapes, convert.points, analyze.color
         dsm_pickled
             dsm_test.pkl
             Pickled DSM class object
@@ -96,6 +96,10 @@ class TestData:
             single_crop_plotid.geojson
             Single polygon shapefile with plot_ids property
             Using for testing analyze.height_percentile, needed for coverage of _helpers._gather_ids
+        poly_crop_noid
+            single_crop_noid.geojson
+            Single polygon shapefile with no ID property
+            Using for testing analyze.color, needed for coverage of _helpers._gather_ids
         single_points
             single_points.geojson
             Points shapefile
@@ -155,6 +159,8 @@ class TestData:
         self.poly_crop = os.path.join(self.datadir, "single_crop.geojson")
         # Single polygon geojson with plot_id property
         self.poly_crop_plotid = os.path.join(self.datadir, "single_crop_plotid.geojson")
+        # Single polygon geojson with plot_id property
+        self.poly_crop_noid = os.path.join(self.datadir, "single_crop_noid.geojson")
         # Points geojson
         self.single_points = os.path.join(self.datadir, "single_points.geojson")
 
