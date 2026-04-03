@@ -18,7 +18,7 @@ def test_height_subtraction(test_data):
         dsm = pickle.load(f)
     dsm.nodata = None
     test = height_subtraction(dsm1=dsm, dsm0=dsm)
-    assert np.sum(test) == 0
+    assert np.nansum(test) == 0
 
 #def test_height_subtraction_metadata(test_data):
 #    """Test for PlantCV."""

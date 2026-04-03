@@ -131,24 +131,25 @@ def height_subtraction(dsm1, dsm0):
     if dsm1.crs != dsm0.crs:
         fatal_error("The two input DSMs do not have the same coordinate reference system (CRS).")
 
-    # DSM tifs contain just one band of data, so make the array 2D
-    # Needs to be asarray for subtraction to work
-    dsm1_data = np.asarray(np.squeeze(dsm1))
-    dsm0_data = np.asarray(np.squeeze(dsm0))
-
     # Check for equal arrays
-    if np.array_equal(dsm1_data, dsm0_data, equal_nan=True):
+    if np.array_equal(dsm1, dsm0, equal_nan=True):
         print("Warning: dsm1 and dsm0 have identical array_data, result will be flat.")
 
     # Check the shapes are equivalent
-    if (dsm1_data.shape == dsm0_data.shape) is False:
+    if (dsm1.shape == dsm0.shape) is False:
         fatal_error("Input DSMs do not have same shape, can be changed with PCV 'resize' function.")
 
     # Perform the subtraction
-    final_data = np.subtract(dsm1_data, dsm0_data)
-    # Convert back to DSM object
-    chm = DSM(input_array = final_data, filename = None, crs  = dsm1.crs,
-                transform = dsm1.transform, cutoff = dsm1.cutoff, nodata = dsm1.cutoff)
+    final_data = dsm1 - dsm0
+    # Fill in attributes
+    final_data.filename = None
+    final_data.crs = dsm1.crs
+    final_data.transform = dsm1.transform
+    final_data.cutoff = dsm1.cutoff
+    final_data.nodata = dsm1.nodata
+    
+    final_data.data_array = final_data._gray_cutoff()
+    final_data.thumb = final_data._create_thumb()
 
-    _debug(visual=chm.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
-    return chm
+    _debug(visual=final_data.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
+    return final_data
