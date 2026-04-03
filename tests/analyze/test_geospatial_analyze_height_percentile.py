@@ -1,6 +1,6 @@
 """Tests for geospatial.analyze.height_percentile"""
 
-import joblib
+import dill as pickle
 from plantcv.plantcv import outputs, params
 from plantcv.geospatial.analyze import height_percentile
 
@@ -13,12 +13,13 @@ def test_height_percentile(tmpdir, test_data):
     cache_dir = tmpdir.mkdir("cache")
     params.debug_outdir = cache_dir
     # Read in test data
-    img = joblib.load(test_data.rgb_pickled)
-    img.metadata['nodata'] = 0
+    with open(test_data.dsm_pickled, "rb") as f:
+        img = pickle.load(f)
+    img.nodata = 0
     # Debug mode
     params.debug = "print"
-    _ = height_percentile(dsm=img, geojson=test_data.square_crop)
-    assert outputs.observations["default_1"]["plant_height"]["value"] > 0
+    _ = height_percentile(dsm=img, geojson=test_data.poly_crop)
+    assert outputs.observations["default_888"]["plant_height"]["value"] > 0
 
 
 def test_height_percentile_with_geo_ids(test_data):
@@ -28,8 +29,10 @@ def test_height_percentile_with_geo_ids(test_data):
     # Debug mode
     params.debug = None
     # Read in test data
-    img = joblib.load(test_data.rgb_pickled)
-    _ = height_percentile(dsm=img, geojson=test_data.geojson_with_id, label="test")
+    with open(test_data.dsm_pickled, "rb") as f:
+        img = pickle.load(f)
+    img.nodata = None
+    _ = height_percentile(dsm=img, geojson=test_data.multipoly, label="test")
     assert outputs.observations["test_888"]["plant_height"]["value"] > 0
     
 def test_height_percentile_with_geo_fids(test_data):
@@ -39,6 +42,8 @@ def test_height_percentile_with_geo_fids(test_data):
     # Debug mode
     params.debug = "plot"
     # Read in test data
-    img = joblib.load(test_data.rgb_pickled)
-    _ = height_percentile(dsm=img, geojson=test_data.square_crop_with_plotname, label="test")
+    with open(test_data.dsm_pickled, "rb") as f:
+        img = pickle.load(f)
+    img.nodata = None
+    _ = height_percentile(dsm=img, geojson=test_data.poly_crop_plotid, label="test")
     assert outputs.observations["test_888"]["plant_height"]["value"] > 0

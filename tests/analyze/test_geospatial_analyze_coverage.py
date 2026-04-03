@@ -1,5 +1,5 @@
 import pytest
-import joblib
+import dill as pickle
 from plantcv.plantcv import outputs, params
 from plantcv.geospatial.analyze import coverage as analyze_coverage
 
@@ -13,12 +13,13 @@ def test_coverage(debug, tmpdir, test_data):
     cache_dir = tmpdir.mkdir("cache")
     params.debug_outdir = cache_dir
     # Read in test data
-    img = joblib.load(test_data.rgb_pickled)
-    bin_mask = img.array_data[:, :, 2]  # Make a grayscale img to use as the mask
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    bin_mask = img[:, :, 2]  # Make a grayscale img to use as the mask
     # Debug mode
     params.debug = debug
-    _ = analyze_coverage(img=img, bin_mask=bin_mask, geojson=test_data.square_crop)
-    assert outputs.observations["default_1"]["percent_coverage"]["value"] <= 1
+    _ = analyze_coverage(img=img, bin_mask=bin_mask, geojson=test_data.poly_crop)
+    assert outputs.observations["default_888"]["percent_coverage"]["value"] <= 1
 
 
 def test_coverage_with_geo_ids(test_data):
@@ -26,7 +27,8 @@ def test_coverage_with_geo_ids(test_data):
     # Clear previous outputs
     outputs.clear()
     # Read in test data
-    img = joblib.load(test_data.rgb_pickled)
-    bin_mask = img.array_data[:, :, 2]  # Make a grayscale img to use as the mask
-    _ = analyze_coverage(img=img, bin_mask=bin_mask, geojson=test_data.square_crop_with_plot_ids, label="test")
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    bin_mask = img[:, :, 2]  # Make a grayscale img to use as the mask
+    _ = analyze_coverage(img=img, bin_mask=bin_mask, geojson=test_data.multipoly, label="test")
     assert outputs.observations["test_888"]["percent_coverage"]["value"] <= 1

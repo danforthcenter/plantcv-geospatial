@@ -7,7 +7,7 @@ Vectorize approach to height estimation per region in a shapefile using a digita
 **returns** Debug image with regions drawn on the input DSM (digital surface model).
 
 - **Parameters:**
-    - dsm - Spectral image object, likely read in with [`geo.read_geotif`](read_geotif.md)
+    - dsm - DSM image object, likely read in with [`geo.read_geotif`](read_geotif.md)
     - lower - Lower percentile cut off, default `lower=25`
     - upper - Upper percentile cut off, default `upper=90`
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.

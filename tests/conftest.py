@@ -33,8 +33,7 @@ class TestData:
             rgb_img.spectral file
             Contains a pickled plantcv.Spectral_data object
             Used for testing center_grid_rois,
-            _helpers, create_shapes.auto_grid, create_shapes.grid_from_coords, analyze.height_percentile,
-            analyze.coverage, analyze.height_subtraction
+            _helpers, analyze.height_subtraction
         pts_geojson        : str
             test_pts.geojson file
             Used for testing convert.points and points_to_roi_circle
@@ -88,11 +87,15 @@ class TestData:
         multipoly
             multipoly.geojson
             Multiple polygon shapefile with "ID" 
-            Used for testing transform_polygons
+            Used for testing transform_polygons, analyze.coverage, analyze.height_percentile
         poly_crop
             single_crop.geojson
             Single polygon shapefile
-            Using for testing transform_polygons
+            Using for testing transform_polygons, analyze.coverage, analyze.height_percentile
+        poly_crop_plotid
+            single_crop_plotid.geojson
+            Single polygon shapefile with plot_ids property
+            Using for testing analyze.height_percentile, needed for coverage of _helpers._gather_ids
         single_points
             single_points.geojson
             Points shapefile
@@ -150,6 +153,8 @@ class TestData:
         self.multipoly = os.path.join(self.datadir, "multipoly.geojson")
         # Single polygon geojson
         self.poly_crop = os.path.join(self.datadir, "single_crop.geojson")
+        # Single polygon geojson with plot_id property
+        self.poly_crop_plotid = os.path.join(self.datadir, "single_crop_plotid.geojson")
         # Points geojson
         self.single_points = os.path.join(self.datadir, "single_points.geojson")
 

@@ -14,8 +14,8 @@ def auto_grid(img, field_corners_path, out_path, ids=None, **kwargs):
 
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
-        Spectral_data object of geotif data, used for plotting
+    img : plantcv.geospatial.images.GEO object
+        geotif data, generally from read_geotif
     field_corners_path : str
         Path to Fiona formatted shapefile (geojson file) containing four corner points
     out_path : str

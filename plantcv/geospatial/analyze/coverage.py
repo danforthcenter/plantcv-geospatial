@@ -9,7 +9,7 @@ def coverage(img, bin_mask, geojson, label=None):
     """A function that analyzes pixel coverage in a binary mask and outputs data.
     Parameters:
     -----------
-    img : plantcv.plantcv.classes.Spectral_data
+    img : plantcv.geospatial.images.GEO object
         geotif data, generally from read_geotif, used for affine metadata
     bin_mask : numpy.ndarray
         Binary mask of objects (32-bit).
@@ -28,7 +28,7 @@ def coverage(img, bin_mask, geojson, label=None):
     # zonal_stats "sum" gives the sum of pixel values, so change from [0,255] to [0,1]
     bin_mask = np.where(bin_mask > 0, 1, 0)
     all_ones = np.ones(bin_mask.shape[:2])
-    affine = img.metadata["transform"]
+    affine = img.transform
 
     # Calculate GSD in the x and y directions
     gsd_x = abs(affine[0])
@@ -58,8 +58,8 @@ def coverage(img, bin_mask, geojson, label=None):
         # Scale and save out coverage in CRS units
         outputs.add_observation(sample=observation_sample, variable="coverage", trait="coverage",
                                 method="plantcv-geospatial.analyze.coverage",
-                                scale=img.metadata["crs"].linear_units, datatype=float,
-                                value=pixel_count * (gsd_x * gsd_y), label="square " + img.metadata["crs"].linear_units)
+                                scale=img.crs.linear_units, datatype=float,
+                                value=pixel_count * (gsd_x * gsd_y), label="square " + img.crs.linear_units)
         # Save out percent coverage
         outputs.add_observation(sample=observation_sample, variable="percent_coverage", trait="percentage",
                                 method="rasterstats.zonal_stats", scale="none", datatype=float,
