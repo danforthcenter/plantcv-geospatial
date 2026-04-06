@@ -146,6 +146,5 @@ def height_subtraction(dsm1, dsm0):
     final_data.__init__(input_array=final_data, filename=None, crs=dsm1.crs,
                         transform=dsm1.transform, cutoff=dsm1.cutoff, nodata=dsm1.nodata)
 
-
     _debug(visual=final_data.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_substracted_dsm.png"))
     return final_data
