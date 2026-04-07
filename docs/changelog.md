@@ -16,7 +16,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.analyze.spectral_index
 
-* v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, percentiles=None, label=None*)
+* v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, index, percentiles=None, label=None, distance=20*)
 
 #### geospatial.analyze.height_subtraction
 
