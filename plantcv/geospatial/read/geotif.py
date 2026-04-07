@@ -123,10 +123,13 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     _, _, depth = img_data.shape
     # Check for mask
     mask_layer = None
+    mask_band_indices = []
     for i in range(depth):
         if len(np.unique(img_data[:, :, [i]])) == 2:
-            mask_layer = img_data[:, :, [i]]
-            img_data = np.delete(img_data, i, 2)
+            mask_band_indices.append(i)
+    if mask_band_indices:
+        mask_layer = img_data[:, :, [mask_band_indices[-1]]]
+        img_data = np.delete(img_data, mask_band_indices, 2)
     # reset depth in case the image data was changed
     _, _, depth = img_data.shape
     # Parse bands
