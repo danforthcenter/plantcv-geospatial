@@ -139,7 +139,7 @@ class DSM(Image):
         """
         img_copy = self.data_array
         # Change nodata values to Nan
-        img_copy[img_copy == min(np.unique(img_copy))] = np.nan
+        img_copy[img_copy == self.nodata] = np.nan
         # Stretch values to min/max for visualization
         img_copy = 255*((img_copy - np.nanmin(img_copy)) / (np.nanmax(img_copy) - np.nanmin(img_copy)))
         # Return nodata values to 0
