@@ -1,7 +1,7 @@
 # Analyze spectral signature over many regions
 from rasterstats import zonal_stats
 from plantcv.plantcv import outputs, params
-from plantcv.plantcv import spectral_index
+from plantcv.plantcv import spectral_index as pcv_spectral
 from plantcv.plantcv.classes import Spectral_data
 from plantcv.geospatial._helpers import _plot_bounds_pseudocolored, _gather_ids
 import fiona
@@ -36,11 +36,12 @@ def _convert_spectral(img, index, distance):
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=img.thumb, filename=img.filename,
                                    default_bands=img.default_wavelengths,
-                                   metadata=None)
+                                   metadata={"transform" : img.transform})
     
     # Calculate index using pcv.spectral_index
-    chosen = getattr(spectral_index, index)
+    chosen = getattr(pcv_spectral, index)
     return chosen(img=spectral_input, distance=distance)
+
 
 def spectral_index(img, geojson, index, percentiles=None, label=None, distance=20):
     """A function that summarizes pixel intensity values per region for a spectral index
@@ -67,9 +68,10 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
         Debug image showing shapes from geojson on input image.
     """
     # Convert input img to spectral reflectance using provided index
+
     input_img = _convert_spectral(img, index, distance)
-    
-    affine = img.transform
+    input_img.metadata = {"transform" : img.transform}
+
 
     # Set label to params.sample_label if no other labels provided
     if label is None:
@@ -92,7 +94,7 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
     with fiona.open(geojson, 'r') as shapefile:
         # Add properties to the geojson object, and then should be able to access inside the function called in add_stats
         # Vectorized (efficient) data extraction of spectral signature per sub-region
-        stats = zonal_stats(shapefile, input_img.array_data, affine=affine,
+        stats = zonal_stats(shapefile, input_img.array_data, affine=img.transform,
                             stats=formatted_pcts,
                             nodata=-9999)
 
