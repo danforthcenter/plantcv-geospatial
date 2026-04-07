@@ -34,12 +34,20 @@ def test_geospatial_read_geotif_bad_input(test_data):
         _ = geotif(filename=test_data.cropped_tif, bands="p")
 
 
+def test_geospatial_read_geotif_too_few_bands(test_data):
+    """Test for plantcv-geospatial."""
+    # read in small 5-band tif image
+    img = geotif(filename=test_data.rgb_tif, bands="R,G")
+    # this should work still but would issue a warning
+    assert img.thumb.shape == (284, 261, 3)
+
+
 def test_geospatial_read_geotif_bad_crop(test_data):
     """Test for plantcv-geospatial."""
     # read in small 5-band tif image
     with pytest.raises(RuntimeError):
         _ = geotif(filename=test_data.empty_tif, bands="B,G,R,RE,N")
-        
+
         
 def test_geospatial_read_geotif_bad_bands(test_data):
     """Test for plantcv-geospatial."""

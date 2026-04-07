@@ -1,7 +1,6 @@
 # Read georeferenced TIF files to Spectral Image data
 
 import os
-import cv2
 import rasterio
 import numpy as np
 import fiona
@@ -67,8 +66,6 @@ def _read_geotif_and_shapefile(filename, cropto):
     -------
     img_data : numpy.ndarray
         Image data array with shape ``(bands, height, width)``.
-    d_type : str
-        Data type of the image bands (e.g., ``"uint8"``, ``"uint16"``).
     metadata : dict
         Rasterio metadata dictionary including CRS, transform, and driver
         information.
@@ -89,14 +86,12 @@ def _read_geotif_and_shapefile(filename, cropto):
             img_data, trans_metadata = mask(src, shapes, crop=True)
             metadata = src.meta.copy()
             metadata.update({"transform": trans_metadata})
-            d_type = src.dtypes[0]
     else:
         with rasterio.open(filename, 'r') as img:
             img_data = img.read()
-            d_type = img.dtypes[0]
             metadata = img.meta.copy()
 
-    return img_data, d_type, metadata
+    return img_data, metadata
 
 
 def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
@@ -122,7 +117,7 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         Orthomosaic image data in a Spectral_data class instance.
     """
     # Read the geotif image and shapefile for cropping
-    img_data, d_type, metadata = _read_geotif_and_shapefile(filename, cropto)
+    img_data, metadata = _read_geotif_and_shapefile(filename, cropto)
     # reshape such that z-dimension is last
     img_data = img_data.transpose(1, 2, 0)
     _, _, depth = img_data.shape
