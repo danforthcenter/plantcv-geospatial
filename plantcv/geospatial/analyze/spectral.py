@@ -25,7 +25,7 @@ def _convert_spectral(img, index, distance):
     """
     # First, convert GEO image to spectral object
     wavelength_dict = {i : idx for idx, i in enumerate(img.wavelengths)}
-    
+
     spectral_input = Spectral_data(array_data=img,
                                    max_wavelength=max(img.wavelengths),
                                    min_wavelength=min(img.wavelengths),
@@ -37,7 +37,7 @@ def _convert_spectral(img, index, distance):
                                    pseudo_rgb=img.thumb, filename=img.filename,
                                    default_bands=img.default_wavelengths,
                                    metadata={"transform" : img.transform})
-    
+
     # Calculate index using pcv.spectral_index
     chosen = getattr(pcv_spectral, index)
     return chosen(img=spectral_input, distance=distance)
@@ -59,7 +59,7 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
         Optional label parameter, modifies the variable name of
         observations recorded (default = pcv.params.sample_label).
     distance : int
-        How lenient to be if required wavelengths are not available. 
+        How lenient to be if required wavelengths are not available.
         Optional (default = 20)
 
     Returns:
@@ -71,7 +71,6 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
 
     input_img = _convert_spectral(img, index, distance)
     input_img.metadata = {"transform" : img.transform}
-
 
     # Set label to params.sample_label if no other labels provided
     if label is None:
