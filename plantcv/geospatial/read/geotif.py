@@ -7,9 +7,8 @@ import fiona
 from rasterio.mask import mask
 from plantcv.plantcv import warn, params, fatal_error
 from plantcv.plantcv._debug import _debug
-from plantcv.geospatial.images import GEO, DSM
-from shapely.geometry import shape, MultiPoint, mapping
 from plantcv.geospatial.read.netcdf import _read_to_class
+from shapely.geometry import shape, MultiPoint, mapping
 
 
 def _parse_bands(bands):

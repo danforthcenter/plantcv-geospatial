@@ -11,7 +11,7 @@ from plantcv.geospatial.images import GEO, DSM
 from geopandas import GeoDataFrame
 
 
-def _read_to_class(depth, img, filename, wavelengths, crs, transform, nodata, cutoff):
+def _read_to_class(depth, img, filename, wavelengths, crs, trns, nodata, cutoff):
     """Read to either a GEO or DSM class based on depth
 
     Parameters:
@@ -21,9 +21,9 @@ def _read_to_class(depth, img, filename, wavelengths, crs, transform, nodata, cu
     filename    = str, filename
     wavelengths = list, list of wavelengths
     crs         = rasterio.crs.CRS object, coordinate reference system
-    transform   = rasterio transformation
+    trns        = rasterio transformation
     cutoff      = float, cutoff for a grayscale image (DSM)
-    
+
     Returns:
     --------
     obj         = GEO or DSM object
@@ -35,14 +35,14 @@ def _read_to_class(depth, img, filename, wavelengths, crs, transform, nodata, cu
                   wavelengths=wavelengths,
                   default_wavelengths=[650, 560, 480],
                   crs=crs,
-                  transform=transform,
+                  transform=trns,
                   nodata=nodata
                   )
     else:
         obj = DSM(input_array=img,
                   filename=filename,
                   crs=crs,
-                  transform=transform,
+                  transform=trns,
                   nodata=nodata,
                   cutoff=cutoff
                   )
