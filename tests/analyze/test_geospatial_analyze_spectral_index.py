@@ -1,6 +1,6 @@
 """Tests for geospatial.analyze.spectral"""
 
-import joblib
+import dill as pickle
 import pytest
 from plantcv.plantcv import outputs, params
 from plantcv.geospatial.analyze import spectral_index as analyze_spectral
@@ -17,10 +17,13 @@ def test_analyze_spectral_index(debug, tmpdir, test_data, percentiles):
     cache_dir = tmpdir.mkdir("cache")
     params.debug_outdir = cache_dir
     # Read in test data
-    img = joblib.load(test_data.multi_pickled)
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
     img.metadata['nodata'] = 0
+    # Change wavelengths so it will try to calculate index
+    img.wavelengths = [700, 530, 460]
     img.array_data = img.array_data[:, :, 2]  # Make a grayscale img to use as index
     # Debug mode
     params.debug = debug
-    _ = analyze_spectral(img=img, geojson=test_data.geojson_with_fid, percentiles=percentiles)
+    _ = analyze_spectral(img=img, index="egi", geojson=test_data.poly_crop_fid, percentiles=percentiles)
     assert outputs.observations["default_888"]["percentile_75_datacube"]["value"] <= 1
