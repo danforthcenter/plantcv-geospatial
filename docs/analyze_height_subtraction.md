@@ -5,7 +5,7 @@ Note: the input DSMs need to be the same shape.
 
 **plantcv.geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
 
-**returns** [DSM image object](image_classed.md) object where the array is the subtracted CHM.
+**returns** [DSM image object](image_classes.md) object where the array is the subtracted CHM.
 
 - **Parameters:**
     - dsm1 - DSM image object from a timepoint with plants, likely read in with [`geo.read_geotif`](read_geotif.md)
