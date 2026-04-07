@@ -40,7 +40,7 @@ def _convert_spectral(img, index, distance):
 
     # Calculate index using pcv.spectral_index
     chosen = getattr(pcv_spectral, index)
-    return chosen(img=spectral_input, distance=distance)
+    return chosen(spectral_input, distance=distance)
 
 
 def spectral_index(img, geojson, index, percentiles=None, label=None, distance=20):
