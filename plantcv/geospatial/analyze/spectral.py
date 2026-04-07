@@ -13,7 +13,7 @@ def _convert_spectral(img, index, distance):
     Parameters:
     ----------
     img : plantcv.geospatial.images.GEO object
-        geotif data, generally from read_geotif
+        geotif data, generally from read.geotif
     index : str
         Spectral index to convert
     distance : int
