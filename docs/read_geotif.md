@@ -34,7 +34,7 @@ import plantcv.geospatial as gcv
 
 # Read geotif in
 geo1 = gcv.read.geotif(filename="./data/example_img.tif", bands="B,G,R,RE,NIR")
-geo2 = gcv.read.geotif(filename="./data/example_rgb_img.tif", bands="R,G,B,mask",
+geo2 = gcv.read.geotif(filename="./data/example_rgb_img.tif", bands="R,G,B",
                          cropto="./shapefiles/experimental_bounds.geojson")
 dsm3 = gcv.read.geotif(filename="./data/example_gray_img.tif", bands="gray", cutoff=0.99)
 

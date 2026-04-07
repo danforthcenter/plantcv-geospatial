@@ -113,8 +113,8 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
 
     Returns
     -------
-    plantcv.plantcv.classes.Spectral_data
-        Orthomosaic image data in a Spectral_data class instance.
+    plantcv.geospatial.GEO or plantcv.geospatial.DSM
+        Orthomosaic image data in either class instance.
     """
     # Read the geotif image and shapefile for cropping
     img_data, metadata = _read_geotif_and_shapefile(filename, cropto)
