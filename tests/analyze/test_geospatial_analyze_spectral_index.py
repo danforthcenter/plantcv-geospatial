@@ -25,4 +25,4 @@ def test_analyze_spectral_index(debug, tmpdir, test_data, percentiles):
     # Debug mode
     params.debug = debug
     _ = analyze_spectral(img=img, index="egi", geojson=test_data.poly_crop_fid, percentiles=percentiles)
-    assert outputs.observations["default_888"]["percentile_75_datacube"]["value"] <= 1
+    assert outputs.observations["default_888"]['percentile_75_index_egi']["value"] <= 1
