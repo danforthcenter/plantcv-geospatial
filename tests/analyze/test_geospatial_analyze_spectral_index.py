@@ -19,7 +19,7 @@ def test_analyze_spectral_index(debug, tmpdir, test_data, percentiles):
     # Read in test data
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
-    img.metadata['nodata'] = 0
+    #img.nodata = 0
     # Change wavelengths so it will try to calculate index
     img.wavelengths = [700, 530, 460]
     img.array_data = img.array_data[:, :, 2]  # Make a grayscale img to use as index
