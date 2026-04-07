@@ -88,4 +88,4 @@ All notable changes to this project will be documented below.
 
 #### geospatial.read.netcdf
 
-* v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
+* v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False, cutoff=None*)
