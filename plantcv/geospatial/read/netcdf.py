@@ -8,45 +8,8 @@ import rasterio
 from plantcv.plantcv import params, transform
 from plantcv.plantcv._debug import _debug
 from plantcv.geospatial.images import GEO, DSM
+from plantcv.geospatial._helpers import _read_to_class
 from geopandas import GeoDataFrame
-
-
-def _read_to_class(depth, img, filename, wavelengths, crs, trns, nodata, cutoff):
-    """Read to either a GEO or DSM class based on depth
-
-    Parameters:
-    -----------
-    depth       = int, depth of img
-    img         = numpy.ndarray, image data
-    filename    = str, filename
-    wavelengths = list, list of wavelengths
-    crs         = rasterio.crs.CRS object, coordinate reference system
-    trns        = rasterio transformation
-    cutoff      = float, cutoff for a grayscale image (DSM)
-
-    Returns:
-    --------
-    obj         = GEO or DSM object
-    """
-    if depth > 1:
-        # Make a GEO instance before calculating a pseudo-rgb
-        obj = GEO(input_array=img,
-                  filename=filename,
-                  wavelengths=wavelengths,
-                  default_wavelengths=[650, 560, 480],
-                  crs=crs,
-                  transform=trns,
-                  nodata=nodata
-                  )
-    else:
-        obj = DSM(input_array=img,
-                  filename=filename,
-                  crs=crs,
-                  transform=trns,
-                  nodata=nodata,
-                  cutoff=cutoff
-                  )
-    return obj
 
 
 def _combine_bands(ds):
