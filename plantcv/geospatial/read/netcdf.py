@@ -7,28 +7,8 @@ import os
 import rasterio
 from plantcv.plantcv import params, transform
 from plantcv.plantcv._debug import _debug
-from plantcv.plantcv.classes import Spectral_data
+from plantcv.geospatial._helpers import _read_to_class
 from geopandas import GeoDataFrame
-
-
-def _find_closest_unsorted(array, target):
-    """Find the index of the element in an unsorted array closest to a target
-    value.
-
-    Parameters
-    ----------
-    array : numpy.ndarray
-        Array of values to search (does not need to be sorted).
-    target : int or float
-        Target value to find the closest match for.
-
-    Returns
-    -------
-    int
-        Index of the element in ``array`` with the smallest absolute
-        difference from ``target``.
-    """
-    return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
 
 def _combine_bands(ds):
@@ -42,21 +22,21 @@ def _combine_bands(ds):
     -------
     fullmat : numpy.ndarray
         Array of combined data from all bands
-    wavelengths : dictionary
-        Dictionary of wavelengths
+    wavelengths : list
+        List of wavelengths
     """
-    # Pull all available wavelengths using name of variable
+    # Pull all available bands using name of variable
     params_set = params.debug
     params.debug = None
     bands = []
-    wavelengths = {}
+    wavelengths = []
     # Currently only supporting NASA formatting where all bands are in
     # the `geospatial_data` variables, could be extended to have more
     # modes if other reasonable formats are popularized.
     for idx, i in enumerate(ds.groups['geophysical_data'].variables):
         if i[0:4] == "rhos":
             bands.append(i)
-            wavelengths[i.split("_")[1]] = idx
+            wavelengths.append(idx)
     # Make a list of the dataframe for each wavelength
     channels = []
     for i in bands:
@@ -112,7 +92,7 @@ def _crop_allbands(fulldf, ds, bounds):
     return fulldf_cropped, lat_cropped, lon_cropped
 
 
-def netcdf(filename, cropto, output=False):
+def netcdf(filename, cropto, output=False, cutoff=None):
     """Read NASA-formatted netCDF file to a Spectral Data image.
 
     Parameters
@@ -123,6 +103,9 @@ def netcdf(filename, cropto, output=False):
         Path to a shapefile or list of min/max latitude and longitude for cropping.
     output : str (optional)
         Path to output Spectral object as a geotif (defaults to False, no output).
+    cutoff: float, optional
+        Percentile above which to remove points (only used for grayscale
+        images). Default is None.
 
     Returns
     -------
@@ -143,50 +126,18 @@ def netcdf(filename, cropto, output=False):
     aff_bounds = rasterio.transform.from_bounds(np.min(lon), np.min(lat), np.max(lon),
                                                 np.max(lat), lat.shape[1], lat.shape[0])
 
-    # Make the pseudo_rgb
-    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
-    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
-    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
-    # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
-    pseudo_rgb = cv2.merge((cropped[:, :, [id_blue]],
-                            cropped[:, :, [id_green]],
-                            cropped[:, :, [id_red]]))
-    # here we could normalize to [0, 255] if data is not already uint8.
-    # If it is uint8 then it should good already.
-    # I do not know that netcdf data comes in anything else since I could not find more
-    # examples of netcdf files that worked locally. This would be the
-    # same stuff as line 169 of read_geotif
-
     height, width, depth = cropped.shape
-    # Metadata
-    metadata = {"driver": "GTiff", "height": height, "width": width,
-                "dtype": cropped.dtype, "count": depth,
-                "nodata": 0, "crs": rasterio.crs.CRS.from_string("EPSG:4326"),
-                "transform": aff_bounds}
 
-    # Make a spectral object
-    spectral_array = Spectral_data(array_data=cropped,
-                                   max_wavelength=max(wavelengths, key=wavelengths.get),
-                                   min_wavelength=min(wavelengths, key=wavelengths.get),
-                                   max_value=np.max(cropped), min_value=np.min(cropped),
-                                   d_type=cropped.dtype,
-                                   wavelength_dict=wavelengths, samples=int(width),
-                                   lines=int(height), interleave=None,
-                                   wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=pseudo_rgb, filename=filename,
-                                   default_bands=[480, 540, 630],
-                                   metadata=metadata)
+    # Make an Image object based on dimensions
+    obj = _read_to_class(depth, cropped, filename, wavelengths,
+                         rasterio.crs.CRS.from_string("EPSG:4326"), aff_bounds, 0, cutoff)
 
     # Output to geotif if requested
     if isinstance(output, str):
         out_img = cropped.transpose(2, 0, 1)
 
-        with rasterio.open(output, 'w', **metadata) as dest:
+        with rasterio.open(output, 'w', height=height, width=width, count=len(wavelengths), dtype=cropped.dtype) as dest:
             dest.write(out_img)
 
-    # Add latitude and longitude to metadata
-    spectral_array.metadata["latitude"] = lat
-    spectral_array.metadata["longitude"] = lon
-
-    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
-    return spectral_array
+    _debug(visual=obj.thumb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
+    return obj

@@ -7,7 +7,7 @@ import fiona
 from rasterio.mask import mask
 from plantcv.plantcv import warn, params, fatal_error
 from plantcv.plantcv._debug import _debug
-from plantcv.geospatial.images import GEO, DSM
+from plantcv.geospatial._helpers import _read_to_class
 from shapely.geometry import shape, MultiPoint, mapping
 
 
@@ -153,24 +153,9 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     # Check if img is uint16
     if img_data.dtype == "uint16":
         img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
-    if depth > 1:
-        # Make a GEO instance before calculating a pseudo-rgb
-        obj = GEO(input_array=img_data,
-                  filename=filename,
-                  wavelengths=bands,
-                  default_wavelengths=[650, 560, 480],
-                  crs=metadata["crs"],
-                  transform=metadata["transform"],
-                  nodata=metadata["nodata"]
-                  )
-    else:
-        obj = DSM(input_array=img_data,
-                  filename=filename,
-                  crs=metadata["crs"],
-                  transform=metadata["transform"],
-                  nodata=metadata["nodata"],
-                  cutoff=cutoff
-                  )
+
+    obj = _read_to_class(depth, img_data, filename, bands, metadata["crs"],
+                         metadata["transform"], metadata["nodata"], cutoff)
 
     _debug(visual=obj.thumb,
            filename=os.path.join(params.debug_outdir, f"{params.device}_thumbnail.png"))
