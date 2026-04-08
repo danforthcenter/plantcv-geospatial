@@ -8,8 +8,27 @@ import rasterio
 from plantcv.plantcv import params, transform
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.classes import Spectral_data
-from plantcv.geospatial.read.geotif import _find_closest_unsorted
 from geopandas import GeoDataFrame
+
+
+def _find_closest_unsorted(array, target):
+    """Find the index of the element in an unsorted array closest to a target
+    value.
+
+    Parameters
+    ----------
+    array : numpy.ndarray
+        Array of values to search (does not need to be sorted).
+    target : int or float
+        Target value to find the closest match for.
+
+    Returns
+    -------
+    int
+        Index of the element in ``array`` with the smallest absolute
+        difference from ``target``.
+    """
+    return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
 
 def _combine_bands(ds):

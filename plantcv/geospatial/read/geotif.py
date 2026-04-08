@@ -1,35 +1,14 @@
 # Read georeferenced TIF files to Spectral Image data
 
 import os
-import cv2
 import rasterio
 import numpy as np
 import fiona
 from rasterio.mask import mask
 from plantcv.plantcv import warn, params, fatal_error
 from plantcv.plantcv._debug import _debug
-from plantcv.plantcv.classes import Spectral_data
+from plantcv.geospatial.images import GEO, DSM
 from shapely.geometry import shape, MultiPoint, mapping
-
-
-def _find_closest_unsorted(array, target):
-    """Find the index of the element in an unsorted array closest to a target
-    value.
-
-    Parameters
-    ----------
-    array : numpy.ndarray
-        Array of values to search (does not need to be sorted).
-    target : int or float
-        Target value to find the closest match for.
-
-    Returns
-    -------
-    int
-        Index of the element in ``array`` with the smallest absolute
-        difference from ``target``.
-    """
-    return min(range(len(array)), key=lambda i: abs(array[i]-target))
 
 
 def _parse_bands(bands):
@@ -87,8 +66,6 @@ def _read_geotif_and_shapefile(filename, cropto):
     -------
     img_data : numpy.ndarray
         Image data array with shape ``(bands, height, width)``.
-    d_type : str
-        Data type of the image bands (e.g., ``"uint8"``, ``"uint16"``).
     metadata : dict
         Rasterio metadata dictionary including CRS, transform, and driver
         information.
@@ -109,15 +86,12 @@ def _read_geotif_and_shapefile(filename, cropto):
             img_data, trans_metadata = mask(src, shapes, crop=True)
             metadata = src.meta.copy()
             metadata.update({"transform": trans_metadata})
-            d_type = src.dtypes[0]
-
     else:
         with rasterio.open(filename, 'r') as img:
             img_data = img.read()
-            d_type = img.dtypes[0]
             metadata = img.meta.copy()
 
-    return img_data, d_type, metadata
+    return img_data, metadata
 
 
 def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
@@ -139,87 +113,65 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
 
     Returns
     -------
-    plantcv.plantcv.classes.Spectral_data
-        Orthomosaic image data in a Spectral_data class instance.
+    plantcv.geospatial.GEO or plantcv.geospatial.DSM
+        Orthomosaic image data in either class instance.
     """
     # Read the geotif image and shapefile for cropping
-    img_data, d_type, metadata = _read_geotif_and_shapefile(filename, cropto)
+    img_data, metadata = _read_geotif_and_shapefile(filename, cropto)
     # reshape such that z-dimension is last
     img_data = img_data.transpose(1, 2, 0)
-    height, width, depth = img_data.shape
-    wavelengths = {}
-
+    _, _, depth = img_data.shape
     # Check for mask
     mask_layer = None
+    mask_band_indices = []
     for i in range(depth):
         if len(np.unique(img_data[:, :, [i]])) == 2:
-            mask_layer = img_data[:, :, [i]]
-            img_data = np.delete(img_data, i, 2)
-
+            mask_band_indices.append(i)
+    if mask_band_indices:
+        mask_layer = img_data[:, :, [mask_band_indices[-1]]]
+        img_data = np.delete(img_data, mask_band_indices, 2)
+    # reset depth in case the image data was changed
+    _, _, depth = img_data.shape
     # Parse bands
     bands = _parse_bands(bands)
-    # Create a dictionary of wavelengths and their indices
-    for i, wl in enumerate(bands):
-        wavelengths[wl] = i
     # Check if user input matches image dimension in z direction
     if depth > len(bands):
-        warn(f"{depth} bands found in the image data but {filename} was provided with {bands}")
+        warn(f"{depth} bands found in the image data but {filename} was provided with {bands}. " +
+             "Assigning band labels to the extra bands starting from max provided band.")
+        for i in range(depth - len(bands)):
+            bands.append(i + 1 + max(bands))
     if depth < len(bands):
         fatal_error("your image depth is less than the specified number of bands")
     if len(np.unique(img_data)) == 1:
         # If totally uniform then indicates image only contains no-data value
         fatal_error(f"your image is empty, are the crop-to bounds outside of the {filename} image area?")
-    # Make a list of wavelength keys
+
+    # Apply mask layer if it exists
     if mask_layer is not None:
         img_data = np.where(mask_layer == 0, 0, img_data)
-    # Check if image is grayscale
-    if bands != [0]:
-        # Find which bands to use for red, green, and blue bands of the pseudo_rgb image
-        id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
-        id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
-        id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
-        # Stack bands, BGR since plot_image will convert BGR2RGB automatically
-        pseudo_rgb = cv2.merge((img_data[:, :, [id_blue]],
-                                img_data[:, :, [id_green]],
-                                img_data[:, :, [id_red]]))
-        # normalize to [0, 255] if data is not already uint8.
-        if pseudo_rgb.dtype != 'uint8':
-            pseudo_rgb = cv2.normalize(pseudo_rgb, None, 0, 255,
-                                       cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-    # Construct grayscale debug
-    else:
-        img_copy = img_data
-        img_copy = np.squeeze(img_copy)
-        # If filtering high values, calculate cutoff
-        if cutoff:
-            quantile = np.quantile(img_copy, cutoff)
-            # Set everything above the cutoff to Nan, including img_data
-            img_copy[img_copy >= quantile] = np.nan
-            img_data[img_data >= quantile] = np.nan
-        # Change nodata values to Nan
-        img_copy[img_copy == min(np.unique(img_data))] = np.nan
-        # Stretch values to min/max for visualization
-        img_copy = 255*((img_copy - np.nanmin(img_copy)) / (np.nanmax(img_copy) - np.nanmin(img_copy)))
-        # Return nodata values to 0
-        img_copy = np.nan_to_num(img_copy, nan=0.0)
-        # Convert to uint8
-        pseudo_rgb = img_copy.astype(np.uint8)
+
     # Check if img is uint16
     if img_data.dtype == "uint16":
         img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
-        d_type = "uint8"
-    # Make a Spectral_data instance before calculating a pseudo-rgb
-    spectral_array = Spectral_data(array_data=img_data,
-                                   max_wavelength=max(wavelengths.keys()),
-                                   min_wavelength=min(wavelengths.keys()),
-                                   max_value=np.max(img_data), min_value=np.min(img_data),
-                                   d_type=d_type,
-                                   wavelength_dict=wavelengths, samples=int(width),
-                                   lines=int(height), interleave=None,
-                                   wavelength_units="nm", array_type="datacube",
-                                   pseudo_rgb=pseudo_rgb, filename=filename,
-                                   default_bands=[480, 540, 630],
-                                   metadata=metadata)
+    if depth > 1:
+        # Make a GEO instance before calculating a pseudo-rgb
+        obj = GEO(input_array=img_data,
+                  filename=filename,
+                  wavelengths=bands,
+                  default_wavelengths=[650, 560, 480],
+                  crs=metadata["crs"],
+                  transform=metadata["transform"],
+                  nodata=metadata["nodata"]
+                  )
+    else:
+        obj = DSM(input_array=img_data,
+                  filename=filename,
+                  crs=metadata["crs"],
+                  transform=metadata["transform"],
+                  nodata=metadata["nodata"],
+                  cutoff=cutoff
+                  )
 
-    _debug(visual=pseudo_rgb, filename=os.path.join(params.debug_outdir, f"{params.device}_pseudo_rgb.png"))
-    return spectral_array
+    _debug(visual=obj.thumb,
+           filename=os.path.join(params.debug_outdir, f"{params.device}_thumbnail.png"))
+    return obj
