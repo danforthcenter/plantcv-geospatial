@@ -4,6 +4,7 @@ from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from plantcv.plantcv import params
 from plantcv.plantcv.fatal_error import fatal_error
+from plantcv.geospatial.images import GEO, DSM
 import numpy as np
 import geopandas
 import fiona

@@ -7,7 +7,6 @@ import os
 import rasterio
 from plantcv.plantcv import params, transform
 from plantcv.plantcv._debug import _debug
-from plantcv.geospatial.images import GEO, DSM
 from plantcv.geospatial._helpers import _read_to_class
 from geopandas import GeoDataFrame
 
