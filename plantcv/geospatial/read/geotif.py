@@ -139,7 +139,7 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         warn(f"{depth} bands found in the image data but {filename} was provided with {bands}. " +
              "Assigning band labels to the extra bands starting from max provided band.")
         for i in range(depth - len(bands)):
-           bands.append(i + 1 + max(bands))
+            bands.append(i + 1 + max(bands))
     if depth < len(bands):
         fatal_error("your image depth is less than the specified number of bands")
     if len(np.unique(img_data)) == 1:
