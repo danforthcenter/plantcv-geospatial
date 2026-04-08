@@ -84,8 +84,8 @@ All notable changes to this project will be documented below.
 
 #### geospatial.read.geotif
 
-* v0.1dev: spectral = **geospatial.read.geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
+* v0.1dev: geo = **geospatial.read.geotif**(*filename, bands="B,G,R", cropto=None, cutoff=None*)
 
 #### geospatial.read.netcdf
 
-* v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False, cutoff=None*)
+* v0.1dev: geo = **geospatial.read.netcdf**(*filename, cropto, output=False, cutoff=None*)
