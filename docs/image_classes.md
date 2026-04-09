@@ -20,7 +20,7 @@ A PlantCV-geospatial object class extending the `plantcv.geospatial.Image` class
 
 *class* plantcv.geospatial.**GEO**
 
-The `GEO` class holds geotiff data in an easy to access way, including several important features of geotiff data as added attributes.
+The `GEO` class holds image data in an easy to access way, including several important features of geotiff or netcdf data as added attributes.
 
 #### Attributes
 
@@ -42,7 +42,7 @@ A PlantCV-geospatial object class extending the `plantcv.geospatial.Image` class
 
 *class* plantcv.geospatial.**DSM**
 
-The `DSM` class holds digital surface model (dsm) data in an easy to access way, including several important features of dsm data as added attributes.
+The `DSM` class holds digital surface/texture/elevation model (dsm, dtm, dem) data in an easy to access way, including several important features of dsm data as added attributes.
 
 #### Attributes
 
