@@ -46,6 +46,7 @@ class GEO(Image):
                  default_wavelengths: list, crs: str, transform: affine.Affine, nodata: float):
         super().__init__()
         self.thumb = self._create_thumb()
+        self.nodata = 0
 
     def __array_finalize__(self, obj):
         super().__array_finalize__(obj)
@@ -107,6 +108,7 @@ class DSM(Image):
         super().__init__()
         self.data_array = self._gray_cutoff()
         self.thumb = self._create_thumb()
+        self.nodata = 0
 
     def __array_finalize__(self, obj):
         super().__array_finalize__(obj)
@@ -127,7 +129,7 @@ class DSM(Image):
         img_copy = np.squeeze(self)
         if self.cutoff is not None :
             quantile = np.quantile(img_copy, self.cutoff)
-            img_copy[img_copy >= quantile] = np.nan
+            img_copy[img_copy >= quantile] = 0
         return img_copy
 
     def _create_thumb(self):
@@ -138,7 +140,7 @@ class DSM(Image):
         numpy.ndarray
             Stretched thumbnail
         """
-        img_copy = self.data_array
+        img_copy = self.data_array.astype(np.float64)
         # Change nodata values to Nan
         img_copy[img_copy == self.nodata] = np.nan
         # Stretch values to min/max for visualization
