@@ -127,7 +127,7 @@ class DSM(Image):
         img_copy = np.squeeze(self)
         if self.cutoff is not None :
             quantile = np.quantile(img_copy, self.cutoff)
-            img_copy[img_copy >= quantile] = np.nan
+            img_copy[img_copy >= quantile] = 0
         return img_copy
 
     def _create_thumb(self):
@@ -138,7 +138,7 @@ class DSM(Image):
         numpy.ndarray
             Stretched thumbnail
         """
-        img_copy = self.data_array
+        img_copy = self.data_array.astype(np.float64)
         # Change nodata values to Nan
         img_copy[img_copy == self.nodata] = np.nan
         # Stretch values to min/max for visualization
