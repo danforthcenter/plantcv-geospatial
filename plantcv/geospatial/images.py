@@ -46,6 +46,7 @@ class GEO(Image):
                  default_wavelengths: list, crs: str, transform: affine.Affine, nodata: float):
         super().__init__()
         self.thumb = self._create_thumb()
+        self.nodata = 0
 
     def __array_finalize__(self, obj):
         super().__array_finalize__(obj)
@@ -107,6 +108,7 @@ class DSM(Image):
         super().__init__()
         self.data_array = self._gray_cutoff()
         self.thumb = self._create_thumb()
+        self.nodata = 0
 
     def __array_finalize__(self, obj):
         super().__array_finalize__(obj)
