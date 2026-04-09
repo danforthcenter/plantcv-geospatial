@@ -84,6 +84,7 @@ class GEO(Image):
         thumb = np.dstack([self.get_wavelength(self.default_wavelengths[0]),
                            self.get_wavelength(self.default_wavelengths[1]),
                            self.get_wavelength(self.default_wavelengths[2])])
+        thumb[thumb == self.nodata] = 0
         return thumb
 
 
