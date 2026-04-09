@@ -6,6 +6,7 @@ from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 from plantcv.geospatial.convert.points import points
 from plantcv.geospatial.convert.shapes import shapes
+from plantcv.geospatial import field_layout
 
 
 class InteractiveShapes:
@@ -56,7 +57,7 @@ class InteractiveShapes:
         else:
             fatal_error(f"Layer type {layer_type} is not supported. Layer_type must be 'shapes' or 'points'.")
 
-    def grid(self, numdivs):
+    def grid(self, numdivs=None):
         """Add layers with lines forming a grid within the field boundary.
 
         Parameters
@@ -66,6 +67,17 @@ class InteractiveShapes:
         field_layer : str, optional
             Name of layer with field boundary. Defaults to None.
         """
+        if numdivs is None:
+            field_layout = getattr(self.img, "field_layout", None)
+            if field_layout is None:
+                fatal_error("FieldLayout is not available on img; cannot determine numdivs")
+
+                num_columns = getattr(field_layout, "num_columns", None)
+                num_ranges = getattr(field_layout, "num_ranges", None)
+                if num_columns is None or num_ranges is None:
+                    fatal_error("num_columns and num_ranges are not available on field_layout; cannot determine numdivs")\
+                numdivs = [num_columns, num_ranges]
+            
         _napari_grid(self.viewer, numdivs, layername=self.layer_dict["field_boundary"])
         self.layer_dict["grid_lines_columns"] = "grid_lines1"
         self.layer_dict["grid_lines_ranges"] = "grid_lines2"
