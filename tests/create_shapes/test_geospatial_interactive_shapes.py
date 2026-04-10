@@ -28,7 +28,7 @@ def test_geospatial_interactive_grid(test_data):
     editor.viewer.close()
 
 def test_geospatial_interactive_grid_empty_numdivs(test_data):
-    """Test for plantcv.geospatial. """
+    """Test for plantcv.geospatial."""
     field = np.array([[64.11229125, 128.74165877],
                       [136.25692447, 203.82241079],
                       [213.85434974, 139.64724287],
