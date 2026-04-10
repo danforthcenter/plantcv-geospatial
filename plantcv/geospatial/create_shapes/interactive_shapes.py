@@ -5,7 +5,7 @@ from plantcv.plantcv import fatal_error
 from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 from plantcv.geospatial.convert.points import points
-from plantcv.geospatial.convert.shapes import shapes71
+from plantcv.geospatial.convert.shapes import shapes
 from plantcv.geospatial import field_layout
 
 
@@ -132,3 +132,9 @@ class InteractiveShapes:
             List of X,Y coordinates of shape vertices.
         """
         return shapes(img=self.img, source=self.viewer, dest=dest, shapetype=shapetype, layername=layername)
+
+    def close(self):
+        """Close the napari viewer held by this InteractiveShapes object."""
+        if getattr(self, "viewer", None) is not None:
+            self.viewer.close()
+            self.viewer = None
