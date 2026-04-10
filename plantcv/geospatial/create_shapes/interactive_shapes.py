@@ -73,7 +73,7 @@ class InteractiveShapes:
             num_columns = getattr(field_layout, "num_columns", None)
             num_ranges = getattr(field_layout, "num_ranges", None)
             if num_columns is None or num_ranges is None:
-                    fatal_error("num_columns or num_ranges are not available on FieldLayout;cannot determine numdivs.")
+                fatal_error("num_columns or num_ranges are not available on FieldLayout;cannot determine numdivs.")
             numdivs = [num_columns, num_ranges]
 
         _napari_grid(self.viewer, numdivs, layername=self.layer_dict["field_boundary"])
