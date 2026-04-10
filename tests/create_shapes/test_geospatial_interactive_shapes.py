@@ -46,6 +46,23 @@ def test_geospatial_interactive_grid_empty_numdivs(test_data):
     assert len(editor.viewer.layers["Plots"].data) == 2
     editor.viewer.close()
 
+def test_geospatial_interactive_grid_empty_FieldLayout(test_data):
+    """Test for plantcv.geospatial."""
+    field = np.array([[64.11229125, 128.74165877],
+                      [136.25692447, 203.82241079],
+                      [213.85434974, 139.64724287],
+                      [140.45137989,  59.95258989]])
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
+    editor.viewer.add_shapes(field, name="field_bounds")
+    editor.layer_dict["field_boundary"] = "field_bounds"
+    editor.grid()
+    editor.plots()
+    assert len(editor.viewer.layers["grid_lines1"].data) == 0
+    assert len(editor.viewer.layers["Plots"].data) == 0
+    editor.viewer.close()
+
 def test_geospatial_interactive_badviewer(test_data):
     """Test for plantcv-geospatial."""
     with open(test_data.geo_pickled, "rb") as f:
