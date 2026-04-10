@@ -62,7 +62,7 @@ class InteractiveShapes:
 
         Parameters
         ----------
-        numdivs : array_like of int, length 2
+        numdivs : array_like of int, length 2; Defaults to None.
             [Number of columns, number of ranges]
         field_layer : str, optional
             Name of layer with field boundary. Defaults to None.
@@ -70,12 +70,11 @@ class InteractiveShapes:
         if numdivs is None:
             if field_layout is None:
                 fatal_error("FieldLayout is not available on img; cannot determine numdivs.")
-
-                num_columns = getattr(field_layout, "num_columns", None)
-                num_ranges = getattr(field_layout, "num_ranges", None)
-                if num_columns is None or num_ranges is None:
-                    fatal_error(("num_columns and num_ranges are not available on field_layout;")+("cannot determine numdivs."))
-                numdivs = [num_columns, num_ranges]
+            num_columns = getattr(field_layout, "num_columns", None)
+            num_ranges = getattr(field_layout, "num_ranges", None)
+            if num_columns is None or num_ranges is None:
+                    fatal_error("num_columns and num_ranges are not available on FieldLayout;cannot determine numdivs.")
+            numdivs = [num_columns, num_ranges]
 
         _napari_grid(self.viewer, numdivs, layername=self.layer_dict["field_boundary"])
         self.layer_dict["grid_lines_columns"] = "grid_lines1"
