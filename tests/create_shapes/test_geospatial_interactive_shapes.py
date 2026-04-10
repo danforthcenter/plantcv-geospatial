@@ -5,6 +5,7 @@ import dill as pickle
 import numpy as np
 from plantcv.geospatial.create_shapes.interactive_shapes import InteractiveShapes
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _lineintersect
+from plantcv.geospatial import field_layout
 
 
 def test_geospatial_interactive_grid(test_data):
@@ -26,6 +27,23 @@ def test_geospatial_interactive_grid(test_data):
     assert int(editor.viewer.layers["Plots"].data[0][1][0]) == 136
     editor.viewer.close()
 
+def test_geospatial_interactive_grid_empty_numdivs(test_data):
+    """Test for plantcv.geospatial. """
+    field = np.array([[64.11229125, 128.74165877],
+                      [136.25692447, 203.82241079],
+                      [213.85434974, 139.64724287],
+                      [140.45137989,  59.95258989]])
+    field_layout.num_columns = 1
+    field_layout.num_ranges = 2
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
+    editor.viewer.add_shapes(field, name="field_bounds")
+    editor.layer_dict["field_boundary"] = "field_bounds"
+    editor.grid()
+    assert len(editor.viewer.layers["grid_lines1"].data) == 2
+    assert len(editor.viewer.layers["Plots"].data) == 2
+    editor.viewer.close()
 
 def test_geospatial_interactive_badviewer(test_data):
     """Test for plantcv-geospatial."""

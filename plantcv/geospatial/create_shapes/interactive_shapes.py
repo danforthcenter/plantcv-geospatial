@@ -5,7 +5,7 @@ from plantcv.plantcv import fatal_error
 from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 from plantcv.geospatial.convert.points import points
-from plantcv.geospatial.convert.shapes import shapes
+from plantcv.geospatial.convert.shapes import shapes71
 from plantcv.geospatial import field_layout
 
 
