@@ -41,6 +41,7 @@ def test_geospatial_interactive_grid_empty_numdivs(test_data):
     editor.viewer.add_shapes(field, name="field_bounds")
     editor.layer_dict["field_boundary"] = "field_bounds"
     editor.grid()
+    editor.plots()
     assert len(editor.viewer.layers["grid_lines1"].data) == 2
     assert len(editor.viewer.layers["Plots"].data) == 2
     editor.viewer.close()
