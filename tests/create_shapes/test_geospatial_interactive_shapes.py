@@ -52,6 +52,8 @@ def test_geospatial_interactive_grid_empty_FieldLayout(test_data):
                       [136.25692447, 203.82241079],
                       [213.85434974, 139.64724287],
                       [140.45137989,  59.95258989]])
+    field_layout.num_columns = None
+    field_layout.num_ranges = None
     with open(test_data.geo_pickled, "rb") as f:
         img = pickle.load(f)
     editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
