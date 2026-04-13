@@ -59,11 +59,9 @@ def test_geospatial_interactive_grid_empty_FieldLayout(test_data):
     editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
     editor.viewer.add_shapes(field, name="field_bounds")
     editor.layer_dict["field_boundary"] = "field_bounds"
-    editor.grid()
-    editor.plots()
-    assert len(editor.viewer.layers["grid_lines1"].data) == 0
-    assert len(editor.viewer.layers["Plots"].data) == 0
-    editor.viewer.close()
+    with pytest.raises(RuntimeError):
+        editor.grid()
+        editor.viewer.close()
 
 def test_geospatial_interactive_badviewer(test_data):
     """Test for plantcv-geospatial."""
