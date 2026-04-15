@@ -4,6 +4,7 @@ from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from plantcv.plantcv import params
 from plantcv.plantcv.fatal_error import fatal_error
+from plantcv.geospatial.images import GEO, DSM
 import numpy as np
 import geopandas
 import fiona
@@ -353,3 +354,41 @@ def _check_field_parameters(arglist, argnames):
         areNone = [val is None for val in arglist]
         noneArgs = [val for i, val in enumerate(argnames) if areNone[i]]
         fatal_error("Got None for " + str(noneArgs) + ", specify as a kwarg or add to field_layout object")
+
+
+def _read_to_class(depth, img, filename, wavelengths, crs, trns, nodata, cutoff):
+    """Read to either a GEO or DSM class based on depth
+
+    Parameters:
+    -----------
+    depth       = int, depth of img
+    img         = numpy.ndarray, image data
+    filename    = str, filename
+    wavelengths = list, list of wavelengths
+    crs         = rasterio.crs.CRS object, coordinate reference system
+    trns        = rasterio transformation
+    cutoff      = float, cutoff for a grayscale image (DSM)
+
+    Returns:
+    --------
+    obj         = GEO or DSM object
+    """
+    if depth > 1:
+        # Make a GEO instance before calculating a pseudo-rgb
+        obj = GEO(input_array=img,
+                  filename=filename,
+                  wavelengths=wavelengths,
+                  default_wavelengths=[650, 560, 480],
+                  crs=crs,
+                  transform=trns,
+                  nodata=nodata
+                  )
+    else:
+        obj = DSM(input_array=img,
+                  filename=filename,
+                  crs=crs,
+                  transform=trns,
+                  nodata=nodata,
+                  cutoff=cutoff
+                  )
+    return obj
