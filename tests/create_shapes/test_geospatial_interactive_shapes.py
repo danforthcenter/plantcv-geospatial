@@ -25,7 +25,7 @@ def test_geospatial_interactive_grid(test_data):
     assert len(editor.viewer.layers["Plots"].data) == 2
     assert int(editor.viewer.layers["grid_lines1"].data[0][1][0]) == 140
     assert int(editor.viewer.layers["Plots"].data[0][1][0]) == 136
-    editor.viewer.close()
+    editor.close()
 
 def test_geospatial_interactive_grid_empty_numdivs(test_data):
     """Test for plantcv.geospatial."""
@@ -44,7 +44,7 @@ def test_geospatial_interactive_grid_empty_numdivs(test_data):
     editor.plots()
     assert len(editor.viewer.layers["grid_lines1"].data) == 2
     assert len(editor.viewer.layers["Plots"].data) == 2
-    editor.viewer.close()
+    editor.close()
 
 def test_geospatial_interactive_grid_empty_FieldLayout(test_data):
     """Test for plantcv.geospatial."""
@@ -61,7 +61,6 @@ def test_geospatial_interactive_grid_empty_FieldLayout(test_data):
     editor.layer_dict["field_boundary"] = "field_bounds"
     with pytest.raises(RuntimeError):
         editor.grid()
-        editor.viewer.close()
 
 def test_geospatial_interactive_badviewer(test_data):
     """Test for plantcv-geospatial."""
@@ -78,7 +77,7 @@ def test_geospatial_interactive_addshapes(test_data):
     editor = InteractiveShapes(img, show=False)
     editor.add_layer()
     assert editor.device == 1
-    editor.viewer.close()
+    editor.close()
 
 
 def test_geospatial_interactive_addpoints(test_data):
@@ -88,7 +87,7 @@ def test_geospatial_interactive_addpoints(test_data):
     editor = InteractiveShapes(img, show=False)
     editor.add_layer(layer_type="points", layername="Points")
     assert editor.device == 1
-    editor.viewer.close()
+    editor.close()
 
 
 def test_geospatial_interactive_wronglayername(test_data):

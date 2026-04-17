@@ -68,8 +68,6 @@ class InteractiveShapes:
             Name of layer with field boundary. Defaults to None.
         """
         if numdivs is None:
-            if field_layout is None:
-                fatal_error("FieldLayout is not available on img; cannot determine numdivs.")
             num_columns = getattr(field_layout, "num_columns", None)
             num_ranges = getattr(field_layout, "num_ranges", None)
             if num_columns is None or num_ranges is None:
@@ -135,6 +133,4 @@ class InteractiveShapes:
 
     def close(self):
         """Close the napari viewer held by this InteractiveShapes object."""
-        if getattr(self, "viewer", None) is not None:
-            self.viewer.close()
-            self.viewer = None
+        self.viewer.close()
