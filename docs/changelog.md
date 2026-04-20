@@ -54,9 +54,13 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.create_shapes.InteractiveShapes.add_layer**(*layer_type="shapes", layername="Shapes"*)
 
+#### geospatial.create_shapes.InteractiveShapes.close
+
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.close**()
+
 #### geospatial.create_shapes.InteractiveShapes.grid
 
-* v0.1dev: **geospatial.create_shapes.InteractiveShapes.grid**(*numdivs*)
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.grid**(*numdivs=None*)
 
 #### geospatial.create_shapes.InteractiveShapes.plots
 
