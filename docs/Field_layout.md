@@ -37,8 +37,8 @@ Attributes are accessed as field_layout.*attribute*.
 import plantcv.geospatial as gcv
 
 # Set field parameters
-field_layout.range_length = 3.65
-field_layout.row_length = 0.9
+gcv.field_layout.range_length = 3.65
+gcv.field_layout.row_length = 0.9
 
 # Read geotif in
 ortho1 = gcv.read_geotif(filename="./data/example_maize_img.tif", bands="b,g,r,RE,NIR")
