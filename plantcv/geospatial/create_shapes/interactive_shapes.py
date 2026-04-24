@@ -31,8 +31,9 @@ class InteractiveShapes:
             fatal_error("Only napari viewers are currently supported.")
 
         self.img = img
+        self.thumb = img.thumb[..., ::-1]
         self.layer_dict = {}
-        self.viewer.add_image(self.img.thumb)
+        self.viewer.add_image(self.thumb)
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
