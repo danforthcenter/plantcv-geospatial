@@ -66,6 +66,8 @@ def _read_geotif_and_shapefile(filename, cropto):
     -------
     img_data : numpy.ndarray
         Image data array with shape ``(bands, height, width)``.
+    nodata_indicies : numpy.ndarray
+        Coordinates of missing data that has been replaced with 0s.
     metadata : dict
         Rasterio metadata dictionary including CRS, transform, and driver
         information.
@@ -152,7 +154,16 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
 
     # Check if img is uint16
     if img_data.dtype == "uint16":
+        img_data = np.where(img_data == metadata["nodata"], 0, img_data)
         img_data = ((img_data/65535.0) * 255.0).astype(np.uint8)
+
+    # Check if img is float32
+    if img_data.dtype == "float32":
+        # Replace nodata with 0
+        img_data = np.where(img_data == metadata["nodata"], 0, img_data)
+        img_data = img_data ** (1 / 2.2)
+        img_data = (img_data * 255).astype("uint8")
+
     if depth > 1:
         # Make a GEO instance before calculating a pseudo-rgb
         obj = GEO(input_array=img_data,
