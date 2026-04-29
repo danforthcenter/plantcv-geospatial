@@ -121,6 +121,11 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     # reshape such that z-dimension is last
     img_data = img_data.transpose(1, 2, 0)
     _, _, depth = img_data.shape
+    # Parse bands
+    bands = _parse_bands(bands)
+    if (depth == 1 and len(bands) > 1):
+        warn(f"Bands specified as {bands} but data has 1 channel, bands have been reset to GRAY for a DSM.")
+        bands = [0]
     # Check for mask
     mask_layer = None
     mask_band_indices = []
@@ -132,8 +137,6 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         img_data = np.delete(img_data, mask_band_indices, 2)
     # reset depth in case the image data was changed
     _, _, depth = img_data.shape
-    # Parse bands
-    bands = _parse_bands(bands)
     # Check if user input matches image dimension in z direction
     if depth > len(bands):
         warn(f"{depth} bands found in the image data but {filename} was provided with {bands}. " +
