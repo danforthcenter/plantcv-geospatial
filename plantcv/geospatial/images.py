@@ -138,13 +138,19 @@ class DSM(Image):
         numpy.ndarray
             Stretched thumbnail
         """
-        img_copy = self.data_array
-        # Change nodata values to Nan
-        img_copy[img_copy == self.nodata] = np.nan
-        # Stretch values to min/max for visualization
-        img_copy = 255*((img_copy - np.nanmin(img_copy)) / (np.nanmax(img_copy) - np.nanmin(img_copy)))
-        # Return nodata values to 0
-        img_copy = np.nan_to_num(img_copy, nan=0.0)
+        img_data = self.data_array
+        # make masked array for nodata values
+        mask = np.where(img_data == self.nodata, 1, 0)
+        mx = np.ma.masked_array(img_data, mask)
+        # get range of masked array for visualization
+        mxmin = mx.min()
+        mxmax = mx.max()
+        # make copy of image squashed into uint8 range
+        img_copy = 255 * ((mx - mxmin) / (mxmax - mxmin))
         # Convert to uint8
         thumb = img_copy.astype(np.uint8)
+        # remove data from masked array
+        thumb = thumb.data
+        # slice 0s in for no-data
+        thumb = np.where(mask == 1, 0, thumb)
         return thumb

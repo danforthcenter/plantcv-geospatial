@@ -54,7 +54,7 @@ Attributes are accessed as DSM.*attribute*.
 
 - **cutoff**: A cutoff for how high a pixel can be, pixels above this height will be converted to `numpy.nan`.
 
-- **thumb**: A thumbnail image in 3 channels defined by `default_wavelengths`. Similar to a psuedo-rgb image from the `plantcv.plantcv.Spectral_data` class.
+- **thumb**: A grayscale thumbnail image of the DSM.
 
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/images.py)
