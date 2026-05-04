@@ -8,7 +8,7 @@ from plantcv.geospatial.analyze import spectral_index as analyze_spectral
 
 @pytest.mark.parametrize("debug,percentiles,index", [["print", None, "evi"],
                                                ["plot", None, "evi"],
-                                               [None, [33, 75, 92], "egi"]])
+                                               [None, [33, 75, 92], "sci"]])
 def test_analyze_spectral_index(debug, tmpdir, test_data, percentiles, index):
     """Test for PlantCV."""
     # Clear previous outputs
