@@ -40,12 +40,12 @@ def _convert_spectral(img, index, distance):
 
     # Calculate index using pcv.spectral_index
     chosen = getattr(pcv_spectral, index)
-    
+
     # Check first to see if index is one that requires different inputs
     diff_inds = ["sci", "bgr", "bgi"]
     if index in diff_inds:
         return chosen(img.thumb)
-        
+
     return chosen(spectral_input, distance=distance)
 
 
