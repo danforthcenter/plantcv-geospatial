@@ -18,9 +18,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, index, percentiles=None, label=None, distance=20*)
 
-#### geospatial.analyze.height_subtraction
+#### geospatial.analyze.chm
 
-* v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
+[FILL THIS IN]
 
 #### geospatial.center_grid_rois
 
@@ -93,3 +93,7 @@ All notable changes to this project will be documented below.
 #### geospatial.read.netcdf
 
 * v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
+
+#### geospatial.subtract_dsm
+
+* v0.1dev: chm = **geospatial.subtract_dsm**(*dsm1, dsm0*)

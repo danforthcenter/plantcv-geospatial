@@ -35,6 +35,7 @@ nav:
             - Convert polygons to/from geojson: convert_shapes.md
         - Field Layout: Field_layout.md
         - ROIs from polygon centers: center_grid_rois.md
+        - Subtract DSMs to create a Canopy Height Model: subtract_dsm.md
         - Shape creation tools:
             - Grid from plot coordinates : shapes_grid_from_coords.md
             - Automatic Grid : shapes_grid.md
