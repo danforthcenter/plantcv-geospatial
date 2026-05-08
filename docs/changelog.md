@@ -20,7 +20,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.analyze.chm
 
-[FILL THIS IN]
+* v0.1dev: **geospatial.analyze.chm**(*dsm, geojson, bins=10, label=None*)
 
 #### geospatial.center_grid_rois
 
