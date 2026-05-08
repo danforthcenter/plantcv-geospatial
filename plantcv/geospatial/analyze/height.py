@@ -4,7 +4,6 @@ from plantcv.plantcv import outputs, params
 from rasterstats import zonal_stats
 import numpy as np
 import geopandas
-import os
 
 
 def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
@@ -107,4 +106,3 @@ def height_percentile(dsm, geojson, lower=25, upper=90, label=None):
                                  cmap='viridis', vmin=min_elevation, vmax=max_elevation)
 
     return plotting_img
-
