@@ -1,9 +1,9 @@
 # Resize geospatial image classes
-
 import numpy as np
 import affine as affine_module
 from plantcv.plantcv.transform import resize as pcv_resize
 from plantcv.geospatial.images import GEO, DSM
+from plantcv.plantcv import fatal_error
 
 
 def resize(img, size, interpolation="auto"):
@@ -17,7 +17,7 @@ def resize(img, size, interpolation="auto"):
     ----------
     img : plantcv.geospatial.images object, either GEO or DSM
         A GEO image object returned by ``read_geotif``.
-    size : tuple of ints         
+    size : tuple of ints
         Output image size in pixels (width, height)
     interpolation: str
         Interpolation method:
@@ -30,7 +30,7 @@ def resize(img, size, interpolation="auto"):
         None = disable interpolation and crop or pad instead
 
     Returns
-    ---------- 
+    ----------
     resized_img : plantcv.geospatial.images object, either GEO or DSM
         Resized image of the same class as the input
     """
@@ -50,7 +50,7 @@ def resize(img, size, interpolation="auto"):
             transform=new_transform,
             nodata=getattr(img, "nodata", None)
         )
-    elif isinstance(img, DSM):
+    if isinstance(img, DSM):
         new_transform = _scale_transform(img.transform, orig_w, orig_h, new_w, new_h)
         return DSM(
             input_array=resized_array,
@@ -60,6 +60,8 @@ def resize(img, size, interpolation="auto"):
             cutoff=getattr(img, "cutoff", None),
             nodata=getattr(img, "nodata", None)
         )
+    # If neither image type
+    fatal_error("Input must be a GEO or DSM object.")
 
 
 def _scale_transform(transform, orig_w, orig_h, new_w, new_h):
@@ -68,7 +70,7 @@ def _scale_transform(transform, orig_w, orig_h, new_w, new_h):
     ----------
     transform : affine.Affine
         Affine transformation matrix of original image.
-    orig_w : int         
+    orig_w : int
         Original image width.
     orig_h : int
         Original image height.
@@ -78,7 +80,7 @@ def _scale_transform(transform, orig_w, orig_h, new_w, new_h):
         New image height.
 
     Returns
-    ---------- 
+    ----------
     transform : affine.Affine
         Rescaled transformation matrix.
     """
