@@ -161,7 +161,7 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         obj = GEO(input_array=img_data,
                   filename=filename,
                   wavelengths=bands,
-                  default_wavelengths=[650, 560, 480],
+                  default_wavelengths=[480, 560, 650],
                   crs=metadata["crs"],
                   transform=metadata["transform"],
                   nodata=metadata["nodata"]
