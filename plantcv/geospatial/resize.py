@@ -58,7 +58,7 @@ def resize(img, size, interpolation="auto"):
             transform=new_transform,
             nodata=getattr(img, "nodata", None)
         )
-    elif isinstance(img, DSM):
+    if isinstance(img, DSM):
         new_transform = _scale_transform(img.transform, orig_w, orig_h, new_w, new_h)
         resized_img = DSM(
             input_array=resized_array,
