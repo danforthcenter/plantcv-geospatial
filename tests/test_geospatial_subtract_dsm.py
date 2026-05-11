@@ -3,16 +3,14 @@
 import dill as pickle
 import pytest
 import numpy as np
-from plantcv.plantcv import outputs, params
 from plantcv.geospatial import subtract_dsm
+from plantcv.plantcv import outputs
 
 
 def test_subtract_dsm(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
-    # Debug mode
-    params.debug = "plot"
     # Read in test data
     with open(test_data.dsm_pickled, "rb") as f:
         dsm = pickle.load(f)
@@ -24,8 +22,6 @@ def test_subtract_dsm_unequal_crs(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
-    # Debug mode
-    params.debug = "plot"
     # Read in test data
     with open(test_data.dsm_pickled, "rb") as f:
         dsm1 = pickle.load(f)
@@ -42,8 +38,6 @@ def test_subtract_dsm_shape_check(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
-    # Debug mode
-    params.debug = "plot"
     # Read in test data
     with open(test_data.dsm_pickled, "rb") as f:
         dsm1 = pickle.load(f)
