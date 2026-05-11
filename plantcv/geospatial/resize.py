@@ -41,7 +41,7 @@ def resize(img, size, interpolation="auto"):
 
     if isinstance(img, GEO):
         new_transform = _scale_transform(img.transform, orig_w, orig_h, new_w, new_h)
-        return GEO(
+        resized_img = GEO(
             input_array=resized_array,
             filename=img.filename,
             wavelengths=img.wavelengths,
@@ -50,9 +50,9 @@ def resize(img, size, interpolation="auto"):
             transform=new_transform,
             nodata=getattr(img, "nodata", None)
         )
-    if isinstance(img, DSM):
+    elif isinstance(img, DSM):
         new_transform = _scale_transform(img.transform, orig_w, orig_h, new_w, new_h)
-        return DSM(
+        resized_img = DSM(
             input_array=resized_array,
             filename=img.filename,
             crs=img.crs,
@@ -60,8 +60,9 @@ def resize(img, size, interpolation="auto"):
             cutoff=getattr(img, "cutoff", None),
             nodata=getattr(img, "nodata", None)
         )
-    # If neither image type
-    fatal_error("Input must be a GEO or DSM object.")
+    else:
+        fatal_error("Input must be a GEO or DSM object.")
+    return resized_img
 
 
 def _scale_transform(transform, orig_w, orig_h, new_w, new_h):
