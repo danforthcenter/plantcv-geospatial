@@ -28,8 +28,14 @@ import plantcv.geospatial as gcv
 ortho = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 
 # Resize to 500 x 500 pixels using the default auto interpolation
-resized = gcv.resize(img=ortho, size=(500, 500))
+resized = gcv.resize(img=ortho, size=(2000, 2000))
 
 ```
+**Before**
+![Screenshot](documentation_images/resize_before.png)
+
+**After**
+![Screenshot](documentation_images/resize_after.png)
+
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/resize.py)
