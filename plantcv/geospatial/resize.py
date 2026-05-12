@@ -1,9 +1,13 @@
 # Resize geospatial image classes
+import os
+import cv2
 import numpy as np
 import affine as affine_module
 from plantcv.plantcv.transform import resize as pcv_resize
+from plantcv.plantcv.transform.resize import _set_interpolation
 from plantcv.geospatial.images import GEO, DSM
-from plantcv.plantcv import fatal_error
+from plantcv.plantcv import fatal_error, params
+from plantcv.plantcv._debug import _debug
 
 
 def resize(img, size, interpolation="auto"):
@@ -37,7 +41,11 @@ def resize(img, size, interpolation="auto"):
     orig_h, orig_w = img.shape[:2]
     new_w, new_h = size
 
-    resized_array = pcv_resize(np.asarray(img), size=size, interpolation=interpolation)
+    # Suppress pcv_resize's raw-array debug — the thumb debug below replaces it
+    saved_debug = params.debug
+    params.debug = None
+    resized_array = _resize_array(np.asarray(img), size=size, interpolation=interpolation)
+    params.debug = saved_debug
 
     if isinstance(img, GEO):
         new_transform = _scale_transform(img.transform, orig_w, orig_h, new_w, new_h)
@@ -62,7 +70,36 @@ def resize(img, size, interpolation="auto"):
         )
     else:
         fatal_error("Input must be a GEO or DSM object.")
+    _debug(visual=resized_img.thumb,
+           filename=os.path.join(params.debug_outdir, str(params.device) + "_thumbnail.png"))
     return resized_img
+
+
+def _resize_array(arr, size, interpolation):
+    """Resize a numpy array to size, handling images with more than 4 bands.
+
+    cv2.resize is limited to 4 channels. For arrays with more bands, each
+    channel is resized independently and the results are stacked.
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+        Image array with shape (H, W) or (H, W, bands).
+    size : tuple of ints
+        Output size in pixels (width, height).
+    interpolation : str or None
+        Interpolation method passed to pcv_resize / _set_interpolation.
+
+    Returns
+    ----------
+    resized : numpy.ndarray
+        Resized array.
+    """
+    if interpolation is not None and arr.ndim == 3 and arr.shape[2] > 4:
+        interp_mtd = _set_interpolation(input_size=arr.shape[:2], output_size=size, method=interpolation)
+        return np.dstack([cv2.resize(arr[:, :, i], dsize=size, interpolation=interp_mtd)
+                          for i in range(arr.shape[2])])
+    return pcv_resize(arr, size=size, interpolation=interpolation)
 
 
 def _scale_transform(transform, orig_w, orig_h, new_w, new_h):

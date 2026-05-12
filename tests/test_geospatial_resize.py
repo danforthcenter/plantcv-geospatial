@@ -47,6 +47,23 @@ def test_resize_none_transform():
     assert isinstance(resized, GEO)
     assert resized.transform is None
 
+def test_resize_geo_multiband():
+    """Test resize with a GEO object with more than 4 bands."""
+    arr = np.zeros((50, 50, 5), dtype=np.uint8)
+    geo = GEO(
+        input_array=arr,
+        filename="test.tif",
+        wavelengths=[650, 560, 480, 717, 842],
+        default_wavelengths=[480, 560, 650],
+        crs=None,
+        transform=None,
+        nodata=None
+    )
+    resized = resize(img=geo, size=(25, 25))
+    assert isinstance(resized, GEO)
+    assert resized.shape == (25, 25, 5)
+
+
 def test_resize_wrong_input():
     """Test resize with non-geospatial array."""
     input_array=np.zeros((100, 100, 3), dtype=np.uint8)
