@@ -79,11 +79,11 @@ class TestData:
             Pickled GEO class object
             Used for testing transform.polygons, convert.shapes, convert.to_roi, transform_polygons,
             classes.InteractiveShapes, convert.points, analyze.color, center_grid_rois, analyze.height_subtraction,
-            analyze.spectral_index
+            analyze.spectral_index, resize
         dsm_pickled
             dsm_test.pkl
             Pickled DSM class object
-            Used for testing analyze.height_subtraction, analyze.height_percentile
+            Used for testing analyze.height_subtraction, analyze.height_percentile, resize
         multipoly
             multipoly.geojson
             Multiple polygon shapefile with "ID" 
