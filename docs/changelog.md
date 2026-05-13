@@ -97,3 +97,7 @@ All notable changes to this project will be documented below.
 #### geospatial.subtract_dsm
 
 * v0.1dev: chm = **geospatial.subtract_dsm**(*dsm1, dsm0*)
+
+#### geospatial.resize
+
+* v0.1dev: img = **geospatial.resize**(*img, size, interpolation="auto"*)
