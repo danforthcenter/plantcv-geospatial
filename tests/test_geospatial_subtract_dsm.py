@@ -1,13 +1,14 @@
-"""Tests for geospatial.analyze.height_subtraction"""
+"""Tests for geospatial.subtract_dsm"""
 
 import dill as pickle
 import pytest
 import numpy as np
 from plantcv.plantcv import outputs
-from plantcv.geospatial.analyze import height_subtraction
+from plantcv.geospatial import subtract_dsm
+from plantcv.plantcv import outputs
 
 
-def test_height_subtraction(test_data):
+def test_subtract_dsm(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
@@ -15,10 +16,10 @@ def test_height_subtraction(test_data):
     with open(test_data.dsm_pickled, "rb") as f:
         dsm = pickle.load(f)
     dsm.nodata = None
-    test = height_subtraction(dsm1=dsm, dsm0=dsm)
+    test = subtract_dsm(dsm1=dsm, dsm0=dsm)
     assert np.nansum(test) == 0
 
-def test_height_subtraction_unequal_crs(test_data):
+def test_subtract_dsm_unequal_crs(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
@@ -32,9 +33,9 @@ def test_height_subtraction_unequal_crs(test_data):
     # Overwriting CRS
     dsm1.crs = 0
     with pytest.raises(RuntimeError):
-        _ = height_subtraction(dsm1, dsm0)
+        _ = subtract_dsm(dsm1, dsm0)
 
-def test_height_shape_check(test_data):
+def test_subtract_dsm_shape_check(test_data):
     """Test for PlantCV."""
     # Clear previous outputs
     outputs.clear()
@@ -46,4 +47,4 @@ def test_height_shape_check(test_data):
         dsm0 = pickle.load(f)
     # Check for shape
     with pytest.raises(RuntimeError):
-        _ = height_subtraction(dsm1, dsm0)      
+        _ = subtract_dsm(dsm1, dsm0)      

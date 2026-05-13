@@ -40,6 +40,7 @@ nav:
             - Grid from plot coordinates : shapes_grid_from_coords.md
             - Automatic Grid : shapes_grid.md
             - Interactive shape creation: InteractiveShapes.md
+        - Subtract DSMs to create a canopy height model: subtract_dsm.md
 markdown_extensions:
   - toc:
       permalink: True
