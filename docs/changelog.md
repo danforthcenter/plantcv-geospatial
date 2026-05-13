@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented below.
 
+#### geospatial.analyze.chm
+
+* v0.1dev: **plantcv.geospatial.analyze.chm**(*dsm, geojson, bins=10, label=None*)
+
 #### geospatial.analyze.color
 
 * v0.1dev: **plantcv.geospatial.analyze.color**(*img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None*)
