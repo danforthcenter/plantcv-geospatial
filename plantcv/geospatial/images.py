@@ -139,8 +139,8 @@ class DSM(Image):
             Stretched thumbnail
         """
         img_data = self.data_array
-        # make masked array for nodata values
-        mask = np.where(img_data == self.nodata, 1, 0)
+        # make masked array for nodata values and cutoff-converted NaNs
+        mask = np.where((img_data == self.nodata) | np.isnan(img_data), 1, 0)
         mx = np.ma.masked_array(img_data, mask)
         # get range of masked array for visualization
         mxmin = mx.min()
