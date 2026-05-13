@@ -99,7 +99,9 @@ def _resize_array(arr, size, interpolation):
         interp_mtd = _set_interpolation(input_size=arr.shape[:2], output_size=size, method=interpolation)
         return np.dstack([cv2.resize(arr[:, :, i], dsize=size, interpolation=interp_mtd)
                           for i in range(arr.shape[2])])
-    return pcv_resize(arr, size=size, interpolation=interpolation)
+    resized = pcv_resize(arr, size=size, interpolation=interpolation)
+    # Add empty third dimension back to match read in DSMs
+    return np.expand_dims(resized, axis=-1)
 
 
 def _scale_transform(transform, orig_w, orig_h, new_w, new_h):
