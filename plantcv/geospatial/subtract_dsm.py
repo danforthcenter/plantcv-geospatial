@@ -32,7 +32,7 @@ def subtract_dsm(dsm1, dsm0):
 
     # Check the shapes are equivalent
     if (dsm1.shape == dsm0.shape) is False:
-        fatal_error("Input DSMs do not have same shape, can be changed with PCV 'resize' function.")
+        fatal_error("Input DSMs do not have same shape, can be changed with 'resize' function.")
 
     # Perform the subtraction
     final_data = dsm1 - dsm0
