@@ -93,3 +93,7 @@ All notable changes to this project will be documented below.
 #### geospatial.read.netcdf
 
 * v0.1dev: spectral = **geospatial.read.netcdf**(*filename, cropto, output=False*)
+
+#### geospatial.resize
+
+* v0.1dev: img = **geospatial.resize**(*img, size, interpolation="auto"*)
