@@ -24,7 +24,6 @@ def test_resize_dsm(test_data):
     """Test resize with a DSM object preserves class and metadata."""
     with open(test_data.dsm_pickled, "rb") as f:
         img = pickle.load(f)
-    img.nodata = 0
     resized = resize(img=img, size=(50, 50))
     assert isinstance(resized, DSM)
     assert resized.shape[:2] == (50, 50)
@@ -47,6 +46,19 @@ def test_resize_none_transform():
     resized = resize(img=geo, size=(50, 50))
     assert isinstance(resized, GEO)
     assert resized.transform is None
+    
+def test_resize_DSM_with_nodata():
+    """Test resize with a DSM object that has a nodata value."""
+    geo = DSM(
+        input_array=np.zeros((100, 100, 1), dtype=np.uint8),
+        filename="test.tif",
+        crs=None,
+        transform=None,
+        cutoff=None,
+        nodata=0
+    )
+    resized = resize(img=geo, size=(50, 50))
+    assert isinstance(resized, DSM)
 
 def test_resize_geo_multiband():
     """Test resize with a GEO object with more than 4 bands."""
