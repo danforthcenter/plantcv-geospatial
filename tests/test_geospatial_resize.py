@@ -41,7 +41,7 @@ def test_resize_none_transform():
         default_wavelengths=[480, 540, 630],
         crs=None,
         transform=None,
-        nodata=None
+        nodata=0
     )
     resized = resize(img=geo, size=(50, 50))
     assert isinstance(resized, GEO)
