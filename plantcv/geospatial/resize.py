@@ -100,6 +100,8 @@ def _resize_array(arr, size, interpolation):
         return np.dstack([cv2.resize(arr[:, :, i], dsize=size, interpolation=interp_mtd)
                           for i in range(arr.shape[2])])
     resized = pcv_resize(arr, size=size, interpolation=interpolation)
+    if arr.shape[2] > 1:
+        return resized
     # Add empty third dimension back to match read in DSMs
     return np.expand_dims(resized, axis=-1)
 
