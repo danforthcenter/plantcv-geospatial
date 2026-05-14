@@ -24,6 +24,7 @@ def test_resize_dsm(test_data):
     """Test resize with a DSM object preserves class and metadata."""
     with open(test_data.dsm_pickled, "rb") as f:
         img = pickle.load(f)
+    img.nodata = 0
     resized = resize(img=img, size=(50, 50))
     assert isinstance(resized, DSM)
     assert resized.shape[:2] == (50, 50)
