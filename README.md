@@ -7,6 +7,18 @@ Geospatial add-on package to PlantCV
 
 ## Installation
 
+PlantCV-Geospatial requires main PlantCV v5. Follow the [installation instructions](https://docs.plantcv.org/en/stable/installation/) to create a conda environment with recommended dependencies:
+
+```bash
+conda create -n plantcv -c conda-forge  jupyterlab ipympl nodejs
+```
+Then, activate the environment and install main PlantCV version 5 and PlantCV-Geospatial from PyPi:
+```bash
+conda activate plantcv
+pip install 'plantcv==5.0.0rc1' plantcv-geospatial
+```
+
+
 Developers should set up a PlantCV conda environment from source code as normal, then:
 
 ```bash
