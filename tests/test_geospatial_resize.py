@@ -63,6 +63,24 @@ def test_resize_DSM_with_nodata():
     assert isinstance(resized, DSM)
     assert resized.shape == (50, 50, 1)
 
+
+def test_resize_DSM_with_nan_nodata():
+    """Test resize with a DSM object that has a nodata value."""
+    arr = np.zeros((100, 100, 1), dtype=np.float32)
+    arr[25:75, 25:75, 0] = np.nan
+    geo = DSM(
+        input_array=arr,
+        filename="test.tif",
+        crs=None,
+        transform=None,
+        cutoff=None,
+        nodata=np.nan
+    )
+    resized = resize(img=geo, size=(50, 50))
+    assert isinstance(resized, DSM)
+    assert resized.shape == (50, 50, 1)
+
+    
 def test_resize_geo_multiband():
     """Test resize with a GEO object with more than 4 bands."""
     arr = np.zeros((50, 50, 5), dtype=np.uint8)
