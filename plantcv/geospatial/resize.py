@@ -44,7 +44,8 @@ def resize(img, size, interpolation="auto"):
     # Suppress pcv_resize's raw-array debug — the thumb debug below replaces it
     saved_debug = params.debug
     params.debug = None
-    resized_array = _resize_array(np.asarray(img), size=size, interpolation=interpolation)
+    nodata = getattr(img, "nodata", None)
+    resized_array = _resize_array(np.asarray(img), size=size, interpolation=interpolation, nodata=nodata)
     params.debug = saved_debug
 
     if isinstance(img, GEO):
@@ -75,7 +76,7 @@ def resize(img, size, interpolation="auto"):
     return resized_img
 
 
-def _resize_array(arr, size, interpolation):
+def _resize_array(arr, size, interpolation, nodata=None):
     """Resize a numpy array to size, handling images with more than 4 bands.
 
     cv2.resize is limited to 4 channels. For arrays with more bands, each
@@ -89,17 +90,73 @@ def _resize_array(arr, size, interpolation):
         Output size in pixels (width, height).
     interpolation : str or None
         Interpolation method passed to pcv_resize / _set_interpolation.
+    nodata : scalar, optional
+        Nodata sentinel value. Nodata pixels are zero-filled before
+        interpolation and restored afterward (via nearest-neighbor mask
+        resize) so they cannot contaminate adjacent valid pixels.
 
     Returns
     ----------
     resized : numpy.ndarray
         Resized array.
     """
+    # Replace nodata with a neutral fill (0) before interpolation so that
+    # averaging/area methods don't produce nodata-adjacent values.
+    nodata_mask = _make_nodata_mask(arr, nodata)
+
     if interpolation is not None and arr.ndim == 3 and arr.shape[2] > 4:
         interp_mtd = _set_interpolation(input_size=arr.shape[:2], output_size=size, method=interpolation)
-        return np.dstack([cv2.resize(arr[:, :, i], dsize=size, interpolation=interp_mtd)
-                          for i in range(arr.shape[2])])
-    return pcv_resize(arr, size=size, interpolation=interpolation)
+        resized = np.dstack([cv2.resize(arr[:, :, i], dsize=size, interpolation=interp_mtd)
+                             for i in range(arr.shape[2])])
+    else:
+        resized = pcv_resize(arr, size=size, interpolation=interpolation)
+        if arr.ndim < 3 or arr.shape[2] <= 1:
+            # Add empty third dimension back to match read in DSMs
+            resized = np.expand_dims(resized, axis=-1)
+
+    if nodata_mask is not None:
+        # Resize mask with nearest-neighbor to keep nodata boundaries sharp.
+        if nodata_mask.ndim == 3 and nodata_mask.shape[2] > 1:
+            resized_mask = np.dstack([
+                cv2.resize(nodata_mask[:, :, i].astype(np.uint8), dsize=size,
+                           interpolation=cv2.INTER_NEAREST)
+                for i in range(nodata_mask.shape[2])
+            ]).astype(bool)
+        else:
+            band = nodata_mask[:, :, 0] if nodata_mask.ndim == 3 else nodata_mask
+            resized_mask = cv2.resize(band.astype(np.uint8), dsize=size,
+                                      interpolation=cv2.INTER_NEAREST).astype(bool)
+            if resized.ndim == 3:
+                resized_mask = resized_mask[:, :, np.newaxis]
+        resized[resized_mask] = nodata
+
+    return resized
+
+
+def _make_nodata_mask(arr, nodata):
+    """Make a mask of any nodata values if there is a nodata value
+
+    Parameters
+    ----------
+    arr : np.ndarray,
+        image data as a numpy array
+    nodata : int or None,
+        Value representing missing data
+
+    Returns
+    -------
+    nodata_mask : None or numpy.ndarray
+    """
+    nodata_mask = None
+    if nodata is not None:
+        mask = arr == nodata
+        if bool(np.isnan(nodata)):
+            mask = np.isnan(arr)
+        if mask.any():
+            nodata_mask = mask
+            arr = arr.astype(np.float64)
+            arr[nodata_mask] = 0
+    return nodata_mask
 
 
 def _scale_transform(transform, orig_w, orig_h, new_w, new_h):

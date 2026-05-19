@@ -18,9 +18,9 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, index, percentiles=None, label=None, distance=20*)
 
-#### geospatial.analyze.height_subtraction
+#### geospatial.analyze.chm
 
-* v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
+* v0.1dev: **geospatial.analyze.chm**(*PENDING*)
 
 #### geospatial.center_grid_rois
 
@@ -97,3 +97,7 @@ All notable changes to this project will be documented below.
 #### geospatial.resize
 
 * v0.1dev: img = **geospatial.resize**(*img, size, interpolation="auto"*)
+
+#### geospatial.subtract_dsm
+
+* v0.1dev: chm = **geospatial.subtract_dsm**(*dsm1, dsm0*)
