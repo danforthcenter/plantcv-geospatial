@@ -36,8 +36,8 @@ resized = gcv.resize(img=ortho, size=(2000, 2000))
 # Read a DSM
 dsm = gcv.read_geotif(filename="./data/example_dsm.tif", bands="gray")
 
-# Resize to 2000 x 2000 pixels using the default auto interpolation
-resized = gcv.resize(img=ortho, size=(2000, 2000), interpolation="nearest")
+# Resize to 2000 x 2000 pixels using nearest-neighbor interpolation
+resized = gcv.resize(img=dsm, size=(2000, 2000), interpolation="nearest")
 
 ```
 **Before**
