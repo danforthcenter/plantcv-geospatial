@@ -105,6 +105,8 @@ def _resize_array(arr, size, interpolation, nodata=None):
     nodata_mask = None
     if nodata is not None:
         mask = arr == nodata
+        if bool(np.isnan(nodata)):
+            mask = np.isnan(arr)
         if mask.any():
             nodata_mask = mask
             arr = arr.astype(np.float64)
