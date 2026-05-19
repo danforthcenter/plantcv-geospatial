@@ -100,17 +100,9 @@ def _resize_array(arr, size, interpolation, nodata=None):
     resized : numpy.ndarray
         Resized array.
     """
-    # Replace nodata with a neutral fill before interpolation so that
+    # Replace nodata with a neutral fill (0) before interpolation so that
     # averaging/area methods don't produce nodata-adjacent values.
-    nodata_mask = None
-    if nodata is not None:
-        mask = arr == nodata
-        if bool(np.isnan(nodata)):
-            mask = np.isnan(arr)
-        if mask.any():
-            nodata_mask = mask
-            arr = arr.astype(np.float64)
-            arr[nodata_mask] = 0
+    nodata_mask = _make_nodata_mask(arr, nodata)
 
     if interpolation is not None and arr.ndim == 3 and arr.shape[2] > 4:
         interp_mtd = _set_interpolation(input_size=arr.shape[:2], output_size=size, method=interpolation)
@@ -139,6 +131,32 @@ def _resize_array(arr, size, interpolation, nodata=None):
         resized[resized_mask] = nodata
 
     return resized
+
+
+def _make_nodata_mask(arr, nodata):
+    """Make a mask of any nodata values if there is a nodata value
+
+    Parameters
+    ----------
+    arr : np.ndarray,
+        image data as a numpy array
+    nodata : int or None,
+        Value representing missing data
+
+    Returns
+    -------
+    nodata_mask : None or numpy.ndarray
+    """
+    nodata_mask = None
+    if nodata is not None:
+        mask = arr == nodata
+        if bool(np.isnan(nodata)):
+            mask = np.isnan(arr)
+        if mask.any():
+            nodata_mask = mask
+            arr = arr.astype(np.float64)
+            arr[nodata_mask] = 0
+    return nodata_mask
 
 
 def _scale_transform(transform, orig_w, orig_h, new_w, new_h):
