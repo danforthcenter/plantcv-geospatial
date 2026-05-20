@@ -14,6 +14,25 @@ First, you must have PlantCV installed, which requires Python (tested with versi
 Additionally, we recommend installing [JupyterLab](https://jupyter.org/).
 
 ### Install via a package manager  <a name="install"></a>
+
+PlantCV-Geospatial requires main PlantCV v5. Follow the [installation instructions](https://docs.plantcv.org/en/stable/installation/) to create a conda environment with recommended dependencies:
+
+```bash
+conda create -n plantcv -c conda-forge  jupyterlab ipympl nodejs
+```
+Then, activate the environment and install main PlantCV version 5 and PlantCV-Geospatial from PyPi:
+```bash
+conda activate plantcv
+pip install 'plantcv==5.0.0rc1' plantcv-geospatial
+```
+
+
+### Installing PlantCV-Geospatial for contributors <a name="contributors"></a>
+Before getting started, please read our [contributor guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
+
+You can follow the [PlantCV Installation for Contributor Guide](https://plantcv.readthedocs.io/en/latest/installation/#contributors) and then continue with the instructions below to add PlantCV-Geospatial to 
+your development environment.
+
 [PyPi](https://pypi.org/) installation (after [PlantCV Installation](https://plantcv.readthedocs.io/en/latest/installation/#conda)): 
 
 ```bash
@@ -24,9 +43,3 @@ git clone https://github.com/danforthcenter/plantcv-geospatial.git
 cd plantcv-geospatial 
 pip install -e .
 ```
-
-### Installing PlantCV-Geospatial for contributors <a name="contributors"></a>
-Before getting started, please read our [contributor guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
-
-You can follow the [PlantCV Installation for Contributor Guide](https://plantcv.readthedocs.io/en/latest/installation/#contributors) and then continue with the instructions above to add PlantCV-Geospatial to 
-your development environment.
