@@ -8,9 +8,9 @@ Read in data from a GeoTIFF file (e.g., georeferenced aerial or multispectral im
 
 - **Parameters:**
     - filename - Path of the TIF image file.
-    - bands - A comma-separated string of band labels (e.g., "R,G,B") or a list of wavelengths in nm (e.g., [650, 560, 480]). Default is "R,G,B".
+    - bands - A comma-separated string of band labels (e.g., "R,G,B") or a list of wavelengths in nm (e.g., [670, 560, 480]). Default is "R,G,B".
         - Supported symbols (case insensitive) and their default wavelengths: 
-            - "R" (red) = 650nm
+            - "R" (red) = 670nm
             - "G" (green) = 560nm
             - "B" (blue) = 480nm
             - "RE" (rededge) = 717nm

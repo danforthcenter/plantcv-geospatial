@@ -144,7 +144,7 @@ def netcdf(filename, cropto, output=False):
                                                 np.max(lat), lat.shape[1], lat.shape[0])
 
     # Make the pseudo_rgb
-    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=630)
+    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=670)
     id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
     id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
     # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
@@ -174,7 +174,7 @@ def netcdf(filename, cropto, output=False):
                                    lines=int(height), interleave=None,
                                    wavelength_units="nm", array_type="datacube",
                                    pseudo_rgb=pseudo_rgb, filename=filename,
-                                   default_bands=[480, 540, 630],
+                                   default_bands=[480, 540, 670],
                                    metadata=metadata)
 
     # Output to geotif if requested
