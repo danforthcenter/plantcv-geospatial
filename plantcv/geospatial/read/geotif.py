@@ -19,7 +19,7 @@ def _parse_bands(bands):
     bands : str or list
         Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list
         of wavelengths.
-        Currently Supported Band Symbols: R (650 nm), G (560 nm), B (480 nm),
+        Currently Supported Band Symbols: R (670 nm), G (560 nm), B (480 nm),
         RE (717 nm), N (842 nm), NIR (842 nm), GRAY (0).
 
     Returns
@@ -36,7 +36,7 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842,
+    default_wavelengths = {"R": 670, "G": 560, "B": 480, "RE": 717, "N": 842,
                            "NIR": 842, "GRAY": 0}
 
     for band in band_strs:
@@ -161,7 +161,7 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         obj = GEO(input_array=img_data,
                   filename=filename,
                   wavelengths=bands,
-                  default_wavelengths=[480, 560, 650],
+                  default_wavelengths=[480, 560, 670],
                   crs=metadata["crs"],
                   transform=metadata["transform"],
                   nodata=metadata["nodata"]
