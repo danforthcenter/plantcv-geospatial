@@ -61,10 +61,10 @@ def _channel_stats(img, mask, geojson, bins, channels, channel_ids, histrange, i
     for idx, channel in enumerate(channels):
         # Convert to float and fill in no data values required for zonal stats
         channel = channel.astype(np.float32)
-        channel[mask == 0] = -999
+        channel[mask == 0] = img.nodata
         color_values = zonal_stats(geojson, channel,
                                    affine=img.transform,
-                                   nodata=-999, stats=['mean', 'std'],
+                                   nodata=img.nodata, stats=['mean', 'std'],
                                    add_stats={'histogram': lambda x: _histogram_stats(x, bins=bins, histrange=histrange)})
         for i, id in enumerate(ids):
             j = color_values[i]
@@ -123,14 +123,14 @@ def color(img, bin_mask, geojson, bins=10, colorspaces="hsv", label=None):
     h, s, v = cv2.split(hsv)
 
     h = h.astype(np.float32)
-    h[bin_mask == 0] = -999
+    h[bin_mask == 0] = img.nodata
 
     ids = _gather_ids(geojson=geojson)
 
     hcm = []
     hue_stats = zonal_stats(geojson, h,
                             affine=img.transform,
-                            nodata=-999, stats=['mean'],
+                            nodata=img.nodata, stats=['mean'],
                             add_stats={'hue_stats': partial(_hue_circ_stats)})
 
     for idx, i in enumerate(hue_stats):
