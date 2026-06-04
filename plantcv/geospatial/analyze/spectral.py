@@ -93,7 +93,7 @@ def spectral_index(img, geojson, index, mask=None,
     plot_upper = []
 
     # Mask calculated spectral image if provided
-    if mask:
+    if mask is not None:
         input_img[mask == 0] = img.nodata
 
     # Gather list of IDs
