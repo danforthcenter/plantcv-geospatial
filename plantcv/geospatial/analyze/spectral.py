@@ -94,7 +94,7 @@ def spectral_index(img, geojson, index, mask=None,
 
     # Mask calculated spectral image if provided
     if mask is not None:
-        input_img[mask == 0] = img.nodata
+        input_img.array_data[mask == 0] = img.nodata
 
     # Gather list of IDs
     with fiona.open(geojson, 'r') as shapefile:
