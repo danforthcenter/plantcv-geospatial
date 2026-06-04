@@ -4,6 +4,7 @@ import dill as pickle
 import pytest
 from plantcv.plantcv import outputs, params
 from plantcv.geospatial.analyze import spectral_index as analyze_spectral
+import numpy as np
 
 
 @pytest.mark.parametrize("debug,percentiles,index", [["print", None, "evi"],
@@ -21,8 +22,10 @@ def test_analyze_spectral_index(debug, tmpdir, test_data, percentiles, index):
         img = pickle.load(f)
     # Change wavelengths so it will try to calculate index
     img.wavelengths = [700, 530, 460]
+    # Create mask 
+    mask = np.ones(shape=(img.shape[0],img.shape[1]))
     # Debug mode
     params.debug = debug
-    _ = analyze_spectral(img=img, index=index,
-                         geojson=test_data.poly_crop_fid, percentiles=percentiles, distance=100)
+    _ = analyze_spectral(img=img, index=index, geojson=test_data.poly_crop_fid,
+                         mask=mask, percentiles=percentiles, distance=100)
     assert outputs.observations["default_888"]['percentile_75_index_' + index]["value"] <= 1

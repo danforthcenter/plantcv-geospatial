@@ -43,7 +43,8 @@ def _convert_spectral(img, index, distance):
     return chosen(spectral_input, distance=distance)
 
 
-def spectral_index(img, geojson, index, percentiles=None, label=None, distance=20):
+def spectral_index(img, geojson, index, mask=None,
+                   percentiles=None, label=None, distance=20):
     """A function that summarizes pixel intensity values per region for a spectral index
     Parameters:
     -----------
@@ -53,6 +54,8 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
         Path to the shape file containing the regions for analysis
     index : str
         Spectral index to calculate
+    mask : numpy.ndarray
+        Binary mask for which pixels should be used to calculate stats (default = None)
     percentiles : list (or other iterable)
         percentiles [0-100] scale to calculate (default = None)
     label : str
@@ -89,13 +92,17 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
     plot_lower = []
     plot_upper = []
 
+    # Mask calculated spectral image if provided
+    if mask:
+        input_img[mask == 0] = img.nodata
+
     # Gather list of IDs
     with fiona.open(geojson, 'r') as shapefile:
         # Add properties to the geojson object, and then should be able to access inside the function called in add_stats
         # Vectorized (efficient) data extraction of spectral signature per sub-region
         stats = zonal_stats(shapefile, input_img.array_data, affine=img.transform,
                             stats=formatted_pcts,
-                            nodata=-9999)
+                            nodata=img.nodata)
 
         for i, id in enumerate(shp_labels):
             observation_sample = label + "_" + str(id)
