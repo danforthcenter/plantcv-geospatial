@@ -25,7 +25,7 @@ def test_analyze_spectral_index(debug, tmpdir, test_data, percentiles, index):
     # Change wavelengths so it will try to calculate index
     img.wavelengths = [700, 530, 460]
     # Create mask 
-    mask = np.ones(shape=(img.shape[0],img.shape[1]))
+    mask = np.ones(shape=(img.shape[0],img.shape[1]), dtype=int)
     # Debug mode
     params.debug = debug
     _ = analyze_spectral(img=img, index=index, geojson=test_data.poly_crop_fid,
