@@ -43,8 +43,7 @@ def _convert_spectral(img, index, distance):
     return chosen(spectral_input, distance=distance)
 
 
-def spectral_index(img, geojson, index, mask=None,
-                   percentiles=None, label=None, distance=20):
+def spectral_index(img, geojson, index, percentiles=None, label=None, distance=20):
     """A function that summarizes pixel intensity values per region for a spectral index
     Parameters:
     -----------
@@ -54,8 +53,6 @@ def spectral_index(img, geojson, index, mask=None,
         Path to the shape file containing the regions for analysis
     index : str
         Spectral index to calculate
-    mask : numpy.ndarray
-        Binary mask for which pixels should be used to calculate stats (default = None)
     percentiles : list (or other iterable)
         percentiles [0-100] scale to calculate (default = None)
     label : str
@@ -92,10 +89,6 @@ def spectral_index(img, geojson, index, mask=None,
     plot_lower = []
     plot_upper = []
 
-    # Mask calculated spectral image if provided
-    if mask is not None:
-        input_img.array_data[mask == 0] = img.nodata
-
     # Gather list of IDs
     with fiona.open(geojson, 'r') as shapefile:
         # Add properties to the geojson object, and then should be able to access inside the function called in add_stats
@@ -114,7 +107,7 @@ def spectral_index(img, geojson, index, mask=None,
                                     trait=f"Mean {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=float(stats[i]['mean']), label="none")
-            
+
             outputs.add_observation(sample=observation_sample, variable=f"med_{input_img.array_type}",
                                     trait=f"Median {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
