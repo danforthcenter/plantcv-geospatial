@@ -95,7 +95,7 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
         # Vectorized (efficient) data extraction of spectral signature per sub-region
         stats = zonal_stats(shapefile, input_img.array_data, affine=img.transform,
                             stats=formatted_pcts,
-                            nodata=img.nodata)
+                            nodata=-9999)
 
         for i, id in enumerate(shp_labels):
             observation_sample = label + "_" + str(id)
