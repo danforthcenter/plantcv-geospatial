@@ -43,7 +43,8 @@ def _convert_spectral(img, index, distance):
     return chosen(spectral_input, distance=distance)
 
 
-def spectral_index(img, geojson, index, percentiles=None, label=None, distance=20):
+def spectral_index(img, geojson, index, mask=None,
+                   percentiles=None, label=None, distance=20):
     """A function that summarizes pixel intensity values per region for a spectral index
     Parameters:
     -----------
@@ -53,6 +54,8 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
         Path to the shape file containing the regions for analysis
     index : str
         Spectral index to calculate
+    mask : numpy.ndarray
+        Binary mask for which pixels should be used to calculate stats (default = None)
     percentiles : list (or other iterable)
         percentiles [0-100] scale to calculate (default = None)
     label : str
@@ -81,7 +84,7 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
     if percentiles is None:
         percentiles = range(0, 101, 25)
     # make percentile strings for zonal_stats
-    formatted_pcts = ['median', 'std']
+    formatted_pcts = ['mean', 'median', 'std']
     for _, pct in enumerate(["0", "100", *percentiles]):
         formatted_pcts.append(f"percentile_{pct}")
     formatted_pcts = list(dict.fromkeys(formatted_pcts))
@@ -89,13 +92,17 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
     plot_lower = []
     plot_upper = []
 
+    # Mask calculated spectral image if provided
+    if mask is not None:
+        input_img.array_data[mask == 0] = img.nodata
+
     # Gather list of IDs
     with fiona.open(geojson, 'r') as shapefile:
         # Add properties to the geojson object, and then should be able to access inside the function called in add_stats
         # Vectorized (efficient) data extraction of spectral signature per sub-region
         stats = zonal_stats(shapefile, input_img.array_data, affine=img.transform,
                             stats=formatted_pcts,
-                            nodata=-9999)
+                            nodata=img.nodata)
 
         for i, id in enumerate(shp_labels):
             observation_sample = label + "_" + str(id)
@@ -103,6 +110,11 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
             plot_lower.append(stats[i]['percentile_0'])
             plot_upper.append(stats[i]['percentile_100'])
             # store non-percentile results
+            outputs.add_observation(sample=observation_sample, variable=f"mean_{input_img.array_type}",
+                                    trait=f"Mean {input_img.array_type} reflectance",
+                                    method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
+                                    value=float(stats[i]['mean']), label="none")
+            
             outputs.add_observation(sample=observation_sample, variable=f"med_{input_img.array_type}",
                                     trait=f"Median {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
@@ -113,7 +125,7 @@ def spectral_index(img, geojson, index, percentiles=None, label=None, distance=2
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=stats[i]['std'], label="none")
             # store percentile results
-            for pct in formatted_pcts:
+            for pct in formatted_pcts[3:]:
                 outputs.add_observation(sample=observation_sample, variable=f"{pct}_{input_img.array_type}",
                                         trait=f"{pct}_{input_img.array_type} value",
                                         method="plantcv.geospatial.analyze.spectral_index", scale="frequency", datatype=float,
