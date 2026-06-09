@@ -89,8 +89,9 @@ def spectral_index(img, geojson, index, mask=None,
         formatted_pcts.append(f"percentile_{pct}")
     formatted_pcts = list(dict.fromkeys(formatted_pcts))
     # Initialize variable for maximum and minimum index values within plots
-    plot_lower = []
-    plot_upper = []
+    # these are not empty lists in case all values are None (an empty mask is provided)
+    plot_lower = [0]
+    plot_upper = [0.1]
 
     # Mask calculated spectral image if provided
     if mask is not None:
@@ -110,10 +111,13 @@ def spectral_index(img, geojson, index, mask=None,
             plot_lower.append(stats[i]['percentile_0'])
             plot_upper.append(stats[i]['percentile_100'])
             # store non-percentile results
+            med = stats[i]['median']
+            if med is not None:
+                med = float(med)
             outputs.add_observation(sample=observation_sample, variable=f"med_{input_img.array_type}",
                                     trait=f"Median {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
-                                    value=float(stats[i]['median']), label="none")
+                                    value=med, label="none")
 
             outputs.add_observation(sample=observation_sample, variable=f"std_{input_img.array_type}",
                                     trait=f"Standard deviation {input_img.array_type} reflectance",
@@ -121,12 +125,17 @@ def spectral_index(img, geojson, index, mask=None,
                                     value=stats[i]['std'], label="none")
             # store percentile results
             for pct in formatted_pcts:
+                pctval = stats[i]['median']
+                if pctval is not None:
+                    pctval = float(pctval)
                 outputs.add_observation(sample=observation_sample, variable=f"{pct}_{input_img.array_type}",
                                         trait=f"{pct}_{input_img.array_type} value",
                                         method="plantcv.geospatial.analyze.spectral_index", scale="frequency", datatype=float,
-                                        value=float(stats[i][pct]), label="none")
+                                        value=pctval, label="none")
 
-    ax = _plot_bounds_pseudocolored(img=input_img, geojson=geojson, vmin=min(plot_lower), vmax=max(plot_upper),
+    ax = _plot_bounds_pseudocolored(img=input_img, geojson=geojson,
+                                    vmin=min((x for x in plot_lower if x is not None)),
+                                    vmax=max((x for x in plot_upper if x is not None)),
                                     data_label=input_img.array_type)
 
     return ax
