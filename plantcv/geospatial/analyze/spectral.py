@@ -112,20 +112,29 @@ def spectral_index(img, geojson, index, mask=None,
             plot_upper.append(stats[i]['percentile_100'])
             # store non-percentile results
             mn = stats[i]['mean']
+            med = stats[i]['median']
             if mn is not None:
                 mn = float(mn)
-            outputs.add_observation(sample=observation_sample, variable=f"med_{input_img.array_type}",
+            if med is not None:
+                med = float(med)
+            outputs.add_observation(sample=observation_sample, variable=f"mean_{input_img.array_type}",
                                     trait=f"Median {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=mn, label="none")
+
+            outputs.add_observation(sample=observation_sample, variable=f"med_{input_img.array_type}",
+                                    trait=f"Median {input_img.array_type} reflectance",
+                                    method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
+                                    value=med, label="none")
 
             outputs.add_observation(sample=observation_sample, variable=f"std_{input_img.array_type}",
                                     trait=f"Standard deviation {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=stats[i]['std'], label="none")
+
             # store percentile results
             for pct in formatted_pcts[3:]:
-                pctval = stats[i]['median']
+                pctval = stats[i][pct]
                 if pctval is not None:
                     pctval = float(pctval)
                 outputs.add_observation(sample=observation_sample, variable=f"{pct}_{input_img.array_type}",
