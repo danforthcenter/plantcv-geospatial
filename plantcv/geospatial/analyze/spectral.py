@@ -84,7 +84,7 @@ def spectral_index(img, geojson, index, mask=None,
     if percentiles is None:
         percentiles = range(0, 101, 25)
     # make percentile strings for zonal_stats
-    formatted_pcts = ['median', 'std']
+    formatted_pcts = ['mean', 'median', 'std']
     for _, pct in enumerate(["0", "100", *percentiles]):
         formatted_pcts.append(f"percentile_{pct}")
     formatted_pcts = list(dict.fromkeys(formatted_pcts))
@@ -111,9 +111,17 @@ def spectral_index(img, geojson, index, mask=None,
             plot_lower.append(stats[i]['percentile_0'])
             plot_upper.append(stats[i]['percentile_100'])
             # store non-percentile results
+            mn = stats[i]['mean']
             med = stats[i]['median']
+            if mn is not None:
+                mn = float(mn)
             if med is not None:
                 med = float(med)
+            outputs.add_observation(sample=observation_sample, variable=f"mean_{input_img.array_type}",
+                                    trait=f"Median {input_img.array_type} reflectance",
+                                    method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
+                                    value=mn, label="none")
+
             outputs.add_observation(sample=observation_sample, variable=f"med_{input_img.array_type}",
                                     trait=f"Median {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
@@ -123,9 +131,10 @@ def spectral_index(img, geojson, index, mask=None,
                                     trait=f"Standard deviation {input_img.array_type} reflectance",
                                     method="plantcv.geospatial.analyze.spectral_index", scale="reflectance", datatype=float,
                                     value=stats[i]['std'], label="none")
+
             # store percentile results
-            for pct in formatted_pcts:
-                pctval = stats[i]['median']
+            for pct in formatted_pcts[3:]:
+                pctval = stats[i][pct]
                 if pctval is not None:
                     pctval = float(pctval)
                 outputs.add_observation(sample=observation_sample, variable=f"{pct}_{input_img.array_type}",
