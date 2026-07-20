@@ -36,21 +36,21 @@ def chm(dsm, geojson, bins=10, label=None):
         nodata_value = dsm.nodata
     else:
         nodata_value = -999
-        
+
     # Gather plot IDs from the geojson
     ids = _gather_ids(geojson=geojson)
-    
-    # Calculate range of histogram 
+
+    # Calculate range of histogram
     # First replace any nans so they do not affect range calculation
     dsm[np.isnan(dsm)] = nodata_value
     filtered = dsm[dsm != nodata_value]
     histrange = (filtered.min(), filtered.max())
-    
+
     # Use raster stats to calculate distribution
     height_values = zonal_stats(geojson, dsm_data,
-                                   affine=dsm.transform,
-                                   nodata=nodata_value, stats=['mean', 'std'],
-                                   add_stats={'histogram': lambda x: _histogram_stats(x, bins=bins, histrange=histrange)})
+                                affine=dsm.transform,
+                                nodata=nodata_value, stats=['mean', 'std'],
+                                add_stats={'histogram': lambda x: _histogram_stats(x, bins=bins, histrange=histrange)})
 
     # For debug graph
     height_means = []
@@ -60,7 +60,7 @@ def chm(dsm, geojson, bins=10, label=None):
         j = height_values[i]
         # Add height to debug
         height_means.append(j["mean"])
-        
+
         observation_sample = label + "_" + str(id)
         outputs.add_observation(sample=observation_sample,
                                 variable='height_frequencies',
@@ -83,6 +83,7 @@ def chm(dsm, geojson, bins=10, label=None):
 
     df = pd.DataFrame({'value': height_means})
     height_chart = alt.Chart(df).mark_bar().encode(x=alt.X('value', bin=True, title='Mean Plot Height'),
-                                                y=alt.Y('count()', title='Frequency'))
+                                                   y=alt.Y('count()', title='Frequency'))
 
     _debug(visual=height_chart, filename=os.path.join(params.debug_outdir, label + '_plot_height_mean.png'))
+    return height_chart
