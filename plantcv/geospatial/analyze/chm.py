@@ -2,6 +2,7 @@
 import os
 import pandas as pd
 import altair as alt
+import numpy as np
 from plantcv.plantcv import outputs, params
 from plantcv.plantcv._debug import _debug
 from plantcv.geospatial._helpers import _histogram_stats, _gather_ids
@@ -39,7 +40,9 @@ def chm(dsm, geojson, bins=10, label=None):
     # Gather plot IDs from the geojson
     ids = _gather_ids(geojson=geojson)
     
-    # Calculate range of histogram
+    # Calculate range of histogram 
+    # First replace any nans so they do not affect range calculation
+    dsm[np.isnan(dsm)] = nodata_value
     filtered = dsm[dsm != nodata_value]
     histrange = (filtered.min(), filtered.max())
     
