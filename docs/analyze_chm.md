@@ -40,6 +40,6 @@ dist = gcv.analyze.chm(dsm=chm,
 print(pcv.outputs.observations["plot_0"]["height_mean"]["value"])
 
 ```
-![Screenshot]([replace with a debug distribution])
+![Screenshot](documentation_images/analyze_chm_dist.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-geospatial/blob/main/plantcv/geospatial/analyze/chm.py)
