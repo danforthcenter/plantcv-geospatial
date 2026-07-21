@@ -83,7 +83,7 @@ class TestData:
         dsm_pickled
             dsm_test.pkl
             Pickled DSM class object
-            Used for testing subtract_dsm, analyze.height_percentile, resize
+            Used for testing subtract_dsm, analyze.height_percentile, analyze.chm, resize
         multipoly
             multipoly.geojson
             Multiple polygon shapefile with "ID" 
