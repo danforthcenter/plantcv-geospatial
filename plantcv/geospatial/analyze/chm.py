@@ -32,10 +32,10 @@ def chm(dsm, geojson, bins=10, label=None):
     # DSM tifs contain just one band of data, so make the array 2D
     dsm_data = dsm[:, :, 0]
 
+    # Set nodata value
+    nodata_value = -999
     if dsm.nodata is not None:
         nodata_value = dsm.nodata
-    else:
-        nodata_value = -999
 
     # Gather plot IDs from the geojson
     ids = _gather_ids(geojson=geojson)
