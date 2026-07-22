@@ -1,0 +1,82 @@
+cff-version: 1.0.0
+authors:
+- family-names: Brown
+  given-names: Keely Elizabeth
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-5371-5830"
+- family-names: Schuhl
+  given-names: Haley
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-8825-8297"
+- family-names: Sumner
+  given-names: Josh
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-3399-9063"
+- family-names: Seigel
+  given-names: Eliza
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0009-0005-4793-3267"
+- family-names: Srivastava
+  given-names: Dhiraj
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0009-0004-0873-5332"
+- family-names: Bhatt
+  given-names: Parag
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-0396-6412"
+- family-names: Casto 
+  given-names: Anna
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-9597-0514"
+- family-names: Griffiths
+  given-names: Marcus
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/"
+- family-names: Hanlon
+  given-names: Molly
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-5616-8203"
+- family-names: Kenney
+  given-names: Samuel
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0009-0007-6021-9169"
+- family-names: Okonkwo
+  given-names: Kenneth
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/"
+- family-names: Pirro
+  given-names: Jalissa
+  affiliation: University of Iowa
+  orcid: "https://orcid.org/"
+- family-names: Saharan
+  given-names: Divyansh
+  affiliation: Netaji Subhas University of Technology
+  orcid: "https://orcid.org/0009-0000-8606-5603"
+- family-names: Taylor
+  given-names: Samuel
+  affiliation: University of Iowa
+  orcid: "https://orcid.org/"
+- family-names: Woeltjen
+  given-names: Stella
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0009-0003-8790-065X"
+- family-names: Baxter
+  given-names: Ivan
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0001-6680-1722"
+- family-names: Malia
+  given-names: Gehan
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-3238-2627"
+- family-names: Murphy
+  given-names: Katherine
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-8891-4274"
+- family-names: Fahlgren
+  given-names: Noah
+  affiliation: Donald Danforth Plant Science Center
+  orcid: "https://orcid.org/0000-0002-5597-4537"
+title: "PlantCV-Geospatial"
+version: 1.0
+doi: 
+date-released: 2026
