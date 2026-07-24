@@ -23,7 +23,7 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read geotif in
-ortho1 = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+ortho1 = gcv.read.geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 # Create or read in a binary mask 
 # Analyze coverage for each region in the geojson
 vis = gcv.analyze.coverage(img=ortho1, bin_mask=plant_mask,

@@ -24,7 +24,7 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read geotif in
-img = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+img = gcv.read.geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 
 # Make ROIs from a points-type shapefile
 rois = gcv.convert.points_to_roi_circle(img, geojson="./points_example.geojson", 

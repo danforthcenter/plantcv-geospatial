@@ -24,7 +24,7 @@ import plantcv.geospatial as gcv
 pcv.params.debug = "plot"
 
 # Read geotif in
-img = gcv.read_geotif("./grid_field.tif", bands="B,G,R,RE,N")
+img = gcv.read.geotif("./grid_field.tif", bands="B,G,R,RE,N")
 # Add a shapes layer to your InteractiveShapes editor
 editor = gcv.create_shapes.InteractiveShapes(img)
 editor.add_layer()

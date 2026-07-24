@@ -22,18 +22,18 @@ Using a Napari or PlantCV-annotate viewer object with clicked points, output a s
 
 ```python
 import plantcv.geospatial as gcv
-import plantcv.annotate as an
 
 # Read geotif in
-img = gcv.read_geotif("../read_geotif/rgb.tif", bands="R,G,B")
-viewer = an.napari_open(img=img.pseudo_rgb)
-viewer.add_points()
+img = gcv.read.geotif("../read_geotif/rgb.tif", bands="R,G,B")
+editor = gcv.create_shapes.InteractiveShapes(img)
+editor.add_layer(layer_type="points", layername="Points")
+
 
 # A napari viewer window will pop up, use the points function to add clicks
 ```
 ```python
 # In a separate cell, save the output after clicking:
-gcv.convert.points(img=img, source=viewer, dest="./points_example.geojson")
+gcv.convert.points(img=img, source=editor, dest="./points_example.geojson")
 ```
 
 ![Screenshot](documentation_images/napari_clicks.png)

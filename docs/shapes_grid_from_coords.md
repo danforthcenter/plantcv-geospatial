@@ -28,7 +28,7 @@
 import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho1 = gcv.read_geotif(filename="./data/example_maize_img.tif", bands="b,g,r,RE,NIR")
+ortho1 = gcv.read.geotif(filename="./data/example_maize_img.tif", bands="b,g,r,RE,NIR")
 # Create and visualize GeoJSON of plots
 figure = gcv.create_shapes.grid_from_coords(img=ortho1, field_corners_path="bounds.geojson",
             plot_geojson_path="plot_points.geojson",
@@ -47,7 +47,7 @@ figure = gcv.create_shapes.grid_from_coords(img=ortho1, field_corners_path="boun
 import plantcv.geospatial as gcv
 
 # Read geotif in
-ortho2 = gcv.read_geotif(filename="./data/example_wheat_img.tif", bands="R,G,B")
+ortho2 = gcv.read.geotif(filename="./data/example_wheat_img.tif", bands="R,G,B")
 # Create and visualize GeoJSON of plots
 figure2 = gcv.create_shapes.grid_from_coords(img=ortho2, field_corners_path="wheat_bounds.geojson",
             plot_geojson_path="wheat_plots.geojson",

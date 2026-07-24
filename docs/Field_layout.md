@@ -41,7 +41,7 @@ gcv.field_layout.range_length = 3.65
 gcv.field_layout.row_length = 0.9
 
 # Read geotif in
-ortho1 = gcv.read_geotif(filename="./data/example_maize_img.tif", bands="b,g,r,RE,NIR")
+ortho1 = gcv.read.geotif(filename="./data/example_maize_img.tif", bands="b,g,r,RE,NIR")
 # Create plots using parameter values in field_layout
 figure = gcv.create_shapes.grid_from_coords(img=ortho1, field_corners_path="bounds.geojson",
             plot_geojson_path="plot_points.geojson",
