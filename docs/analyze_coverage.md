@@ -2,7 +2,7 @@
 
 Vectorize approach to pixel count and percent coverage per region in a shapefile using a binary mask. 
 
-**plantcv.geospatial.analyze.coverage**(*img, bin_mask, geojson*)
+**plantcv.geospatial.analyze.coverage**(*img, bin_mask, geojson, label=None*)
 
 **returns** Debug image with regions drawn on the input image.
 
@@ -10,6 +10,7 @@ Vectorize approach to pixel count and percent coverage per region in a shapefile
     - img - GEO image object, likely read in with [`gcv.read_geotif`](read_geotif.md)
     - bin_mask - Binary mask, numpy array
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.
+    - label - Optional label parameter, modifies the variable name of observations recorded. Can be a prefix, or list (default = `pcv.params.sample_label`)
 
 - **Context:**
     - This function will utilize the geojson's `ID` attribute for `Outputs` labels if available. 
