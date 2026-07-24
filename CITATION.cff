@@ -32,18 +32,10 @@ authors:
   given-names: Marcus
   affiliation: Donald Danforth Plant Science Center
   orcid: "https://orcid.org/0000-0003-2349-8967"
-- family-names: Hanlon
-  given-names: Molly
-  affiliation: Donald Danforth Plant Science Center
-  orcid: "https://orcid.org/0000-0002-5616-8203"
 - family-names: Kenney
   given-names: Samuel
   affiliation: Donald Danforth Plant Science Center
   orcid: "https://orcid.org/0009-0007-6021-9169"
-- family-names: Okonkwo
-  given-names: Kenneth
-  affiliation: Donald Danforth Plant Science Center
-  orcid: "https://orcid.org/0009-0004-4232-0472"
 - family-names: Pirro
   given-names: Jalissa
   affiliation: University of Iowa
@@ -56,14 +48,6 @@ authors:
   given-names: Samuel
   affiliation: University of Iowa
   orcid: "https://orcid.org/0000-0002-5717-0460"
-- family-names: Woeltjen
-  given-names: Stella
-  affiliation: Donald Danforth Plant Science Center
-  orcid: "https://orcid.org/0009-0003-8790-065X"
-- family-names: Baxter
-  given-names: Ivan
-  affiliation: Donald Danforth Plant Science Center
-  orcid: "https://orcid.org/0000-0001-6680-1722"
 - family-names: Malia
   given-names: Gehan
   affiliation: Donald Danforth Plant Science Center
