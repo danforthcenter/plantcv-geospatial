@@ -5,7 +5,7 @@ A PlantCV-Geospatial data object class.
 *class* **plantcv.geospatial.create_shapes.InteractiveShapes**(*img, viewer_type="napari", field_layer="field_boundary", show=True*)
 
 - **Parameters:**
-    - img - GEO/DSM image object or Numpy array like, likely read in with [`geo.read_geotif`](read_geotif.md).
+    - img - GEO/DSM image object or Numpy array like, likely read in with [`read.geotif`](read_geotif.md).
     - viewer_type (str, default = "napari"): Viewer type, currently only `"napari"` is supported
     - field_layer (str, default = "field_boundary"): Name for the first added shapes layer. The `grid` and `plot` methods will assume that this layer outlines the entire field and this name will be associated with the "field_boundary" key in the `layer_dict` attribute.
     - show (boolean, default = `True`): Should the napari viewer be shown?
@@ -56,6 +56,9 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 # Adjust line thickness (default is 5)
 pcv.params.line_thickness = 8
+
+# Read in an image
+img = gcv.read.geotif("./grid_field.tif", bands="B,G,R,RE,N")
 
 # Initialize an InteractiveShapes class object 
 # and add an image layer and field boundary layer to the viewer

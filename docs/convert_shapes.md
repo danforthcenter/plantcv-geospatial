@@ -21,18 +21,18 @@ Using a Napari viewer with drawn polygons, output a shapefile. Or read in a Poly
 
 ```python
 import plantcv.geospatial as gcv
-import plantcv.annotate as an
 
 # Read geotif in
-img = gcv.read_geotif("../read_geotif/rgb.tif", bands="R,G,B")
-viewer = an.napari_open(img=img.thumb)
-viewer.add_shapes()
+img = gcv.read.geotif("../read_geotif/rgb.tif", bands="R,G,B")
+editor = gcv.create_shapes.InteractiveShapes(img)
+editor.add_layer()
 
-# A napari viewer window will pop up, use the custom polygon function to add shapes
+
+# A napari viewer window will pop up, use the shapes function to add custom polygons
 ```
 ```python
 # In a separate cell, save the output after clicking:
-gcv.convert.shapes(img=img, source=viewer, dest="./shapes_example.geojson")
+gcv.convert.shapes(img=img, source=editor, dest="./shapes_example.geojson")
 ```
 
 ![Screenshot](documentation_images/napari_shapes.png)
