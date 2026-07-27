@@ -10,6 +10,7 @@ Vectorized approach to color stats and histograms per region in a shapefile usin
     - img - GEO image object, likely read in with [`gcv.read_geotif`](read_geotif.md)
     - bin_mask - Binary mask, numpy array
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.
+    - label - Optional label parameter, modifies the variable name of observations recorded. Can be a prefix, or list (default = `pcv.params.sample_label`)
 
 - **Context:** 
     - **Output data stored:** Data ('mean', 'std', 'counts', 'bin_edges') for each specified channel and ('hue_circular_mean', 'hue_circular_std') for each plot automatically gets stored to the [`Outputs` class](https://plantcv.readthedocs.io/en/stable/outputs/#class-outputs) when this function is run. These data can be accessed during a workflow (example below). For more detail about data output see [Summary of Output Observations](https://plantcv.readthedocs.io/en/stable/output_measurements/).
