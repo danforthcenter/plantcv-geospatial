@@ -19,8 +19,8 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read in dsm as geotif
-dsm1 = gcv.read_geotif(filename="./data/example_dsm.tif", bands=[0])
-dsm0 = gcv.read_geotif(filename="./data/example_dsm.tif", bands=[0])
+dsm1 = gcv.read.geotif(filename="./data/example_dsm.tif", bands=[0])
+dsm0 = gcv.read.geotif(filename="./data/example_dsm.tif", bands=[0])
 
 # To get the canopy height model:
 pcv.params.debug = "plot"

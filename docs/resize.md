@@ -28,13 +28,13 @@ Resize a `GEO`, or `DSM` object to a desired pixel size. Wraps `plantcv.plantcv.
 import plantcv.geospatial as gcv
 
 # Read a multispectral geotif
-ortho = gcv.read_geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
+ortho = gcv.read.geotif(filename="./data/example_img.tif", bands="b,g,r,RE,NIR")
 
 # Resize to 2000 x 2000 pixels using the default auto interpolation
 resized = gcv.resize(img=ortho, size=(2000, 2000))
 
 # Read a DSM
-dsm = gcv.read_geotif(filename="./data/example_dsm.tif", bands="gray")
+dsm = gcv.read.geotif(filename="./data/example_dsm.tif", bands="gray")
 
 # Resize to 2000 x 2000 pixels using nearest-neighbor interpolation
 resized = gcv.resize(img=dsm, size=(2000, 2000), interpolation="nearest")

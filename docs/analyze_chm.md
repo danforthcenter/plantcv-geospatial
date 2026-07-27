@@ -24,8 +24,8 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read in dsm as geotif
-dsm_bareground = gcv.read_geotif(filename="./data/timepoint_0.tif", bands=[0])
-dsm_withplants = gcv.read_geotif(filename="./data/timepoint_1.tif", bands=[0])
+dsm_bareground = gcv.read.geotif(filename="./data/timepoint_0.tif", bands=[0])
+dsm_withplants = gcv.read.geotif(filename="./data/timepoint_1.tif", bands=[0])
 
 # Calculate Canopy Height Model
 chm = gcv.subtract_dsm(dsm_withplants, dsm_bareground)

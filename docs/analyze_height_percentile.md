@@ -25,7 +25,7 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 
 # Read in dsm as geotif
-dsm = gcv.read_geotif(filename="./data/example_dsm.tif", bands=[0])
+dsm = gcv.read.geotif(filename="./data/example_dsm.tif", bands=[0])
 # Analyze coverage for each region in the geojson
 bounds = gcv.analyze.height_percentile(dsm=dsm,
                            geojson="./shapefiles/experimental_plots.geojson",
