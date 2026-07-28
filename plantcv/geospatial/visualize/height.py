@@ -67,18 +67,16 @@ def height_distribution(img, geojson, n=9, bins=50, lower=25, upper=90, seed=Non
     zstats = zonal_stats(sample, raster_data, affine=img.transform,
                          nodata=nodata_value, stats=[], raster_out=True)
 
-    # Bin each plot's values independently 
+    # Bin each plot's values independently
     records = []
     for plot_id, zstat in zip(sample_ids, zstats):
         values = zstat["mini_raster_array"].compressed()
-        #if values.size == 0:
-        #    continue
         if values.size > 0:
             hist = _histogram_stats(values, bins=bins, histrange=(values.min(), values.max()))
             records.extend({"plot_id": plot_id, "kind": "bin", "bin_start": hist["bin_edges"][i],
                             "bin_end": hist["bin_edges"][i + 1], "count": hist["counts"][i],
                             "value": None, "percentile": None}
-                        for i in range(len(hist["counts"])))
+                           for i in range(len(hist["counts"])))
             records.append({"plot_id": plot_id, "kind": "percentile", "bin_start": None, "bin_end": None,
                             "count": None, "value": float(np.percentile(values, lower)),
                             "percentile": str(lower) + "th"})

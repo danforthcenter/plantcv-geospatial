@@ -20,26 +20,3 @@ def test_height_distribution(debug, tmpdir, test_data):
     params.debug = debug
     chart = height_distribution(img=img, geojson=test_data.multipoly, n=2, seed=1)
     assert isinstance(chart, alt.FacetChart)
-
-
-#def test_height_distribution_plot_debug(test_data):
-#    """Test for PlantCV, debug=plot."""
-#    params.debug = "plot"
-#    # Read in test data
-#    with open(test_data.dsm_pickled, "rb") as f:
-#        img = pickle.load(f)
-#    img.nodata = None
-#    chart = height_distribution(img=img, geojson=test_data.multipoly, n=2, seed=1, label="test")
-#    assert isinstance(chart, alt.FacetChart)
-
-
-#def test_height_distribution_more_plots_than_available(test_data):
-#    """Test for PlantCV, requesting more plots than exist in the geojson."""
-#    params.debug = None
-#    # Read in test data
-#    with open(test_data.dsm_pickled, "rb") as f:
-#        img = pickle.load(f)
-#    img.nodata = None
-#    chart = height_distribution(img=img, geojson=test_data.poly_crop, n=9, label="test")
-#    # Only one region exists in poly_crop, so only one plot ID should appear in the data
-#    assert chart.data["plot_id"].nunique() == 1
