@@ -7,7 +7,7 @@ Vectorize approach to height estimation per region in a shapefile using a digita
 **returns** Debug image with regions drawn on the input DSM (digital surface model).
 
 - **Parameters:**
-    - dsm - DSM image object, likely read in with [`geo.read_geotif`](read_geotif.md)
+    - dsm - DSM image object, likely read in with [`read_geotif`](read_geotif.md)
     - lower - Lower percentile cut off, default `lower=25`
     - upper - Upper percentile cut off, default `upper=90`
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.
@@ -16,6 +16,7 @@ Vectorize approach to height estimation per region in a shapefile using a digita
 - **Context:**
     - This function will utilize the geojson's `ID` attribute for `Outputs` labels if available. 
     - **Output data stored:** Data ('soil_elevation', 'plant_elevation', 'plant_height') automatically gets stored to the [`Outputs` class](https://plantcv.readthedocs.io/en/stable/outputs/#class-outputs) when this function is run. These data can be accessed during a workflow (example below). For more detail about data output see [Summary of Output Observations](https://plantcv.readthedocs.io/en/stable/output_measurements/).
+    - Use [`visualize.height_distribution`](visualize_height_distribution.md) to help choose percentile cutoffs based on the shape of height distributions within individual plots.
 
 - **Example use:**
     - Example images and geojson from the [Bison-Fly: UAV pipeline at NDSU Spring Wheat Breeding Program](https://github.com/filipematias23/Bison-Fly) below. 
