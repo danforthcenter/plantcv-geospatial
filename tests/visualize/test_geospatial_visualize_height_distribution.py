@@ -1,6 +1,7 @@
 """Tests for geospatial.visualize.height_distribution"""
 
 import dill as pickle
+import pytest
 import altair as alt
 from plantcv.plantcv import params
 from plantcv.geospatial.visualize import height_distribution

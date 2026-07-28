@@ -1,3 +1,5 @@
+"""Tests for geospatial.analyze.coverage"""
+
 import pytest
 import dill as pickle
 from plantcv.plantcv import outputs, params
