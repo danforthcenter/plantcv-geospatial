@@ -91,7 +91,7 @@ def height_distribution(img, geojson, n=9, bins=50, lower=25, upper=90, seed=Non
 
     percentile_lines = alt.Chart().transform_filter(alt.datum.kind == "percentile").mark_rule(
         strokeDash=[8, 4], strokeWidth=3).encode(x=alt.X("value:Q", scale=alt.Scale(zero=False)),
-                                  color=alt.Color("percentile:N", title="Percentile"))
+                                                 color=alt.Color("percentile:N", title="Percentile"))
 
     ncols = int(np.ceil(np.sqrt(n)))
     height_chart = alt.layer(histogram, percentile_lines, data=df).facet(
