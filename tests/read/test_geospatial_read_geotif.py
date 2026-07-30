@@ -77,3 +77,11 @@ def test_geospatial_read_geotif_gray(test_data):
     img = geotif(filename=test_data.gray_tif, bands="gray", cutoff=0.99)
     assert img.shape[0] == 411
     assert isinstance(img, DSM)
+
+
+def test_geospatial_read_geotif_gray_wrong_bands(test_data):
+    """Test for plantcv-geospatial."""
+    # read in small gray image
+    img = geotif(filename=test_data.gray_tif, cutoff=0.99)
+    assert img.shape[0] == 411
+    assert isinstance(img, DSM)

@@ -2,20 +2,22 @@
 
 Vectorized approach to spectral index analysis per region in a shapefile.
 
-**plantcv.geospatial.analyze.spectral_index**(*img, geojson, index, percentiles=None, label=None, distance=20*)
+**plantcv.geospatial.analyze.spectral_index**(*img, geojson, index, mask=None, percentiles=None, label=None, distance=20*)
 
 **returns** Debug image with regions drawn on the input index.
 
 - **Parameters:**
     - img - GEO image object, likely read in with [`gcv.read_geotif`](read_geotif.md)
-    - index - spectral index to calculate and analyze. Must be an available index from PlantCV; see [full list here](https://docs.plantcv.org/en/stable/spectral_index/). 
     - geojson - Path to the shapefile/GeoJSON containing the plot boundaries. Can be Polygon or MultiPolygon geometry.
+    - index - spectral index to calculate and analyze. Must be an available index from PlantCV; see [full list here](https://docs.plantcv.org/en/stable/spectral_index/). 
+    - mask - binary mask indicating which pixels should be used to calculate statistics. Defaults to None. 
 	- percentiles - Iterable of numeric percentiles [0-100]. 0 and 100 are automatically included (default = `None`, where `range(0, 101, 25)` is used)
     - label - Optional label parameter, modifies the variable name of observations recorded. Can be a prefix, or list (default = `pcv.params.sample_label`)
     - distance - Amount of flexibility (in nanometers) regarding the bands used to calculate an index.
 
 - **Context:**
-    - This function will utilize the geojson's `ID` (or `FID`) attribute for `Outputs` labels if available and `label=None`. 
+    - This function will utilize the geojson's `ID` (or `FID`) attribute for `Outputs` labels if available and `label=None`.
+    - Providing a binary mask where you have segmented plants is useful if you do not want to average a spectral index over both plant and soil values, such as for individual plants or when canopy coverage is not complete.  
     - **Output data stored:** Data (index minimum, maximum, mean, median, standard deviation, percentile_25, and percentile_75) automatically gets stored to the [`Outputs` class](https://plantcv.readthedocs.io/en/stable/outputs/#class-outputs) when this function is run. These data can be accessed during a workflow (example below). For more detail about data output see [Summary of Output Observations](https://plantcv.readthedocs.io/en/stable/output_measurements/).
 
 - **Example use:**

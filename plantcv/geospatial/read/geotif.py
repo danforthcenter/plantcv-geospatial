@@ -19,7 +19,7 @@ def _parse_bands(bands):
     bands : str or list
         Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list
         of wavelengths.
-        Currently Supported Band Symbols: R (650 nm), G (560 nm), B (480 nm),
+        Currently Supported Band Symbols: R (670 nm), G (560 nm), B (480 nm),
         RE (717 nm), N (842 nm), NIR (842 nm), GRAY (0).
 
     Returns
@@ -36,7 +36,7 @@ def _parse_bands(bands):
     band_strs = bands.split(",")
 
     # Default values for symbolic bands
-    default_wavelengths = {"R": 650, "G": 560, "B": 480, "RE": 717, "N": 842,
+    default_wavelengths = {"R": 670, "G": 560, "B": 480, "RE": 717, "N": 842,
                            "NIR": 842, "GRAY": 0}
 
     for band in band_strs:
@@ -121,6 +121,11 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
     # reshape such that z-dimension is last
     img_data = img_data.transpose(1, 2, 0)
     _, _, depth = img_data.shape
+    # Parse bands
+    bands = _parse_bands(bands)
+    if (depth == 1 and len(bands) > 1):
+        warn(f"Bands specified as {bands} but data has 1 channel, bands have been reset to GRAY for a DSM.")
+        bands = [0]
     # Check for mask
     mask_layer = None
     mask_band_indices = []
@@ -132,8 +137,6 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
         img_data = np.delete(img_data, mask_band_indices, 2)
     # reset depth in case the image data was changed
     _, _, depth = img_data.shape
-    # Parse bands
-    bands = _parse_bands(bands)
     # Check if user input matches image dimension in z direction
     if depth > len(bands):
         warn(f"{depth} bands found in the image data but {filename} was provided with {bands}. " +
@@ -156,6 +159,24 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
 
     obj = _read_to_class(depth, img_data, filename, bands, metadata["crs"],
                          metadata["transform"], metadata["nodata"], cutoff)
+    if depth > 1:
+        # Make a GEO instance before calculating a pseudo-rgb
+        obj = GEO(input_array=img_data,
+                  filename=filename,
+                  wavelengths=bands,
+                  default_wavelengths=[480, 560, 670],
+                  crs=metadata["crs"],
+                  transform=metadata["transform"],
+                  nodata=metadata["nodata"]
+                  )
+    else:
+        obj = DSM(input_array=img_data,
+                  filename=filename,
+                  crs=metadata["crs"],
+                  transform=metadata["transform"],
+                  nodata=metadata["nodata"],
+                  cutoff=cutoff
+                  )
 
     _debug(visual=obj.thumb,
            filename=os.path.join(params.debug_outdir, f"{params.device}_thumbnail.png"))

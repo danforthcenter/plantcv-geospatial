@@ -131,6 +131,39 @@ def netcdf(filename, cropto, output=False, cutoff=None):
     # Make an Image object based on dimensions
     obj = _read_to_class(depth, cropped, filename, wavelengths,
                          rasterio.crs.CRS.from_string("EPSG:4326"), aff_bounds, 0, cutoff)
+    # Make the pseudo_rgb
+    id_red = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=670)
+    id_green = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=540)
+    id_blue = _find_closest_unsorted(array=np.array([float(i) for i in wavelengths]), target=480)
+    # Stack bands together, BGR since plot_image will convert BGR2RGB automatically
+    pseudo_rgb = cv2.merge((cropped[:, :, [id_blue]],
+                            cropped[:, :, [id_green]],
+                            cropped[:, :, [id_red]]))
+    # here we could normalize to [0, 255] if data is not already uint8.
+    # If it is uint8 then it should good already.
+    # I do not know that netcdf data comes in anything else since I could not find more
+    # examples of netcdf files that worked locally. This would be the
+    # same stuff as line 169 of read_geotif
+
+    height, width, depth = cropped.shape
+    # Metadata
+    metadata = {"driver": "GTiff", "height": height, "width": width,
+                "dtype": cropped.dtype, "count": depth,
+                "nodata": 0, "crs": rasterio.crs.CRS.from_string("EPSG:4326"),
+                "transform": aff_bounds}
+
+    # Make a spectral object
+    spectral_array = Spectral_data(array_data=cropped,
+                                   max_wavelength=max(wavelengths, key=wavelengths.get),
+                                   min_wavelength=min(wavelengths, key=wavelengths.get),
+                                   max_value=np.max(cropped), min_value=np.min(cropped),
+                                   d_type=cropped.dtype,
+                                   wavelength_dict=wavelengths, samples=int(width),
+                                   lines=int(height), interleave=None,
+                                   wavelength_units="nm", array_type="datacube",
+                                   pseudo_rgb=pseudo_rgb, filename=filename,
+                                   default_bands=[480, 540, 670],
+                                   metadata=metadata)
 
     # Output to geotif if requested
     if isinstance(output, str):
