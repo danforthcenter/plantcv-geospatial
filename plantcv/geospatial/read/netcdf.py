@@ -33,10 +33,10 @@ def _combine_bands(ds):
     # Currently only supporting NASA formatting where all bands are in
     # the `geospatial_data` variables, could be extended to have more
     # modes if other reasonable formats are popularized.
-    for idx, i in enumerate(ds.groups['geophysical_data'].variables):
+    for i in ds.groups['geophysical_data'].variables:
         if i[0:4] == "rhos":
             bands.append(i)
-            wavelengths.append(idx)
+            wavelengths.append(int(i.split("_")[1]))
     # Make a list of the dataframe for each wavelength
     channels = []
     for i in bands:
