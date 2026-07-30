@@ -8,7 +8,7 @@ All notable changes to this project will be documented below.
 
 #### geospatial.analyze.coverage
 
-* v0.1dev: **geospatial.analyze.coverage**(*img, bin_mask, geojson*)
+* v0.1dev: **geospatial.analyze.coverage**(*img, bin_mask, geojson, label=None*)
 
 #### geospatial.analyze.height_percentile
 
@@ -16,11 +16,11 @@ All notable changes to this project will be documented below.
 
 #### geospatial.analyze.spectral_index
 
-* v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, index, percentiles=None, label=None, distance=20*)
+* v0.1dev: **geospatial.analyze.spectral_index**(*img, geojson, index, mask=None, percentiles=None, label=None, distance=20*)
 
-#### geospatial.analyze.height_subtraction
+#### geospatial.analyze.chm
 
-* v0.1dev: **geospatial.analyze.height_subtraction**(*dsm1, dsm0*)
+* v0.1dev: **geospatial.analyze.chm**(*dsm, geojson, bins=10, label=None*)
 
 #### geospatial.center_grid_rois
 
@@ -54,9 +54,13 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: **geospatial.create_shapes.InteractiveShapes.add_layer**(*layer_type="shapes", layername="Shapes"*)
 
+#### geospatial.create_shapes.InteractiveShapes.close
+
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.close**()
+
 #### geospatial.create_shapes.InteractiveShapes.grid
 
-* v0.1dev: **geospatial.create_shapes.InteractiveShapes.grid**(*numdivs*)
+* v0.1dev: **geospatial.create_shapes.InteractiveShapes.grid**(*numdivs=None*)
 
 #### geospatial.create_shapes.InteractiveShapes.plots
 
@@ -89,3 +93,11 @@ All notable changes to this project will be documented below.
 #### geospatial.read.netcdf
 
 * v0.1dev: geo = **geospatial.read.netcdf**(*filename, cropto, output=False, cutoff=None*)
+
+#### geospatial.resize
+
+* v0.1dev: img = **geospatial.resize**(*img, size, interpolation="auto"*)
+
+#### geospatial.subtract_dsm
+
+* v0.1dev: chm = **geospatial.subtract_dsm**(*dsm1, dsm0*)

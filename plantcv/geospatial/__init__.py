@@ -7,6 +7,8 @@ from plantcv.geospatial import analyze
 from plantcv.geospatial import create_shapes
 from plantcv.geospatial.center_grid_rois import center_grid_rois
 from plantcv.geospatial.images import Image, GEO, DSM
+from plantcv.geospatial.resize import resize
+from plantcv.geospatial.subtract_dsm import subtract_dsm
 
 # Auto versioning
 __version__ = version("plantcv-geospatial")
@@ -22,5 +24,7 @@ __all__ = [
     "convert",
     "Image",
     "GEO",
-    "DSM"
+    "DSM",
+    "resize",
+    "subtract_dsm"
 ]

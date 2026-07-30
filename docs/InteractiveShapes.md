@@ -5,7 +5,7 @@ A PlantCV-Geospatial data object class.
 *class* **plantcv.geospatial.create_shapes.InteractiveShapes**(*img, viewer_type="napari", field_layer="field_boundary", show=True*)
 
 - **Parameters:**
-    - img - GEO image object, likely read in with [`geo.read_geotif`](read_geotif.md).
+    - img - GEO/DSM image object or Numpy array like, likely read in with [`read.geotif`](read_geotif.md).
     - viewer_type (str, default = "napari"): Viewer type, currently only `"napari"` is supported
     - field_layer (str, default = "field_boundary"): Name for the first added shapes layer. The `grid` and `plot` methods will assume that this layer outlines the entire field and this name will be associated with the "field_boundary" key in the `layer_dict` attribute.
     - show (boolean, default = `True`): Should the napari viewer be shown?
@@ -31,8 +31,8 @@ Attributes are accessed as `interactive_shapes_instance.attribute`.
     * layer_type (str, default = "shapes"): Type of layer to add, must be `"shapes"` or `"points"`
     * layername (str, default = "Shapes"): Name for the new layer.
 
-* **grid**: (*numdivs*): Add layers with lines evenly dividing a grid within the field boundary. Adds new `"grid_lines_columns"` and `"grid_lines_ranges"` layers.
-    * numdivs (array, required): length 2 array-like of int specifying numbers of columns and ranges as `[N columns, N ranges]`
+* **grid**: (*numdivs=None*): Add layers with lines evenly dividing a grid within the field boundary. Adds new `"grid_lines_columns"` and `"grid_lines_ranges"` layers.
+    * numdivs (array, defaults to None): length 2 array-like of int specifying numbers of columns and ranges as `[N columns, N ranges]`. If None, method will set numdivs to [num_columns, num_ranges] from [FieldLayout](Field_layout.md) object.
 	
 * **plots**: (*plot_layer="Plots"*): Add a layer of polygons divided by `"grid_lines_columns"` and `"grid_lines_ranges"` layers.
     * plot_layer (str, default = "Plots"): Name for the new layer of polygons.
@@ -46,6 +46,8 @@ Attributes are accessed as `interactive_shapes_instance.attribute`.
 	* shapetype (str, default = "polygon"): Type of shape to use.
 	* layername (str, default = "Shapes"): Name of the layer to return/write.
 
+* **close**: (): Closes the viewer object window, which prevents any further changes to layers.
+
 
 ### Examples
 
@@ -54,6 +56,9 @@ import plantcv.geospatial as gcv
 import plantcv.plantcv as pcv
 # Adjust line thickness (default is 5)
 pcv.params.line_thickness = 8
+
+# Read in an image
+img = gcv.read.geotif("./grid_field.tif", bands="B,G,R,RE,N")
 
 # Initialize an InteractiveShapes class object 
 # and add an image layer and field boundary layer to the viewer

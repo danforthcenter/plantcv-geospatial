@@ -1,11 +1,13 @@
 # PlantCV-Geospatial classes
 
 import napari
+import numpy as np
 from plantcv.plantcv import fatal_error
 from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 from plantcv.geospatial.convert.points import points
 from plantcv.geospatial.convert.shapes import shapes
+from plantcv.geospatial import field_layout
 
 
 class InteractiveShapes:
@@ -31,7 +33,8 @@ class InteractiveShapes:
 
         self.img = img
         self.layer_dict = {}
-        self.viewer.add_image(img.thumb)
+        # Change band order because napari expects RGB
+        self.viewer.add_image(np.flip(self.img.thumb, axis=-1))
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
@@ -56,16 +59,23 @@ class InteractiveShapes:
         else:
             fatal_error(f"Layer type {layer_type} is not supported. Layer_type must be 'shapes' or 'points'.")
 
-    def grid(self, numdivs):
+    def grid(self, numdivs=None):
         """Add layers with lines forming a grid within the field boundary.
 
         Parameters
         ----------
-        numdivs : array_like of int, length 2
+        numdivs : array_like of int, length 2; Defaults to None.
             [Number of columns, number of ranges]
         field_layer : str, optional
             Name of layer with field boundary. Defaults to None.
         """
+        if numdivs is None:
+            num_columns = getattr(field_layout, "num_columns", None)
+            num_ranges = getattr(field_layout, "num_ranges", None)
+            if num_columns is None or num_ranges is None:
+                fatal_error("num_columns or num_ranges are not available from FieldLayout; cannot determine numdivs.")
+            numdivs = [num_columns, num_ranges]
+
         _napari_grid(self.viewer, numdivs, layername=self.layer_dict["field_boundary"])
         self.layer_dict["grid_lines_columns"] = "grid_lines1"
         self.layer_dict["grid_lines_ranges"] = "grid_lines2"
@@ -122,3 +132,7 @@ class InteractiveShapes:
             List of X,Y coordinates of shape vertices.
         """
         return shapes(img=self.img, source=self.viewer, dest=dest, shapetype=shapetype, layername=layername)
+
+    def close(self):
+        """Close the napari viewer held by this InteractiveShapes object."""
+        self.viewer.close()
