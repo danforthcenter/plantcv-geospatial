@@ -159,24 +159,6 @@ def geotif(filename, bands="R,G,B", cropto=None, cutoff=None):
 
     obj = _read_to_class(depth, img_data, filename, bands, metadata["crs"],
                          metadata["transform"], metadata["nodata"], cutoff)
-    if depth > 1:
-        # Make a GEO instance before calculating a pseudo-rgb
-        obj = GEO(input_array=img_data,
-                  filename=filename,
-                  wavelengths=bands,
-                  default_wavelengths=[480, 560, 670],
-                  crs=metadata["crs"],
-                  transform=metadata["transform"],
-                  nodata=metadata["nodata"]
-                  )
-    else:
-        obj = DSM(input_array=img_data,
-                  filename=filename,
-                  crs=metadata["crs"],
-                  transform=metadata["transform"],
-                  nodata=metadata["nodata"],
-                  cutoff=cutoff
-                  )
 
     _debug(visual=obj.thumb,
            filename=os.path.join(params.debug_outdir, f"{params.device}_thumbnail.png"))
