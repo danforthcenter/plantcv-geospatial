@@ -1,6 +1,7 @@
 # PlantCV-Geospatial classes
 
 import napari
+import numpy as np
 from plantcv.plantcv import fatal_error
 from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
@@ -32,7 +33,8 @@ class InteractiveShapes:
 
         self.img = img
         self.layer_dict = {}
-        self.viewer.add_image(self.img.thumb)
+        # Change band order because napari expects RGB
+        self.viewer.add_image(np.flip(self.img.thumb, axis=-1))
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
