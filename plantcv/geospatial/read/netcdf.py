@@ -26,8 +26,6 @@ def _combine_bands(ds):
         List of wavelengths
     """
     # Pull all available bands using name of variable
-    params_set = params.debug
-    params.debug = None
     bands = []
     wavelengths = []
     # Currently only supporting NASA formatting where all bands are in
@@ -42,12 +40,10 @@ def _combine_bands(ds):
     for i in bands:
         temp = np.array(ds.groups['geophysical_data'].variables[i][:])
         temp[temp == np.min(temp)] = 0
-        rescaled = transform.rescale(temp)
-        channels.append(rescaled)
+        channels.append(temp)
     # Combine wavelenghts into one cube
     fullmat = cv2.merge(channels)
 
-    params.debug = params_set
     return fullmat, wavelengths
 
 
@@ -121,6 +117,13 @@ def netcdf(filename, cropto, output=False, cutoff=None):
 
     # Crop to bounds
     cropped, lat, lon = _crop_allbands(fulldf, ds, bounds)
+
+    # Rescale each band to 0-255 based on the cropped region so that contrast
+    # reflects the area of interest rather than the full satellite scene
+    params_set = params.debug
+    params.debug = None
+    cropped = cv2.merge([transform.rescale(cropped[:, :, i]) for i in range(cropped.shape[2])])
+    params.debug = params_set
 
     # Calculate affine (important if outputting geotif)
     aff_bounds = rasterio.transform.from_bounds(np.min(lon), np.min(lat), np.max(lon),

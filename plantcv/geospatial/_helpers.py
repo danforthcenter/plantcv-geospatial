@@ -378,7 +378,7 @@ def _read_to_class(depth, img, filename, wavelengths, crs, trns, nodata, cutoff)
         obj = GEO(input_array=img,
                   filename=filename,
                   wavelengths=wavelengths,
-                  default_wavelengths=[650, 560, 480],
+                  default_wavelengths=[480, 560, 670],
                   crs=crs,
                   transform=trns,
                   nodata=nodata
