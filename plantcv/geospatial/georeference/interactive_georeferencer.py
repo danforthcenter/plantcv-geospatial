@@ -11,7 +11,7 @@ from plantcv.geospatial.georeference import _transform_helpers as th
 
 # Valid transform methods.
 _VALID_MODES = ("reference_image", "known_coordinates")
-_VALID_TRANSFORMS = ("affine", "polynomial2", "polynomial3", "tps")
+_VALID_TRANSFORMS = ("affine", "polynomial2", "polynomial3", "tps", "projective")
 
 
 class InteractiveGeoreferencer:
@@ -39,8 +39,8 @@ class InteractiveGeoreferencer:
             Required (and only used) when mode == "reference_image". Path to the
             already-georeferenced image that other images will be aligned to.
         transform_type : str, optional
-            "affine", "polynomial2", "polynomial3", or "tps". "polynomial2"/
-            "polynomial3" are 2nd/3rd-order polynomial warps. Default is "affine".
+            "affine", "polynomial2", "polynomial3", "tps", or "projective".
+            "polynomial2"/"polynomial3" are 2nd/3rd-order polynomial warps.
         interpolation_order : int, optional
             Pixel resampling interpolation degree used when warping (0=nearest
             neighbor, 1=bilinear, 3=bicubic). Default is 1. Use 0 for categorical

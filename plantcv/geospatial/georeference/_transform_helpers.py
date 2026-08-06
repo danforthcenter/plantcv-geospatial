@@ -1,7 +1,8 @@
 # Helper functions for interactive georeferencer class
 import numpy as np
 from affine import Affine
-from skimage.transform import AffineTransform, PolynomialTransform, PiecewiseAffineTransform, warp
+from skimage.transform import (AffineTransform, PolynomialTransform, PiecewiseAffineTransform,
+                               ProjectiveTransform, warp)
 from plantcv.plantcv import fatal_error, warn
 
 
@@ -10,12 +11,13 @@ POLYNOMIAL_ORDERS = {
     "polynomial3": 3,
 }
 
-# Minimum number of points to attempt each transformation type
+# Minimum number of points to attempt each transformation type.
 MIN_POINTS_REQUIRED = {
     "affine": 3,
     "polynomial2": 6,
     "polynomial3": 10,
     "tps": 4,
+    "projective": 4,
 }
 
 # Sanity ceiling on the output raster build_output_grid() will produce. 
@@ -29,8 +31,8 @@ def _fit_point_transform(transform_type, src_xy, dst_xy):
     Parameters
     ----------
     transform_type : str
-        One of "affine", "polynomial2", "polynomial3", "tps". See the module
-        docstring for what each of these means and how they differ.
+        One of "affine", "polynomial2", "polynomial3", "tps", "projective". See
+        the module docstring for what each of these means and how they differ.
     src_xy : array_like, shape (N, 2)
         "Where the transform is fit FROM." Depending on the caller, this is either
         real image pixel coordinates or the pixel coordinates of an output canvas.
@@ -53,9 +55,11 @@ def _fit_point_transform(transform_type, src_xy, dst_xy):
         tform = PolynomialTransform.from_estimate(src, dst, order=POLYNOMIAL_ORDERS[transform_type])
     elif transform_type == "tps":
         tform = PiecewiseAffineTransform.from_estimate(src, dst)
+    elif transform_type == "projective":
+        tform = ProjectiveTransform.from_estimate(src, dst)
     else:
-        fatal_error(f"transform_type '{transform_type}' is not recognized. "
-                    "Must be one of 'affine', 'polynomial2', 'polynomial3', or 'tps'.")
+        fatal_error(f"transform_type '{transform_type}' is not recognized. Must be one of "
+                    "'affine', 'polynomial2', 'polynomial3', 'tps', or 'projective'.")
         return None
 
     if tform is None:
@@ -108,7 +112,7 @@ def build_output_grid(image_shape, src_xy, world_xy, transform_type, pixel_size)
     world_xy : array_like, shape (N, 2)
         Known real-world coordinates for those same points.
     transform_type : str
-        One of "affine", "polynomial2", "polynomial3", "tps".
+        One of "affine", "polynomial2", "polynomial3", "tps", "projective".
     pixel_size : float
         Desired output pixel size (world units per pixel). The output grid is
         always built "north up" (rows increase downward/southward), matching the
@@ -189,7 +193,7 @@ def warp_to_grid(image_array, out_shape, out_pixel_xy, src_pixel_xy, transform_t
     src_pixel_xy : array_like, shape (N, 2)
         Pixel (x, y) coordinates clicked on the SOURCE image.
     transform_type : str
-        One of "affine", "polynomial2", "polynomial3", "tps".
+        One of "affine", "polynomial2", "polynomial3", "tps", "projective".
     interpolation_order : int
         Interpolation degree passed to skimage.transform.warp (0=nearest,
         1=bilinear, 3=bicubic, etc).
