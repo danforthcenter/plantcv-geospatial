@@ -272,7 +272,8 @@ class InteractiveGeoreferencer:
             warped = th.warp_to_grid(image_array, ref_shape, self.reference_points, src_xy,
                                      self.transform_type, self.interpolation_order, fill_value)
 
-            out_path = os.path.join(self.output_dir, f"{os.path.basename(path)}_georef")
+            out_path = os.path.join(self.output_dir,
+                                    f"{os.path.splitext(os.path.basename(path))[0]}_georef.tif")
             write_geotif(out_path, warped, ref_transform, ref_crs, fill_value)
             written_paths.append(out_path)
 
@@ -311,7 +312,8 @@ class InteractiveGeoreferencer:
             warped = th.warp_to_grid(image_array, out_shape, out_pixel_xy, src_xy,
                                      self.transform_type, self.interpolation_order, fill_value)
 
-            out_path = os.path.join(self.output_dir, f"{os.path.basename(path)}_georef")
+            out_path = os.path.join(self.output_dir, 
+                                    f"{os.path.splitext(os.path.basename(path))[0]}_georef.tif")
             write_geotif(out_path, warped, out_transform, self.crs, fill_value)
             written_paths.append(out_path)
 
