@@ -5,10 +5,12 @@ from plantcv.geospatial import read
 from plantcv.geospatial import convert
 from plantcv.geospatial import analyze
 from plantcv.geospatial import create_shapes
+from plantcv.geospatial import georeference
 from plantcv.geospatial.center_grid_rois import center_grid_rois
 from plantcv.geospatial.images import Image, GEO, DSM
 from plantcv.geospatial.resize import resize
 from plantcv.geospatial.subtract_dsm import subtract_dsm
+from plantcv.geospatial.write_geotif import write_geotif
 
 # Auto versioning
 __version__ = version("plantcv-geospatial")
@@ -20,11 +22,13 @@ __all__ = [
     "read",
     "analyze",
     "create_shapes",
+    "georeference",
     "center_grid_rois",
     "convert",
     "Image",
     "GEO",
     "DSM",
     "resize",
-    "subtract_dsm"
+    "subtract_dsm",
+    "write_geotif"
 ]
