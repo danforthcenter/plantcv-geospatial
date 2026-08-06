@@ -9,9 +9,10 @@ from plantcv.geospatial._helpers import _read_raster
 from plantcv.geospatial.write_geotif import write_geotif
 from plantcv.geospatial.georeference import _transform_helpers as th
 
-# Valid transform methods.
+# Valid parameter lists.
 _VALID_MODES = ("reference_image", "known_coordinates")
 _VALID_TRANSFORMS = ("affine", "polynomial2", "polynomial3", "tps", "projective")
+_VALID_IMAGE_EXTENSIONS = (".tif", ".tiff", ".TIF", ".TIFF")
 
 
 class InteractiveGeoreferencer:
@@ -19,7 +20,7 @@ class InteractiveGeoreferencer:
     
     def __init__(self, img_dir, output_dir, mode="known_coordinates", known_coords=None,
                  reference_image=None, transform_type="affine",
-                 interpolation_order=1, file_pattern="*.tif*", show=True):
+                 interpolation_order=1, show=True):
         """Initialize parameters.
 
         Parameters
@@ -46,8 +47,6 @@ class InteractiveGeoreferencer:
             neighbor, 1=bilinear, 3=bicubic). Default is 1. Use 0 for categorical
             data (e.g. classification maps) where blending pixel values would be
             meaningless.
-        file_pattern : str, optional
-            Extension to find input images. Default is "*.tif*"
         show : bool, optional
             Whether to display the napari viewer window. Default is True.
         """
@@ -69,10 +68,21 @@ class InteractiveGeoreferencer:
             fatal_error(f"transform_type='{transform_type}' needs at least {min_pts} points, "
                         f"but `known_coords` only has {len(known_coords)}.")
 
-        # Build file list
-        target_paths = sorted(glob.glob(os.path.join(img_dir, file_pattern)))
+        # Build file list. file_pattern is matched with glob first (substring-based,
+        # so "*.tif*" also matches non-image sidecar files like "foo.tif.aux.xml"),
+        # then narrowed down to files whose actual extension is .tif/.tiff - see
+        # _VALID_IMAGE_EXTENSIONS above for why that second step is necessary.
+        candidate_paths = sorted(os.listdir(img_dir))
+        target_paths = [p for p in candidate_paths
+                        if os.path.splitext(p)[1].lower() in _VALID_IMAGE_EXTENSIONS]
+        excluded_paths = sorted(set(candidate_paths) - set(target_paths))
+        if excluded_paths:
+            warn(f"Ignoring {len(excluded_paths)} file(s) that don't end "
+                 f"in {_VALID_IMAGE_EXTENSIONS}"
+                 + ", ".join(os.path.basename(p) for p in excluded_paths))
         if not target_paths:
-            fatal_error(f"No files matching '{file_pattern}' were found in '{img_dir}'.")
+            fatal_error(f"No {_VALID_IMAGE_EXTENSIONS} files were found "
+                        f"in '{img_dir}'.")
 
         # Find reference image and put it first if necessary
         self.mode = mode
