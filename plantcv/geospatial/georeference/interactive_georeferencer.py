@@ -78,7 +78,7 @@ class InteractiveGeoreferencer:
         excluded_paths = sorted(set(candidate_paths) - set(target_paths))
         if excluded_paths:
             warn(f"Ignoring {len(excluded_paths)} file(s) that don't end "
-                 f"in {_VALID_IMAGE_EXTENSIONS}"
+                 f"in {_VALID_IMAGE_EXTENSIONS}: "
                  + ", ".join(os.path.basename(p) for p in excluded_paths))
         if not target_paths:
             fatal_error(f"No {_VALID_IMAGE_EXTENSIONS} files were found "
