@@ -10,6 +10,7 @@ def test_write_geotif(test_data, tmpdir):
     with open(test_data.dsm_pickled, "rb") as f:
         img = pickle.load(f)
     filename = os.path.join(cache_dir, 'outputs/test_out.geotif')
+    img.nodata = 0
     write_geotif(filename, img)
     assert os.path.exists(filename)
     
