@@ -4,30 +4,39 @@ from affine import Affine
 from skimage.transform import AffineTransform, PolynomialTransform, PiecewiseAffineTransform, warp
 from plantcv.plantcv import fatal_error, warn
 
+
+POLYNOMIAL_ORDERS = {
+    "polynomial2": 2,
+    "polynomial3": 3,
+}
+
 # Minimum number of points to attempt each transformation type
 MIN_POINTS_REQUIRED = {
     "affine": 3,
-    "polynomial_2": 6,
-    "polynomial_3": 10,
+    "polynomial2": 6,
+    "polynomial3": 10,
     "tps": 4,
 }
 
-def _fit_point_transform(transform_type, src_xy, dst_xy, polynomial_order=2):
+# Sanity ceiling on the output raster build_output_grid() will produce. 
+MAX_OUTPUT_DIMENSION = 20_000  # pixels, per side (height or width alone)
+MAX_OUTPUT_PIXELS = 100_000_000  # total pixels (height * width)
+
+
+def _fit_point_transform(transform_type, src_xy, dst_xy):
     """Fit a point-to-point transform, used in TWO different directions by callers.
 
     Parameters
     ----------
     transform_type : str
-        One of "affine", "polynomial", "tps". See the module docstring for what
-        each of these means and how they differ.
+        One of "affine", "polynomial2", "polynomial3", "tps". See the module
+        docstring for what each of these means and how they differ.
     src_xy : array_like, shape (N, 2)
         "Where the transform is fit FROM." Depending on the caller, this is either
         real image pixel coordinates or the pixel coordinates of an output canvas.
     dst_xy : array_like, shape (N, 2)
         "Where the transform is fit TO." The transform T returned will satisfy
         T(src_xy[i]) ~= dst_xy[i] for every point i.
-    polynomial_order : int, optional
-        Order of the polynomial, only used when transform_type == "polynomial".
 
     Returns
     -------
@@ -40,13 +49,13 @@ def _fit_point_transform(transform_type, src_xy, dst_xy, polynomial_order=2):
 
     if transform_type == "affine":
         tform = AffineTransform.from_estimate(src, dst)
-    elif transform_type == "polynomial":
-        tform = PolynomialTransform.from_estimate(src, dst, order=polynomial_order)
+    elif transform_type in POLYNOMIAL_ORDERS:
+        tform = PolynomialTransform.from_estimate(src, dst, order=POLYNOMIAL_ORDERS[transform_type])
     elif transform_type == "tps":
         tform = PiecewiseAffineTransform.from_estimate(src, dst)
     else:
         fatal_error(f"transform_type '{transform_type}' is not recognized. "
-                    "Must be one of 'affine', 'polynomial', or 'tps'.")
+                    "Must be one of 'affine', 'polynomial2', 'polynomial3', or 'tps'.")
         return None
 
     if tform is None:
@@ -86,7 +95,7 @@ def estimate_pixel_size(src_xy, world_xy):
     return pixel_size
 
 
-def build_output_grid(image_shape, src_xy, world_xy, transform_type, polynomial_order, pixel_size):
+def build_output_grid(image_shape, src_xy, world_xy, transform_type, pixel_size):
     """Determine output raster grid that will contain an entire warped image.
 
     Parameters
@@ -99,9 +108,7 @@ def build_output_grid(image_shape, src_xy, world_xy, transform_type, polynomial_
     world_xy : array_like, shape (N, 2)
         Known real-world coordinates for those same points.
     transform_type : str
-        One of "affine", "polynomial", "tps".
-    polynomial_order : int
-        Passed through to the polynomial fit; ignored for other transform types.
+        One of "affine", "polynomial2", "polynomial3", "tps".
     pixel_size : float
         Desired output pixel size (world units per pixel). The output grid is
         always built "north up" (rows increase downward/southward), matching the
@@ -123,16 +130,38 @@ def build_output_grid(image_shape, src_xy, world_xy, transform_type, polynomial_
     ], dtype=float)
 
     # Forward fit: pixel -> world.
-    forward = _fit_point_transform(transform_type, src_xy, world_xy,
-                                    polynomial_order=polynomial_order)
+    forward = _fit_point_transform(transform_type, src_xy, world_xy)
     corners_world = forward(corners_px)
 
     min_x, min_y = corners_world.min(axis=0)
     max_x, max_y = corners_world.max(axis=0)
 
+    if not np.all(np.isfinite([min_x, min_y, max_x, max_y])):
+        # int(np.ceil(...)) below would crash outright on inf/nan (OverflowError/
+        # ValueError) rather than raise a clear message, so catch it here first.
+        fatal_error(
+            f"Fitting a '{transform_type}' transform and projecting the image corners through it "
+            "produced non-finite world coordinates. The clicked points are likely too few, "
+            "clustered, or nearly collinear for a stable fit - try clicking more, better-spread "
+            "points, or a lower-order transform_type (e.g. 'affine' instead of 'polynomial2'/"
+            "'polynomial3')."
+        )
+
     # Guard against a degenerate bounding box
     out_width = max(1, int(np.ceil((max_x - min_x) / pixel_size)))
     out_height = max(1, int(np.ceil((max_y - min_y) / pixel_size)))
+
+    if (out_width > MAX_OUTPUT_DIMENSION or out_height > MAX_OUTPUT_DIMENSION
+            or out_width * out_height > MAX_OUTPUT_PIXELS):
+        # Same root cause as the non-finite check above, just a less extreme
+        # (but still nonsensical) degree of extrapolation - a bad fit doesn't
+        # always blow up to infinity, sometimes "just" to an output raster no
+        # one actually wants to allocate.
+        fatal_error(
+            f"Computed output raster would be {out_height} x {out_width} pixels, which exceeds "
+            f"the sanity limit of {MAX_OUTPUT_DIMENSION:,}px per side / {MAX_OUTPUT_PIXELS:,} "
+            f"- try clicking more, better-spread points, or a lower-order transform_type."
+        )
 
     # North-up affine: pixel (0, 0) sits at the top-left = (min_x, max_y)
     out_transform = Affine.translation(min_x, max_y) * Affine.scale(pixel_size, -pixel_size)
@@ -144,7 +173,7 @@ def build_output_grid(image_shape, src_xy, world_xy, transform_type, polynomial_
 
 
 def warp_to_grid(image_array, out_shape, out_pixel_xy, src_pixel_xy, transform_type,
-                  polynomial_order, interpolation_order, nodata_value):
+                  interpolation_order, nodata_value):
     """Resample (warp) a source image array onto a destination pixel grid, given
     point correspondences between the two.
 
@@ -160,9 +189,7 @@ def warp_to_grid(image_array, out_shape, out_pixel_xy, src_pixel_xy, transform_t
     src_pixel_xy : array_like, shape (N, 2)
         Pixel (x, y) coordinates clicked on the SOURCE image.
     transform_type : str
-        One of "affine", "polynomial", "tps".
-    polynomial_order : int
-        Passed through to the polynomial fit; ignored for other transform types.
+        One of "affine", "polynomial2", "polynomial3", "tps".
     interpolation_order : int
         Interpolation degree passed to skimage.transform.warp (0=nearest,
         1=bilinear, 3=bicubic, etc).
@@ -177,8 +204,7 @@ def warp_to_grid(image_array, out_shape, out_pixel_xy, src_pixel_xy, transform_t
         or (out_height, out_width, bands).
     """
     # inverse mapping as scikit expects
-    inverse_map = _fit_point_transform(transform_type, out_pixel_xy, src_pixel_xy,
-                                        polynomial_order=polynomial_order)
+    inverse_map = _fit_point_transform(transform_type, out_pixel_xy, src_pixel_xy)
 
     fill_value = 0.0 if nodata_value is None else float(nodata_value)
     original_dtype = image_array.dtype

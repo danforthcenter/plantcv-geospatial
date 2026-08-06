@@ -9,37 +9,16 @@ from plantcv.geospatial._helpers import _read_raster
 from plantcv.geospatial.write_geotif import write_geotif
 from plantcv.geospatial.georeference import _transform_helpers as th
 
-# Valid modes, transform methods, and polynomial orders
+# Valid transform methods.
 _VALID_MODES = ("reference_image", "known_coordinates")
-_VALID_TRANSFORMS = ("affine", "polynomial", "tps")
-_VALID_POLYNOMIAL_ORDERS = (2, 3)
-
-
-def _min_points(transform_type, polynomial_order):
-    """Look up the minimum number of point correspondences needed for a transform,
-    keying into the static th.MIN_POINTS_REQUIRED dictionary.
-
-    Parameters
-    ----------
-    transform_type : str
-        One of "affine", "polynomial", "tps".
-    polynomial_order : int
-        Only used (to build the lookup key) when transform_type == "polynomial".
-
-    Returns
-    -------
-    int
-        Minimum number of (x, y) point pairs required to fit the transform.
-    """
-    key = f"polynomial_{polynomial_order}" if transform_type == "polynomial" else transform_type
-    return th.MIN_POINTS_REQUIRED[key]
+_VALID_TRANSFORMS = ("affine", "polynomial2", "polynomial3", "tps")
 
 
 class InteractiveGeoreferencer:
     """Plantcv-Geospatial interactive georeferencer class."""
     
     def __init__(self, img_dir, output_dir, mode="known_coordinates", known_coords=None,
-                 reference_image=None, transform_type="affine", polynomial_order=2,
+                 reference_image=None, transform_type="affine",
                  interpolation_order=1, file_pattern="*.tif*", show=True):
         """Initialize parameters.
 
@@ -55,25 +34,13 @@ class InteractiveGeoreferencer:
         known_coords : list of (float, float), optional
             Required when mode == "known_coordinates". Real-world (x, y)
             coordinates of the ground control points you will click on every
-            image. No `crs` argument is needed alongside these - the coordinate
-            reference system is read directly from the first image's own file
-            metadata instead (see `_georeference_to_known_coordinates`), on the
-            assumption that `known_coords` is already expressed in whatever CRS
-            your images carry (e.g. a rough CRS a drone/camera already tagged the
-            files with, even if the actual pixel alignment still needs
-            correcting - which is exactly what this class fixes).
+            image. 
         reference_image : str, optional
             Required (and only used) when mode == "reference_image". Path to the
             already-georeferenced image that other images will be aligned to.
         transform_type : str, optional
-            "affine", "polynomial", or "tps"
-            Default is "affine".
-        polynomial_order : int, optional
-            Only used when transform_type == "polynomial". Order of the
-            polynomial warp. Must be 2 or 3 - higher orders need disproportionately
-            more points for a fit that is not obviously better, and skimage's
-            PolynomialTransform starts becoming numerically unstable well before
-            reaching them. Default is 2.
+            "affine", "polynomial2", "polynomial3", or "tps". "polynomial2"/
+            "polynomial3" are 2nd/3rd-order polynomial warps. Default is "affine".
         interpolation_order : int, optional
             Pixel resampling interpolation degree used when warping (0=nearest
             neighbor, 1=bilinear, 3=bicubic). Default is 1. Use 0 for categorical
@@ -90,9 +57,6 @@ class InteractiveGeoreferencer:
         if transform_type not in _VALID_TRANSFORMS:
             fatal_error(f"transform_type '{transform_type}' is not recognized. "
                         f"Must be one of {_VALID_TRANSFORMS}.")
-        if transform_type == "polynomial" and polynomial_order not in _VALID_POLYNOMIAL_ORDERS:
-            fatal_error(f"polynomial_order={polynomial_order} is not supported. "
-                        f"Must be one of {_VALID_POLYNOMIAL_ORDERS}.")
         if mode == "known_coordinates" and (not known_coords or len(known_coords) < 3):
             fatal_error("mode='known_coordinates' requires `known_coords`, a list of at least "
                         "3 (x, y) real-world coordinate pairs.")
@@ -100,12 +64,10 @@ class InteractiveGeoreferencer:
             fatal_error("mode='reference_image' requires `reference_image`, the path to an "
                         "already-georeferenced image to align other images to.")
 
-        min_pts = _min_points(transform_type, polynomial_order)
+        min_pts = th.MIN_POINTS_REQUIRED[transform_type]
         if mode == "known_coordinates" and len(known_coords) < min_pts:
-            fatal_error(f"transform_type='{transform_type}'"
-                        + (f" with polynomial_order={polynomial_order}" if transform_type == "polynomial" else "")
-                        + f" needs at least {min_pts} points, but `known_coords` only has "
-                          f"{len(known_coords)}.")
+            fatal_error(f"transform_type='{transform_type}' needs at least {min_pts} points, "
+                        f"but `known_coords` only has {len(known_coords)}.")
 
         # Build file list
         target_paths = sorted(glob.glob(os.path.join(img_dir, file_pattern)))
@@ -128,7 +90,6 @@ class InteractiveGeoreferencer:
         self.known_coords = known_coords
         self.reference_image = reference_image
         self.transform_type = transform_type
-        self.polynomial_order = polynomial_order
         self.interpolation_order = interpolation_order
 
         # Filled in later by the first image read
@@ -198,17 +159,17 @@ class InteractiveGeoreferencer:
         total = len(self._queue)
         expected = self._expected_point_count()
 
+        min_pts = th.MIN_POINTS_REQUIRED[self.transform_type]
         if self._is_reference[self.current_index]:
             lines = [f"STEP {step}/{total} - REFERENCE IMAGE: {os.path.basename(path)}",
                      "Click landmark points you can recognize in every other image.",
-                     f"(at least {_min_points(self.transform_type, self.polynomial_order)} points)"]
+                     f"(at least {min_pts} points)"]
         else:
             lines = [f"STEP {step}/{total}: {os.path.basename(path)}"]
             if expected is not None:
                 lines.append(f"Click the SAME {expected} point(s), in the SAME order, as before.")
             else:
-                lines.append(f"Click at least "
-                             f"{_min_points(self.transform_type, self.polynomial_order)} point(s).")
+                lines.append(f"Click at least {min_pts} point(s).")
 
         if extra_message:
             lines.insert(0, extra_message)
@@ -227,7 +188,7 @@ class InteractiveGeoreferencer:
         """Callback for the "Next Image" button: validate, store, and advance."""
         clicked_xy = [(float(pt[1]), float(pt[0])) for pt in self._points_layer.data]
         path = self._queue[self.current_index]
-        min_pts = _min_points(self.transform_type, self.polynomial_order)
+        min_pts = th.MIN_POINTS_REQUIRED[self.transform_type]
         expected = self._expected_point_count()
 
         if self._is_reference[self.current_index]:
@@ -309,8 +270,7 @@ class InteractiveGeoreferencer:
             fill_value = image_nodata if image_nodata is not None else ref_nodata
 
             warped = th.warp_to_grid(image_array, ref_shape, self.reference_points, src_xy,
-                                     self.transform_type, self.polynomial_order,
-                                     self.interpolation_order, fill_value)
+                                     self.transform_type, self.interpolation_order, fill_value)
 
             out_path = os.path.join(self.output_dir, f"{os.path.basename(path)}_georef")
             write_geotif(out_path, warped, ref_transform, ref_crs, fill_value)
@@ -346,12 +306,10 @@ class InteractiveGeoreferencer:
                       f"from '{os.path.basename(path)}'.")
 
             out_shape, out_transform, out_pixel_xy = th.build_output_grid(
-                image_array.shape, src_xy, self.known_coords, self.transform_type,
-                self.polynomial_order, pixel_size)
+                image_array.shape, src_xy, self.known_coords, self.transform_type, pixel_size)
 
             warped = th.warp_to_grid(image_array, out_shape, out_pixel_xy, src_xy,
-                                     self.transform_type, self.polynomial_order,
-                                     self.interpolation_order, fill_value)
+                                     self.transform_type, self.interpolation_order, fill_value)
 
             out_path = os.path.join(self.output_dir, f"{os.path.basename(path)}_georef")
             write_geotif(out_path, warped, out_transform, self.crs, fill_value)
