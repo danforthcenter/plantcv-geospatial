@@ -68,14 +68,13 @@ class InteractiveGeoreferencer:
             fatal_error(f"transform_type='{transform_type}' needs at least {min_pts} points, "
                         f"but `known_coords` only has {len(known_coords)}.")
 
-        # Build file list. file_pattern is matched with glob first (substring-based,
-        # so "*.tif*" also matches non-image sidecar files like "foo.tif.aux.xml"),
-        # then narrowed down to files whose actual extension is .tif/.tiff - see
-        # _VALID_IMAGE_EXTENSIONS above for why that second step is necessary.
+        # Build file list.
         candidate_paths = sorted(os.listdir(img_dir))
-        target_paths = [p for p in candidate_paths
+        target_paths = [os.path.join(img_dir, p) for p in candidate_paths
                         if os.path.splitext(p)[1].lower() in _VALID_IMAGE_EXTENSIONS]
-        excluded_paths = sorted(set(candidate_paths) - set(target_paths))
+        excluded_paths = [os.path.join(img_dir, p) for p in candidate_paths
+                        if os.path.splitext(p)[1].lower() not in _VALID_IMAGE_EXTENSIONS]
+        print(target_paths)
         if excluded_paths:
             warn(f"Ignoring {len(excluded_paths)} file(s) that don't end "
                  f"in {_VALID_IMAGE_EXTENSIONS}: "
