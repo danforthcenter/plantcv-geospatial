@@ -24,7 +24,7 @@ def test_write_geotif_array(test_data, tmpdir):
     filename = os.path.join(cache_dir, 'test_out.geotif')
     img.nodata = 0
     # Test 2D array
-    img.thumb = np.squeeze(img.thumb)
+    img.thumb = np.squeeze(img.thumb, axis=-1)
     write_geotif(filename, img.thumb, img.transform, img.crs, img.nodata)
     assert os.path.exists(filename)
 
