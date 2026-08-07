@@ -21,7 +21,8 @@ dependencies = [
     "joblib",
     "netCDF4",
     "altair < 6",
-    "dill"
+    "dill",
+    "PySide6"
 ]
 requires-python = ">=3.11"
 authors = [
@@ -45,7 +46,7 @@ test = [
 
 [project.urls]
 Homepage = "https://plantcv.org"
-Documentation = "https://plantcv.readthedocs.io"
+Documentation = "https://docs.plantcv.org/projects/geospatial"
 Repository = "https://github.com/danforthcenter/plantcv-geospatial"
 
 [tool.setuptools_scm]
