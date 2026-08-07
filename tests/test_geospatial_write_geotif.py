@@ -34,9 +34,7 @@ def test_write_geotif_nometadata(test_data, tmpdir):
     with open(test_data.dsm_pickled, "rb") as f:
         img = pickle.load(f)
     filename = os.path.join(cache_dir, 'outputs/test_out.geotif')
-    img.nodata = 0
-    img.transform = None
-    img.crs = None
+    array = np.asarray(img)
     with pytest.raises(RuntimeError):
-        write_geotif(filename, img.thumb, img.transform, img.crs, img.nodata)
+        write_geotif(filename, array)
     
