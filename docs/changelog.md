@@ -82,6 +82,18 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: object = **geospatial.GEO**(*input_array, filename, wavelengths, default_wavelengths, crs, transform*)
 
+#### geospatial.georeference.InteractiveGeoreferencer
+
+* v0.1dev: viewer = **geospatial.create_shapes.InteractiveGeoreferencer**(*img_dir, output_dir, mode="known_coordinates", known_coords=None, reference_image=None, transform_type="affine", interpolation_order=1, show=True*)
+
+#### geospatial.georeference.InteractiveGeoreferencer.georeference
+
+* v0.1dev: **geospatial.create_shapes.InteractiveGeoreferencer.georeference**()
+
+#### geospatial.georeference.InteractiveGeoreferencer.close
+
+* v0.1dev: **geospatial.create_shapes.InteractiveGeoreferencer.close**()
+
 #### geospatial.Image
 
 * v0.1dev: object = **geospatial.Image**(*input_array, filename*)

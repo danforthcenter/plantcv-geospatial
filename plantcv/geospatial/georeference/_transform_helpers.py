@@ -62,8 +62,9 @@ def _fit_point_transform(transform_type, src_xy, dst_xy):
                     "'affine', 'polynomial2', 'polynomial3', 'tps', or 'projective'.")
         return None
 
-    if tform is None:
-        # from_estimate() returns None (rather than raising) if the fit fails
+    if not tform:
+        # from_estimate() signals a failed fit by returning a falsy
+        # FailedEstimation sentinel, NOT None - `is None` would never catch this.
         fatal_error("Could not fit a " + transform_type + " transform from the clicked points. "
                     "Try clicking more points, spreading them out more (avoid points that are "
                     "all in a line), or choosing a lower-order transform.")

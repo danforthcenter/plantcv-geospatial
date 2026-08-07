@@ -1,7 +1,6 @@
 # PlantCV-Geospatial class interactive georeferencer
 
 import os
-import glob
 import napari
 from magicgui.widgets import PushButton, Label, Container
 from plantcv.plantcv import fatal_error, warn
@@ -44,9 +43,7 @@ class InteractiveGeoreferencer:
             "polynomial2"/"polynomial3" are 2nd/3rd-order polynomial warps.
         interpolation_order : int, optional
             Pixel resampling interpolation degree used when warping (0=nearest
-            neighbor, 1=bilinear, 3=bicubic). Default is 1. Use 0 for categorical
-            data (e.g. classification maps) where blending pixel values would be
-            meaningless.
+            neighbor, 1=bilinear, 3=bicubic). Default is 1.
         show : bool, optional
             Whether to display the napari viewer window. Default is True.
         """

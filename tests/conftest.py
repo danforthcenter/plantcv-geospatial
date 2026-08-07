@@ -108,6 +108,14 @@ class TestData:
             single_points.geojson
             Points shapefile
             Used for testing convert.to_roi
+        small_geotif
+            small_geotif.tif file
+            Tiny synthetic georeferenced (EPSG:32615) RGB image
+            Used for testing georeference.InteractiveGeoreferencer
+        small_geotif_no_crs
+            small_geotif_no_crs.tif file
+            Same as small_geotif but with no CRS/transform of its own
+            Used for testing georeference.InteractiveGeoreferencer
 
         """
         # Test data directory
@@ -169,6 +177,10 @@ class TestData:
         self.poly_crop_fid = os.path.join(self.datadir, "single_crop_fid.geojson")
         # Points geojson
         self.single_points = os.path.join(self.datadir, "single_points.geojson")
+        # Tiny synthetic georeferenced RGB image
+        self.small_geotif = os.path.join(self.datadir, "small_geotif.tif")
+        # Same, but with no CRS/transform of its own
+        self.small_geotif_no_crs = os.path.join(self.datadir, "small_geotif_no_crs.tif")
 
 @pytest.fixture(scope="session")
 def test_data():
