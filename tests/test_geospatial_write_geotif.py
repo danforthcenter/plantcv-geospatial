@@ -36,6 +36,7 @@ def test_write_geotif_nometadata(test_data, tmpdir):
     filename = os.path.join(cache_dir, 'outputs/test_out.geotif')
     img.nodata = 0
     img.transform = None
+    img.crs = None
     with pytest.raises(RuntimeError):
-        write_geotif(filename, img)
+        write_geotif(filename, img.thumb, img.transform, img.crs, img.nodata)
     
