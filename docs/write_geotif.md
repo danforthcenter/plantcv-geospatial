@@ -6,7 +6,8 @@ Save out a new or modified data array to a GeoTIFF file.
 
 - **Parameters:**
     - path - Path and filename for saving the new GeoTIFF.
-    - img - Either a numpy array, [GEO or DSM](image_classes.md) object containing data to be saved. 
+    - img - Either a numpy array, [GEO or DSM](image_classes.md) object containing data to be saved.
+        If a GEO or DSM object is used then the `transform` and `crs` attributes of that object are used by default.
     - transform - Affine transformation matrix that converts array coordinates to geospatial coordinates.
     - crs - Coordinate reference system.
     - nodata - No data value.
