@@ -29,6 +29,23 @@ MAX_OUTPUT_PIXELS = 100_000_000  # total pixels (height * width)
 
 
 def _validate_args(mode, transform_type, known_coords, reference_image):
+    """Validate arguments for georeferencer before opening a viewer. 
+
+    Parameters
+    ----------
+    mode : str, optional
+        "reference_image" or "known_coordinates". Default is "known_coordinates".
+    transform_type : str, optional
+        "affine", "polynomial2", "polynomial3", "tps", or "projective".
+        "polynomial2"/"polynomial3" are 2nd/3rd-order polynomial warps.      
+    known_coords : list of (float, float), optional
+        Required when mode == "known_coordinates". Real-world (x, y)
+        coordinates of the ground control points you will click on every
+        image.
+    reference_image : str, optional
+        Required (and only used) when mode == "reference_image". Path to the
+        already-georeferenced image that other images will be aligned to.
+    """
     if mode not in _VALID_MODES:
         fatal_error(f"mode '{mode}' is not recognized. Must be one of {_VALID_MODES}.")
     elif transform_type not in _VALID_TRANSFORMS:
@@ -40,7 +57,7 @@ def _validate_args(mode, transform_type, known_coords, reference_image):
     elif mode == "reference_image" and not reference_image:
         fatal_error("mode='reference_image' requires `reference_image`, the path to an "
                     "already-georeferenced image to align other images to.")
-    
+
 
 def _fit_point_transform(transform_type, src_xy, dst_xy):
     """Fit a point-to-point transform, used in TWO different directions by callers.
