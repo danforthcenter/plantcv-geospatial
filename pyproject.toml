@@ -12,6 +12,7 @@ dependencies = [
     "plantcv==v5.0.0rc1",
     "matplotlib",
     "rasterio",
+    "affine < 3",
     "fiona",
     "shapely",
     "geopandas",
