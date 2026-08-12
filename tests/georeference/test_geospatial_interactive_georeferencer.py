@@ -40,7 +40,8 @@ def test_geospatial_interactive_georeferencer_no_valid_images(tmpdir):
 
 def test_geospatial_interactive_georeferencer_known_coordinates_flow(test_data, tmpdir):
     """Test for georeferencer. Full known_coordinates click-through-to-georeference.
-    Two images, including a rejected (wrong point count) click before the accepted one."""
+    Two images, including a rejected (wrong point count) click before the accepted one.
+    """
     img_dir = tmpdir.mkdir("img_dir")
     img1 = str(img_dir.join("img1.tif"))
     img2 = str(img_dir.join("img2.tif"))

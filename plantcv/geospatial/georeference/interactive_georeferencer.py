@@ -8,9 +8,7 @@ from plantcv.geospatial._helpers import _read_raster
 from plantcv.geospatial.write_geotif import write_geotif
 from plantcv.geospatial.georeference import _transform_helpers as th
 
-# Valid parameter lists.
-_VALID_MODES = ("reference_image", "known_coordinates")
-_VALID_TRANSFORMS = ("affine", "polynomial2", "polynomial3", "tps", "projective")
+# Valid image extensions list (can be added to later).
 _VALID_IMAGE_EXTENSIONS = (".tif", ".tiff", ".TIF", ".TIFF")
 
 
@@ -48,17 +46,7 @@ class InteractiveGeoreferencer:
             Whether to display the napari viewer window. Default is True.
         """
         # Validate the mode-specific arguments first
-        if mode not in _VALID_MODES:
-            fatal_error(f"mode '{mode}' is not recognized. Must be one of {_VALID_MODES}.")
-        if transform_type not in _VALID_TRANSFORMS:
-            fatal_error(f"transform_type '{transform_type}' is not recognized. "
-                        f"Must be one of {_VALID_TRANSFORMS}.")
-        if mode == "known_coordinates" and (not known_coords or len(known_coords) < 3):
-            fatal_error("mode='known_coordinates' requires `known_coords`, a list of at least "
-                        "3 (x, y) real-world coordinate pairs.")
-        if mode == "reference_image" and not reference_image:
-            fatal_error("mode='reference_image' requires `reference_image`, the path to an "
-                        "already-georeferenced image to align other images to.")
+        th._validate_args(mode, transform_type, known_coords, reference_image)
 
         min_pts = th.MIN_POINTS_REQUIRED[transform_type]
         if mode == "known_coordinates" and len(known_coords) < min_pts:
@@ -69,7 +57,7 @@ class InteractiveGeoreferencer:
         candidate_paths = sorted(os.listdir(img_dir))
         target_paths = [os.path.join(img_dir, p) for p in candidate_paths
                         if os.path.splitext(p)[1].lower() in _VALID_IMAGE_EXTENSIONS]
-        excluded_paths = [os.path.join(img_dir, p) for p in candidate_paths 
+        excluded_paths = [os.path.join(img_dir, p) for p in candidate_paths
                           if os.path.splitext(p)[1].lower() not in _VALID_IMAGE_EXTENSIONS]
         print(target_paths)
         if excluded_paths:

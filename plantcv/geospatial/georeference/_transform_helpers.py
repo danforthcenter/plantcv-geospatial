@@ -5,6 +5,9 @@ from skimage.transform import (AffineTransform, PolynomialTransform, PiecewiseAf
                                ProjectiveTransform, warp)
 from plantcv.plantcv import fatal_error, warn
 
+# Valid parameter lists
+_VALID_MODES = ("reference_image", "known_coordinates")
+_VALID_TRANSFORMS = ("affine", "polynomial2", "polynomial3", "tps", "projective")
 
 POLYNOMIAL_ORDERS = {
     "polynomial2": 2,
@@ -24,6 +27,20 @@ MIN_POINTS_REQUIRED = {
 MAX_OUTPUT_DIMENSION = 20_000  # pixels, per side (height or width alone)
 MAX_OUTPUT_PIXELS = 100_000_000  # total pixels (height * width)
 
+
+def _validate_args(mode, transform_type, known_coords, reference_image):
+    if mode not in _VALID_MODES:
+        fatal_error(f"mode '{mode}' is not recognized. Must be one of {_VALID_MODES}.")
+    elif transform_type not in _VALID_TRANSFORMS:
+        fatal_error(f"transform_type '{transform_type}' is not recognized. "
+                    f"Must be one of {_VALID_TRANSFORMS}.")
+    elif mode == "known_coordinates" and (not known_coords or len(known_coords) < 3):
+        fatal_error("mode='known_coordinates' requires `known_coords`, a list of at least "
+                    "3 (x, y) real-world coordinate pairs.")
+    elif mode == "reference_image" and not reference_image:
+        fatal_error("mode='reference_image' requires `reference_image`, the path to an "
+                    "already-georeferenced image to align other images to.")
+    
 
 def _fit_point_transform(transform_type, src_xy, dst_xy):
     """Fit a point-to-point transform, used in TWO different directions by callers.
