@@ -29,7 +29,7 @@ MAX_OUTPUT_PIXELS = 100_000_000  # total pixels (height * width)
 
 
 def _validate_args(mode, transform_type, known_coords, reference_image):
-    """Validate arguments for georeferencer before opening a viewer. 
+    """Validate arguments for georeferencer before opening a viewer.
 
     Parameters
     ----------
@@ -37,7 +37,7 @@ def _validate_args(mode, transform_type, known_coords, reference_image):
         "reference_image" or "known_coordinates". Default is "known_coordinates".
     transform_type : str, optional
         "affine", "polynomial2", "polynomial3", "tps", or "projective".
-        "polynomial2"/"polynomial3" are 2nd/3rd-order polynomial warps.      
+        "polynomial2"/"polynomial3" are 2nd/3rd-order polynomial warps.
     known_coords : list of (float, float), optional
         Required when mode == "known_coordinates". Real-world (x, y)
         coordinates of the ground control points you will click on every
