@@ -16,7 +16,7 @@ _VALID_IMAGE_EXTENSIONS = (".tif", ".tiff", ".TIF", ".TIFF")
 
 class InteractiveGeoreferencer:
     """Plantcv-Geospatial interactive georeferencer class."""
-    
+
     def __init__(self, img_dir, output_dir, mode="known_coordinates", known_coords=None,
                  reference_image=None, transform_type="affine",
                  interpolation_order=1, show=True):
@@ -34,7 +34,7 @@ class InteractiveGeoreferencer:
         known_coords : list of (float, float), optional
             Required when mode == "known_coordinates". Real-world (x, y)
             coordinates of the ground control points you will click on every
-            image. 
+            image.
         reference_image : str, optional
             Required (and only used) when mode == "reference_image". Path to the
             already-georeferenced image that other images will be aligned to.
@@ -69,8 +69,8 @@ class InteractiveGeoreferencer:
         candidate_paths = sorted(os.listdir(img_dir))
         target_paths = [os.path.join(img_dir, p) for p in candidate_paths
                         if os.path.splitext(p)[1].lower() in _VALID_IMAGE_EXTENSIONS]
-        excluded_paths = [os.path.join(img_dir, p) for p in candidate_paths
-                        if os.path.splitext(p)[1].lower() not in _VALID_IMAGE_EXTENSIONS]
+        excluded_paths = [os.path.join(img_dir, p) for p in candidate_paths 
+                          if os.path.splitext(p)[1].lower() not in _VALID_IMAGE_EXTENSIONS]
         print(target_paths)
         if excluded_paths:
             warn(f"Ignoring {len(excluded_paths)} file(s) that don't end "
@@ -122,8 +122,8 @@ class InteractiveGeoreferencer:
 
         self._load_current()
 
-
     # Internal helpers driving the click-through state machine
+
     def _expected_point_count(self):
         """How many points the user is expected to click on the current image.
 
@@ -134,7 +134,7 @@ class InteractiveGeoreferencer:
         """
         if self.mode == "known_coordinates":
             return len(self.known_coords)
-        
+
         if self.reference_points is not None:
             return len(self.reference_points)
         return None
@@ -232,10 +232,8 @@ class InteractiveGeoreferencer:
         )
 
     def close(self):
-        """Close the napari viewer held by this object.
-        """
+        """Close the napari viewer held by this object."""
         self.viewer.close()
-
 
     # Now, the real georeferencing after points are collected
 
@@ -288,7 +286,7 @@ class InteractiveGeoreferencer:
 
     def _georeference_to_known_coordinates(self):
         """Warp every clicked image onto its own output grid, using the shared
-        `known_coords` GCPs. 
+        `known_coords` GCPs.
         """
         written_paths = []
         pixel_size = None
@@ -318,7 +316,7 @@ class InteractiveGeoreferencer:
             warped = th.warp_to_grid(image_array, out_shape, out_pixel_xy, src_xy,
                                      self.transform_type, self.interpolation_order, fill_value)
 
-            out_path = os.path.join(self.output_dir, 
+            out_path = os.path.join(self.output_dir,
                                     f"{os.path.splitext(os.path.basename(path))[0]}_georef.tif")
             write_geotif(out_path, warped, out_transform, self.crs, fill_value)
             written_paths.append(out_path)

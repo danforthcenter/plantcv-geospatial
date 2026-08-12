@@ -20,7 +20,7 @@ MIN_POINTS_REQUIRED = {
     "projective": 4,
 }
 
-# Sanity ceiling on the output raster build_output_grid() will produce. 
+# Sanity ceiling on the output raster build_output_grid() will produce.
 MAX_OUTPUT_DIMENSION = 20_000  # pixels, per side (height or width alone)
 MAX_OUTPUT_PIXELS = 100_000_000  # total pixels (height * width)
 
@@ -60,7 +60,6 @@ def _fit_point_transform(transform_type, src_xy, dst_xy):
     else:
         fatal_error(f"transform_type '{transform_type}' is not recognized. Must be one of "
                     "'affine', 'polynomial2', 'polynomial3', 'tps', or 'projective'.")
-        return None
 
     if not tform:
         # from_estimate() signals a failed fit by returning a falsy
@@ -178,7 +177,7 @@ def build_output_grid(image_shape, src_xy, world_xy, transform_type, pixel_size)
 
 
 def warp_to_grid(image_array, out_shape, out_pixel_xy, src_pixel_xy, transform_type,
-                  interpolation_order, nodata_value):
+                 interpolation_order, nodata_value):
     """Resample (warp) a source image array onto a destination pixel grid, given
     point correspondences between the two.
 

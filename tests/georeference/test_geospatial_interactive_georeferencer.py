@@ -39,8 +39,8 @@ def test_geospatial_interactive_georeferencer_no_valid_images(tmpdir):
 
 
 def test_geospatial_interactive_georeferencer_known_coordinates_flow(test_data, tmpdir):
-    """Test for georeferencer. Full known_coordinates click-through-to-georeference flow,
-    across two images, including a rejected (wrong point count) click before the accepted one."""
+    """Test for georeferencer. Full known_coordinates click-through-to-georeference.
+    Two images, including a rejected (wrong point count) click before the accepted one."""
     img_dir = tmpdir.mkdir("img_dir")
     img1 = str(img_dir.join("img1.tif"))
     img2 = str(img_dir.join("img2.tif"))
@@ -213,17 +213,6 @@ def test_geospatial_interactive_georeferencer_update_status_label_fallback(test_
     geo._update_status_label()
     assert "Click at least" in geo._status_label.value
     geo.close()
-
-
-#def test_geospatial_interactive_georeferencer_close(test_data, tmpdir):
-#    """Test for plantcv-geospatial."""
-#    img_dir = tmpdir.mkdir("img_dir")
-#    shutil.copy(test_data.small_geotif, str(img_dir.join("img.tif")))
-#    geo = InteractiveGeoreferencer(img_dir=str(img_dir), output_dir=str(tmpdir.join("out")),
-#                                   mode="known_coordinates",
-#                                   known_coords=[(500000.0, 4000000.0), (500100.0, 4000000.0), (500050.0, 4000090.0)],
-#                                   transform_type="affine", show=False)
-#    geo.close()
 
 
 @pytest.mark.parametrize("transform_type", ["affine", "polynomial2", "tps", "projective"])
