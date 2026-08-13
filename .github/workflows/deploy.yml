@@ -20,11 +20,16 @@ jobs:
       uses: actions/setup-python@main
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Setup Mesa OpenGL for headless rendering (Windows only)
+      if: runner.os == 'Windows'
+      uses: ssciwr/setup-mesa-dist-win@v3
     - name: Install test dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest pytest-cov ipython
     - name: Cross-platform tests
+      env:
+        NAPARI_TESTING: 1
       run: |
         pip install .
         py.test
