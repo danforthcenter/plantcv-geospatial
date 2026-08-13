@@ -9,7 +9,7 @@ include = ["plantcv.geospatial"]
 name = "plantcv-geospatial"
 dynamic = ["version"]
 dependencies = [
-    "plantcv==v5.0.0rc2",
+    "plantcv==5.0.0rc2",
     "matplotlib",
     "rasterio",
     "affine < 3",
