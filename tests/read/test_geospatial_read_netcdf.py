@@ -10,4 +10,4 @@ def test_geospatial_read_netcdf(test_data, tmpdir):
     cache_dir = tmpdir.mkdir("cache")
     outfile = os.path.join(str(cache_dir), "netcdf_output.tif")
     img = netcdf(filename=test_data.test_netcdf, cropto=test_data.netcdf_testcrop, output=outfile) 
-    assert img.array_data.shape == (2, 2, 21)
+    assert img.shape == (2, 2, 21)
