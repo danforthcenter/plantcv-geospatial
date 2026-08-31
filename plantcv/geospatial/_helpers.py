@@ -9,6 +9,7 @@ import geopandas
 import fiona
 import cv2
 import os
+import rasterio
 
 
 def _histogram_stats(masked_array, bins, histrange):
@@ -353,3 +354,32 @@ def _check_field_parameters(arglist, argnames):
         areNone = [val is None for val in arglist]
         noneArgs = [val for i, val in enumerate(argnames) if areNone[i]]
         fatal_error("Got None for " + str(noneArgs) + ", specify as a kwarg or add to field_layout object")
+
+
+def _read_raster(path):
+    """
+    Helper function to read a raster file's data
+
+    Parameters:
+    -----------
+    path : str
+        Path to a raster file readable by rasterio
+
+    Returns:
+    --------
+    array : numpy.ndarray
+        Array data.
+    crs : rasterio.crs.CRS or None
+        Coordinate reference system.
+    transform : affine.Affine
+        Existing geotransform.
+    nodata : float or None
+        Nodata value from the file's metadata.
+    """
+    with rasterio.open(path) as src:
+        array = src.read()
+        crs = src.crs
+        transform = src.transform
+        nodata = src.nodata
+    array = np.moveaxis(array, 0, -1)
+    return array, crs, transform, nodata

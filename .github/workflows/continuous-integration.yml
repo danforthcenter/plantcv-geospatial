@@ -24,6 +24,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@main
+    - name: Set up headless display for napari (Qt needs a real X server + GL, not the offscreen plugin)
+      uses: pyvista/setup-headless-display-action@v3
+      with:
+        qt: true
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@main
       with:
