@@ -41,6 +41,7 @@ nav:
             - Automatic Grid : shapes_grid.md
             - Interactive shape creation: InteractiveShapes.md
         - Subtract DSMs to create a canopy height model: subtract_dsm.md
+        - Save a GeoTIFF to a new file: write_geotif.md
 markdown_extensions:
   - toc:
       permalink: True
