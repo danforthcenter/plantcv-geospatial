@@ -6,6 +6,7 @@ import numpy as np
 from plantcv.geospatial.create_shapes.interactive_shapes import InteractiveShapes
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _lineintersect
 from plantcv.geospatial import field_layout
+from plantcv.geospatial._helpers import _to_gdf, _gdf_to_pixel_polygons
 
 
 def test_geospatial_interactive_grid(test_data):
@@ -122,7 +123,6 @@ def test_geospatial_interactive_to_shapes(test_data):
     assert len(x[0]) == 4
 
 
-
 def test_geospatial_interactive_to_points(test_data):
     """Test for plantcv-geospatial."""
     field = np.array([[64.11229125, 128.74165877],
@@ -138,3 +138,60 @@ def test_geospatial_interactive_to_points(test_data):
     editor.viewer.add_points(field, name="Points")
     x = editor.to_points()
     assert len(x) == 4
+
+
+def test_geospatial_interactive_to_roi_points(test_data):
+    """Test for plantcv-geospatial."""
+    field = np.array([[64.11229125, 128.74165877],
+                      [136.25692447, 203.82241079],
+                      [213.85434974, 139.64724287],
+                      [140.45137989,  59.95258989]])
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
+    editor.viewer.add_shapes(field, name="field_bounds")
+    editor.layer_dict["field_boundary"] = "field_bounds"
+    # instead of calling the add_layer method we make a layer manually to test
+    editor.viewer.add_points(field, name="Points")
+    x = editor.to_roi(radius=1, layername="Points")
+    assert len(x.contours) == 4
+
+
+def test_geospatial_interactive_to_roi_shapes(test_data):
+    """Test for plantcv-geospatial."""
+    field = np.array([[64.11229125, 128.74165877],
+                      [136.25692447, 203.82241079],
+                      [213.85434974, 139.64724287],
+                      [140.45137989,  59.95258989]])
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
+    editor.viewer.add_shapes(field, name="field_bounds")
+    editor.layer_dict["field_boundary"] = "field_bounds"
+    # instead of calling the add_layer method we make a layer manually to test
+    editor.viewer.add_shapes(field, shape_type="polygon", name="Shapes")
+    x = editor.to_roi(layername="Shapes")
+    assert len(x.contours[0][0]) == 4
+
+
+def test_geospatial_interactive_to_roi_no_geoms(test_data):
+    """Test for plantcv-geospatial."""
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    editor = InteractiveShapes(img, field_layer="dummy_layer", show=False)
+    with pytest.raises(RuntimeError):
+        _ = editor.to_roi(layername="dummy_layer")
+
+
+def test_geospatial_interactive_to_roi_misc_helpers(test_data):
+    """Test for plantcv-geospatial."""
+    with open(test_data.geo_pickled, "rb") as f:
+        img = pickle.load(f)
+    gdf = _to_gdf(img, test_data.multipolygon)
+    coord = _gdf_to_pixel_polygons(img, gdf)
+    assert len(coord) == 1
+    gdf.geometry = [None]
+    with pytest.raises(RuntimeError):
+        _ = _gdf_to_pixel_polygons(img, gdf)
+    with pytest.raises(RuntimeError):
+        _ = _to_gdf(img, source=123.0)
