@@ -55,12 +55,13 @@ def _viewer_to_gdf(img, viewer, layername="Shapes"):
     """
     viewer = getattr(viewer, "viewer", viewer)
     layer = viewer.layers[layername]
-    to_coords = lambda rc: img.transform * (float(rc[1]), float(rc[0]))
+    def to_coords(img, rc):
+        return img.transform * (float(rc[1]), float(rc[0]))
     geoms = None
     if isinstance(layer, napari.layers.Points):
-        geoms = [Point(to_coords(rc)) for rc in layer.data]
+        geoms = [Point(to_coords(img, rc)) for rc in layer.data]
     elif isinstance(layer, napari.layers.Shapes):
-        geoms = [Polygon([to_coords(rc) for rc in shape])
+        geoms = [Polygon([to_coords(img, rc) for rc in shape])
                  for shape, stype in zip(layer.data, layer.shape_type)
                  if stype in ("polygon", "rectangle", "ellipse")]
     if not geoms:

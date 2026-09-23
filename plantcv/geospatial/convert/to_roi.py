@@ -1,7 +1,5 @@
 # Transform georeferenced GeoJSON/shapefile points into python coordinates
-import os
 import numpy as np
-from plantcv.geospatial.transform_polygons import transform_polygons
 from plantcv.geospatial._helpers import _to_gdf, _gdf_to_pixel_polygons
 from plantcv.plantcv.fatal_error import fatal_error
 from plantcv.plantcv.classes import Objects
