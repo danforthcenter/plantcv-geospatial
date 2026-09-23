@@ -55,7 +55,9 @@ def _viewer_to_gdf(img, viewer, layername="Shapes"):
     """
     viewer = getattr(viewer, "viewer", viewer)
     layer = viewer.layers[layername]
+
     def to_coords(img, rc):
+        """convert X, Y points to coordinates in CRS"""
         return img.transform * (float(rc[1]), float(rc[0]))
     geoms = None
     if isinstance(layer, napari.layers.Points):
