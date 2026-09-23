@@ -1,9 +1,10 @@
 # PlantCV-geospatial helper functions
-from shapely.geometry import LineString
+from shapely.geometry import LineString, Point, Polygon
 from rasterio.plot import plotting_extent
 from matplotlib import pyplot as plt
 from plantcv.plantcv import params
 from plantcv.plantcv.fatal_error import fatal_error
+import napari
 import numpy as np
 import geopandas
 import fiona
@@ -34,6 +35,108 @@ def _histogram_stats(masked_array, bins, histrange):
         'counts': counts.tolist(),
         'bin_edges': bin_edges.tolist()
     }
+
+
+def _viewer_to_gdf(img, viewer, layername="Shapes"):
+    """
+    Build a GeoDataFrame in img.crs from a napari Points or Shapes layer.
+
+    Parameters:
+    -----------
+    img       = GEO or DSM,
+        image to use, must have a CRS attribute.
+    viewer    = Napari viewer or InteractiveShapes instance
+    layername = str,
+        Name of the viewer layer to return as a gdf. Defaults to "Shapes"
+
+    Returns:
+    --------
+    gdf = pandas.GeoDataFrame
+    """
+    viewer = getattr(viewer, "viewer", viewer)
+    layer = viewer.layers[layername]
+
+    def to_coords(img, rc):
+        """convert X, Y points to coordinates in CRS"""
+        return img.transform * (float(rc[1]), float(rc[0]))
+    geoms = None
+    if isinstance(layer, napari.layers.Points):
+        geoms = [Point(to_coords(img, rc)) for rc in layer.data]
+    elif isinstance(layer, napari.layers.Shapes):
+        geoms = [Polygon([to_coords(img, rc) for rc in shape])
+                 for shape, stype in zip(layer.data, layer.shape_type)
+                 if stype in ("polygon", "rectangle", "ellipse")]
+    if not geoms:
+        fatal_error(f"No usable geometries (Points or Shapes) found in layer '{layername}'.")
+
+    gdf = geopandas.GeoDataFrame(geometry=geoms, crs=img.crs)
+    return gdf
+
+
+def _to_gdf(img, source, layername="Shapes"):
+    """
+    Helper function to transform paths or viewers to geodataframes.
+    This is generally used as part of making ROIs from a viewer layer.
+
+    Parameters:
+    -----------
+    img       = GEO or DSM,
+        image to use, must have a CRS attribute.
+    source    = str, InteractiveShapes, or Napari Viewer
+        This should have points/polygons to be returned as a gdf.
+        An str will be treated as a filepath to a geojson file.
+        An InteractiveShapes instance will have the viewer used.
+        A Napari Viewer will be used as is.
+    layername = str,
+        Name of the viewer layer to return as a gdf. Defaults to "Shapes"
+
+    Returns:
+    --------
+    gdf = pandas.GeoDataFrame
+    """
+    if isinstance(source, (str, os.PathLike)):
+        gdf = geopandas.read_file(source)
+    elif hasattr(source, "layers") or hasattr(source, "viewer"):
+        return _viewer_to_gdf(img, source, layername)
+    else:
+        fatal_error("source must be a geojson path, GeoDataFrame, or napari viewer.")
+    if gdf.crs != img.crs:
+        gdf = gdf.to_crs(img.crs)
+    return gdf
+
+
+def _gdf_to_pixel_polygons(img, gdf):
+    """
+    Convert Polygon/MultiPolygon geometries in a GeoDataFrame to pixel coordinates.
+
+    Parameters
+    ----------
+    img : plantcv.geospatial.images.GEO or DSM object
+        A GEO/DSM image object returned by read_geotif.
+    gdf : geopandas.GeoDataFrame
+        Polygon or MultiPolygon geometries
+        For multipolygons we only use the first shape currently.
+
+    Returns
+    -------
+    coord : list of list of list of int
+        One polygon per feature, in gdf order, where each polygon is a list of
+        [col, row] integer pairs. The closing vertex is dropped.
+    """
+    to_pixel = ~img.transform
+    coord = []
+    for geom in gdf.geometry:
+        if geom is None or geom.is_empty:
+            fatal_error("Empty geometry found in GeoDataFrame.")
+        if geom.geom_type == "MultiPolygon":
+            # For multipolygons we only keep the first one per transform_polygons
+            geom = geom.geoms[0]
+        temp_list = []
+        for x, y, *_ in geom.exterior.coords[:-1]:
+            col, row = to_pixel * (x, y)
+            temp_list.append([int(col), int(row)])
+        coord.append(temp_list)
+    return coord
 
 
 def _transform_geojson_crs(img, geojson):
