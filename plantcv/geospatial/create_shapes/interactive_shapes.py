@@ -34,7 +34,10 @@ class InteractiveShapes:
         self.img = img
         self.layer_dict = {}
         # Change band order because napari expects RGB
-        self.viewer.add_image(np.flip(self.img.thumb, axis=-1))
+        pseudo_rgb = self.img.thumb
+        if len(np.shape(self.img.thumb)) == 3:
+            pseudo_rgb = np.flip(self.img.thumb, axis=-1)
+        self.viewer.add_image(pseudo_rgb)
         self.viewer.add_shapes(name=field_layer)
         self.layer_dict["field_boundary"] = field_layer
 
