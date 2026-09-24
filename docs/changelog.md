@@ -101,3 +101,7 @@ All notable changes to this project will be documented below.
 #### geospatial.subtract_dsm
 
 * v0.1dev: chm = **geospatial.subtract_dsm**(*dsm1, dsm0*)
+
+#### geospatial.write_geotif
+
+* v0.1dev: **geospatial.write_geotif**(*path, img, transform=None, crs=None, nodata=None*)
