@@ -20,7 +20,7 @@ def _parse_bands(bands):
         Comma-separated string of band symbols (e.g., ``"R,G,B"``) or a list
         of wavelengths.
         Currently Supported Band Symbols: R (670 nm), G (560 nm), B (480 nm),
-        RE (717 nm), N (842 nm), NIR (842 nm), GRAY (0).
+        RE (717 nm), N (842 nm), NIR (842 nm), GRAY (0), MASK (0).
 
     Returns
     -------
@@ -37,7 +37,7 @@ def _parse_bands(bands):
 
     # Default values for symbolic bands
     default_wavelengths = {"R": 670, "G": 560, "B": 480, "RE": 717, "N": 842,
-                           "NIR": 842, "GRAY": 0}
+                           "NIR": 842, "GRAY": 0, "MASK": 0}
 
     for band in band_strs:
         # Check if the band symbols are supported
