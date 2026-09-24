@@ -5,6 +5,7 @@ from plantcv.geospatial import read
 from plantcv.geospatial import convert
 from plantcv.geospatial import analyze
 from plantcv.geospatial import create_shapes
+from plantcv.geospatial import visualize
 from plantcv.geospatial.center_grid_rois import center_grid_rois
 from plantcv.geospatial.images import Image, GEO, DSM
 from plantcv.geospatial.resize import resize
@@ -20,6 +21,7 @@ __all__ = [
     "read",
     "analyze",
     "create_shapes",
+    "visualize",
     "center_grid_rois",
     "convert",
     "Image",

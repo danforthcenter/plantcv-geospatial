@@ -87,7 +87,8 @@ class TestData:
         multipoly
             multipoly.geojson
             Multiple polygon shapefile with "ID" 
-            Used for testing transform_polygons, analyze.coverage, analyze.height_percentile
+            Used for testing transform_polygons, analyze.coverage, analyze.height_percentile,
+            visualize.height_distribution
         poly_crop
             single_crop.geojson
             Single polygon shapefile

@@ -101,3 +101,7 @@ All notable changes to this project will be documented below.
 #### geospatial.subtract_dsm
 
 * v0.1dev: chm = **geospatial.subtract_dsm**(*dsm1, dsm0*)
+
+#### geospatial.visualize.height_distribution
+
+* v0.1dev: chart = **plantcv.geospatial.visualize.height_distribution**(*img, geojson, n=9, bins=50, lower=25, upper=90, seed=None, label=None*)
