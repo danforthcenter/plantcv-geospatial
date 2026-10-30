@@ -33,7 +33,7 @@ editor.add_layer(layer_type="points", layername="Points")
 ```
 ```python
 # In a separate cell, save the output after clicking:
-gcv.convert.points(img=img, source=editor, dest="./points_example.geojson")
+gcv.convert.points(img=img, source=editor.viewer, dest="./points_example.geojson")
 ```
 
 ![Screenshot](documentation_images/napari_clicks.png)
