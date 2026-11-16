@@ -12,3 +12,7 @@ does not already exist.
 
 Functions in the Geospatial toolbox are specific to UAV, satellite, and other types of 
 georeferenced data. 
+
+## PlantCV-Geospatial Tutorials
+
+Many geospatial workflows require the use of the InteractiveShapes viewer object, which opens a Napari window outside of the jupyter notebook. These functions cannot currently be tested using our Github actions method, but it is useful to test as many steps in tutorials as we can. If you would like to contribute a geospatial tutorial that requires a Napari window, please utilize an existing tutorial (such as `plantcv-geospatial-tutorial-plot-boundaries`) to make the tests file capable of testing InteractiveShapes without needing interaction. A separate tutorial notebook for testing is not needed. 
