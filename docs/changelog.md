@@ -29,6 +29,7 @@ All notable changes to this project will be documented below.
 #### geospatial.convert.to_roi
 
 * v0.1dev: rois = **geospatial.convert.to_roi**(*img, geojson, radius=None*)
+* v1.1 dev: rois = **geospatial.convert.to_roi**(*img, source, radius=None, layername="Shapes"*)
 
 #### geospatial.convert.points
 

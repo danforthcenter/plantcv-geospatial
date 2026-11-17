@@ -46,6 +46,10 @@ Attributes are accessed as `interactive_shapes_instance.attribute`.
 	* shapetype (str, default = "polygon"): Type of shape to use.
 	* layername (str, default = "Shapes"): Name of the layer to return/write.
 
+* **to_roi**: (*layername="Shapes", radius=None*): Return a layer from the viewer as a list of ROIs.
+    * layername (str, default = "Shapes"): Name of the layer to return.
+	* radius (float, default = None): Radius of circular ROI to draw (in CRS units) if the layer is a Points layer.
+
 * **close**: (): Closes the viewer object window, which prevents any further changes to layers.
 
 

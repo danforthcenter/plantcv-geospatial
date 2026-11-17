@@ -7,6 +7,7 @@ from plantcv.geospatial.create_shapes.napari_grid import _napari_grid
 from plantcv.geospatial.create_shapes.napari_polygon_grid import _napari_polygon_grid
 from plantcv.geospatial.convert.points import points
 from plantcv.geospatial.convert.shapes import shapes
+from plantcv.geospatial.convert.to_roi import to_roi
 from plantcv.geospatial import field_layout
 
 
@@ -135,6 +136,29 @@ class InteractiveShapes:
             List of X,Y coordinates of shape vertices.
         """
         return shapes(img=self.img, source=self.viewer, dest=dest, shapetype=shapetype, layername=layername)
+
+    def to_roi(self, layername="Shapes", radius=None):
+        """Takes a layer of points/shapes and transforms to ROIs.
+        If points, saves circular ROIs out to a new geoJSON file.
+
+        Parameters:
+        -----------
+        img : plantcv.geospatial.images.GEO object
+            A GEO image object returned by ``read_geotif``.
+        radius : optional float
+            If provided, then points from the geojson will be treated as centers
+            of circular ROIs with this radius
+            in units matching the coordinate system (CRS) of the image
+            e.g. meters
+        layername: str,
+            Name of shapes layer, defaults to "Shapes."
+
+        Returns:
+        --------
+        rois : list
+            List of circular ROIs (plantcv Objects class instances)
+        """
+        return to_roi(img=self.img, source=self.viewer, radius=radius, layername=layername)
 
     def close(self):
         """Close the napari viewer held by this InteractiveShapes object."""
